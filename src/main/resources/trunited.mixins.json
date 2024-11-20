@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.dracosomething.testaddon.mixin",
+  "package": "io.github.dracosomething.trunited.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "testaddon.refmap.json",
   "mixins": [

@@ -131,40 +131,54 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
+    mavenCentral()
+    maven {url = 'https://maven.minecraftforge.net'}
 
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
-    // flatDir {
-    //     dir 'libs'
-    // }
+    flatDir {
+        dirs 'lib'
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven' }
+    maven { url 'https://dl.cloudsmith.io/public/manasmods/manascore/maven/' }
+    maven { url 'https://dl.cloudsmith.io/public/manasmods/tensura/maven/' }
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.firstdarkdev.xyz/snapshots" }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use.
-    // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
-    // The "userdev" classifier will be requested and setup by ForgeGradle.
-    // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
-    // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    implementation fg.deobf("com.github.manasmods:ManasCore:${minecraft_version}-${manasCoreVersion}")
+    implementation fg.deobf("com.github.manasmods:tensura:${minecraft_version}-${tensuraVersion}")
+    implementation fg.deobf("com.lowdragmc.photon:photon-forge-${minecraft_version}:${photonVersion}") {
+        transitive = false
+    }
+    implementation fg.deobf("com.lowdragmc.ldlib:ldlib-forge-${minecraft_version}:${ldlibVersion}") {
+        transitive = false
+    }
 
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinExtrasVersion}"))
+    implementation("io.github.llamalad7:mixinextras-forge:${mixinExtrasVersion}")
 
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terraBlenderVersion}")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckoLibVersion}")
 
 }
 
