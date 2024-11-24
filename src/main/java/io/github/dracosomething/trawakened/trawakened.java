@@ -64,7 +64,7 @@ public class trunited {
         }
 
         String content = contentBuilder.toString();
-        String[] newItem = {"trunited:test"}; // The item you want to add
+        String[] newItem = {"trunited:honkai_apostle"}; // The item you want to add
         String startingraces = "startingRaces"; // The key for the list in your TOML
         String randomraces = "possibleRandomRaces";
 
