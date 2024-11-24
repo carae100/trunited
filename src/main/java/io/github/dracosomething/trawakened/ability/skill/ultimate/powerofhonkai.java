@@ -1,19 +1,14 @@
-package io.github.dracosomething.trawakened.ability.skill.unique;
+package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
-import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import com.github.manasmods.tensura.registry.skill.UniqueSkills;
-import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,19 +20,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
-import java.util.Objects;
 
-public class voiceofhonkai extends Skill {
+public class powerofhonkai extends Skill {
 
     public ResourceLocation getSkillIcon() {
         return new ResourceLocation("trawakened", "textures/skill/unique/voiceofhonkai.png");
     }
 
-    public voiceofhonkai() {
-        super(SkillType.UNIQUE);
+    public powerofhonkai() {
+        super(SkillType.ULTIMATE);
     }
 
     public double getObtainingEpCost() {
@@ -48,8 +41,8 @@ public class voiceofhonkai extends Skill {
         return 5000.0;
     }
 
-    public double magiculecost(LivingEntity entity, ManasSkillInstance instance) {
-        return 50.0;
+    public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        return 100.0;
     }
 
     public boolean canBeToggled(ManasSkillInstance instance, LivingEntity entity) {
@@ -135,7 +128,7 @@ public class voiceofhonkai extends Skill {
             }
             else {
                 Skill skill = (Skill) var3;
-                return skill.getType().equals(SkillType.INTRINSIC) || skill.getType().equals(SkillType.COMMON) || skill.getType().equals(SkillType.EXTRA) || skill.getType().equals(SkillType.UNIQUE) || skill.getType().equals(SkillType.RESISTANCE);
+                return skill.getType().equals(SkillType.INTRINSIC) || skill.getType().equals(SkillType.COMMON) || skill.getType().equals(SkillType.EXTRA) || skill.getType().equals(SkillType.UNIQUE) || skill.getType().equals(SkillType.RESISTANCE) || skill.getType().equals(SkillType.ULTIMATE);
             }
         }
         else {
@@ -165,15 +158,6 @@ public class voiceofhonkai extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if(instance.isToggled()){
             this.gainMastery(instance, living);
-        }
-
-        if (living instanceof Player){
-            Player player = (Player) living;
-            if(!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))){
-                System.out.println("playerrace");
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
-            }
         }
     }
 }

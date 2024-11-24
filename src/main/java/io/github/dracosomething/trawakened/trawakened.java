@@ -1,4 +1,4 @@
-package io.github.dracosomething.trunited;
+package io.github.dracosomething.trawakened;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -16,11 +16,11 @@ import org.slf4j.Logger;
 import java.io.*;
 
 // The value here should match an entry in the META-IN F/mods.toml file
-@Mod(trunited.MODID)
-public class trunited {
+@Mod(trawakened.MODID)
+public class trawakened {
 
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "trunited";
+    public static final String MODID = "trawakened";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -28,7 +28,7 @@ public class trunited {
     private File configFile;
 
 
-    public trunited() {
+    public trawakened() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
@@ -64,7 +64,7 @@ public class trunited {
         }
 
         String content = contentBuilder.toString();
-        String[] newItem = {"trunited:honkai_apostle"}; // The item you want to add
+        String[] newItem = {"trawakened:honkai_apostle"}; // The item you want to add
         String startingraces = "startingRaces"; // The key for the list in your TOML
         String randomraces = "possibleRandomRaces";
 

@@ -1,4 +1,14 @@
 {
-  "trunited.race.honkai_apostle": "Honkai Apostle",
-  "trunited.race.honkai_apostle.notes": "These beings are humans that have been cursed by the Honkai. They seem to be humans, but in reality are Majin. They are extremely weakened by their condition, but they seem to have incredible potential."
+  "trawakened.race.honkai_apostle": "Honkai Apostle",
+  "trawakened.race.honkai_apostle.notes": "These beings are humans that have been cursed by the Honkai. They seem to be humans, but in reality are Majin. They are extremely weakened by their condition, but they seem to have incredible potential.",
+  "trawakened.skill.voiceofhonkai": "Voice of the Honkai",
+  "trawakened.skill.voiceofhonkai.description": "Learn what your enemies are and steal their ability's. You seem to be have the ability to seem like a human.",
+  "trawakened.race.awakened_apostle": "Awakened Apostle",
+  "trawakened.skill.powerofhonkai": "Power of the Honkai",
+  "trawakened.skill.powerofhonkai.description": "Copy any skill possible, grow stronger at a faster rate and get all knowledge.",
+  "trawakened.race.awakened_apostle.notes": "These Apostle's have learned to bent the Honkai to their will.",
+  "trawakened.race.enslaved_apostle": "Enslaved Apostle",
+  "trawakened.race.enslaved_apostle.notes": "These Apostle's have bent to the Honkai's will.",
+  "trawakened.skill.mode.willofhonkai.copy": "copy",
+  "trawakened.skill.mode.willofhonkai.passivy": "passivy"
 }
