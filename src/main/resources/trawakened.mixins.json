@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "testaddon.refmap.json",
   "mixins": [
+    "TensuraPlayerCapabilityMixin"
   ],
   "client": [
   ],

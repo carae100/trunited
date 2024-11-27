@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.powerofhonkai;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.willofhonkai;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraftforge.registries.RegisterEvent;
 public class skillregistry {
     public static final ResourceLocation VOICEOFHONKAI = new ResourceLocation("trawakened", "voiceofhonkai");
     public static final ResourceLocation POWEROFHONKAI = new ResourceLocation("trawakened", "powerofhonkai");
+    public static final ResourceLocation WILLOFHONKAI = new ResourceLocation("trawakened", "willofhonkai");
 
     public skillregistry() {
     }
@@ -22,6 +24,7 @@ public class skillregistry {
         event.register(SkillAPI.getSkillRegistry().getRegistryKey(), (helper) -> {
             helper.register("voiceofhonkai", new voiceofhonkai());
             helper.register("powerofhonkai", new powerofhonkai());
+            helper.register("willofhonkai", new willofhonkai());
         });
     }
 }

@@ -22,7 +22,7 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public double getBaseHealth() {
-        return 40;
+        return 50;
     }
 
     @Override
@@ -77,16 +77,16 @@ public class enslavedapostle extends honkaiapostle {
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
+        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
         list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
-//    public List<Race> getNextEvolutions() {
-//        List<Race> list = new ArrayList();
-//        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
-//        return list;
-//    }
+    public List<Race> getNextEvolutions() {
+        List<Race> list = new ArrayList();
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED));
+        return list;
+    }
 
     @Override
     public List<Race> getPreviousEvolutions() {

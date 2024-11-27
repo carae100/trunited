@@ -11,4 +11,8 @@ public class trawakenedPlayerCapability {
         ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
         return capability == null ? false : capability.isDemonLordSeed();
     }
+    public static boolean isHeroEgg(Player player) {
+        ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
+        return capability == null ? false : capability.isHeroEgg();
+    }
 }

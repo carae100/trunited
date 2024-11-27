@@ -1,18 +1,26 @@
 package io.github.dracosomething.trawakened;
 
 import com.mojang.logging.LogUtils;
+import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
+import io.github.dracosomething.trawakened.registry.trawakenedregistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
+import java.awt.*;
 import java.io.*;
 
 // The value here should match an entry in the META-IN F/mods.toml file
@@ -36,81 +44,85 @@ public class trawakened {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        trawakenedregistry.register(modEventBus);
 
         configFile = new File("config/tensura-reincarnated/" + TENSURA_CONFIG);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC, "trawakened-Starter-Races-config.toml");
     }
 
     @SubscribeEvent
     public void onCommonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("common setiup");
         // Load and edit the .toml file
-        editTomlFile();
+//        editTomlFile();
+
         LOGGER.info("common setup works");
     }
 
-    public void editTomlFile() {
-        File tomlFile = new File("config/tensura-reincarnated/common.toml"); // Adjust the path as needed
-
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(tomlFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                contentBuilder.append(line).append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error reading the TOML file: " + e.getMessage());
-            return;
-        }
-
-        String content = contentBuilder.toString();
-        String[] newItem = {"trawakened:honkai_apostle"}; // The item you want to add
-        String startingraces = "startingRaces"; // The key for the list in your TOML
-        String randomraces = "possibleRandomRaces";
-
-        // Find the line containing the list and add the new item
-        String startingline = startingraces + " = [";
-        String randomline = randomraces + " = [";
-        int index = content.indexOf(startingline);
-        int index2 = content.indexOf(randomline);
-        for (int i = 0; i < newItem.length; i++) {
-            String ItemtoAdd = newItem[i];
-            if (index != -1 || index2 != -1) {
-                // Find the end of the list
-                int endIndex = content.indexOf("]", index) + 1;
-                int endIndex2 = content.indexOf("]", index2) + 1;
-                if (endIndex != 0 || index2 != 0) {
-                    // Insert the new item before the closing bracket
-                    String startingRaces = content.substring(index, endIndex);
-                    String possibleRandomRaces = content.substring(index2, endIndex2);
-                    if (!startingRaces.contains(ItemtoAdd)) {
-                        String updatedList = startingRaces.replace("]", ", \"" + ItemtoAdd + "\"]");
-                        content = content.replace(startingRaces, updatedList);
-                        System.out.println("startingRaces has been updated");
-                    }
-                    if (!possibleRandomRaces.contains(ItemtoAdd)) {
-                        String updatedList = possibleRandomRaces.replace("]", ", \"" + ItemtoAdd + "\"]");
-                        content = content.replace(possibleRandomRaces, updatedList);
-                        System.out.println("possibleRandomRaces has been updated");
-                    }
-                } else {
-                    System.out.println("Closing bracket not found for list.");
-                }
-            } else {
-                System.out.println("List identifier not found.");
-            }
-        }
-
-        // Step 3: Write the modified content back to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tomlFile))) {
-            writer.write(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error writing to the TOML file: " + e.getMessage());
-        }
-
-        System.out.println("Item added to TOML list successfully.");
-    }
+//    public void editTomlFile() {
+//        File tomlFile = new File("config/tensura-reincarnated/common.toml"); // Adjust the path as needed
+//
+//        StringBuilder contentBuilder = new StringBuilder();
+//        try (BufferedReader reader = new BufferedReader(new FileReader(tomlFile))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                contentBuilder.append(line).append(System.lineSeparator());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.out.println("Error reading the TOML file: " + e.getMessage());
+//            return;
+//        }
+//
+//        String content = contentBuilder.toString();
+//        String[] newItem = {"trawakened:honkai_apostle"}; // The item you want to add
+//        String startingraces = "startingRaces"; // The key for the list in your TOML
+//        String randomraces = "possibleRandomRaces";
+//
+//        // Find the line containing the list and add the new item
+//        String startingline = startingraces + " = [";
+//        String randomline = randomraces + " = [";
+//        int index = content.indexOf(startingline);
+//        int index2 = content.indexOf(randomline);
+//        for (int i = 0; i < newItem.length; i++) {
+//            String ItemtoAdd = newItem[i];
+//            if (index != -1 || index2 != -1) {
+//                // Find the end of the list
+//                int endIndex = content.indexOf("]", index) + 1;
+//                int endIndex2 = content.indexOf("]", index2) + 1;
+//                if (endIndex != 0 || index2 != 0) {
+//                    // Insert the new item before the closing bracket
+//                    String startingRaces = content.substring(index, endIndex);
+//                    String possibleRandomRaces = content.substring(index2, endIndex2);
+//                    if (!startingRaces.contains(ItemtoAdd)) {
+//                        String updatedList = startingRaces.replace("]", ", \"" + ItemtoAdd + "\"]");
+//                        content = content.replace(startingRaces, updatedList);
+//                        System.out.println("startingRaces has been updated");
+//                    }
+//                    if (!possibleRandomRaces.contains(ItemtoAdd)) {
+//                        String updatedList = possibleRandomRaces.replace("]", ", \"" + ItemtoAdd + "\"]");
+//                        content = content.replace(possibleRandomRaces, updatedList);
+//                        System.out.println("possibleRandomRaces has been updated");
+//                    }
+//                } else {
+//                    System.out.println("Closing bracket not found for list.");
+//                }
+//            } else {
+//                System.out.println("List identifier not found.");
+//            }
+//        }
+//
+//        // Step 3: Write the modified content back to the file
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tomlFile))) {
+//            writer.write(content);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.out.println("Error writing to the TOML file: " + e.getMessage());
+//        }
+//
+//        System.out.println("Item added to TOML list successfully.");
+//    }
 
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

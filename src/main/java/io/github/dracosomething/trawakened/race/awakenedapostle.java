@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class awakenedapostle extends honkaiapostle {
     public awakenedapostle() {}
 
@@ -67,14 +68,14 @@ public class awakenedapostle extends honkaiapostle {
     }
 
     public boolean isMajin() {
-        return true;
+        return false;
     }
 
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
@@ -85,7 +86,7 @@ public class awakenedapostle extends honkaiapostle {
 
     public List<Race> getNextEvolutions() {
         List<Race> list = new ArrayList();
-//        list.add((Race) TensuraRaces.HUMAN.get());
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_AWAKENED));
         return list;
     }
 

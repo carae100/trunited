@@ -53,20 +53,15 @@ public class voiceofhonkai extends Skill {
         return 5000.0;
     }
 
-    public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
-        return instance.getMode() == 1 ? 2 : 1;
-    }
-
     @Override
     public int modes() {
-        return 2;
+        return 1;
     }
 
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.copy");
-            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.passivy");
             default -> var10000 = Component.empty();
         }
 
@@ -78,9 +73,6 @@ public class voiceofhonkai extends Skill {
         switch (instance.getMode()) {
             case 1:
                 var10000 = 100.0;
-                break;
-            case 2:
-                var10000 = 10.0;
                 break;
             default:
                 var10000 = 0.0;
@@ -128,86 +120,67 @@ public class voiceofhonkai extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-//        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
-        switch (instance.getMode()) {
-            case 1:
-                LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
-                if (target != null){
-                    label52: {
-                        entity.swing(InteractionHand.MAIN_HAND, true);
-                        ServerLevel level = (ServerLevel) entity.getLevel();
-                        int chance = 50;
-                        boolean failed = true;
-                        if (entity.getRandom().nextInt(100) <= chance){
-                            List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
-                            if(!collection.isEmpty()){
-                                this.addMasteryPoint(instance, entity);
-                                ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                                if (SkillUtils.learnSkill(entity, skill)){
-                                    instance.setCoolDown(20);
-                                    failed = false;
-                                    if(entity instanceof Player){
-                                        Player player = (Player) entity;
-                                        player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                                    }
-
-                                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
-                                }
+        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
+        if (target != null) {
+            label52:
+            {
+                entity.swing(InteractionHand.MAIN_HAND, true);
+                ServerLevel level = (ServerLevel) entity.getLevel();
+                int chance = 75;
+                boolean failed = true;
+                if (entity.getRandom().nextInt(100) <= chance) {
+                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                    if (!collection.isEmpty()) {
+                        this.addMasteryPoint(instance, entity);
+                        ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
+                        if (SkillUtils.learnSkill(entity, skill)) {
+                            instance.setCoolDown(20);
+                            failed = false;
+                            if (entity instanceof Player) {
+                                Player player = (Player) entity;
+                                player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
                             }
-                        }
 
-                        if(failed && entity instanceof Player){
-                            Player player = (Player) entity;
-                            player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                            instance.setCoolDown(5);
+                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
                         }
-
-                        return;
-                    }
-                }
-                break;
-            case 2:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
-//                    Level level = entity.getLevel();
-                    LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 5.0, false);
-                    if (target2 != null) {
-                        CharmSkill.charm(instance, entity);
-                        instance.setCoolDown(10);
-                    }
-                    else {
-                        Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
                 }
 
+                if (failed && entity instanceof Player) {
+                    Player player = (Player) entity;
+                    player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    instance.setCoolDown(5);
+                }
 
-                break;
+                return;
+            }
+        } else if (entity instanceof Player) {
+            Player player = (Player) entity;
+            player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
         }
-
     }
 
-    public boolean canCopy(ManasSkillInstance instance){
-        if(!instance.isTemporarySkill() && instance.getMastery() >= 0){
+
+    public boolean canCopy(ManasSkillInstance instance) {
+        if (!instance.isTemporarySkill() && instance.getMastery() >= 0) {
             ManasSkill var3 = instance.getSkill();
-            if (!(var3 instanceof Skill)){
+            if (!(var3 instanceof Skill)) {
                 return false;
-            }
-            else {
+            } else {
                 Skill skill = (Skill) var3;
                 return skill.getType().equals(SkillType.INTRINSIC) || skill.getType().equals(SkillType.COMMON) || skill.getType().equals(SkillType.EXTRA) || skill.getType().equals(SkillType.UNIQUE) || skill.getType().equals(SkillType.RESISTANCE);
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    private void gainMastery(ManasSkillInstance instance, LivingEntity entity){
+    private void gainMastery(ManasSkillInstance instance, LivingEntity entity) {
         CompoundTag tag = instance.getOrCreateTag();
         int Time = tag.getInt("activatedTimes");
-        if(Time % 200 == 0){
-            int chance =  5;
+        if (Time % 200 == 0) {
+            int chance = 3;
             if (entity.getRandom().nextInt(100) <= chance) {
                 this.addMasteryPoint(instance, entity);
             }
@@ -223,19 +196,21 @@ public class voiceofhonkai extends Skill {
 
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        if(instance.isToggled()){
+        if (instance.isToggled()) {
             this.gainMastery(instance, living);
         }
 
-       if (living instanceof Player){
+        if (living instanceof Player) {
             Player player = (Player) living;
-            if(!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))){
+            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE))) {
                 System.out.println("playerrace");
                 SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
             }
-            if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))){
-                SkillUtils.learnSkill(player, (TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
+            if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
+            }
+            if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE))) {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
             }
         }

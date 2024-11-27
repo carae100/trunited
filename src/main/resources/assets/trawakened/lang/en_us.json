@@ -4,11 +4,20 @@
   "trawakened.skill.voiceofhonkai": "Voice of the Honkai",
   "trawakened.skill.voiceofhonkai.description": "Learn what your enemies are and steal their ability's. You seem to be have the ability to seem like a human.",
   "trawakened.race.awakened_apostle": "Awakened Apostle",
+  "trawakened.race.awakened_apostle.notes": "These Apostle's have learned to bent the Honkai to their will.",
   "trawakened.skill.powerofhonkai": "Power of the Honkai",
   "trawakened.skill.powerofhonkai.description": "Copy any skill possible, grow stronger at a faster rate and get all knowledge.",
-  "trawakened.race.awakened_apostle.notes": "These Apostle's have learned to bent the Honkai to their will.",
   "trawakened.race.enslaved_apostle": "Enslaved Apostle",
   "trawakened.race.enslaved_apostle.notes": "These Apostle's have bent to the Honkai's will.",
   "trawakened.skill.mode.willofhonkai.copy": "copy",
-  "trawakened.skill.mode.willofhonkai.passivy": "passivy"
+  "trawakened.skill.mode.powerofhonkai.enslave": "enslave",
+  "trawakened.skill.mode.willofhonkai.punch": "Explosive Punch",
+  "trawakened.skill.mode.willofhonkai.honkaimode": "Honkai Beast Transformation",
+  "trawakened.skill.willofhonkai": "Will of the Honkai",
+  "trawakened.skill.willofhonkai.description": "Gain incredible power at the cost of not being able to copy ultimate skills.",
+  "trawakened.skill.mode.willofhonkai.selfbarrier": "Honkai Barrier",
+  "trawakened.race.herrscher_seed_awakened": "Herrscher Seed",
+  "trawakened.race.herrscher_seed_awakened.notes": "These apostles have made their first step to becoming a herrscher.",
+  "trawakened.race.herrscher_seed_enslaved": "Herrscher Seed",
+  "trawakened.race.herrscher_seed_enslaved.notes": "These apostles have made their first step to becoming a herrscher."
 }

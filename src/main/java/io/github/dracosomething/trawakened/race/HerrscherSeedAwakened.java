@@ -1,6 +1,5 @@
 package io.github.dracosomething.trawakened.race;
 
-import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
@@ -9,6 +8,7 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
+import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -18,68 +18,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class awakenedapostle extends honkaiapostle {
-    public awakenedapostle() {}
+public class HerrscherSeedAwakened extends awakenedapostle {
+    public HerrscherSeedAwakened() {}
 
     @Override
     public double getBaseHealth() {
-        return 20;
-    }
-
-    @Override
-    public float getPlayerSize() {
-        return 2.0F;
+        return 50;
     }
 
     @Override
     public double getBaseAttackDamage() {
-        return 2;
+        return 7;
     }
 
     @Override
     public double getBaseAttackSpeed() {
-        return 3;
+        return 1;
     }
 
     @Override
     public double getKnockbackResistance() {
-        return 3;
-    }
-
-    @Override
-    public double getJumpHeight() {
-        return JumpPowerHelper.defaultPlayer();
+        return 6;
     }
 
     @Override
     public double getMovementSpeed() {
-        return 0.2;
+        return 0.22;
     }
 
     @Override
     public Pair<Double, Double> getBaseAuraRange() {
-        return Pair.of(1000.0, 1500.0);
+        return Pair.of(1500.0, 2500.0);
     }
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(950.0, 1550.0);
+        return Pair.of(1550.0, 2550.0);
     }
 
-    public boolean isMajin() {
-        return true;
-    }
-
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//
+//    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//
+//    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
-        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
@@ -92,14 +76,14 @@ public class awakenedapostle extends honkaiapostle {
     @Override
     public List<Race> getPreviousEvolutions() {
         List<Race> list = new ArrayList();
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
         return list;
     }
 
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
-        if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))))){
+        if (trawakenedPlayerCapability.isHeroEgg(player)){
             chance += 100;
         }
 

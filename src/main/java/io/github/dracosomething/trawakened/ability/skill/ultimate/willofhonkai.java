@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened.ability.skill.unique;
+package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
@@ -8,16 +8,24 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.ability.skill.common.ThoughtCommunicationSkill;
-import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
+import com.github.manasmods.tensura.ability.skill.extra.MultilayerBarrierSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
+import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
+import com.github.manasmods.tensura.effect.template.Transformation;
 import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
+import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,26 +35,36 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Explosion;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
-public class voiceofhonkai extends Skill {
+public class willofhonkai extends Skill implements Transformation {
+    protected static final UUID MULTILAYER = UUID.fromString("2c03b682-5705-11ee-8c99-0242ac120002");
 
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/unique/voiceofhonkai.png");
+        return new ResourceLocation("trawakened", "textures/skill/unique/will_of_honkai.png");
     }
 
-    public voiceofhonkai() {
-        super(SkillType.UNIQUE);
+    public willofhonkai() {
+        super(SkillType.ULTIMATE);
     }
 
     public double getObtainingEpCost() {
-        return 40000.0;
+        return 5000.0;
     }
 
     public double learningCost() {
@@ -55,13 +73,25 @@ public class voiceofhonkai extends Skill {
 
     @Override
     public int modes() {
-        return 1;
+        return 4;
+    }
+
+    @Override
+    public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
+        if (reverse) {
+            return instance.getMode() == 1 ? 4 : instance.getMode() - 1;
+        } else {
+            return instance.getMode() == 4 ? 1 : instance.getMode() + 1;
+        }
     }
 
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.copy");
+            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.punch");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.selfbarrier");
+            case 4 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.honkaimode");
             default -> var10000 = Component.empty();
         }
 
@@ -73,6 +103,15 @@ public class voiceofhonkai extends Skill {
         switch (instance.getMode()) {
             case 1:
                 var10000 = 100.0;
+                break;
+            case 2:
+                var10000 = 500.0;
+                break;
+            case 3:
+                var10000 = 50.0;
+                break;
+            case 4:
+                var10000 = 2500.0;
                 break;
             default:
                 var10000 = 0.0;
@@ -121,43 +160,91 @@ public class voiceofhonkai extends Skill {
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
-        if (target != null) {
-            label52:
-            {
-                entity.swing(InteractionHand.MAIN_HAND, true);
-                ServerLevel level = (ServerLevel) entity.getLevel();
-                int chance = 75;
-                boolean failed = true;
-                if (entity.getRandom().nextInt(100) <= chance) {
-                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
-                    if (!collection.isEmpty()) {
-                        this.addMasteryPoint(instance, entity);
-                        ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                        if (SkillUtils.learnSkill(entity, skill)) {
-                            instance.setCoolDown(20);
-                            failed = false;
-                            if (entity instanceof Player) {
-                                Player player = (Player) entity;
-                                player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                            }
+        switch (instance.getMode()) {
+            case 1:
+                if (target != null) {
+                    label52:
+                    {
+                        entity.swing(InteractionHand.MAIN_HAND, true);
+                        ServerLevel level = (ServerLevel) entity.getLevel();
+                        int chance = 50;
+                        boolean failed = true;
+                        if (entity.getRandom().nextInt(100) <= chance) {
+                            List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                            if (!collection.isEmpty()) {
+                                this.addMasteryPoint(instance, entity);
+                                ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
+                                if (SkillUtils.learnSkill(entity, skill)) {
+                                    instance.setCoolDown(20);
+                                    failed = false;
+                                    if (entity instanceof Player) {
+                                        Player player = (Player) entity;
+                                        player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
+                                    }
 
-                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                }
+                            }
                         }
+
+                        if (failed && entity instanceof Player) {
+                            Player player = (Player) entity;
+                            player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            instance.setCoolDown(5);
+                        }
+
+                        return;
+                    }
+                } else if (entity instanceof Player) {
+                    Player player = (Player) entity;
+                    player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                }
+                break;
+
+            case 2:
+                if (target != null) {
+                    entity.swing(InteractionHand.MAIN_HAND, true);
+                    Explosion.BlockInteraction interaction = Explosion.BlockInteraction.BREAK;
+                    target.level.explode(entity, target.getX(), target.getY(), target.getZ(), 20F, interaction);
+                }
+                break;
+            case 3:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    AttributeInstance attributeInstance = (AttributeInstance) Objects.requireNonNull(entity.getAttribute((Attribute)TensuraAttributeRegistry.BARRIER.get()));
+                    if (attributeInstance.getModifier(MULTILAYER) != null) {
+                        attributeInstance.removePermanentModifier(MULTILAYER);
+                        entity.getLevel().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    } else {
+                        this.addMasteryPoint(instance, entity);
+                        instance.setCoolDown(10);
+                        double barrierPoints = (double)entity.getMaxHealth() * 1.5;
+                        attributeInstance.addPermanentModifier(new AttributeModifier(MULTILAYER, "Multilayer Barrier", barrierPoints, AttributeModifier.Operation.ADDITION));
+                        entity.getLevel().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    }
+
+                }
+                break;
+            case 4:
+                if (!this.failedToActivate(entity, (MobEffect) effectRegistry.HONKAIEFFECT.get())) {
+                    if (!entity.hasEffect((MobEffect) effectRegistry.HONKAIEFFECT.get())) {
+                        if (SkillHelper.outOfMagicule(entity, instance)) {
+                            return;
+                        }
+
+                        this.addMasteryPoint(instance, entity);
+                        instance.setCoolDown(1800);
+                        entity.setHealth(entity.getMaxHealth());
+                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_ROAR, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 960 : 480, 1, true, true, true));
+                        TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.EXPLOSION_EMITTER);
+                        TensuraParticleHelper.spawnServerParticles(entity.level, (ParticleOptions) TensuraParticles.LIGHTNING_SPARK.get(), entity.getX(), entity.getY(), entity.getZ(), 55, 0.08, 0.08, 0.08, 0.5, true);
+                    } else {
+                        entity.removeEffect((MobEffect) effectRegistry.HONKAIEFFECT.get());
+                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
                 }
-
-                if (failed && entity instanceof Player) {
-                    Player player = (Player) entity;
-                    player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                    instance.setCoolDown(5);
-                }
-
-                return;
-            }
-        } else if (entity instanceof Player) {
-            Player player = (Player) entity;
-            player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                break;
         }
     }
 
@@ -169,7 +256,11 @@ public class voiceofhonkai extends Skill {
                 return false;
             } else {
                 Skill skill = (Skill) var3;
-                return skill.getType().equals(SkillType.INTRINSIC) || skill.getType().equals(SkillType.COMMON) || skill.getType().equals(SkillType.EXTRA) || skill.getType().equals(SkillType.UNIQUE) || skill.getType().equals(SkillType.RESISTANCE);
+                return skill.getType().equals(SkillType.INTRINSIC) ||
+                        skill.getType().equals(SkillType.COMMON) ||
+                        skill.getType().equals(SkillType.EXTRA) ||
+                        skill.getType().equals(SkillType.UNIQUE) ||
+                        skill.getType().equals(SkillType.RESISTANCE);
             }
         } else {
             return false;
@@ -190,6 +281,16 @@ public class voiceofhonkai extends Skill {
     }
 
     @Override
+    public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
+        LivingEntity target = event.getEntity();
+        AttributeInstance attributeInstance = target.getAttribute((Attribute) TensuraAttributeRegistry.BARRIER.get());
+        if(attributeInstance != null){
+            attributeInstance.removeModifiers();
+        }
+        entity.level.playSound((Player) null, entity.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.AMBIENT, 1.0F, 1.0F);
+    }
+
+    @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
         return true;
     }
@@ -198,21 +299,6 @@ public class voiceofhonkai extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (instance.isToggled()) {
             this.gainMastery(instance, living);
-        }
-
-        if (living instanceof Player) {
-            Player player = (Player) living;
-            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
-                System.out.println("playerrace");
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
-            }
-            if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
-            }
-            if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
-            }
         }
     }
 }

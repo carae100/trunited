@@ -17,68 +17,59 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class enslavedapostle extends honkaiapostle {
-    public enslavedapostle() {}
+public class HerrscherSeedEnslaved extends enslavedapostle {
+    public HerrscherSeedEnslaved() {}
 
     @Override
     public double getBaseHealth() {
-        return 50;
-    }
-
-    @Override
-    public float getPlayerSize() {
-        return 2.0F;
+        return 100;
     }
 
     @Override
     public double getBaseAttackDamage() {
-        return 5;
+        return 10;
     }
 
     @Override
     public double getBaseAttackSpeed() {
-        return 2;
+        return 1;
     }
 
     @Override
     public double getKnockbackResistance() {
-        return 5;
+        return 10;
     }
 
     @Override
     public double getJumpHeight() {
-        return JumpPowerHelper.defaultPlayer();
+        return JumpPowerHelper.defaultPlayer()+1;
     }
 
     @Override
     public double getMovementSpeed() {
-        return 0.3;
+        return 0.4;
     }
 
     @Override
     public Pair<Double, Double> getBaseAuraRange() {
-        return Pair.of(1000.0, 5000.0);
+        return Pair.of(5000.0, 10000.0);
     }
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(950.0, 1950.0);
+        return Pair.of(1950.0, 4950.0);
     }
 
-    public boolean isMajin() {
-        return true;
-    }
-
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//
+//    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+//
+//    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
-        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
+//        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
+//        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
@@ -91,15 +82,18 @@ public class enslavedapostle extends honkaiapostle {
     @Override
     public List<Race> getPreviousEvolutions() {
         List<Race> list = new ArrayList();
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE));
         return list;
     }
 
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
-        if (trawakenedPlayerCapability.isDemonLordSeed(player)){
-            chance += 100;
+        if (TensuraPlayerCapability.isTrueDemonLord(player)){
+            chance += 50;
+        }
+        else if (TensuraPlayerCapability.getBaseEP(player) == 150000){
+            chance += 50;
         }
 
         return chance;

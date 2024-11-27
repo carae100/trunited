@@ -1,7 +1,11 @@
 package io.github.dracosomething.trawakened.race;
 
+import com.github.manasmods.manascore.api.skills.ManasSkill;
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.TensuraSkill;
+import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
@@ -9,6 +13,7 @@ import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ public class honkaiapostle extends Race {
 
     @Override
     public double getBaseHealth() {
-        return 5;
+        return 8;
     }
 
     @Override
@@ -68,17 +73,21 @@ public class honkaiapostle extends Race {
         return true;
     }
 
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);}
+    public @Override Race getDefaultEvolution() {
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
+    }
 
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);}
+    public @Override Race getAwakeningEvolution() {
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
+    }
 
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.ENSLAVED_APOSTLE);}
+    public @Override Race getHarvestFestivalEvolution() {
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.ENSLAVED_APOSTLE);
+    }
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
-        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_RESISTANCE.get());
-        list.add((TensuraSkill) ResistanceSkills.PIERCE_RESISTANCE.get());
         return list;
     }
 
@@ -88,5 +97,21 @@ public class honkaiapostle extends Race {
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE));
         return list;
+    }
+
+    @Override
+    public void raceTick(Player player) {
+        if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
+            ArrayList<ManasSkillInstance> list = new ArrayList<>(SkillAPI.getSkillsFrom(player).getLearnedSkills());
+            for (ManasSkillInstance instance : list) {
+                ManasSkill var3 = instance.getSkill();
+                Skill skill = (Skill) var3;
+                if (skill.getType().equals(Skill.SkillType.ULTIMATE)) {
+                    if (!skill.equals((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai"))) && !skill.equals((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")))) {
+                        SkillAPI.getSkillsFrom(player).forgetSkill(skill);
+                    }
+                }
+            }
+        }
     }
 }
