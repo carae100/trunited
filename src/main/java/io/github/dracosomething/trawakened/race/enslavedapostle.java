@@ -10,6 +10,7 @@ import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -103,5 +104,11 @@ public class enslavedapostle extends honkaiapostle {
         }
 
         return chance;
+    }
+
+    public List<Component> getRequirementsForRendering() {
+        List<Component> list = new ArrayList();
+        list.add(Component.translatable("trawakened.requirement.evolution.enslaved_apostle"));
+        return list;
     }
 }

@@ -162,51 +162,55 @@ public class willofhonkai extends Skill implements Transformation {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
         switch (instance.getMode()) {
             case 1:
-                if (target != null) {
-                    label52:
-                    {
-                        entity.swing(InteractionHand.MAIN_HAND, true);
-                        ServerLevel level = (ServerLevel) entity.getLevel();
-                        int chance = 50;
-                        boolean failed = true;
-                        if (entity.getRandom().nextInt(100) <= chance) {
-                            List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
-                            if (!collection.isEmpty()) {
-                                this.addMasteryPoint(instance, entity);
-                                ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                                if (SkillUtils.learnSkill(entity, skill)) {
-                                    instance.setCoolDown(20);
-                                    failed = false;
-                                    if (entity instanceof Player) {
-                                        Player player = (Player) entity;
-                                        player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                                    }
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (target != null) {
+                        label52:
+                        {
+                            entity.swing(InteractionHand.MAIN_HAND, true);
+                            ServerLevel level = (ServerLevel) entity.getLevel();
+                            int chance = 50;
+                            boolean failed = true;
+                            if (entity.getRandom().nextInt(100) <= chance) {
+                                List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                                if (!collection.isEmpty()) {
+                                    this.addMasteryPoint(instance, entity);
+                                    ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
+                                    if (SkillUtils.learnSkill(entity, skill)) {
+                                        instance.setCoolDown(20);
+                                        failed = false;
+                                        if (entity instanceof Player) {
+                                            Player player = (Player) entity;
+                                            player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
+                                        }
 
-                                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                        level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                    }
                                 }
                             }
-                        }
 
-                        if (failed && entity instanceof Player) {
-                            Player player = (Player) entity;
-                            player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                            instance.setCoolDown(5);
-                        }
+                            if (failed && entity instanceof Player) {
+                                Player player = (Player) entity;
+                                player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                                level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                instance.setCoolDown(5);
+                            }
 
-                        return;
+                            return;
+                        }
+                    } else if (entity instanceof Player) {
+                        Player player = (Player) entity;
+                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
-                } else if (entity instanceof Player) {
-                    Player player = (Player) entity;
-                    player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                 }
                 break;
 
             case 2:
-                if (target != null) {
-                    entity.swing(InteractionHand.MAIN_HAND, true);
-                    Explosion.BlockInteraction interaction = Explosion.BlockInteraction.BREAK;
-                    target.level.explode(entity, target.getX(), target.getY(), target.getZ(), 20F, interaction);
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (target != null) {
+                        entity.swing(InteractionHand.MAIN_HAND, true);
+                        Explosion.BlockInteraction interaction = Explosion.BlockInteraction.BREAK;
+                        target.level.explode(entity, target.getX(), target.getY(), target.getZ(), 20F, interaction);
+                    }
                 }
                 break;
             case 3:
@@ -226,22 +230,24 @@ public class willofhonkai extends Skill implements Transformation {
                 }
                 break;
             case 4:
-                if (!this.failedToActivate(entity, (MobEffect) effectRegistry.HONKAIEFFECT.get())) {
-                    if (!entity.hasEffect((MobEffect) effectRegistry.HONKAIEFFECT.get())) {
-                        if (SkillHelper.outOfMagicule(entity, instance)) {
-                            return;
-                        }
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (!this.failedToActivate(entity, (MobEffect) effectRegistry.HONKAIEFFECT.get())) {
+                        if (!entity.hasEffect((MobEffect) effectRegistry.HONKAIEFFECT.get())) {
+                            if (SkillHelper.outOfMagicule(entity, instance)) {
+                                return;
+                            }
 
-                        this.addMasteryPoint(instance, entity);
-                        instance.setCoolDown(1800);
-                        entity.setHealth(entity.getMaxHealth());
-                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_ROAR, SoundSource.PLAYERS, 1.0F, 1.0F);
-                        entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 960 : 480, 1, true, true, true));
-                        TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.EXPLOSION_EMITTER);
-                        TensuraParticleHelper.spawnServerParticles(entity.level, (ParticleOptions) TensuraParticles.LIGHTNING_SPARK.get(), entity.getX(), entity.getY(), entity.getZ(), 55, 0.08, 0.08, 0.08, 0.5, true);
-                    } else {
-                        entity.removeEffect((MobEffect) effectRegistry.HONKAIEFFECT.get());
-                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            this.addMasteryPoint(instance, entity);
+                            instance.setCoolDown(1800);
+                            entity.setHealth(entity.getMaxHealth());
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_ROAR, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 960 : 480, 1, true, true, true));
+                            TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.EXPLOSION_EMITTER);
+                            TensuraParticleHelper.spawnServerParticles(entity.level, (ParticleOptions) TensuraParticles.LIGHTNING_SPARK.get(), entity.getX(), entity.getY(), entity.getZ(), 55, 0.08, 0.08, 0.08, 0.5, true);
+                        } else {
+                            entity.removeEffect((MobEffect) effectRegistry.HONKAIEFFECT.get());
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        }
                     }
                 }
                 break;

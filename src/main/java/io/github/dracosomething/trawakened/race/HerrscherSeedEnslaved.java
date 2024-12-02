@@ -10,6 +10,7 @@ import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -42,7 +43,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 
     @Override
     public double getJumpHeight() {
-        return JumpPowerHelper.defaultPlayer()+1;
+        return JumpPowerHelper.defaultPlayer()+0.15;
     }
 
     @Override
@@ -92,10 +93,16 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
         if (TensuraPlayerCapability.isTrueDemonLord(player)){
             chance += 50;
         }
-        else if (TensuraPlayerCapability.getBaseEP(player) == 150000){
+        else if (TensuraPlayerCapability.getBaseEP(player) >= 150000){
             chance += 50;
         }
 
         return chance;
+    }
+
+    public List<Component> getRequirementsForRendering() {
+        List<Component> list = new ArrayList();
+        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_seed_enslaved"));
+        return list;
     }
 }

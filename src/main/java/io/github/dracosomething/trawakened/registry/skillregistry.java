@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofdestruction;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.powerofhonkai;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.willofhonkai;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
@@ -15,6 +16,7 @@ public class skillregistry {
     public static final ResourceLocation VOICEOFHONKAI = new ResourceLocation("trawakened", "voiceofhonkai");
     public static final ResourceLocation POWEROFHONKAI = new ResourceLocation("trawakened", "powerofhonkai");
     public static final ResourceLocation WILLOFHONKAI = new ResourceLocation("trawakened", "willofhonkai");
+    public static final ResourceLocation HERRSCHEROFDESTRUCTION = new ResourceLocation("trawakened", "herrscherofdestructionskill");
 
     public skillregistry() {
     }
@@ -25,6 +27,7 @@ public class skillregistry {
             helper.register("voiceofhonkai", new voiceofhonkai());
             helper.register("powerofhonkai", new powerofhonkai());
             helper.register("willofhonkai", new willofhonkai());
+            helper.register("herrscherofdestructionskill", new herrscherofdestruction());
         });
     }
 }

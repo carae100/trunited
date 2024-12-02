@@ -10,6 +10,7 @@ import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -105,5 +106,11 @@ public class awakenedapostle extends honkaiapostle {
         }
 
         return (double) chance;
+    }
+
+    public List<Component> getRequirementsForRendering() {
+        List<Component> list = new ArrayList();
+        list.add(Component.translatable("trawakened.requirement.evolution.awakened_apostle"));
+        return list;
     }
 }

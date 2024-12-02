@@ -10,6 +10,7 @@ import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -44,6 +45,10 @@ public class HerrscherSeedAwakened extends awakenedapostle {
     @Override
     public double getMovementSpeed() {
         return 0.22;
+    }
+
+    public double getJumpHeight() {
+        return JumpPowerHelper.defaultPlayer()+0.15;
     }
 
     @Override
@@ -88,5 +93,11 @@ public class HerrscherSeedAwakened extends awakenedapostle {
         }
 
         return (double) chance;
+    }
+
+    public List<Component> getRequirementsForRendering() {
+        List<Component> list = new ArrayList();
+        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_seed_awakened"));
+        return list;
     }
 }

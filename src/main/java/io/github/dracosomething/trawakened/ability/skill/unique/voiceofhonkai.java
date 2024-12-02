@@ -121,43 +121,45 @@ public class voiceofhonkai extends Skill {
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
-        if (target != null) {
-            label52:
-            {
-                entity.swing(InteractionHand.MAIN_HAND, true);
-                ServerLevel level = (ServerLevel) entity.getLevel();
-                int chance = 75;
-                boolean failed = true;
-                if (entity.getRandom().nextInt(100) <= chance) {
-                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
-                    if (!collection.isEmpty()) {
-                        this.addMasteryPoint(instance, entity);
-                        ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                        if (SkillUtils.learnSkill(entity, skill)) {
-                            instance.setCoolDown(20);
-                            failed = false;
-                            if (entity instanceof Player) {
-                                Player player = (Player) entity;
-                                player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                            }
+        if(!SkillHelper.outOfMagicule(entity, instance)) {
+            if (target != null) {
+                label52:
+                {
+                    entity.swing(InteractionHand.MAIN_HAND, true);
+                    ServerLevel level = (ServerLevel) entity.getLevel();
+                    int chance = 75;
+                    boolean failed = true;
+                    if (entity.getRandom().nextInt(100) <= chance) {
+                        List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                        if (!collection.isEmpty()) {
+                            this.addMasteryPoint(instance, entity);
+                            ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
+                            if (SkillUtils.learnSkill(entity, skill)) {
+                                instance.setCoolDown(20);
+                                failed = false;
+                                if (entity instanceof Player) {
+                                    Player player = (Player) entity;
+                                    player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
+                                }
 
-                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                                level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            }
                         }
                     }
-                }
 
-                if (failed && entity instanceof Player) {
-                    Player player = (Player) entity;
-                    player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                    instance.setCoolDown(5);
-                }
+                    if (failed && entity instanceof Player) {
+                        Player player = (Player) entity;
+                        player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        instance.setCoolDown(5);
+                    }
 
-                return;
+                    return;
+                }
+            } else if (entity instanceof Player) {
+                Player player = (Player) entity;
+                player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
             }
-        } else if (entity instanceof Player) {
-            Player player = (Player) entity;
-            player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
         }
     }
 

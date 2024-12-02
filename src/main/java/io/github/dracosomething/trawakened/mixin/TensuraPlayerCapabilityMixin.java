@@ -73,44 +73,4 @@ public abstract class TensuraPlayerCapabilityMixin {
 
 //        cir.setReturnValue(races);
     }
-
-    @Inject(
-            method = "checkForFirstLogin(Lnet/minecraftforge/event/entity/player/PlayerEvent$PlayerLoggedInEvent;)V",
-            at = @At("HEAD"),
-            remap = false
-    )
-    private static void checkForFirstLogin(PlayerEvent.PlayerLoggedInEvent e, CallbackInfo ci) {
-        Player var2 = e.getEntity();
-        if (var2 instanceof ServerPlayer player) {
-            getFrom(player).ifPresent((cap) -> {
-                if (cap.getRace() == null) {
-                    if (player.getLevel().getGameRules().getBoolean(TensuraGameRules.RIMURU_MODE)) {
-                        RaceSelectionMenu.reincarnateAsRimuru(player);
-                    } else {
-                        if (player.getLevel().getGameRules().getBoolean(TensuraGameRules.SKILL_BEFORE_RACE)) {
-                            cap.setRace(player, (Race)TensuraRaces.HUMAN.get(), true);
-                            RaceSelectionMenu.grantUniqueSkill(player);
-                        }
-
-                        player.setInvulnerable(true);
-                        List<ResourceLocation> races = loadRaces();
-//                        races.add(new ResourceLocation("trawakened", "honkai_apostle"));
-
-                        System.out.println(races);
-
-                        NetworkHooks.openScreen(player, new SimpleMenuProvider(RaceSelectionMenu::new, Component.translatable("tensura.race.selection")), (buf) -> {
-                            buf.writeBoolean(false);
-                            buf.writeCollection(races, FriendlyByteBuf::writeResourceLocation);
-                        });
-
-                        System.out.println(races);
-                    }
-
-                    RaceSelectionMenu.grantLearningResistance(player);
-                }
-
-            });
-        }
-    }
-
 }
