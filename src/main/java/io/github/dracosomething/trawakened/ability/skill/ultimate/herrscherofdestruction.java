@@ -52,6 +52,10 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.util.List;
 
 public class herrscherofdestruction extends Skill {
+        public ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/unique/herrscherofdestruction.png");
+    }
+    
     public herrscherofdestruction() {
         super(SkillType.ULTIMATE);
     }
