@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.race;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
@@ -61,11 +62,11 @@ public class HerrscherSeedAwakened extends awakenedapostle {
         return Pair.of(1550.0, 2550.0);
     }
 
-//    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-//
-//    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
-//
-//    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public @Override Race getDefaultEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
+
+    public @Override Race getAwakeningEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
+
+    public @Override Race getHarvestFestivalEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
 
     public List<TensuraSkill> getIntrinsicSkills() {
         List<TensuraSkill> list = new ArrayList();
@@ -74,7 +75,7 @@ public class HerrscherSeedAwakened extends awakenedapostle {
 
     public List<Race> getNextEvolutions() {
         List<Race> list = new ArrayList();
-//        list.add((Race) TensuraRaces.HUMAN.get());
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION));
         return list;
     }
 
@@ -89,7 +90,10 @@ public class HerrscherSeedAwakened extends awakenedapostle {
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
         if (trawakenedPlayerCapability.isHeroEgg(player)){
-            chance += 100;
+            chance += 50;
+        }
+        else if (TensuraPlayerCapability.getBaseEP(player) >= 150000){
+            chance += (int) Math.floor(TensuraPlayerCapability.getBaseEP(player) / 300000 * 100);
         }
 
         return (double) chance;

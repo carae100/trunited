@@ -94,7 +94,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
             chance += 50;
         }
         else if (TensuraPlayerCapability.getBaseEP(player) >= 150000){
-            chance += 50;
+            chance += (int) Math.floor(TensuraPlayerCapability.getBaseEP(player) / 300000 * 100);
         }
 
         return chance;

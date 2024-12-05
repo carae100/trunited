@@ -23,7 +23,7 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public double getBaseHealth() {
-        return 50;
+        return 100;
     }
 
     @Override

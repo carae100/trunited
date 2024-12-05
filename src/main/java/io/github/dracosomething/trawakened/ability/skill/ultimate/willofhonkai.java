@@ -306,5 +306,16 @@ public class willofhonkai extends Skill implements Transformation {
         if (instance.isToggled()) {
             this.gainMastery(instance, living);
         }
+
+        if (living instanceof Player) {
+            Player player = (Player) living;
+            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE)) &&
+                !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED))
+            )
+            {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
+                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+            }
+        }
     }
 }

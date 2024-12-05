@@ -28,5 +28,12 @@
   "trawakened.skill.mode.herrscherofdestructionskill.destroyheart": "Destroy: Heart",
   "trawakened.skill.mode.herrscherofdestructionskill.destroymind": "Destroy: Mind",
   "trawakened.skill.mode.herrscherofdestructionskill.destroychunk": "Destroy: Chunk",
-  "trawakened.skill.mode.herrscherofdestructionskill.destroyarea": "Destroy: Area"
+  "trawakened.skill.mode.herrscherofdestructionskill.destroyarea": "Destroy: Area",
+  "trawakened.skill.herrscherofdestructionskill": "Herrscher of Destruction",
+  "trawakened.skill.herrscherofdestructionskill.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
+  "trawakened.race.herrscher_of_destruction": "Herrscher of Destruction",
+  "trawakened.race.herrscher_of_destruction.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
+  "trawakened.requirement.evolution.MoreEp": "Get more existance points",
+  "trawakened.requirement.evolution.MoreMp": "Get more magicules",
+  "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai"
 }

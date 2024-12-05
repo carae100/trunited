@@ -5,6 +5,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
@@ -12,7 +13,11 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
+import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.github.manasmods.tensura.registry.race.TensuraRaces;
+import com.github.manasmods.tensura.registry.skill.UniqueSkills;
+import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +34,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
 
@@ -135,7 +141,7 @@ public class powerofhonkai extends Skill {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
         switch (instance.getMode()) {
             case 1:
-                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (target != null) {
                         label52:
                         {
@@ -174,10 +180,11 @@ public class powerofhonkai extends Skill {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
-                }                break;
+                }
+                break;
 
             case 2:
-                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (target != null) {
                         CharmSkill.charm(instance, entity);
                         instance.setCoolDown(5);
@@ -198,12 +205,13 @@ public class powerofhonkai extends Skill {
             } else {
                 Skill skill = (Skill) var3;
                 return skill.getType().equals(SkillType.INTRINSIC) ||
-                       skill.getType().equals(SkillType.COMMON) ||
-                       skill.getType().equals(SkillType.EXTRA) ||
-                       skill.getType().equals(SkillType.UNIQUE) ||
-                       skill.getType().equals(SkillType.RESISTANCE) ||
-                       skill.getType().equals(SkillType.ULTIMATE) ||
-                       !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
+                        skill.getType().equals(SkillType.COMMON) ||
+                        skill.getType().equals(SkillType.EXTRA) ||
+                        skill.getType().equals(SkillType.UNIQUE) ||
+                        skill.getType().equals(SkillType.RESISTANCE) ||
+                        skill.getType().equals(SkillType.ULTIMATE) ||
+                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))) ||
+                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
             }
         } else {
             return false;
@@ -240,6 +248,17 @@ public class powerofhonkai extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (instance.isToggled()) {
             this.gainMastery(instance, living);
+        }
+
+        if (living instanceof Player) {
+            Player player = (Player) living;
+            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE)) &&
+                !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_AWAKENED)) &&
+                !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION)))
+            {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
+                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+            }
         }
     }
 }
