@@ -6,11 +6,15 @@
   "refmap": "testaddon.refmap.json",
   "mixins": [
     "LivingEntityMixin",
+    "LookControlMixin",
+    "MobMixin",
+    "PathNavigationMixin",
     "TensuraPlayerCapabilityMixin"
   ],
   "client": [
     "CameraMixin",
-    "KeyboardMixin"
+    "KeyboardMixin",
+    "MouseHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

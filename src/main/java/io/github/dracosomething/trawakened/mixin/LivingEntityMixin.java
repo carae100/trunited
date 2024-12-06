@@ -1,26 +1,45 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin extends Entity{
     @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
+
+    @Shadow
+    public float yHeadRotO;
+    float stuckYaw = 0;
 
     @Shadow public abstract boolean hasEffect(MobEffect p_21024_);
 
-    private LivingEntityMixin(){}
+    @Shadow public float flyingSpeed;
+
+    @Shadow public abstract void setYBodyRot(float p_21309_);
+
+    @Shadow public abstract void setYHeadRot(float p_21306_);
+
+    @Shadow public abstract void setSprinting(boolean p_21284_);
+
+    public LivingEntityMixin(EntityType<?> type, Level world) {
+        super(type, world);
+    }
 
     @Inject(
             method = "curePotionEffects",
@@ -31,6 +50,32 @@ public abstract class LivingEntityMixin {
     private void InjectPlague(ItemStack curativeItem, CallbackInfoReturnable<Boolean> cir) {
         if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())){
             cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(
+            method = "hasLineOfSight",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    public void canSee(Entity p_147185_, CallbackInfoReturnable<Boolean> cir){
+        if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    public void tick(CallbackInfo callbackInfo) {
+        if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
+            this.setXRot(90);
+            this.xRotO = 90;
+            this.setYHeadRot(stuckYaw);
+            this.yHeadRotO = stuckYaw;
+            this.setYBodyRot(stuckYaw);
+            this.setShiftKeyDown(false);
+            this.setSprinting(false);
+        } else {
+            this.stuckYaw = this.getYRot();
         }
     }
 }
