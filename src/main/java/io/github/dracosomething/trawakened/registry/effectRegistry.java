@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.effect.BurdenEffect;
 import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
+import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -14,6 +15,7 @@ import java.awt.*;
 public class effectRegistry {
     private static final DeferredRegister<MobEffect> registry;
     public static final RegistryObject<MobEffect> HONKAIEFFECT;
+    public static final RegistryObject<MobEffect> PLAGUEEFFECT;
 
     public  effectRegistry(){}
 
@@ -24,5 +26,6 @@ public class effectRegistry {
     static {
         registry = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, "trawakened");
         HONKAIEFFECT = registry.register("honkai_beast_mode", () -> new HonkaiBeastEffect(MobEffectCategory.BENEFICIAL, 5000268));
+        PLAGUEEFFECT = registry.register("plague", () -> new PlagueEffect(MobEffectCategory.HARMFUL, 5000235));
     }
 }

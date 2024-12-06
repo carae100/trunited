@@ -215,7 +215,7 @@ public class herrscherofdestruction extends Skill {
                                 } else {
                                     level.destroyBlock(pos, false, player);
                                 }
-                                instance.setCoolDown(300);
+                                instance.setCoolDown(30);
                                 instance.addMasteryPoint(entity);
                             }
                         }
@@ -251,7 +251,7 @@ public class herrscherofdestruction extends Skill {
                                 entity.setHealth(damage);
                             }
                         }
-                        instance.setCoolDown(3600);
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY)), false);
@@ -283,7 +283,7 @@ public class herrscherofdestruction extends Skill {
                                 TensuraEPCapability.setSpiritualHealth(entity, damage);
                             }
                         }
-                        instance.setCoolDown(3600);
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);

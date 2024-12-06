@@ -2,30 +2,16 @@ package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.config.TensuraConfig;
-import com.github.manasmods.tensura.menu.RaceSelectionMenu;
-import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import com.github.manasmods.tensura.world.TensuraGameRules;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.network.NetworkHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static com.github.manasmods.tensura.capability.race.TensuraPlayerCapability.getFrom;
 
 @Mixin(TensuraPlayerCapability.class)
 public abstract class TensuraPlayerCapabilityMixin {

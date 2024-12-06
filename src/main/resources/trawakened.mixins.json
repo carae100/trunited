@@ -5,9 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "testaddon.refmap.json",
   "mixins": [
+    "LivingEntityMixin",
     "TensuraPlayerCapabilityMixin"
   ],
   "client": [
+    "CameraMixin",
+    "KeyboardMixin"
   ],
   "injectors": {
     "defaultRequire": 1
