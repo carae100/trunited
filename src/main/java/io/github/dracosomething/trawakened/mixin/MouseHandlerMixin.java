@@ -36,4 +36,16 @@ public class MouseHandlerMixin {
             ci.cancel();
         }
     }
+
+    @Inject(
+            method = "onMove",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void onMoveInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
+        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+            KeyMapping.releaseAll();
+            ci.cancel();
+        }
+    }
 }

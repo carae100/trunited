@@ -1,6 +1,8 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
+import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
+import com.github.manasmods.tensura.effect.WebbedEffect;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import net.minecraft.client.renderer.LightTexture;
@@ -9,6 +11,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 
 public class PlagueEffect extends MobEffect {
     public PlagueEffect(MobEffectCategory p_19451_, int p_19452_) {
@@ -17,8 +20,7 @@ public class PlagueEffect extends MobEffect {
 
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
         if (pAmplifier >= 1) {
-            LightTexture.
+            WebbedEffect.lockRotation(entity);
         }
-
     }
 }
