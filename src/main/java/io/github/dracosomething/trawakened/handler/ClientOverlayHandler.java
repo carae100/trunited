@@ -40,7 +40,7 @@ public class ClientOverlayHandler {
             gui.setupOverlayRenderState(true, false);
             LocalPlayer player = gui.getMinecraft().player;
             if (player != null) {
-                if(player.isCreative()) {
+                if(!player.isCreative()) {
                     MobEffectInstance effectInstance = player.getEffect((MobEffect) effectRegistry.PLAGUEEFFECT.get());
                     if (effectInstance != null) {
                         TensuraGUIHelper.renderFadingTextureWithDuration(effectInstance.getDuration(), 10, BLACK_SCREEN, (double) screenHeight, (double) screenWidth);

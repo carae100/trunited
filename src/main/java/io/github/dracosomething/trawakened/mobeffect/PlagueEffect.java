@@ -26,7 +26,11 @@ public class PlagueEffect extends MobEffect {
         if (source != null) {
             entity.hurt(trawakenedDamage.plague(source), (float) pAmplifier * 2);
         } else {
-            entity.hurt(DamageSource.WITHER, (float) pAmplifier * 2);
+            entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 2);
         }
+    }
+
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration % 20 == 0;
     }
 }
