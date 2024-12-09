@@ -63,34 +63,33 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(950.0, 1950.0);
+        return Pair.of(1500.0, 6000.0);
     }
 
     public boolean isMajin() {
         return true;
     }
 
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getDefaultEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
 
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getAwakeningEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
 
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getHarvestFestivalEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
         list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
-    public List<Race> getNextEvolutions() {
+    public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED));
         return list;
     }
 
-    @Override
-    public List<Race> getPreviousEvolutions() {
+    public List<Race> getPreviousEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE));
         return list;
@@ -106,7 +105,7 @@ public class enslavedapostle extends honkaiapostle {
         return chance;
     }
 
-    public List<Component> getRequirementsForRendering() {
+    public List<Component> getRequirementsForRendering(Player player) {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.enslaved_apostle"));
         return list;

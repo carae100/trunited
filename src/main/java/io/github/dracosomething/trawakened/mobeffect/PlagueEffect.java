@@ -1,18 +1,13 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
-import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.effect.WebbedEffect;
-import com.github.manasmods.tensura.registry.particle.TensuraParticles;
-import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.util.trawakenedDamage;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 
 public class PlagueEffect extends MobEffect {
@@ -21,12 +16,29 @@ public class PlagueEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
-        WebbedEffect.lockRotation(entity);
-        Player source = TensuraEffectsCapability.getEffectSource(entity, this);
-        if (source != null) {
-            entity.hurt(trawakenedDamage.plague(source), (float) pAmplifier * 2);
+        if (herrscherofplague.active) {
+            entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get(), 1000, 2, false, false, false));
+            Player source = TensuraEffectsCapability.getEffectSource(entity, this);
+            if(source != null) {
+                System.out.println(source);
+                if (getOwner(entity) == source) {
+                    if (source != null) {
+                        entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 2);
+                    }
+                }
+            }
         } else {
-            entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 2);
+            entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get(), 100, 2, false, false, false));
+        }
+    }
+
+    public static Player getOwner(LivingEntity entity){
+        Player source = TensuraEffectsCapability.getEffectSource(entity, effectRegistry.PLAGUEEFFECT.get());
+        if (source != null) {
+            System.out.println(source);
+            return source;
+        } else {
+            return null;
         }
     }
 

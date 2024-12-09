@@ -58,7 +58,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(1950.0, 4950.0);
+        return Pair.of(12000.0, 30000.0);
     }
 
 //    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.HUMAN.get();}
@@ -67,21 +67,18 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 //
 //    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.HUMAN.get();}
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-//        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
-//        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
-//    public List<Race> getNextEvolutions() {
-//        List<Race> list = new ArrayList();
-//        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
-//        return list;
-//    }
+    public List<Race> getNextEvolutions(Player player) {
+        List<Race> list = new ArrayList();
+        return list;
+    }
 
     @Override
-    public List<Race> getPreviousEvolutions() {
+    public List<Race> getPreviousEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE));
         return list;
@@ -100,7 +97,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
         return chance;
     }
 
-    public List<Component> getRequirementsForRendering() {
+    public List<Component> getRequirementsForRendering(Player player) {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.herrscher_seed_enslaved"));
         return list;

@@ -9,6 +9,8 @@ import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import java.awt.Color;
 import javax.annotation.Nullable;
 
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
+import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.client.player.LocalPlayer;
@@ -43,7 +45,11 @@ public class ClientOverlayHandler {
                 if(!player.isCreative()) {
                     MobEffectInstance effectInstance = player.getEffect((MobEffect) effectRegistry.PLAGUEEFFECT.get());
                     if (effectInstance != null) {
-                        TensuraGUIHelper.renderFadingTextureWithDuration(effectInstance.getDuration(), 10, BLACK_SCREEN, (double) screenHeight, (double) screenWidth);
+                        if (herrscherofplague.active) {
+                            if(PlagueEffect.getOwner(player) == herrscherofplague.Owner) {
+                                TensuraGUIHelper.renderFadingTextureWithDuration(effectInstance.getDuration(), 10, BLACK_SCREEN, (double) screenHeight, (double) screenWidth);
+                            }
+                        }
                     }
                 }
             }

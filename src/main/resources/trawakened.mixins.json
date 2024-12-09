@@ -3,13 +3,14 @@
   "minVersion": "0.8",
   "package": "io.github.dracosomething.trawakened.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "testaddon.refmap.json",
+  "refmap": "trawakened.refmap.json",
   "mixins": [
     "FlyingPathNavigationMixin",
     "LivingEntityMixin",
     "LookControlMixin",
     "MobMixin",
     "PathNavigationMixin",
+    "SlimeEntityMixin",
     "TensuraPlayerCapabilityMixin"
   ],
   "client": [

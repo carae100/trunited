@@ -66,34 +66,33 @@ public class awakenedapostle extends honkaiapostle {
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(950.0, 1550.0);
+        return Pair.of(1000.0, 2000.0);
     }
 
     public boolean isMajin() {
         return false;
     }
 
-    public @Override Race getDefaultEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getDefaultEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
-    public @Override Race getAwakeningEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getAwakeningEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
-    public @Override Race getHarvestFestivalEvolution(){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getHarvestFestivalEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
         list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
         return list;
     }
 
-    public List<Race> getNextEvolutions() {
+    public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_AWAKENED));
         return list;
     }
 
-    @Override
-    public List<Race> getPreviousEvolutions() {
+    public List<Race> getPreviousEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE));
         return list;
@@ -111,7 +110,7 @@ public class awakenedapostle extends honkaiapostle {
         return (double) chance;
     }
 
-    public List<Component> getRequirementsForRendering() {
+    public List<Component> getRequirementsForRendering(Player player) {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.awakened_apostle"));
         list.add(Component.translatable("trawakened.requirement.evolution.MoreEp"));

@@ -1,35 +1,30 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import com.github.manasmods.tensura.entity.SlimeEntity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
+import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.control.LookControl;
-import org.checkerframework.checker.units.qual.A;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(LookControl.class)
-public class LookControlMixin {
-    private LookControlMixin(){}
-
-    @Shadow @Final protected Mob mob;
+@Mixin(SlimeEntity.class)
+public class SlimeEntityMixin {
 
     @Inject(
-            method = "setLookAt(DDDFF)V",
+            method = "tick",
             at = @At("HEAD"),
             cancellable = true
     )
-    public void setLookAt(double p_24951_, double p_24952_, double p_24953_, float p_24954_, float p_24955_, CallbackInfo ci) {
+    private void StopGoals(CallbackInfo ci){
         if (herrscherofplague.active) {
-            if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
+            if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
+                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
                     ci.cancel();
                 }
             }

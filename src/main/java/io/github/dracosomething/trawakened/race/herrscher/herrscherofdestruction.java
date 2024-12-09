@@ -13,6 +13,8 @@ import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -57,18 +59,23 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(10000.0, 50000.0);
+        return Pair.of(50000.0, 100000.0);
     }
 
-    public List<Race> getNextEvolutions() {
+    public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
         return list;
     }
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
         return list;
+    }
+
+    @Override
+    public void raceTick(Player player) {
+        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 10, false, false, false));
     }
 
     @Override
@@ -84,7 +91,7 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
             return (double) chance;
     }
 
-        public List<Component> getRequirementsForRendering () {
+        public List<Component> getRequirementsForRendering (Player player) {
             List<Component> list = new ArrayList();
             list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_destruction"));
             list.add(Component.translatable("trawakened.requirement.evolution.MoreMp"));

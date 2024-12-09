@@ -59,28 +59,28 @@ public class HerrscherSeedAwakened extends awakenedapostle {
 
     @Override
     public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(1550.0, 2550.0);
+        return Pair.of(10000.0, 25000.0);
     }
 
-    public @Override Race getDefaultEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
+    public @Override Race getDefaultEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
 
-    public @Override Race getAwakeningEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
+    public @Override Race getAwakeningEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
 
-    public @Override Race getHarvestFestivalEvolution(){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
+    public @Override Race getHarvestFestivalEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION);}
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         return list;
     }
 
-    public List<Race> getNextEvolutions() {
+    public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION));
         return list;
     }
 
     @Override
-    public List<Race> getPreviousEvolutions() {
+    public List<Race> getPreviousEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
         return list;
@@ -99,7 +99,7 @@ public class HerrscherSeedAwakened extends awakenedapostle {
         return (double) chance;
     }
 
-    public List<Component> getRequirementsForRendering() {
+    public List<Component> getRequirementsForRendering(Player player) {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.herrscher_seed_awakened"));
         return list;

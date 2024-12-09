@@ -40,6 +40,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -76,7 +77,7 @@ public class herrscherofplague extends Skill {
         super(SkillType.ULTIMATE);
     }
 
-    public boolean active = false;
+    public static boolean active = false;
 
     public double getObtainingEpCost() {
         return 5000.0;
@@ -125,93 +126,29 @@ public class herrscherofplague extends Skill {
         switch (instance.getMode()) {
             case 1:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    if (target != null) {
-                        target.addEffect(effectRegistry.PLAGUEEFFECT.get(), )
-                    } else if (entity instanceof Player) {
-                        Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    System.out.println("3a");
+                    if (active){
+                        System.out.println("3b");
+                        active = false;
+                    } else {
+                        System.out.println("3c");
+                        active = true;
                     }
                 }
                 break;
         }
     }
 
-    public void onBeingDamaged(ManasSkillInstance instance, LivingAttackEvent event) {
-        if (!event.isCanceled()) {
-            LivingEntity entity = event.getEntity();
-            DamageSource damageSource = event.getSource();
-            if (!damageSource.isBypassInvul()) {
-                if (damageSource instanceof TensuraDamageSource) {
-                    TensuraDamageSource source = (TensuraDamageSource) damageSource;
-                    if (source.getIgnoreBarrier() >= 2.0F) {
-                        return;
-                    }
-                }
-
-                boolean var10000;
-                label52:
-                {
-                    if (damageSource instanceof TensuraDamageSource) {
-                        TensuraDamageSource source = (TensuraDamageSource) damageSource;
-                        if (source.getSkill() != null || source.getMpCost() != 0.0 || source.getApCost() != 0.0) {
-                            var10000 = true;
-                            break label52;
-                        }
-                    }
-
-                    var10000 = false;
-                }
-
-                boolean anti = var10000;
-                if (damageSource.isMagic() || anti) {
-                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 2.0F, 1.0F);
-                    event.setCanceled(true);
-                }
-            }
-
-        }
-    }
-
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        if (e.getSource().getDirectEntity() == entity) {
-            if (DamageSourceHelper.isPhysicalAttack(e.getSource())) {
-                if (entity.getMainHandItem().isEmpty() && entity.getOffhandItem().isEmpty()) {
-                    LivingEntity target = e.getEntity();
-                    AttributeInstance barrier = target.getAttribute((Attribute) TensuraAttributeRegistry.BARRIER.get());
-                    if (barrier != null && !(barrier.getValue() <= 0.0)) {
-                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                        barrier.removeModifiers();
-                    }
-                }
-            }
+        if (true) {
+            LivingEntity target = e.getEntity();
+            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 100, 3);
+            System.out.println(Owner);
+            Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
         }
     }
 
-    public void onTouchEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        if (e.getSource().getDirectEntity() == entity) {
-            if (DamageSourceHelper.isPhysicalAttack(e.getSource())) {
-                if (instance.isMastered(entity)) {
-                    if (!entity.getMainHandItem().isEmpty()) {
-                        return;
-                    }
-                } else if (!entity.getMainHandItem().isEmpty() || !entity.getOffhandItem().isEmpty()) {
-                    return;
-                }
-
-                LivingEntity target = e.getEntity();
-                target.addEffect(new MobEffectInstance((MobEffect) TensuraMobEffects.ANTI_SKILL.get(), 100, 0, false, false, false));
-                SkillHelper.removePredicateEffect(target, (effect) -> {
-                    return effect.isBeneficial() && effect instanceof SkillMobEffect && !this.getNonSkillMobEffects().contains(effect);
-                });
-                TensuraParticleHelper.addServerParticlesAroundSelf(target, ParticleTypes.ENCHANTED_HIT, 1.0);
-                entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.PLAYERS, 1.0F, 1.0F);
-            }
-        }
-    }
-
-    private List<MobEffect> getNonSkillMobEffects() {
-        return List.of((MobEffect) TensuraMobEffects.AURA_SWORD.get(), (MobEffect) TensuraMobEffects.DIAMOND_PATH.get(), (MobEffect) TensuraMobEffects.OGRE_GUILLOTINE.get(), (MobEffect) TensuraMobEffects.BATS_MODE.get(), (MobEffect) TensuraMobEffects.MAGICULE_REGENERATION.get());
-    }
+    public static LivingEntity Owner = null;
 
     private void gainMastery(ManasSkillInstance instance, LivingEntity entity) {
         CompoundTag tag = instance.getOrCreateTag();
@@ -222,7 +159,6 @@ public class herrscherofplague extends Skill {
                 this.addMasteryPoint(instance, entity);
             }
         }
-
         tag.putInt("artivatedTimes", Time + 1);
     }
 

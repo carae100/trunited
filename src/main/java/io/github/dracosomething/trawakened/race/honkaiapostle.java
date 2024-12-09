@@ -73,25 +73,25 @@ public class honkaiapostle extends Race {
         return true;
     }
 
-    public @Override Race getDefaultEvolution() {
+    public Race getDefaultEvolution(Player player) {
         return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
     }
 
-    public @Override Race getAwakeningEvolution() {
+    public Race getAwakeningEvolution(Player player) {
         return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
     }
 
-    public @Override Race getHarvestFestivalEvolution() {
+    public Race getHarvestFestivalEvolution(Player player) {
         return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.ENSLAVED_APOSTLE);
     }
 
-    public List<TensuraSkill> getIntrinsicSkills() {
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
         return list;
     }
 
-    public List<Race> getNextEvolutions() {
+    public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
 //        list.add((Race) TensuraRaces.HUMAN.get());
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));

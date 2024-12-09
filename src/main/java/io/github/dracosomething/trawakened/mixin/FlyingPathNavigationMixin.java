@@ -1,5 +1,7 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
+import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,8 +24,12 @@ public abstract class FlyingPathNavigationMixin extends PathNavigation {
 
     @Inject(method = "tick ", at = @At("HEAD"), cancellable = true)
     public void tickInject(CallbackInfo ci) {
-        if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-            ci.cancel();
+        if (herrscherofplague.active) {
+            if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
+                if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
+                    ci.cancel();
+                }
+            }
         }
     }
 }

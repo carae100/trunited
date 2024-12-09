@@ -1,8 +1,10 @@
 package io.github.dracosomething.trawakened.capability;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.capability.race.ITensuraPlayerCapability;
 import com.github.manasmods.tensura.handler.CapabilityHandler;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.world.effect.MobEffect;
@@ -33,10 +35,19 @@ public class trawakenedPlayerCapability {
         return (float)entity.getAttributeValue((Attribute)TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get());
     }
 
+    public static LivingEntity setOwnerSkill(LivingEntity player, ManasSkillInstance instance){
+        return player;
+    }
+
     public static boolean hasPlague(@Nullable LivingEntity entity) {
-        return entity != null &&
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) &&
-                !entity.isSpectator() &&
-                !(entity instanceof Player player && player.isCreative());
+        if (herrscherofplague.active) {
+            if(PlagueEffect.getOwner(entity) == herrscherofplague.Owner) {
+                return entity != null &&
+                        entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) &&
+                        !entity.isSpectator() &&
+                        !(entity instanceof Player player && player.isCreative());
+            }
+        }
+        return false;
     }
 }

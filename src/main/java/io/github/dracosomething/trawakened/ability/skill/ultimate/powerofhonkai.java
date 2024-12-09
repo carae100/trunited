@@ -93,7 +93,7 @@ public class powerofhonkai extends Skill {
                 var10000 = 100.0;
                 break;
             case 3:
-                var10000 = 10.0;
+                var10000 = 50.0;
                 break;
             default:
                 var10000 = 0.0;
