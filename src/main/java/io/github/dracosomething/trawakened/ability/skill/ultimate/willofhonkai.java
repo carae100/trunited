@@ -173,9 +173,9 @@ public class willofhonkai extends Skill implements Transformation {
                             if (entity.getRandom().nextInt(100) <= chance) {
                                 List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
                                 if (!collection.isEmpty()) {
-                                    this.addMasteryPoint(instance, entity);
                                     ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
                                     if (SkillUtils.learnSkill(entity, skill)) {
+                                        this.addMasteryPoint(instance, entity);
                                         instance.setCoolDown(20);
                                         failed = false;
                                         if (entity instanceof Player) {

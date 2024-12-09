@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
+import com.github.manasmods.tensura.entity.SlimeEntity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.util.trawakenedDamage;
@@ -23,7 +24,12 @@ public class PlagueEffect extends MobEffect {
                 System.out.println(source);
                 if (getOwner(entity) == source) {
                     if (source != null) {
-                        entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 2);
+                        entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 4);
+                    }
+                    if (entity instanceof SlimeEntity){
+                        SlimeEntity slime = (SlimeEntity) entity;
+
+                        slime.setHealth(slime.getMaxHealth() - pAmplifier * 4);
                     }
                 }
             }
@@ -43,6 +49,6 @@ public class PlagueEffect extends MobEffect {
     }
 
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return pDuration % 20 == 0;
+        return pDuration % 10 == 0;
     }
 }

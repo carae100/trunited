@@ -126,12 +126,19 @@ public class herrscherofplague extends Skill {
         switch (instance.getMode()) {
             case 1:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    System.out.println("3a");
-                    if (active){
-                        System.out.println("3b");
+                    if (active) {
+                        Player player;
+                        if (entity instanceof Player) {
+                        player = (Player) entity;
+                        player.displayClientMessage(Component.literal("Disabled plague"), true);
+                        }
                         active = false;
                     } else {
-                        System.out.println("3c");
+                        Player player;
+                        if (entity instanceof Player) {
+                            player = (Player) entity;
+                            player.displayClientMessage(Component.literal("Enabled plague"), true);
+                        }
                         active = true;
                     }
                 }
@@ -143,7 +150,6 @@ public class herrscherofplague extends Skill {
         if (true) {
             LivingEntity target = e.getEntity();
             SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 100, 3);
-            System.out.println(Owner);
             Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
         }
     }
