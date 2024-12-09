@@ -68,7 +68,7 @@ import java.util.List;
 
 public class herrscherofdestruction extends Skill {
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/unique/herrscherofdestruction.png");
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscherofdestruction.png");
     }
 
     public herrscherofdestruction() {
@@ -180,7 +180,7 @@ public class herrscherofdestruction extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
+        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {

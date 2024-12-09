@@ -56,7 +56,7 @@ public class willofhonkai extends Skill implements Transformation {
     protected static final UUID MULTILAYER = UUID.fromString("2c03b682-5705-11ee-8c99-0242ac120002");
 
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/unique/will_of_honkai.png");
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/will_of_honkai.png");
     }
 
     public willofhonkai() {
@@ -159,7 +159,7 @@ public class willofhonkai extends Skill implements Transformation {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
+        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
                 if(!SkillHelper.outOfMagicule(entity, instance)) {

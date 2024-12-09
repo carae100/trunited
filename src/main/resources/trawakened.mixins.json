@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "testaddon.refmap.json",
   "mixins": [
+    "FlyingPathNavigationMixin",
     "LivingEntityMixin",
     "LookControlMixin",
     "MobMixin",
@@ -12,7 +13,6 @@
     "TensuraPlayerCapabilityMixin"
   ],
   "client": [
-    "CameraMixin",
     "KeyboardMixin",
     "MouseHandlerMixin"
   ],

@@ -8,6 +8,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.ability.skill.extra.DemonLordHakiSkill;
 import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
@@ -41,7 +42,7 @@ import java.util.List;
 public class powerofhonkai extends Skill {
 
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/unique/powerofhonkai.png");
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/powerofhonkai.png");
     }
 
     public powerofhonkai() {
@@ -58,12 +59,16 @@ public class powerofhonkai extends Skill {
 
     @Override
     public int modes() {
-        return 2;
+        return 3;
     }
 
     @Override
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
-        return instance.getMode() == 1 ? 2 : instance.getMode() - 1;
+        if (reverse) {
+            return instance.getMode() == 1 ? 3 : instance.getMode() - 1;
+        } else {
+            return instance.getMode() == 3 ? 1 : instance.getMode() + 1;
+        }
     }
 
     public Component getModeName(int mode) {
@@ -71,6 +76,7 @@ public class powerofhonkai extends Skill {
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.willofhonkai.copy");
             case 2 -> var10000 = Component.translatable("trawakened.skill.mode.powerofhonkai.enslave");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.powerofhonkai.honkairelease");
             default -> var10000 = Component.empty();
         }
 
@@ -85,6 +91,9 @@ public class powerofhonkai extends Skill {
                 break;
             case 2:
                 var10000 = 100.0;
+                break;
+            case 3:
+                var10000 = 10.0;
                 break;
             default:
                 var10000 = 0.0;
@@ -138,7 +147,7 @@ public class powerofhonkai extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
+        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
@@ -194,6 +203,9 @@ public class powerofhonkai extends Skill {
                     }
                 }
                 break;
+            case 3:
+            default:
+                break;
         }
     }
 
@@ -215,6 +227,30 @@ public class powerofhonkai extends Skill {
             }
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
+        if (instance.getMode() != 3){
+            return false;
+        } else if (heldTicks % 20 == 0 && SkillHelper.outOfMagicule(living, instance)) {
+            return false;
+        }
+        else {
+            if (heldTicks % 200 == 0 && heldTicks >0){
+                this.addMasteryPoint(instance, living);
+            }
+
+            DemonLordHakiSkill.activateDemonLordHaki(instance, living, heldTicks);
+            return true;
+        }
+    }
+
+    @Override
+    public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
+        if (instance.getMode() == 3){
+            instance.setCoolDown(5 * heldTicks);
         }
     }
 

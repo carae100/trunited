@@ -2,14 +2,19 @@ package io.github.dracosomething.trawakened.race.herrscher;
 
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
+import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
+import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,14 +60,25 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
         return Pair.of(10000.0, 50000.0);
     }
 
+    public List<Race> getNextEvolutions() {
+        List<Race> list = new ArrayList();
+        return list;
+    }
+
+    public List<TensuraSkill> getIntrinsicSkills() {
+        List<TensuraSkill> list = new ArrayList();
+        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+        return list;
+    }
+
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai"))))) {
             chance += 25;
-        } else if (TensuraPlayerCapability.getBaseMagicule(player) >= 10000) {
+        } else if (TensuraPlayerCapability.getBaseMagicule(player) >= 100000) {
             chance += 25;
-        } else if (TensuraPlayerCapability.getBaseEP(player) >= 500000) {
+        } else if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
             chance += 50;
         }
             return (double) chance;

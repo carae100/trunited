@@ -5,6 +5,7 @@ import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.WebbedEffect;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
+import io.github.dracosomething.trawakened.util.trawakenedDamage;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,6 +13,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 
 public class PlagueEffect extends MobEffect {
     public PlagueEffect(MobEffectCategory p_19451_, int p_19452_) {
@@ -19,8 +21,12 @@ public class PlagueEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
-        if (pAmplifier >= 1) {
-            WebbedEffect.lockRotation(entity);
+        WebbedEffect.lockRotation(entity);
+        Player source = TensuraEffectsCapability.getEffectSource(entity, this);
+        if (source != null) {
+            entity.hurt(trawakenedDamage.plague(source), (float) pAmplifier * 2);
+        } else {
+            entity.hurt(DamageSource.WITHER, (float) pAmplifier * 2);
         }
     }
 }

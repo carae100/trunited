@@ -120,7 +120,7 @@ public class voiceofhonkai extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, true);
+        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         if(!SkillHelper.outOfMagicule(entity, instance)) {
             if (target != null) {
                 label52:

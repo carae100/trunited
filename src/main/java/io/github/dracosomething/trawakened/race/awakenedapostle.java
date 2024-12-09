@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
@@ -103,6 +104,8 @@ public class awakenedapostle extends honkaiapostle {
         int chance = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))))){
             chance += 100;
+        } else if (TensuraPlayerCapability.getBaseEP(player) >= 150000) {
+            chance += 50;
         }
 
         return (double) chance;
@@ -111,6 +114,7 @@ public class awakenedapostle extends honkaiapostle {
     public List<Component> getRequirementsForRendering() {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.awakened_apostle"));
+        list.add(Component.translatable("trawakened.requirement.evolution.MoreEp"));
         return list;
     }
 }

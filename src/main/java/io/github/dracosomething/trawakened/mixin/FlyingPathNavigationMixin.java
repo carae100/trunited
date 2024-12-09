@@ -16,17 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FlyingPathNavigation.class)
 public abstract class FlyingPathNavigationMixin extends PathNavigation {
-    private FlyingPathNavigationMixin(Mob p_26515_, Level p_26516_){
+    private FlyingPathNavigationMixin(Mob p_26515_, Level p_26516_) {
         super(p_26515_, p_26516_);
     }
 
     @Inject(method = "tick ", at = @At("HEAD"), cancellable = true)
-    public void tickInject(CallbackInfo ci){
-        if(this.mob != null) {
-            System.out.println("done");
-            if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                ci.cancel();
-            }
+    public void tickInject(CallbackInfo ci) {
+        if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
+            ci.cancel();
         }
     }
 }

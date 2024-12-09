@@ -11,10 +11,11 @@
   "trawakened.race.enslaved_apostle": "Enslaved Apostle",
   "trawakened.race.enslaved_apostle.notes": "These Apostle's have bent to the Honkai's will.",
   "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
-  "trawakened.skill.mode.willofhonkai.copy": "copy",
-  "trawakened.skill.mode.powerofhonkai.enslave": "enslave",
+  "trawakened.skill.mode.willofhonkai.copy": "Copy",
   "trawakened.skill.mode.willofhonkai.punch": "Explosive Punch",
   "trawakened.skill.mode.willofhonkai.honkaimode": "Honkai Beast Transformation",
+  "trawakened.skill.mode.powerofhonkai.enslave": "Enslave",
+  "trawakened.skill.mode.powerofhonkai.honkairelease": "Honkai Release",
   "trawakened.skill.willofhonkai": "Will of the Honkai",
   "trawakened.skill.willofhonkai.description": "Gain incredible power at the cost of not being able to copy ultimate skills.",
   "trawakened.skill.mode.willofhonkai.selfbarrier": "Honkai Barrier",
@@ -35,5 +36,6 @@
   "trawakened.race.herrscher_of_destruction.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
   "trawakened.requirement.evolution.MoreEp": "Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "Get more magicules",
-  "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai"
+  "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai",
+  "effect.trawakened.plague": "Plague"
 }
