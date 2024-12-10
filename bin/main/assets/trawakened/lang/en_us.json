@@ -1,62 +1,41 @@
 {
   "trawakened.race.honkai_apostle": "Honkai Apostle",
   "trawakened.race.honkai_apostle.notes": "These beings are humans that have been cursed by the Honkai. They seem to be humans, but in reality are Majin. They are extremely weakened by their condition, but they seem to have incredible potential.",
-
   "trawakened.skill.voiceofhonkai": "Voice of the Honkai",
   "trawakened.skill.voiceofhonkai.description": "Learn what your enemies are and steal their ability's. You seem to be have the ability to seem like a human.",
-
-  "trawakened.race.enslaved_apostle": "Enslaved Apostle",
-  "trawakened.race.enslaved_apostle.notes": "These Apostle's have bent to the Honkai's will.",
-
-  "trawakened.skill.powerofhonkai": "Power of the Honkai",
-  "trawakened.skill.powerofhonkai.description": "Copy any skill possible, grow stronger at a faster rate and get all knowledge.",
-
-  "trawakened.skill.mode.powerofhonkai.enslave": "Enslave",
-  "trawakened.skill.mode.powerofhonkai.honkairelease": "Honkai Release",
-
   "trawakened.race.awakened_apostle": "Awakened Apostle",
   "trawakened.race.awakened_apostle.notes": "These Apostle's have learned to bent the Honkai to their will.",
-
-  "trawakened.skill.willofhonkai": "Will of the Honkai",
-  "trawakened.skill.willofhonkai.description": "Gain incredible power at the cost of not being able to copy ultimate skills.",
-
+  "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
+  "trawakened.skill.powerofhonkai": "Power of the Honkai",
+  "trawakened.skill.powerofhonkai.description": "Copy any skill possible, grow stronger at a faster rate and get all knowledge.",
+  "trawakened.race.enslaved_apostle": "Enslaved Apostle",
+  "trawakened.race.enslaved_apostle.notes": "These Apostle's have bent to the Honkai's will.",
+  "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
   "trawakened.skill.mode.willofhonkai.copy": "Copy",
   "trawakened.skill.mode.willofhonkai.punch": "Explosive Punch",
   "trawakened.skill.mode.willofhonkai.honkaimode": "Honkai Beast Transformation",
+  "trawakened.skill.mode.powerofhonkai.enslave": "Enslave",
+  "trawakened.skill.mode.powerofhonkai.honkairelease": "Honkai Release",
+  "trawakened.skill.willofhonkai": "Will of the Honkai",
+  "trawakened.skill.willofhonkai.description": "Gain incredible power at the cost of not being able to copy ultimate skills.",
   "trawakened.skill.mode.willofhonkai.selfbarrier": "Honkai Barrier",
-
   "trawakened.race.herrscher_seed_awakened": "Herrscher Seed",
   "trawakened.race.herrscher_seed_awakened.notes": "These apostles have made their first step to becoming a herrscher.",
-
+  "trawakened.requirement.evolution.herrscher_seed_awakened": "Become a hero egg",
   "trawakened.race.herrscher_seed_enslaved": "Herrscher Seed",
   "trawakened.race.herrscher_seed_enslaved.notes": "These apostles have made their first step to becoming a herrscher.",
-
-  "trawakened.race.herrscher_of_destruction": "Herrscher of Destruction",
-  "trawakened.race.herrscher_of_destruction.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
-
-  "trawakened.skill.herrscherofdestructionskill": "Herrscher of Destruction",
-  "trawakened.skill.herrscherofdestructionskill.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
-
+  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Become a true demon lord",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyblock": "Destroy: Block",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyheart": "Destroy: Heart",
   "trawakened.skill.mode.herrscherofdestructionskill.destroymind": "Destroy: Mind",
   "trawakened.skill.mode.herrscherofdestructionskill.destroychunk": "Destroy: Chunk",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyarea": "Destroy: Area",
-
-  "trawakened.skill.herrscherofplagueskill": "Herrscher of Plague",
-  "trawakened.skill.herrscherofplagueskill.notes": "Win any battle by infecting your enemies. Become the plague itself. You shall infect the world with this skill",
-
-  "trawakened.skill.mode.herrscherofplagueskill.toggleplague": "Toggle plague",
-
+  "trawakened.skill.herrscherofdestructionskill": "Herrscher of Destruction",
+  "trawakened.skill.herrscherofdestructionskill.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
+  "trawakened.race.herrscher_of_destruction": "Herrscher of Destruction",
+  "trawakened.race.herrscher_of_destruction.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
   "trawakened.requirement.evolution.MoreEp": "Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai",
-  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Become a true demon lord",
-  "trawakened.requirement.evolution.herrscher_seed_awakened": "Become a hero egg",
-  "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
-  "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
-  "trawakened.requirement.evolution.herrscher_of_plague": "Master Will of the Honkai",
-
-
   "effect.trawakened.plague": "Plague"
 }

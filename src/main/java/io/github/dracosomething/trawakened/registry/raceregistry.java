@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.registry;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.race.*;
 import io.github.dracosomething.trawakened.race.herrscher.herrscherofdestruction;
+import io.github.dracosomething.trawakened.race.herrscher.herrscherofplague;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +19,7 @@ public class raceregistry {
     public static final ResourceLocation HERRSCHER_SEED_AWAKENED = new ResourceLocation("trawakened", "herrscher_seed_awakened");
     public static final ResourceLocation HERRSCHER_SEED_ENSLAVED = new ResourceLocation("trawakened", "herrscher_seed_enslaved");
     public static final ResourceLocation HERRSCHER_OF_DESTRUCTION = new ResourceLocation("trawakened", "herrscher_of_destruction");
+    public static final ResourceLocation HERRSCHER_OF_PLAGUE = new ResourceLocation("trawakened", "herrscher_of_plague");
 
     public raceregistry(){}
 
@@ -30,6 +32,7 @@ public class raceregistry {
             helper.register("herrscher_seed_awakened", new HerrscherSeedAwakened());
             helper.register("herrscher_seed_enslaved", new HerrscherSeedEnslaved());
             helper.register("herrscher_of_destruction", new herrscherofdestruction());
+            helper.register("herrscher_of_plague", new herrscherofplague());
         });
     }
 }

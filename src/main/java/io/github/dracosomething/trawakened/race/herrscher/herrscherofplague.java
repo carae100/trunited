@@ -5,24 +5,21 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
-import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.race.HerrscherSeedEnslaved;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class herrscherofdestruction extends HerrscherSeedAwakened {
+public class herrscherofplague extends HerrscherSeedEnslaved {
     @Override
     public double getBaseHealth() {
         return 500;
@@ -69,7 +66,7 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
         return list;
     }
 
@@ -81,7 +78,7 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
-        if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai"))))) {
+        if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
             chance += 25;
         } else if (TensuraPlayerCapability.getBaseMagicule(player) >= 100000) {
             chance += 25;
@@ -93,7 +90,7 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
 
         public List<Component> getRequirementsForRendering (Player player) {
             List<Component> list = new ArrayList();
-            list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_destruction"));
+            list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_plague"));
             list.add(Component.translatable("trawakened.requirement.evolution.MoreMp"));
             list.add(Component.translatable("trawakened.requirement.evolution.MoreEp"));
             return list;

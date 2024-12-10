@@ -92,6 +92,18 @@ public class herrscherofplague extends Skill {
         return 1;
     }
 
+    @Override
+    public Component getModeName(int mode) {
+        MutableComponent var10000;
+        switch (mode) {
+            case 1 ->
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
+            default -> var10000 = Component.empty();
+        }
+
+        return var10000;
+    }
+
     public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
         return 100.0;
     }
@@ -127,16 +139,12 @@ public class herrscherofplague extends Skill {
             case 1:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (active) {
-                        Player player;
-                        if (entity instanceof Player) {
-                        player = (Player) entity;
-                        player.displayClientMessage(Component.literal("Disabled plague"), true);
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.literal("Disabled plague"), true);
                         }
                         active = false;
                     } else {
-                        Player player;
-                        if (entity instanceof Player) {
-                            player = (Player) entity;
+                        if (entity instanceof Player player) {
                             player.displayClientMessage(Component.literal("Enabled plague"), true);
                         }
                         active = true;
@@ -149,7 +157,7 @@ public class herrscherofplague extends Skill {
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
         if (true) {
             LivingEntity target = e.getEntity();
-            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 100, 3);
+            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
             Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
         }
     }
@@ -177,8 +185,8 @@ public class herrscherofplague extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (living instanceof Player) {
             Player player = (Player) living;
-            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
                 SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
             }
         }

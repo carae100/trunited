@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.dracosomething.trawakened.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "trawakened.refmap.json",
+  "mixins": [
+    "FlyingPathNavigationMixin",
+    "LivingEntityMixin",
+    "LookControlMixin",
+    "MetalSlimeEntityMixin",
+    "MobMixin",
+    "PathNavigationMixin",
+    "SlimeEntityMixin",
+    "SupermassiveSlimeEntityMixin",
+    "TensuraPlayerCapabilityMixin"
+  ],
+  "client": [
+    "KeyboardMixin",
+    "MouseHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
