@@ -33,7 +33,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 1;
+        return 4.5;
     }
 
     @Override

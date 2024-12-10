@@ -32,7 +32,7 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 1;
+        return 4;
     }
 
     @Override

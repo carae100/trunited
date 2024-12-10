@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(JumpingEntityMoveControl.class)
-public class MetalSlimeEntityMixin {
+public class JumpingEntityMoveControlMixin {
 
 @Shadow
 public @Final PathfinderMob mob;
