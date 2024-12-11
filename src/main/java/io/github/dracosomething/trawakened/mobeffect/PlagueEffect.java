@@ -59,9 +59,10 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                     entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 4);
                 }
             }
+        } else {
+            SkillHelper.checkThenAddEffectSource(entity, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 1000, 3);
         }
         if(entity.isDeadOrDying()){
-            System.out.println(entity);
             AABB aabb = new AABB((double) (entity.getX() - 4), (double) (entity.getY() - 4), (double) (entity.getZ() - 4), (double) (entity.getX() + 4), (double) (entity.getY() + 4), (double) (entity.getZ() + 4));
             List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
             List<Entity> ret = new ArrayList();
@@ -96,10 +97,6 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                 TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
                     double epGain = SkillUtils.getEPGain(Objects.requireNonNull(getOwner(entity)));
                     double EP = TensuraEPCapability.getCurrentEP(Objects.requireNonNull(getOwner(entity)));
-                    System.out.println(getOwner(entity));
-                    System.out.println(cap);
-                    System.out.println(EP);
-                    System.out.println(epGain);
                     cap.setEP(Objects.requireNonNull(getOwner(entity)), (cap.getEP() - epGain) + EP);
                 });
             }
@@ -117,16 +114,22 @@ public class PlagueEffect extends MobEffect implements DamageAction {
 
     @Override
     public void onDamagingEntity(LivingEntity source, LivingHurtEvent e) {
-        System.out.println(getOwner(source));
         if (source.getRandom().nextInt(100) <= 20) {
-            LivingEntity target = e.getEntity();
-            SkillHelper.checkThenAddEffectSource(target, getOwner(source), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            if(e.getEntity() != getOwner(source)) {
+                LivingEntity target = e.getEntity();
+                SkillHelper.checkThenAddEffectSource(target, getOwner(source), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            }
         }
     }
 
     @Override
-    public void onKillEntity(LivingEntity source, LivingDeathEvent e) {
-
+    public void onBeingDamaged(LivingHurtEvent e) {
+        if (e.getEntity().getRandom().nextInt(100) <= 15) {
+            if(e.getEntity() != getOwner(e.getEntity())) {
+                LivingEntity target = e.getEntity();
+                SkillHelper.checkThenAddEffectSource(target, getOwner(e.getEntity()), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            }
+        }
     }
 
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
