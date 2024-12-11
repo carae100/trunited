@@ -38,7 +38,7 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 2;
+        return 5;
     }
 
     @Override
