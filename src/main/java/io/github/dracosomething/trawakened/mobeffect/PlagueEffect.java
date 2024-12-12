@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.mobeffect;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
+import com.github.manasmods.tensura.capability.ep.ITensuraEPCapability;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.DamageAction;
@@ -11,6 +12,7 @@ import com.github.manasmods.tensura.entity.SlimeEntity;
 import com.github.manasmods.tensura.entity.SupermassiveSlimeEntity;
 import com.github.manasmods.tensura.event.UpdateEPEvent;
 import com.github.manasmods.tensura.handler.EntityEPHandler;
+import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
@@ -28,6 +30,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -60,10 +65,10 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                 }
             }
         } else {
-            SkillHelper.checkThenAddEffectSource(entity, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 1000, 3);
+            SkillHelper.checkThenAddEffectSource(entity, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
         }
         if(entity.isDeadOrDying()){
-            AABB aabb = new AABB((double) (entity.getX() - 4), (double) (entity.getY() - 4), (double) (entity.getZ() - 4), (double) (entity.getX() + 4), (double) (entity.getY() + 4), (double) (entity.getZ() + 4));
+            AABB aabb = new AABB((double) (entity.getX() - 7), (double) (entity.getY() - 7), (double) (entity.getZ() - 7), (double) (entity.getX() + 7), (double) (entity.getY() + 7), (double) (entity.getZ() + 7));
             List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
             List<Entity> ret = new ArrayList();
             new Vec3((double) entity.getX(), (double) entity.getY(), (double) entity.getZ());
@@ -75,7 +80,7 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                 double x = entity2.getX();
                 double y = entity2.getY();
                 double z = entity2.getZ();
-                double cmp = (double) (4 * 4) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
+                double cmp = (double) (7 * 7) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
                 if (cmp > 0.0) {
                     ret.add(entity2);
                 }
@@ -84,21 +89,29 @@ public class PlagueEffect extends MobEffect implements DamageAction {
             for (Entity entity2 : ret) {
                 if (entity2 instanceof LivingEntity) {
                     if (entity.getRandom().nextInt(100) <= 20) {
-                        if (!(entity2 == getOwner(entity))) {
+                        if (entity2 != getOwner(entity)) {
                             SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
                         }
                     }
                 }
             }
             TensuraParticleHelper.addParticlesAroundSelf(entity, (ParticleOptions) ParticleTypes.SQUID_INK);
-
-            Player source = getOwner(entity);
-            if (source != null) {
-                TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
-                    double epGain = SkillUtils.getEPGain(Objects.requireNonNull(getOwner(entity)));
-                    double EP = TensuraEPCapability.getCurrentEP(Objects.requireNonNull(getOwner(entity)));
-                    cap.setEP(Objects.requireNonNull(getOwner(entity)), (cap.getEP() - epGain) + EP);
-                });
+            if(herrscherofplague.active) {
+                Player source = getOwner(entity);
+                if (source != null) {
+                    double OwnerEP = TensuraEPCapability.getEP(source);
+                    double TargetEP = TensuraEPCapability.getEP(entity);
+                    double EPgain = entity.getLevel().getGameRules().getInt(TensuraGameRules.EP_GAIN);
+                    TensuraEPCapability.setLivingEP(source, OwnerEP + (TargetEP * (EPgain / 100)));
+                    double newstats = (TargetEP * (EPgain / 100))/2;
+                    AttributeInstance magicule = source.getAttribute(TensuraAttributeRegistry.MAX_MAGICULE.get());
+                    assert magicule != null;
+                    magicule.addPermanentModifier(new AttributeModifier("", newstats, AttributeModifier.Operation.ADDITION));
+                    AttributeInstance aura = source.getAttribute(TensuraAttributeRegistry.MAX_AURA.get());
+                    assert aura != null;
+                    aura.addPermanentModifier(new AttributeModifier("", newstats, AttributeModifier.Operation.ADDITION));
+                    TensuraEPCapability.sync(source);
+                }
             }
         }
     }

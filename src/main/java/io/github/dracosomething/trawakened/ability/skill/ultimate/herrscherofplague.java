@@ -70,7 +70,7 @@ import java.util.List;
 
 public class herrscherofplague extends Skill {
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscherofdestruction.png");
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscherofpestilence.png");
     }
 
     public herrscherofplague() {
@@ -155,9 +155,9 @@ public class herrscherofplague extends Skill {
     }
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        if (true) {
+        if (entity instanceof Player player) {
             LivingEntity target = e.getEntity();
-            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            SkillHelper.checkThenAddEffectSource(target, player, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
             Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
         }
     }

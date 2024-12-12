@@ -4,11 +4,13 @@ import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
+import com.github.manasmods.tensura.effect.template.MagicElementalEffect;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
 import io.github.dracosomething.trawakened.race.HerrscherSeedEnslaved;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -73,6 +75,7 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
     @Override
     public void raceTick(Player player) {
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 10, false, false, false));
+        player.removeEffect(effectRegistry.PLAGUEEFFECT.get());
     }
 
     @Override
