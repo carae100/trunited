@@ -9,8 +9,4 @@ public class trawakenedDamage {
     public static DamageSource PLAGUE = (new TensuraDamageSource("trawakened.plague")).setNotTensuraMagic().setIgnoreBarrier(100.0F).setIgnoreResistance(100.0F).bypassArmor().bypassEnchantments().bypassInvul().bypassMagic().setMagic();
 
     public trawakenedDamage(){}
-
-    public static DamageSource plague(Entity pSource) {
-        return (new TensuraEntityDamageSource("trawakened.plague", pSource)).setNoKnock().setNotTensuraMagic().setIgnoreBarrier(100.0F).setIgnoreResistance(100.0F).bypassArmor().bypassEnchantments().bypassInvul().bypassMagic().setMagic();
-    }
 }

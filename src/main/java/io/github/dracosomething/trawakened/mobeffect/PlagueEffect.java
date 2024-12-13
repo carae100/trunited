@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
+import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
@@ -23,6 +24,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -61,7 +63,7 @@ public class PlagueEffect extends MobEffect implements DamageAction {
             }
             if (source != null) {
                 if (getOwner(entity) == source) {
-                    entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * 4);
+                    entity.hurt(trawakenedDamage.PLAGUE, (float) pAmplifier * (SkillUtils.isSkillMastered(Objects.requireNonNull(getOwner(entity)), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))))? 6 : 5));
                 }
             }
         } else {
@@ -77,10 +79,12 @@ public class PlagueEffect extends MobEffect implements DamageAction {
             while (var16.hasNext()) {
                 Entity entity2 = (Entity) var16.next();
 
+                int radius = (SkillUtils.isSkillMastered(Objects.requireNonNull(getOwner(entity)), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))))? 7 : 10);
+
                 double x = entity2.getX();
                 double y = entity2.getY();
                 double z = entity2.getZ();
-                double cmp = (double) (7 * 7) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
+                double cmp = (double) (radius * radius) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
                 if (cmp > 0.0) {
                     ret.add(entity2);
                 }
@@ -146,6 +150,6 @@ public class PlagueEffect extends MobEffect implements DamageAction {
     }
 
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return pDuration % 10 == 0;
+        return pDuration % 5 == 0;
     }
 }

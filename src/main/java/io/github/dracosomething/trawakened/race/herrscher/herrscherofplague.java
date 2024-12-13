@@ -11,11 +11,18 @@ import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
 import io.github.dracosomething.trawakened.race.HerrscherSeedEnslaved;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementList;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.advancements.critereon.PlayerPredicate;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +75,7 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
+        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
         return list;
     }
 
@@ -83,18 +90,18 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
         int chance = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
             chance += 25;
-        } else if (TensuraPlayerCapability.getBaseMagicule(player) >= 100000) {
-            chance += 25;
-        } else if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
+        } else if (player.hasEffect(MobEffects.POISON) && player.hasEffect(MobEffects.BLINDNESS)) {
             chance += 50;
+        } else if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
+            chance += 25;
         }
             return (double) chance;
     }
 
         public List<Component> getRequirementsForRendering (Player player) {
             List<Component> list = new ArrayList();
-            list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_plague"));
-            list.add(Component.translatable("trawakened.requirement.evolution.MoreMp"));
+            list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_pestilence.effect"));
+            list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_pestilence.skill"));
             list.add(Component.translatable("trawakened.requirement.evolution.MoreEp"));
             return list;
         }

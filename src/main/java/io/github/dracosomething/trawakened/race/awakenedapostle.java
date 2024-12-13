@@ -104,7 +104,7 @@ public class awakenedapostle extends honkaiapostle {
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))))){
             chance += 100;
         } else if (TensuraPlayerCapability.getBaseEP(player) >= 150000) {
-            chance += 50;
+            chance += (int) Math.floor(TensuraPlayerCapability.getBaseEP(player) / 300000 * 100);
         }
 
         return (double) chance;

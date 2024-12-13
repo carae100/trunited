@@ -96,8 +96,7 @@ public class herrscherofplague extends Skill {
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
-            case 1 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
+            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
             default -> var10000 = Component.empty();
         }
 
@@ -155,11 +154,9 @@ public class herrscherofplague extends Skill {
     }
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        if (entity instanceof Player player) {
-            LivingEntity target = e.getEntity();
-            SkillHelper.checkThenAddEffectSource(target, player, (MobEffect)effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
-            Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
-        }
+        LivingEntity target = e.getEntity();
+        SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+        Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
     }
 
     public static LivingEntity Owner = null;

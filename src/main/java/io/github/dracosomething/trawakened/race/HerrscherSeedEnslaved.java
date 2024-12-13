@@ -88,10 +88,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
         if (TensuraPlayerCapability.isTrueDemonLord(player)){
-            chance += 50;
-        }
-        else if (TensuraPlayerCapability.getBaseEP(player) >= 150000){
-            chance += (int) Math.floor(TensuraPlayerCapability.getBaseEP(player) / 300000 * 100);
+            chance += 100;
         }
 
         return chance;
