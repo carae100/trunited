@@ -89,7 +89,7 @@ public class herrscherofplague extends Skill {
 
     @Override
     public int modes() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -97,6 +97,7 @@ public class herrscherofplague extends Skill {
         MutableComponent var10000;
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
+            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit");
             default -> var10000 = Component.empty();
         }
 
