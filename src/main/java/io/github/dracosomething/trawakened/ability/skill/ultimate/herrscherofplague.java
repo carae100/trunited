@@ -78,6 +78,7 @@ public class herrscherofplague extends Skill {
     }
 
     public static boolean active = false;
+    public boolean infection = false;
 
     public double getObtainingEpCost() {
         return 5000.0;
@@ -102,6 +103,28 @@ public class herrscherofplague extends Skill {
         }
 
         return var10000;
+    }
+
+    @Override
+    public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
+        int var10000;
+        if (reverse) {
+            switch (instance.getMode()) {
+                case 1 -> var10000 = 2;
+                case 2 -> var10000 = 1;
+                default -> var10000 = 0;
+            }
+
+            return var10000;
+        } else {
+            switch (instance.getMode()) {
+                case 1 -> var10000 = 2;
+                case 2 -> var10000 = 1;
+                default -> var10000 = 0;
+            }
+
+            return var10000;
+        }
     }
 
     public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
@@ -137,7 +160,6 @@ public class herrscherofplague extends Skill {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (active) {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.literal("Disabled plague"), true);
@@ -149,15 +171,29 @@ public class herrscherofplague extends Skill {
                         }
                         active = true;
                     }
-                }
+                break;
+            case 2:
+                    if (infection) {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.literal("Disabled Infection"), true);
+                        }
+                        infection = false;
+                    } else {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.literal("Enabled Infection"), true);
+                        }
+                        infection = true;
+                    }
                 break;
         }
     }
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        LivingEntity target = e.getEntity();
-        SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
-        Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+        if(infection) {
+            LivingEntity target = e.getEntity();
+            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+        }
     }
 
     public static LivingEntity Owner = null;

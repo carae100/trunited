@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity{
-    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
+//    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
 
     @Shadow
     public float yHeadRotO;
@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity{
 
     @Shadow public abstract boolean hasEffect(MobEffect p_21024_);
 
-    @Shadow public float flyingSpeed;
+//    @Shadow public float flyingSpeed;
 
     @Shadow public abstract void setYBodyRot(float p_21309_);
 

@@ -53,7 +53,7 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public double getMovementSpeed() {
-        return 0.3;
+        return 0.22;
     }
 
     @Override

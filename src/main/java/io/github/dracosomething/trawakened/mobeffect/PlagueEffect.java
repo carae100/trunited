@@ -79,7 +79,7 @@ public class PlagueEffect extends MobEffect implements DamageAction {
             while (var16.hasNext()) {
                 Entity entity2 = (Entity) var16.next();
 
-                int radius = (SkillUtils.isSkillMastered(Objects.requireNonNull(getOwner(entity)), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))))? 7 : 10);
+                int radius = 10;
 
                 double x = entity2.getX();
                 double y = entity2.getY();
@@ -92,7 +92,7 @@ public class PlagueEffect extends MobEffect implements DamageAction {
 
             for (Entity entity2 : ret) {
                 if (entity2 instanceof LivingEntity) {
-                    if (entity.getRandom().nextInt(100) <= 20) {
+                    if (entity.getRandom().nextInt(100) <= 10) {
                         if (entity2 != getOwner(entity)) {
                             SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
                         }

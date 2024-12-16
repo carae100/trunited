@@ -43,21 +43,27 @@
   "trawakened.skill.mode.herrscherofdestructionskill.destroychunk": "Destroy: Chunk",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyarea": "Destroy: Area",
 
+  "trawakened.race.herrscher_of_pestilence": "Herrscher of Pestilence",
+  "trawakened.race.herrscher_of_pestilence.notes": "Win any battle by infecting your enemies. Become the plague itself. You shall infect the world with this skill",
+
   "trawakened.skill.herrscherofpestilenceskill": "Herrscher of Pestilence",
-  "trawakened.skill.herrscherofpestilenceskill.notes": "Win any battle by infecting your enemies. Become the plague itself. You shall infect the world with this skill",
+  "trawakened.skill.herrscherofpestilenceskill.description": "Win any battle by infecting your enemies. Become the plague itself. You shall infect the world with this skill",
 
   "trawakened.skill.mode.herrscherofplagueskill.toggleplague": "Toggle plague",
-  "trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit": "Toggle Infection",
+  "trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit": "Toggle infection",
+  "trawakened.skill.mode.herrscherofplagueskill.plaguecloud": "Release plague",
+  "trawakened.skill.mode.herrscherofplagueskill.plagueform": "Plague form",
+  "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "Plague pound",
 
   "trawakened.requirement.evolution.MoreEp": "Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "Get more magicules",
+  "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "Master Will of the Honkai",
+  "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "Have poison and blindness",
   "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai",
   "trawakened.requirement.evolution.herrscher_seed_enslaved": "Become a true demon lord",
   "trawakened.requirement.evolution.herrscher_seed_awakened": "Become a hero egg",
   "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
   "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
-  "trawakened.requirement.evolution.herrscher_of_plague": "Master Will of the Honkai",
-
 
   "effect.trawakened.plague": "Plague"
 }

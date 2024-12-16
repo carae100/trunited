@@ -33,7 +33,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 4.5;
+        return 6.0;
     }
 
     @Override
@@ -74,6 +74,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
 
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_PLAGUE));
         return list;
     }
 
