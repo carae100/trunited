@@ -185,6 +185,8 @@ public class herrscherofplague extends Skill {
                         infection = true;
                     }
                 break;
+            case 3:
+
         }
     }
 

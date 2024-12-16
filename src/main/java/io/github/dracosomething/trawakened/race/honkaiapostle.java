@@ -101,17 +101,6 @@ public class honkaiapostle extends Race {
 
     @Override
     public void raceTick(Player player) {
-        if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
-            ArrayList<ManasSkillInstance> list = new ArrayList<>(SkillAPI.getSkillsFrom(player).getLearnedSkills());
-            for (ManasSkillInstance instance : list) {
-                ManasSkill var3 = instance.getSkill();
-                Skill skill = (Skill) var3;
-                if (skill.getType().equals(Skill.SkillType.ULTIMATE)) {
-                    if (!skill.equals((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai"))) && !skill.equals((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")))) {
-                        SkillAPI.getSkillsFrom(player).forgetSkill(skill);
-                    }
-                }
-            }
-        }
+
     }
 }

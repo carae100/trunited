@@ -7,6 +7,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.ability.skill.extra.DemonLordHakiSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
@@ -30,6 +31,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -39,9 +41,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
@@ -53,6 +53,8 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class herrscherofdestruction extends Skill {
@@ -124,7 +126,7 @@ public class herrscherofdestruction extends Skill {
         double var10000;
         switch (instance.getMode()) {
             case 1:
-                var10000 = 500.0;
+                var10000 = 100.0;
                 break;
             case 2:
                 var10000 = 10000.0;
@@ -172,46 +174,7 @@ public class herrscherofdestruction extends Skill {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    Level level = entity.getLevel();
-                    if (entity instanceof Player) {
-                        Player player = (Player) entity;
-                        if (!SkillHelper.outOfMagicule(entity, instance)) {
-                            BlockHitResult result = SkillHelper.getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE, ClipContext.Block.OUTLINE, 30.0);
-                            if (result.getType() == HitResult.Type.BLOCK) {
-                                BlockPos pos = result.getBlockPos();
-                                BlockState state = level.getBlockState(pos);
-                                state.getBlock().playerWillDestroy(level, pos, state, player);
-                                if (!(state.getBlock() instanceof DoublePlantBlock) && !(state.getBlock() instanceof DoorBlock) && !(state.getBlock() instanceof BedBlock) && !(state.getBlock() instanceof PistonHeadBlock)) {
-                                    label82:
-                                    {
-                                        BlockEntity blockentity = level.getBlockEntity(pos);
-                                        if (blockentity instanceof BeehiveBlockEntity) {
-                                            BeehiveBlockEntity beehiveblockentity = (BeehiveBlockEntity) blockentity;
-                                            beehiveblockentity.emptyAllLivingFromHive(player, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
-                                        }
-
-                                        if (blockentity instanceof ShulkerBoxBlockEntity) {
-                                            ShulkerBoxBlockEntity shulker = (ShulkerBoxBlockEntity) blockentity;
-                                            if (!shulker.isEmpty()) {
-                                                level.destroyBlock(pos, !player.isCreative(), player);
-                                                break label82;
-                                            }
-                                        }
-
-                                        level.destroyBlock(pos, false, player);
-                                    }
-                                } else {
-                                    level.destroyBlock(pos, false, player);
-                                }
-                                instance.setCoolDown(30);
-                                instance.addMasteryPoint(entity);
-                            }
-                        }
-                    }
-                }
                 break;
-
             case 2:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (target != null) {
@@ -302,6 +265,59 @@ public class herrscherofdestruction extends Skill {
         }
     }
 
+    @Override
+    public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
+        if (instance.getMode() != 1){
+            return false;
+        } else if (heldTicks % 20 == 0 && SkillHelper.outOfMagicule(living, instance)) {
+            return false;
+        }
+        else {
+            if (heldTicks % 200 == 0 && heldTicks >0){
+                this.addMasteryPoint(instance, living);
+            }
+
+            Sinkhole(instance, living, heldTicks, 1);
+            return true;
+        }
+    }
+
+    @Override
+    public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
+        if (instance.getMode() == 1){
+            instance.setCoolDown(5 * heldTicks);
+        }
+    }
+
+    public void Sinkhole(ManasSkillInstance instance, LivingEntity entity, int heldTicks, int ra){
+        if (heldTicks % 2 == 0){
+            ra ++;
+        }
+        if (entity instanceof Player player) {
+            if (!SkillHelper.outOfMagicule(entity, instance)) {
+                Level level = entity.getLevel();
+                    if (!SkillHelper.outOfMagicule(entity, instance)) {
+                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE, ClipContext.Block.OUTLINE, 30.0);
+                        if (result.getType() == HitResult.Type.BLOCK) {
+                            BlockPos pos = result.getBlockPos();
+                            for(float x = pos.getX() - (float)ra; x < pos.getX() + (float)ra; ++x) {
+                                for(float y = pos.getY() - (float)ra; y < pos.getY() + (float)ra; ++y) {
+                                    for(float z = pos.getZ() - (float)ra; z < pos.getZ() + (float)ra; ++z) {
+                                        float cmp = (float)(ra * ra) - (pos.getX() - x) * (pos.getX() - x) - (pos.getY() - y) * (pos.getY() - y) - (pos.getZ() - z) * (pos.getZ() - z);
+                                        if (cmp > 0.0F) {
+                                            BlockPos tmp = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+                                            player.level.removeBlock(tmp, false);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+    }
+
     public void onBeingDamaged(ManasSkillInstance instance, LivingAttackEvent event) {
         if (!event.isCanceled()) {
             LivingEntity entity = event.getEntity();
@@ -337,6 +353,8 @@ public class herrscherofdestruction extends Skill {
 
         }
     }
+
+
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
         if (e.getSource().getDirectEntity() == entity) {

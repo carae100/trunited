@@ -82,7 +82,7 @@ public class awakenedapostle extends honkaiapostle {
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
-        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
+        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_RESISTANCE.get());
         return list;
     }
 
@@ -102,9 +102,9 @@ public class awakenedapostle extends honkaiapostle {
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))))){
-            chance += 100;
+            chance += 50;
         } else if (TensuraPlayerCapability.getBaseEP(player) >= 150000) {
-            chance += (int) Math.floor(TensuraPlayerCapability.getBaseEP(player) / 300000 * 100);
+            chance += 50;
         }
 
         return (double) chance;

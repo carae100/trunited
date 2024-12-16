@@ -26,6 +26,8 @@ import net.minecraft.world.level.Explosion;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
+import java.util.UUID;
+
 public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation, DamageAction {
     protected static final String HONKAI = "c585ceb0-3f6a-11ee-be56-0242ac120002";
 
@@ -37,6 +39,10 @@ public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation
         this.addAttributeModifier(Attributes.MAX_HEALTH, "c585ceb0-3f6a-11ee-be56-0242ac120002", 50.0, AttributeModifier.Operation.ADDITION);
         this.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "c585ceb0-3f6a-11ee-be56-0242ac120002", 100.0, AttributeModifier.Operation.ADDITION);
         this.addAttributeModifier((Attribute) ForgeMod.ATTACK_RANGE.get(), "c585ceb0-3f6a-11ee-be56-0242ac120002", 2.0, AttributeModifier.Operation.ADDITION);
+    }
+
+    public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
+        super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
     }
 
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
@@ -64,6 +70,9 @@ public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation
     public void removeAttributeModifiers(LivingEntity entity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(entity, pAttributeMap, pAmplifier);
         TensuraEPCapability.updateEP(entity);
+    }
+    public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
+        return pModifier.getId().equals(UUID.fromString("c585ceb0-3f6a-11ee-be56-0242ac120002")) ? pModifier.getAmount() : pModifier.getAmount() * (double)(pAmplifier + 1);
     }
 
     public boolean isDurationEffectTick(int pDuration, int amplifier) {

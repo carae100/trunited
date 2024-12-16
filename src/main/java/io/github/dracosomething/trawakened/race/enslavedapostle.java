@@ -79,7 +79,7 @@ public class enslavedapostle extends honkaiapostle {
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
-        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_NULLIFICATION.get());
+        list.add((TensuraSkill) ResistanceSkills.PHYSICAL_ATTACK_RESISTANCE.get());
         return list;
     }
 
