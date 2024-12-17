@@ -109,13 +109,13 @@ public class herrscherofdestruction extends Skill {
         MutableComponent var10000;
         switch (mode) {
             case 1 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyblock");
+                var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyblock");
             case 2 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyheart");
+                var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyheart");
             case 3 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroymind");
+                var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroymind");
             case 4 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroychunk");
+                var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroychunk");
             default -> var10000 = Component.empty();
         }
 
@@ -206,7 +206,8 @@ public class herrscherofdestruction extends Skill {
                         instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY)), false);
+                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
+                                .setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY)), false);
                     }
                 }
                 break;
@@ -238,7 +239,8 @@ public class herrscherofdestruction extends Skill {
                         instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
+                                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
                 }
                 break;
@@ -246,10 +248,13 @@ public class herrscherofdestruction extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (entity instanceof Player) {
                         Player player = (Player) entity;
-                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.NONE, ClipContext.Block.OUTLINE, 30.0);
+                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player,
+                                ClipContext.Fluid.NONE, ClipContext.Block.OUTLINE, 30.0);
                         int radius = 8;
-                        BlockPos startpos = new BlockPos(result.getBlockPos().getX() - radius, result.getBlockPos().getY() - radius, result.getBlockPos().getZ() - radius);
-                        BlockPos endpos = new BlockPos(result.getBlockPos().getX() + radius, result.getBlockPos().getY() + radius, result.getBlockPos().getZ() + radius);
+                        BlockPos startpos = new BlockPos(result.getBlockPos().getX() - radius,
+                                result.getBlockPos().getY() - radius, result.getBlockPos().getZ() - radius);
+                        BlockPos endpos = new BlockPos(result.getBlockPos().getX() + radius,
+                                result.getBlockPos().getY() + radius, result.getBlockPos().getZ() + radius);
                         for (int x = startpos.getX(); x < endpos.getX(); ++x) {
                             for (int y = startpos.getY(); y < endpos.getY(); ++y) {
                                 for (int z = startpos.getZ(); z < endpos.getZ(); ++z) {
@@ -267,47 +272,53 @@ public class herrscherofdestruction extends Skill {
 
     @Override
     public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
-        if (instance.getMode() != 1){
+        if (instance.getMode() != 1) {
             return false;
         } else if (heldTicks % 20 == 0 && SkillHelper.outOfMagicule(living, instance)) {
             return false;
-        }
-        else {
-            if (heldTicks % 200 == 0 && heldTicks >0){
+        } else {
+            if (heldTicks % 200 == 0 && heldTicks > 0) {
                 this.addMasteryPoint(instance, living);
             }
-
-            Sinkhole(instance, living, heldTicks, 1);
+            int r = 0;
+            if (heldTicks % 2 == 0) {
+                r++;
+            }
+            if (living instanceof Player player) {
+                BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.ANY,
+                        ClipContext.Block.OUTLINE, 10.0);
+                Sinkhole(instance, living, heldTicks, r, result);
+            }
             return true;
         }
     }
 
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
-        if (instance.getMode() == 1){
+        if (instance.getMode() == 1) {
             instance.setCoolDown(5 * heldTicks);
         }
     }
 
-    public void Sinkhole(ManasSkillInstance instance, LivingEntity entity, int heldTicks, int ra){
-        if (heldTicks % 2 == 0){
-            ra ++;
+    public void Sinkhole(ManasSkillInstance instance, LivingEntity entity, int heldTicks, int ra,
+            BlockHitResult result) {
+        if (heldTicks % 2 == 0) {
+            ra++;
         }
         if (entity instanceof Player player) {
             if (!SkillHelper.outOfMagicule(entity, instance)) {
                 Level level = entity.getLevel();
-                    if (!SkillHelper.outOfMagicule(entity, instance)) {
-                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE, ClipContext.Block.OUTLINE, 30.0);
-                        if (result.getType() == HitResult.Type.BLOCK) {
-                            BlockPos pos = result.getBlockPos();
-                            for(float x = pos.getX() - (float)ra; x < pos.getX() + (float)ra; ++x) {
-                                for(float y = pos.getY() - (float)ra; y < pos.getY() + (float)ra; ++y) {
-                                    for(float z = pos.getZ() - (float)ra; z < pos.getZ() + (float)ra; ++z) {
-                                        float cmp = (float)(ra * ra) - (pos.getX() - x) * (pos.getX() - x) - (pos.getY() - y) * (pos.getY() - y) - (pos.getZ() - z) * (pos.getZ() - z);
-                                        if (cmp > 0.0F) {
-                                            BlockPos tmp = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-                                            player.level.removeBlock(tmp, false);
-                                        }
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (result.getType() == HitResult.Type.BLOCK) {
+                        BlockPos pos = result.getBlockPos();
+                        for (float x = pos.getX() - (float) ra; x < pos.getX() + (float) ra + 1.0F; ++x) {
+                            for (float y = pos.getY() - (float) ra; y < pos.getY() + (float) ra + 1.0F; ++y) {
+                                for (float z = pos.getZ() - (float) ra; z < pos.getZ() + (float) ra + 1.0F; ++z) {
+                                    float cmp = (float) (ra * ra) - (pos.getX() - x) * (pos.getX() - x)
+                                            - (pos.getY() - y) * (pos.getY() - y) - (pos.getZ() - z) * (pos.getZ() - z);
+                                    if (cmp > 0.0F) {
+                                        BlockPos tmp = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+                                        player.level.removeBlock(tmp, false);
                                     }
                                 }
                             }
@@ -315,6 +326,7 @@ public class herrscherofdestruction extends Skill {
                     }
                 }
             }
+        }
 
     }
 
@@ -331,8 +343,7 @@ public class herrscherofdestruction extends Skill {
                 }
 
                 boolean var10000;
-                label52:
-                {
+                label52: {
                     if (damageSource instanceof TensuraDamageSource) {
                         TensuraDamageSource source = (TensuraDamageSource) damageSource;
                         if (source.getSkill() != null || source.getMpCost() != 0.0 || source.getApCost() != 0.0) {
@@ -346,15 +357,14 @@ public class herrscherofdestruction extends Skill {
 
                 boolean anti = var10000;
                 if (damageSource.isMagic() || anti) {
-                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 2.0F, 1.0F);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 2.0F, 1.0F);
                     event.setCanceled(true);
                 }
             }
 
         }
     }
-
-
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
         if (e.getSource().getDirectEntity() == entity) {
@@ -363,7 +373,8 @@ public class herrscherofdestruction extends Skill {
                     LivingEntity target = e.getEntity();
                     AttributeInstance barrier = target.getAttribute((Attribute) TensuraAttributeRegistry.BARRIER.get());
                     if (barrier != null && !(barrier.getValue() <= 0.0)) {
-                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(),
+                                SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                         barrier.removeModifiers();
                     }
                 }
@@ -383,18 +394,23 @@ public class herrscherofdestruction extends Skill {
                 }
 
                 LivingEntity target = e.getEntity();
-                target.addEffect(new MobEffectInstance((MobEffect) TensuraMobEffects.ANTI_SKILL.get(), 100, 0, false, false, false));
+                target.addEffect(new MobEffectInstance((MobEffect) TensuraMobEffects.ANTI_SKILL.get(), 100, 0, false,
+                        false, false));
                 SkillHelper.removePredicateEffect(target, (effect) -> {
-                    return effect.isBeneficial() && effect instanceof SkillMobEffect && !this.getNonSkillMobEffects().contains(effect);
+                    return effect.isBeneficial() && effect instanceof SkillMobEffect
+                            && !this.getNonSkillMobEffects().contains(effect);
                 });
                 TensuraParticleHelper.addServerParticlesAroundSelf(target, ParticleTypes.ENCHANTED_HIT, 1.0);
-                entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(),
+                        SoundEvents.ILLUSIONER_MIRROR_MOVE, SoundSource.PLAYERS, 1.0F, 1.0F);
             }
         }
     }
 
     private List<MobEffect> getNonSkillMobEffects() {
-        return List.of((MobEffect) TensuraMobEffects.AURA_SWORD.get(), (MobEffect) TensuraMobEffects.DIAMOND_PATH.get(), (MobEffect) TensuraMobEffects.OGRE_GUILLOTINE.get(), (MobEffect) TensuraMobEffects.BATS_MODE.get(), (MobEffect) TensuraMobEffects.MAGICULE_REGENERATION.get());
+        return List.of((MobEffect) TensuraMobEffects.AURA_SWORD.get(), (MobEffect) TensuraMobEffects.DIAMOND_PATH.get(),
+                (MobEffect) TensuraMobEffects.OGRE_GUILLOTINE.get(), (MobEffect) TensuraMobEffects.BATS_MODE.get(),
+                (MobEffect) TensuraMobEffects.MAGICULE_REGENERATION.get());
     }
 
     private void gainMastery(ManasSkillInstance instance, LivingEntity entity) {
@@ -419,8 +435,11 @@ public class herrscherofdestruction extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (living instanceof Player) {
             Player player = (Player) living;
-            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+            if (!TensuraPlayerCapability.getRace(player)
+                    .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
+                            .getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
+                        .getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
                 SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
             }
         }

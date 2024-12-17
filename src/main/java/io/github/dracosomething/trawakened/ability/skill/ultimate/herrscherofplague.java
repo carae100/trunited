@@ -36,6 +36,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -60,12 +62,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class herrscherofplague extends Skill {
@@ -90,7 +95,7 @@ public class herrscherofplague extends Skill {
 
     @Override
     public int modes() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -99,6 +104,8 @@ public class herrscherofplague extends Skill {
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
             case 2 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit");
+            case 3 ->
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyarea");
             default -> var10000 = Component.empty();
         }
 
@@ -110,8 +117,9 @@ public class herrscherofplague extends Skill {
         int var10000;
         if (reverse) {
             switch (instance.getMode()) {
-                case 1 -> var10000 = 2;
+                case 1 -> var10000 = 3;
                 case 2 -> var10000 = 1;
+                case 3 -> var10000 = 2;
                 default -> var10000 = 0;
             }
 
@@ -119,7 +127,8 @@ public class herrscherofplague extends Skill {
         } else {
             switch (instance.getMode()) {
                 case 1 -> var10000 = 2;
-                case 2 -> var10000 = 1;
+                case 2 -> var10000 = 3;
+                case 3 -> var10000 = 1;
                 default -> var10000 = 0;
             }
 
@@ -128,7 +137,23 @@ public class herrscherofplague extends Skill {
     }
 
     public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
-        return 100.0;
+        double var10000;
+        switch (instance.getMode()) {
+            case 1:
+                var10000 = 0.0;
+                break;
+            case 2:
+                var10000 = 0.0;
+                break;
+            case 3:
+                var10000 = 100.0;
+                break;
+            default:
+                var10000 = 0.0;
+                break;
+        }
+
+        return var10000;
     }
 
     public boolean canBeToggled(ManasSkillInstance instance, LivingEntity entity) {
@@ -160,40 +185,68 @@ public class herrscherofplague extends Skill {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         switch (instance.getMode()) {
             case 1:
-                    if (active) {
-                        if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.literal("Disabled plague"), true);
-                        }
-                        active = false;
-                    } else {
-                        if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.literal("Enabled plague"), true);
-                        }
-                        active = true;
+                if (active) {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.literal("Disabled plague"), true);
                     }
+                    active = false;
+                } else {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.literal("Enabled plague"), true);
+                    }
+                    active = true;
+                }
                 break;
             case 2:
-                    if (infection) {
-                        if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.literal("Disabled Infection"), true);
-                        }
-                        infection = false;
-                    } else {
-                        if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.literal("Enabled Infection"), true);
-                        }
-                        infection = true;
+                if (infection) {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.literal("Disabled Infection"), true);
                     }
+                    infection = false;
+                } else {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.literal("Enabled Infection"), true);
+                    }
+                    infection = true;
+                }
                 break;
             case 3:
-
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    List<Entity> entities = entity.level.getEntities((Entity) null, new AABB((double) (entity.getX() - 8), (double) (entity.getY() - 8), (double) (entity.getZ() - 8), (double) (entity.getX() + 8), (double) (entity.getY() + 8), (double) (entity.getZ() + 8)), Entity::isAlive);
+                    Iterator var16 = entities.iterator();
+                    for (float x = (float) (entity.getX() - (float) 8); x < entity.getX() + (float) 8 + 1.0F; ++x) {
+                        for (float y = (float) (entity.getY() - (float) 8); y < entity.getY() + (float) 8 + 1.0F; ++y) {
+                            for (float z = (float) (entity.getZ() - (float) 8); z < entity.getZ() + (float) 8 + 1.0F; ++z) {
+                                RandomSource random = RandomSource.create();
+                                for (int i = 0; i < 25; ++i) {
+                                    double d0 = random.nextGaussian() * 0.02;
+                                    double d1 = random.nextGaussian() * 0.02;
+                                    double d2 = random.nextGaussian() * 0.02;
+                                    double newx = x + (2.0 * random.nextDouble() - 1.0) * 0.5;
+                                    double newy = y + (2.0 * random.nextDouble() - 1.0) * 0.5;
+                                    double newz = z + (2.0 * random.nextDouble() - 1.0) * 0.5;
+                                    entity.level.addParticle(ParticleTypes.SQUID_INK, newx, newy, newz, d0, d1, d2);
+//                                    System.out.println("ewrwerwrw");
+                                }
+                            }
+                        }
+                    }
+                    while (var16.hasNext()) {
+                        System.out.println((Entity) var16.next());
+                        SkillHelper.checkThenAddEffectSource((LivingEntity) var16.next(), entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767,
+                                3);
+                        Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+                    }
+                }
+                break;
         }
     }
 
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent e) {
-        if(infection) {
+        if (infection) {
             LivingEntity target = e.getEntity();
-            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+            SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767,
+                    3);
             Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
         }
     }
@@ -221,8 +274,11 @@ public class herrscherofplague extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (living instanceof Player) {
             Player player = (Player) living;
-            if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
+            if (!TensuraPlayerCapability.getRace(player)
+                    .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
+                            .getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
+                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
+                        .getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
                 SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
             }
         }
