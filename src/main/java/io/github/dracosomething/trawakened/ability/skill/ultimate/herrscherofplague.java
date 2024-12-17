@@ -70,6 +70,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -212,8 +213,6 @@ public class herrscherofplague extends Skill {
                 break;
             case 3:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    List<Entity> entities = entity.level.getEntities((Entity) null, new AABB((double) (entity.getX() - 8), (double) (entity.getY() - 8), (double) (entity.getZ() - 8), (double) (entity.getX() + 8), (double) (entity.getY() + 8), (double) (entity.getZ() + 8)), Entity::isAlive);
-                    Iterator var16 = entities.iterator();
                     for (float x = (float) (entity.getX() - (float) 8); x < entity.getX() + (float) 8 + 1.0F; ++x) {
                         for (float y = (float) (entity.getY() - (float) 8); y < entity.getY() + (float) 8 + 1.0F; ++y) {
                             for (float z = (float) (entity.getZ() - (float) 8); z < entity.getZ() + (float) 8 + 1.0F; ++z) {
@@ -225,17 +224,38 @@ public class herrscherofplague extends Skill {
                                     double newx = x + (2.0 * random.nextDouble() - 1.0) * 0.5;
                                     double newy = y + (2.0 * random.nextDouble() - 1.0) * 0.5;
                                     double newz = z + (2.0 * random.nextDouble() - 1.0) * 0.5;
-                                    entity.level.addParticle(ParticleTypes.SQUID_INK, newx, newy, newz, d0, d1, d2);
+                                    TensuraParticleHelper.addParticlesAroundSelf(entity, ParticleTypes.SQUID_INK, 0.7F);
 //                                    System.out.println("ewrwerwrw");
                                 }
                             }
                         }
                     }
+                    AABB aabb = new AABB((double) (entity.getX() - 7), (double) (entity.getY() - 7), (double) (entity.getZ() - 7), (double) (entity.getX() + 7), (double) (entity.getY() + 7), (double) (entity.getZ() + 7));
+                    List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
+                    List<Entity> ret = new ArrayList();
+                    new Vec3((double) entity.getX(), (double) entity.getY(), (double) entity.getZ());
+                    Iterator var16 = entities.iterator();
+
                     while (var16.hasNext()) {
-                        System.out.println((Entity) var16.next());
-                        SkillHelper.checkThenAddEffectSource((LivingEntity) var16.next(), entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767,
-                                3);
-                        Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+                        Entity entity2 = (Entity) var16.next();
+
+                        int radius = 10;
+
+                        double x = entity2.getX();
+                        double y = entity2.getY();
+                        double z = entity2.getZ();
+                        double cmp = (double) (radius * radius) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
+                        if (cmp > 0.0) {
+                            ret.add(entity2);
+                        }
+                    }
+
+                    for (Entity entity2 : ret) {
+                        if (entity2 instanceof LivingEntity) {
+                                if (entity2 != entity) {
+                                    SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+                                }
+                        }
                     }
                 }
                 break;

@@ -99,7 +99,9 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                     }
                 }
             }
-            TensuraParticleHelper.addParticlesAroundSelf(entity, (ParticleOptions) ParticleTypes.SQUID_INK);
+            for(int i = 0; i < 100; i++) {
+                TensuraParticleHelper.addParticlesAroundSelf(entity, ParticleTypes.EXPLOSION.getType(), 1.0);
+            }
             if(herrscherofplague.active) {
                 Player source = getOwner(entity);
                 if (source != null) {

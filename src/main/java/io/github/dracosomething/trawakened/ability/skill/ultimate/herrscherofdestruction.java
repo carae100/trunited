@@ -270,6 +270,9 @@ public class herrscherofdestruction extends Skill {
         }
     }
 
+    private int r = 0;
+    private BlockHitResult result;
+
     @Override
     public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
         if (instance.getMode() != 1) {
@@ -280,13 +283,16 @@ public class herrscherofdestruction extends Skill {
             if (heldTicks % 200 == 0 && heldTicks > 0) {
                 this.addMasteryPoint(instance, living);
             }
-            int r = 0;
-            if (heldTicks % 2 == 0) {
+            if (heldTicks % 20 == 0) {
                 r++;
+                System.out.println("text      " + r);
             }
             if (living instanceof Player player) {
-                BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.ANY,
-                        ClipContext.Block.OUTLINE, 10.0);
+                if(heldTicks == 0){
+                    result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.ANY,
+                            ClipContext.Block.OUTLINE, 10.0);
+                    System.out.println(result);
+                }
                 Sinkhole(instance, living, heldTicks, r, result);
             }
             return true;
@@ -296,6 +302,7 @@ public class herrscherofdestruction extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         if (instance.getMode() == 1) {
+            r = 0;
             instance.setCoolDown(5 * heldTicks);
         }
     }
@@ -311,9 +318,9 @@ public class herrscherofdestruction extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (result.getType() == HitResult.Type.BLOCK) {
                         BlockPos pos = result.getBlockPos();
-                        for (float x = pos.getX() - (float) ra; x < pos.getX() + (float) ra + 1.0F; ++x) {
-                            for (float y = pos.getY() - (float) ra; y < pos.getY() + (float) ra + 1.0F; ++y) {
-                                for (float z = pos.getZ() - (float) ra; z < pos.getZ() + (float) ra + 1.0F; ++z) {
+                        for (float x = pos.getX() - (float) ra; x < pos.getX() + (float) ra; ++x) {
+                            for (float y = pos.getY() - (float) ra; y < pos.getY() + (float) ra; ++y) {
+                                for (float z = pos.getZ() - (float) ra; z < pos.getZ() + (float) ra; ++z) {
                                     float cmp = (float) (ra * ra) - (pos.getX() - x) * (pos.getX() - x)
                                             - (pos.getY() - y) * (pos.getY() - y) - (pos.getZ() - z) * (pos.getZ() - z);
                                     if (cmp > 0.0F) {
