@@ -223,7 +223,8 @@ public class powerofhonkai extends Skill {
                         skill.getType().equals(SkillType.RESISTANCE) ||
                         skill.getType().equals(SkillType.ULTIMATE) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))) ||
-                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill"))) ||
+                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
             }
         } else {
             return false;

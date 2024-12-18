@@ -84,8 +84,8 @@ public class herrscherofplague extends Skill {
         super(SkillType.ULTIMATE);
     }
 
-    public static boolean active = true;
-    public boolean infection = true;
+    public static boolean active = false;
+    public boolean infection = false;
 
     public double getObtainingEpCost() {
         return 5000.0;
@@ -107,7 +107,7 @@ public class herrscherofplague extends Skill {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
             case 2 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit");
             case 3 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyarea");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.plaguecloud");
             default -> var10000 = Component.empty();
         }
 
@@ -245,9 +245,10 @@ public class herrscherofplague extends Skill {
 
                     for (Entity entity2 : ret) {
                         if (entity2 instanceof LivingEntity) {
-                                if (entity2 != entity) {
-                                    SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
-                                }
+                            if (entity2 != entity) {
+                                SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+                                Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+                            }
                         }
                     }
                 }
