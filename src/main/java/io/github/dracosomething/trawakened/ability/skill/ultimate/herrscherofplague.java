@@ -292,7 +292,7 @@ public class herrscherofplague extends Skill {
                     .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
                             .getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
-                        .getValue(new ResourceLocation("trawakened:herrscherofplagueskill")));
+                        .getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
                 SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
             }
         }

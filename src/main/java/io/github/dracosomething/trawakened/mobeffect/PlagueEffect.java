@@ -94,8 +94,9 @@ public class PlagueEffect extends MobEffect implements DamageAction {
             for (Entity entity2 : ret) {
                 if (entity2 instanceof LivingEntity) {
                     if (entity.getRandom().nextInt(100) <= 10) {
-                        if (entity2 != getOwner(entity)) {
-                            SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+                        SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, getOwner(entity), (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+                        if (entity2 instanceof Player player && player == getOwner(entity)) {
+                            player.removeEffect(effectRegistry.PLAGUEEFFECT.get());
                         }
                     }
                 }
