@@ -380,8 +380,6 @@ public class herrscherofdestruction extends Skill {
                     LivingEntity target = e.getEntity();
                     AttributeInstance barrier = target.getAttribute((Attribute) TensuraAttributeRegistry.BARRIER.get());
                     if (barrier != null && !(barrier.getValue() <= 0.0)) {
-                        entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(),
-                                SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
                         barrier.removeModifiers();
                     }
                 }
