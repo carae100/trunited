@@ -26,6 +26,7 @@ import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -83,8 +84,8 @@ public class herrscherofplague extends Skill {
         super(SkillType.ULTIMATE);
     }
 
-    public static boolean active = false;
-    public boolean infection = false;
+    public static boolean active = true;
+    public boolean infection = true;
 
     public double getObtainingEpCost() {
         return 5000.0;
@@ -213,24 +214,16 @@ public class herrscherofplague extends Skill {
                 break;
             case 3:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    for (float x = (float) (entity.getX() - (float) 8); x < entity.getX() + (float) 8 + 1.0F; ++x) {
-                        for (float y = (float) (entity.getY() - (float) 8); y < entity.getY() + (float) 8 + 1.0F; ++y) {
-                            for (float z = (float) (entity.getZ() - (float) 8); z < entity.getZ() + (float) 8 + 1.0F; ++z) {
-                                RandomSource random = RandomSource.create();
-                                for (int i = 0; i < 25; ++i) {
-                                    double d0 = random.nextGaussian() * 0.02;
-                                    double d1 = random.nextGaussian() * 0.02;
-                                    double d2 = random.nextGaussian() * 0.02;
-                                    double newx = x + (2.0 * random.nextDouble() - 1.0) * 0.5;
-                                    double newy = y + (2.0 * random.nextDouble() - 1.0) * 0.5;
-                                    double newz = z + (2.0 * random.nextDouble() - 1.0) * 0.5;
-                                    TensuraParticleHelper.addParticlesAroundSelf(entity, ParticleTypes.SQUID_INK, 0.7F);
-//                                    System.out.println("ewrwerwrw");
+                    AABB aabb = new AABB((double) (entity.getX() - 8), (double) (entity.getY() - 8), (double) (entity.getZ() - 8), (double) (entity.getX() + 8), (double) (entity.getY() + 8), (double) (entity.getZ() + 8));
+                    for(float x = (float) (entity.getX() - (float)8); x < entity.getX() + (float)8 + 1.0F; ++x) {
+                        for(float y = (float) (entity.getY() - (float)8); y < entity.getY() + (float)8 + 1.0F; ++y) {
+                            for(float z = (float) (entity.getZ() - (float)8); z < entity.getZ() + (float)8 + 1.0F; ++z) {
+                                if (entity.level instanceof ServerLevel world) {
+                                    world.sendParticles(ParticleTypes.SQUID_INK, (double) x, (double) y, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
                                 }
                             }
                         }
                     }
-                    AABB aabb = new AABB((double) (entity.getX() - 7), (double) (entity.getY() - 7), (double) (entity.getZ() - 7), (double) (entity.getX() + 7), (double) (entity.getY() + 7), (double) (entity.getZ() + 7));
                     List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
                     List<Entity> ret = new ArrayList();
                     new Vec3((double) entity.getX(), (double) entity.getY(), (double) entity.getZ());

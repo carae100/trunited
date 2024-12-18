@@ -25,6 +25,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -99,8 +100,9 @@ public class PlagueEffect extends MobEffect implements DamageAction {
                     }
                 }
             }
-            for(int i = 0; i < 100; i++) {
-                TensuraParticleHelper.addParticlesAroundSelf(entity, ParticleTypes.EXPLOSION.getType(), 1.0);
+
+            if (entity.level instanceof ServerLevel world) {
+                world.sendParticles(ParticleTypes.SQUID_INK, (double) entity.getX(), (double) entity.getY(), (double) entity.getZ(), 50, 1.0, 1.0, 1.0, 1.0);
             }
             if(herrscherofplague.active) {
                 Player source = getOwner(entity);

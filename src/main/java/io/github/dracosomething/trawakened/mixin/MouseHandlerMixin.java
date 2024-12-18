@@ -21,7 +21,7 @@ public class MouseHandlerMixin {
     private void onPressInject(long p_91531_, int p_91532_, int p_91533_, int p_91534_, CallbackInfo ci){
         if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
             KeyMapping.releaseAll();
-            ci.cancel();
+//            ci.cancel();
         }
     }
 
@@ -33,7 +33,7 @@ public class MouseHandlerMixin {
     private void onScrollInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
         if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
             KeyMapping.releaseAll();
-            ci.cancel();
+//            ci.cancel();
         }
     }
 
@@ -45,7 +45,7 @@ public class MouseHandlerMixin {
     private void onMoveInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
         if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
             KeyMapping.releaseAll();
-            ci.cancel();
+//            ci.cancel();
         }
     }
 }
