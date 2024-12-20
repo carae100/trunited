@@ -106,8 +106,9 @@ public class herrscherofplague extends Skill {
         switch (mode) {
             case 1 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplague");
             case 2 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit");
-            case 3 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.plaguecloud");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.plaguecloud");
+            case 4 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.plagueform");
+            case 5 -> var10000 = Component.translatable("trawakened.skill.mode.herrscherofplagueskill.plaguepound");
             default -> var10000 = Component.empty();
         }
 
@@ -119,9 +120,11 @@ public class herrscherofplague extends Skill {
         int var10000;
         if (reverse) {
             switch (instance.getMode()) {
-                case 1 -> var10000 = 3;
+                case 1 -> var10000 = 5;
                 case 2 -> var10000 = 1;
                 case 3 -> var10000 = 2;
+                case 4 -> var10000 = 3;
+                case 5 -> var10000 = 4;
                 default -> var10000 = 0;
             }
 
@@ -130,7 +133,9 @@ public class herrscherofplague extends Skill {
             switch (instance.getMode()) {
                 case 1 -> var10000 = 2;
                 case 2 -> var10000 = 3;
-                case 3 -> var10000 = 1;
+                case 3 -> var10000 = 4;
+                case 4 -> var10000 = 5;
+                case 5 -> var10000 = 1;
                 default -> var10000 = 0;
             }
 
@@ -149,6 +154,12 @@ public class herrscherofplague extends Skill {
                 break;
             case 3:
                 var10000 = 100.0;
+                break;
+            case 4:
+                var10000 = 150.0;
+                break;
+            case 5:
+                var10000 = 250.0;
                 break;
             default:
                 var10000 = 0.0;
@@ -251,6 +262,17 @@ public class herrscherofplague extends Skill {
                             }
                         }
                     }
+                }
+                break;
+            case 4:
+                if(!SkillHelper.outOfMagicule(entity, instance)){
+                    entity.addEffect(new MobEffectInstance(effectRegistry.PLAGUE_MODE_EFFECT.get(), 5326, 2, false, false, false));
+                    Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+                }
+            case 5:
+                if(!SkillHelper.outOfMagicule(entity, instance)){
+                    SkillHelper.checkThenAddEffectSource((LivingEntity) target, entity, (MobEffect) effectRegistry.PLAGUEEFFECT.get(), 32767, 3);
+                    Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
                 }
                 break;
         }

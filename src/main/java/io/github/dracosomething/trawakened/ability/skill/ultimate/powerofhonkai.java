@@ -9,11 +9,15 @@ import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.ability.skill.extra.DemonLordHakiSkill;
+import com.github.manasmods.tensura.ability.skill.extra.HakiSkill;
 import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
+import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
+import com.github.manasmods.tensura.network.TensuraNetwork;
+import com.github.manasmods.tensura.network.play2client.RequestFxSpawningPacket;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
@@ -35,8 +39,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class powerofhonkai extends Skill {
@@ -243,8 +249,43 @@ public class powerofhonkai extends Skill {
                 this.addMasteryPoint(instance, living);
             }
 
-            DemonLordHakiSkill.activateDemonLordHaki(instance, living, heldTicks);
+            HonkaiRelease(instance, living, heldTicks);
             return true;
+        }
+    }
+
+    public static void HonkaiRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
+        entity.getLevel().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.0F, 1.0F);
+        if (heldTicks % 2 == 0) {
+            TensuraNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> {
+                return entity;
+            }), new RequestFxSpawningPacket(new ResourceLocation("tensura:demon_lord_haki"), entity.getId(), 0.0, 1.0, 0.0, true));
+        }
+
+        List<LivingEntity> list = entity.getLevel().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(15.0), (living) -> {
+            return !living.is(entity) && living.isAlive() && !living.isAlliedTo(entity);
+        });
+        if (!list.isEmpty()) {
+            Iterator var10 = list.iterator();
+
+            while(true) {
+                LivingEntity target;
+                Player player;
+                do {
+                    if (!var10.hasNext()) {
+                        return;
+                    }
+
+                    target = (LivingEntity)var10.next();
+                    if (!(target instanceof Player)) {
+                        break;
+                    }
+
+                    player = (Player)target;
+                } while(player.getAbilities().invulnerable);
+                SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)TensuraMobEffects.MAGICULE_POISON.get(), 200, 5);
+                HakiSkill.hakiPush(target, entity, 5);
+            }
         }
     }
 
