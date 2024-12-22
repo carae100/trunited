@@ -19,7 +19,7 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> PLAGUEEFFECT;
     public static final RegistryObject<MobEffect> PLAGUE_MODE_EFFECT;
 
-    public  effectRegistry(){}
+    public effectRegistry(){}
 
     public static void init(IEventBus modEventBus) {
         registry.register(modEventBus);

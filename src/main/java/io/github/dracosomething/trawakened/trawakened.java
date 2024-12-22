@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened;
 import com.mojang.logging.LogUtils;
 import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
+import io.github.dracosomething.trawakened.util.ModItemProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,7 +41,7 @@ public class trawakened {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
-//        modEventBus.addListener(this::onCommonSetup);
+        modEventBus.addListener(this::clientSetup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -59,15 +60,8 @@ public class trawakened {
         LOGGER.info("HELLO from server starting");
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
+    @SubscribeEvent
+    public void clientSetup(FMLClientSetupEvent event){
+        ModItemProperties.addCustomItemProperties();
     }
 }

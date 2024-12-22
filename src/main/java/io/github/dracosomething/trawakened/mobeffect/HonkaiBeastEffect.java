@@ -29,16 +29,16 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import java.util.UUID;
 
 public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation, DamageAction {
-    protected static final String HONKAI = "c585ceb0-3f6a-11ee-be56-0242ac120002";
+    protected static final String HONKAI = "263f92dc-ea72-43bc-899d-679cddc22d23";
 
     public HonkaiBeastEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
-        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, "c585ceb0-3f6a-11ee-be56-0242ac120002", 30.0, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier(Attributes.ARMOR, "c585ceb0-3f6a-11ee-be56-0242ac120002", 10.0, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "c585ceb0-3f6a-11ee-be56-0242ac120002", 0.01, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier(Attributes.MAX_HEALTH, "c585ceb0-3f6a-11ee-be56-0242ac120002", 50.0, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "c585ceb0-3f6a-11ee-be56-0242ac120002", 100.0, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier((Attribute) ForgeMod.ATTACK_RANGE.get(), "c585ceb0-3f6a-11ee-be56-0242ac120002", 2.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, "263f92dc-ea72-43bc-899d-679cddc22d23", 30.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.ARMOR, "263f92dc-ea72-43bc-899d-679cddc22d23", 10.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "263f92dc-ea72-43bc-899d-679cddc22d23", 0.01, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.MAX_HEALTH, "263f92dc-ea72-43bc-899d-679cddc22d23", 50.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "263f92dc-ea72-43bc-899d-679cddc22d23", 100.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier((Attribute) ForgeMod.ATTACK_RANGE.get(), "263f92dc-ea72-43bc-899d-679cddc22d23", 2.0, AttributeModifier.Operation.ADDITION);
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
@@ -72,7 +72,7 @@ public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation
         TensuraEPCapability.updateEP(entity);
     }
     public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
-        return pModifier.getId().equals(UUID.fromString("c585ceb0-3f6a-11ee-be56-0242ac120002")) ? pModifier.getAmount() : pModifier.getAmount() * (double)(pAmplifier + 1);
+        return pModifier.getId().equals(UUID.fromString("263f92dc-ea72-43bc-899d-679cddc22d23")) ? pModifier.getAmount() : pModifier.getAmount() * (double)(pAmplifier + 1);
     }
 
     public boolean isDurationEffectTick(int pDuration, int amplifier) {

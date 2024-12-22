@@ -6,6 +6,7 @@ import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.DamageAction;
 import com.github.manasmods.tensura.effect.template.SkillMobEffect;
 import com.github.manasmods.tensura.effect.template.Transformation;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
@@ -14,6 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -34,8 +36,9 @@ public class PlagueModeEffect extends SkillMobEffect implements Transformation, 
 
     public PlagueModeEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
-        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, "c585ceb0-3f6a-11ee-be57-0242ac120002", 30.0, AttributeModifier.Operation.ADDITION);
-        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "c585ceb0-3f6a-11ee-be57-0242ac120002", 5.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.ATTACK_DAMAGE, "c585ceb0-3f6a-11ee-be57-0242ac120002", -1.0, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "c585ceb0-3f6a-11ee-be57-0242ac120002", 0.2, AttributeModifier.Operation.ADDITION);
+        this.addAttributeModifier(ForgeMod.ATTACK_RANGE.get(), "c585ceb0-3f6a-11ee-be57-0242ac120002", 5.0, AttributeModifier.Operation.ADDITION);
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
@@ -54,7 +57,7 @@ public class PlagueModeEffect extends SkillMobEffect implements Transformation, 
         if (pAmplifier >= 1 || !this.failedToActivate(entity, this)) {
             TensuraParticleHelper.addParticlesAroundSelf(entity, (ParticleOptions) ParticleTypes.SQUID_INK);
         }
-
+        entity.addEffect(new MobEffectInstance(TensuraMobEffects.FALSIFIER.get(), 5, 10));
     }
 
     @Override
@@ -84,7 +87,7 @@ public class PlagueModeEffect extends SkillMobEffect implements Transformation, 
     }
 
     public boolean isDurationEffectTick(int pDuration, int amplifier) {
-        return pDuration % 20 == 0;
+        return pDuration % 2 == 0;
     }
 }
 
