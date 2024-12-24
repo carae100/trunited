@@ -176,7 +176,7 @@ public class willofhonkai extends Skill implements Transformation {
                                     ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
                                     if (SkillUtils.learnSkill(entity, skill)) {
                                         this.addMasteryPoint(instance, entity);
-                                        instance.setCoolDown(20);
+                                        instance.setCoolDown(10);
                                         failed = false;
                                         if (entity instanceof Player) {
                                             Player player = (Player) entity;
@@ -238,7 +238,7 @@ public class willofhonkai extends Skill implements Transformation {
                             }
 
                             this.addMasteryPoint(instance, entity);
-                            instance.setCoolDown(1800);
+                            instance.setCoolDown(300);
                             entity.setHealth(entity.getMaxHealth());
                             entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_ROAR, SoundSource.PLAYERS, 1.0F, 1.0F);
                             entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 960 : 480, 1, true, true, true));

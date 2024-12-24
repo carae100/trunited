@@ -81,14 +81,18 @@ public class herrscherofdestruction extends HerrscherSeedAwakened {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
+        int chance1 = 0;
+        int chance2 = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai"))))) {
             chance += 25;
-        } else if (TensuraPlayerCapability.getBaseMagicule(player) >= 100000) {
-            chance += 25;
-        } else if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
-            chance += 50;
         }
-            return (double) chance;
+        if (TensuraPlayerCapability.getBaseMagicule(player) >= 100000) {
+            chance1 += 25;
+        }
+        if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
+            chance2 += 50;
+        }
+            return (double) chance + chance1 + chance2;
     }
 
         public List<Component> getRequirementsForRendering (Player player) {

@@ -262,14 +262,19 @@ public class herrscherofplague extends Skill {
                             }
                         }
                     }
-                    instance.setCoolDown(1500);
+                    instance.setCoolDown(350);
                 }
                 break;
             case 4:
                 if(!SkillHelper.outOfMagicule(entity, instance)){
                     entity.addEffect(new MobEffectInstance(effectRegistry.PLAGUE_MODE_EFFECT.get(), 5326, 2, false, false, false));
                     Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
-                    instance.setCoolDown(2000);
+                    infection = true;
+                    for(int i = 0; i <= 5326; i++){
+                        if(i == 5326 && !instance.onCoolDown()){
+                            instance.setCoolDown(200);
+                        }
+                    }
                 }
             case 5:
                 if(!SkillHelper.outOfMagicule(entity, instance)){

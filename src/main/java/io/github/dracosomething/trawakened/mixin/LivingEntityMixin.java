@@ -9,15 +9,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity{
@@ -36,6 +33,8 @@ public abstract class LivingEntityMixin extends Entity{
     @Shadow public abstract void setYHeadRot(float p_21306_);
 
     @Shadow public abstract void setSprinting(boolean p_21284_);
+
+    @Shadow protected abstract float tickHeadTurn(float p_21260_, float p_21261_);
 
     public LivingEntityMixin(EntityType<?> type, Level world) {
         super(type, world);
@@ -76,6 +75,17 @@ public abstract class LivingEntityMixin extends Entity{
             this.setSprinting(false);
         } else {
             this.stuckYaw = this.getYRot();
+        }
+    }
+
+    @Inject(
+            method = "heal",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void stopHeal(float p_21116_, CallbackInfo ci){
+        if(trawakenedPlayerCapability.hasHealPoison((LivingEntity) (Object) this)){
+            ci.cancel();
         }
     }
 }

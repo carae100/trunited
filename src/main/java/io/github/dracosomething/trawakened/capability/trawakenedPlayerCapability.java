@@ -26,22 +26,29 @@ public class trawakenedPlayerCapability {
         ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
         return capability == null ? false : capability.isDemonLordSeed();
     }
+
     public static boolean isHeroEgg(Player player) {
         ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
         return capability == null ? false : capability.isHeroEgg();
     }
 
-    public static float getMaxSpiritualHealth(LivingEntity entity) {
-        return (float)entity.getAttributeValue((Attribute)TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get());
+    public static int getSoulPoints(Player player) {
+        ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
+        return capability == null ? 0 : capability.getSoulPoints();
     }
 
-    public static LivingEntity setOwnerSkill(LivingEntity player, ManasSkillInstance instance){
+
+    public static float getMaxSpiritualHealth(LivingEntity entity) {
+        return (float) entity.getAttributeValue((Attribute) TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get());
+    }
+
+    public static LivingEntity setOwnerSkill(LivingEntity player, ManasSkillInstance instance) {
         return player;
     }
 
     public static boolean hasPlague(@Nullable LivingEntity entity) {
         if (herrscherofplague.active) {
-            if(PlagueEffect.getOwner(entity) == herrscherofplague.Owner) {
+            if (PlagueEffect.getOwner(entity) == herrscherofplague.Owner) {
                 return entity != null &&
                         entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) &&
                         !entity.isSpectator() &&
@@ -49,5 +56,13 @@ public class trawakenedPlayerCapability {
             }
         }
         return false;
+    }
+
+    public static boolean hasHealPoison(@Nullable LivingEntity entity) {
+        return entity != null &&
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.HEALPOISON.get()).getEffect()) &&
+                !entity.isSpectator() &&
+                !(entity instanceof Player player && player.isCreative());
+
     }
 }

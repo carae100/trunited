@@ -6,10 +6,11 @@
   "refmap": "trawakened.refmap.json",
   "mixins": [
     "FlyingPathNavigationMixin",
+    "JumpingEntityMoveControlMixin",
     "LivingEntityMixin",
     "LookControlMixin",
-    "JumpingEntityMoveControlMixin",
     "MobMixin",
+    "OnTickHandlerMixin",
     "PathNavigationMixin",
     "SlimeEntityMixin",
     "SupermassiveSlimeEntityMixin",

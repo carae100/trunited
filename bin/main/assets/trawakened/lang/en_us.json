@@ -37,7 +37,7 @@
   "trawakened.skill.herrscherofdestructionskill": "Herrscher of Destruction",
   "trawakened.skill.herrscherofdestructionskill.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
 
-  "trawakened.skill.mode.herrscherofdestructionskill.destroyblock": "Destroy: Block",
+  "trawakened.skill.mode.herrscherofdestructionskill.destroyblock": "Destroy: Area",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyheart": "Destroy: Heart",
   "trawakened.skill.mode.herrscherofdestructionskill.destroymind": "Destroy: Mind",
   "trawakened.skill.mode.herrscherofdestructionskill.destroychunk": "Destroy: Chunk",
@@ -53,17 +53,18 @@
   "trawakened.skill.mode.herrscherofplagueskill.toggleplaguehit": "Toggle infection",
   "trawakened.skill.mode.herrscherofplagueskill.plaguecloud": "Release plague",
   "trawakened.skill.mode.herrscherofplagueskill.plagueform": "Plague form",
-  "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "Plague pound",
+  "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "Infect",
 
   "trawakened.requirement.evolution.MoreEp": "Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "Master Will of the Honkai",
   "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "Have poison and blindness",
   "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai",
-  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Become a true demon lord",
+  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Get more souls",
   "trawakened.requirement.evolution.herrscher_seed_awakened": "Become a hero egg",
   "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
   "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
 
-  "effect.trawakened.plague": "Plague"
+  "effect.trawakened.plague": "Plague",
+  "item.trawakened.staff": "Staff"
 }

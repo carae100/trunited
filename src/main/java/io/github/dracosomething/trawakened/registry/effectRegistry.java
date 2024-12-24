@@ -1,9 +1,7 @@
 package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.effect.BurdenEffect;
-import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
-import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
-import io.github.dracosomething.trawakened.mobeffect.PlagueModeEffect;
+import io.github.dracosomething.trawakened.mobeffect.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,6 +16,8 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> HONKAIEFFECT;
     public static final RegistryObject<MobEffect> PLAGUEEFFECT;
     public static final RegistryObject<MobEffect> PLAGUE_MODE_EFFECT;
+    public static final RegistryObject<MobEffect> SHPPOISON;
+    public static final RegistryObject<MobEffect> HEALPOISON;
 
     public effectRegistry(){}
 
@@ -30,5 +30,7 @@ public class effectRegistry {
         HONKAIEFFECT = registry.register("honkai_beast_mode", () -> new HonkaiBeastEffect(MobEffectCategory.BENEFICIAL, 5000268));
         PLAGUEEFFECT = registry.register("plague", () -> new PlagueEffect(MobEffectCategory.HARMFUL, 5000235));
         PLAGUE_MODE_EFFECT = registry.register("plague_mode", () -> new PlagueModeEffect(MobEffectCategory.BENEFICIAL, 5000312));
+        SHPPOISON = registry.register("shp_poison", () -> new SHPPoisonEffect(MobEffectCategory.HARMFUL, 8924432));
+        HEALPOISON = registry.register("heal_poison", () -> new HealPoisonEffect(MobEffectCategory.HARMFUL, 8232144));
     }
 }

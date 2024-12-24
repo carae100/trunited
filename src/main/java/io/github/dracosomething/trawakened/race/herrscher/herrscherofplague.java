@@ -88,14 +88,18 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
+        int chance1 = 0;
+        int chance2 = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
             chance += 25;
-        } else if (player.hasEffect(MobEffects.POISON) && player.hasEffect(MobEffects.BLINDNESS)) {
-            chance += 50;
-        } else if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
-            chance += 25;
         }
-            return (double) chance;
+        if (player.hasEffect(MobEffects.POISON) && player.hasEffect(MobEffects.BLINDNESS)) {
+            chance1 += 50;
+        }
+        if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
+            chance2 += 25;
+        }
+            return (double) chance+chance1+chance2;
     }
 
         public List<Component> getRequirementsForRendering (Player player) {

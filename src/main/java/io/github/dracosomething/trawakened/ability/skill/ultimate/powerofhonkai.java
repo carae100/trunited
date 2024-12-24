@@ -170,7 +170,7 @@ public class powerofhonkai extends Skill {
                                     ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
                                     if (SkillUtils.learnSkill(entity, skill)) {
                                         this.addMasteryPoint(instance, entity);
-                                        instance.setCoolDown(20);
+                                        instance.setCoolDown(15);
                                         failed = false;
                                         if (entity instanceof Player) {
                                             Player player = (Player) entity;
@@ -292,7 +292,7 @@ public class powerofhonkai extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         if (instance.getMode() == 3){
-            instance.setCoolDown(5 * heldTicks);
+            instance.setCoolDown(2 * heldTicks);
         }
     }
 

@@ -8,6 +8,7 @@ import com.github.manasmods.tensura.capability.ep.ITensuraEPCapability;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.DamageAction;
+import com.github.manasmods.tensura.effect.template.SkillMobEffect;
 import com.github.manasmods.tensura.entity.MetalSlimeEntity;
 import com.github.manasmods.tensura.entity.SlimeEntity;
 import com.github.manasmods.tensura.entity.SupermassiveSlimeEntity;
@@ -47,7 +48,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class PlagueEffect extends MobEffect implements DamageAction {
+public class PlagueEffect extends SkillMobEffect implements DamageAction {
     public PlagueEffect(MobEffectCategory p_19451_, int p_19452_) {
         super(p_19451_, p_19452_);
     }

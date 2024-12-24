@@ -7,6 +7,7 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
+import com.github.manasmods.tensura.world.TensuraGameRules;
 import com.mojang.datafixers.util.Pair;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
@@ -88,7 +89,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
-        if (TensuraPlayerCapability.isTrueDemonLord(player)){
+        if (trawakenedPlayerCapability.getSoulPoints(player) == player.level.getGameRules().getInt(TensuraGameRules.DEMON_LORD_AWAKEN)/2){
             chance += 100;
         }
 

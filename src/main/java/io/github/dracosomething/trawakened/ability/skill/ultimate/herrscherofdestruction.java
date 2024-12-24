@@ -20,6 +20,7 @@ import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -126,7 +127,7 @@ public class herrscherofdestruction extends Skill {
         double var10000;
         switch (instance.getMode()) {
             case 1:
-                var10000 = 100.0;
+                var10000 = 50.0;
                 break;
             case 2:
                 var10000 = 10000.0;
@@ -192,6 +193,7 @@ public class herrscherofdestruction extends Skill {
                             } else {
                                 target.setHealth(damage);
                             }
+                            target.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1500, 1, false, false, false));
                             instance.addMasteryPoint(entity);
                         } else {
                             float maxhealth = entity.getMaxHealth();
@@ -202,12 +204,14 @@ public class herrscherofdestruction extends Skill {
                             } else {
                                 entity.setHealth(damage);
                             }
+                            instance.addMasteryPoint(entity);
                         }
-                        instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
+                        entity.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1500, 1, false, false, false));
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 180 : 360);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
-                                .setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY)), false);
+                                .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
                 }
                 break;
@@ -225,6 +229,7 @@ public class herrscherofdestruction extends Skill {
                             } else {
                                 TensuraEPCapability.setSpiritualHealth(target, damage);
                             }
+                            target.addEffect(new MobEffectInstance(effectRegistry.SHPPOISON.get(), 1500, 1, false, false, false));
                             instance.addMasteryPoint(entity);
                         } else {
                             float maxshp = trawakenedPlayerCapability.getMaxSpiritualHealth(entity);
@@ -235,8 +240,10 @@ public class herrscherofdestruction extends Skill {
                             } else {
                                 TensuraEPCapability.setSpiritualHealth(entity, damage);
                             }
+                            entity.addEffect(new MobEffectInstance(effectRegistry.SHPPOISON.get(), 1500, 1, false, false, false));
+                            instance.addMasteryPoint(entity);
                         }
-                        instance.setCoolDown(this.isMastered(instance, entity) ? 1800 : 3600);
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 180 : 360);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
@@ -262,7 +269,7 @@ public class herrscherofdestruction extends Skill {
                                 }
                             }
                         }
-                        instance.setCoolDown(1500);
+                        instance.setCoolDown(150);
                         instance.addMasteryPoint(entity);
                     }
                 }
@@ -302,8 +309,10 @@ public class herrscherofdestruction extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         if (instance.getMode() == 1) {
-            r = 0;
-            instance.setCoolDown(5 * heldTicks);
+            if(heldTicks >= 5) {
+                r = 0;
+                instance.setCoolDown(5 * heldTicks);
+            }
         }
     }
 

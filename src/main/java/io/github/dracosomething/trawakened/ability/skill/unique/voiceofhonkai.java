@@ -135,7 +135,7 @@ public class voiceofhonkai extends Skill {
                             ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
                             if (SkillUtils.learnSkill(entity, skill)) {
                                 this.addMasteryPoint(instance, entity);
-                                instance.setCoolDown(20);
+                                instance.setCoolDown(15);
                                 failed = false;
                                 if (entity instanceof Player) {
                                     Player player = (Player) entity;

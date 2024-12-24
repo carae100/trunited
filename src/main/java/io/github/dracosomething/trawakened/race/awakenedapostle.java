@@ -101,13 +101,15 @@ public class awakenedapostle extends honkaiapostle {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
+        int chance2 = 0;
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))))){
             chance += 50;
-        } else if (TensuraPlayerCapability.getBaseEP(player) >= 150000) {
-            chance += 50;
+        }
+        if (TensuraPlayerCapability.getBaseEP(player) >= 150000) {
+            chance2 += 50;
         }
 
-        return (double) chance;
+        return (double) chance + chance2;
     }
 
     public List<Component> getRequirementsForRendering(Player player) {
