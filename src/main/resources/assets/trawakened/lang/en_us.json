@@ -60,11 +60,14 @@
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "Master Will of the Honkai",
   "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "Have poison and blindness",
   "trawakened.requirement.evolution.herrscher_of_destruction": "Master Power of the Honkai",
-  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Get more souls",
+  "trawakened.requirement.evolution.herrscher_seed_enslaved": "Become a true demon lord",
   "trawakened.requirement.evolution.herrscher_seed_awakened": "Become a hero egg",
   "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
   "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
 
   "effect.trawakened.plague": "Plague",
-  "item.trawakened.staff": "Staff"
+  "effect.trawakened.honkai_beast_mode": "Honkai Beast Mode",
+  "effect.trawakened.plague_mode": "Plague Form",
+  "effect.trawakened.shp_poison": "Spiritual Health Poison",
+  "effect.trawakened.heal_poison": "Heal Poison"
 }

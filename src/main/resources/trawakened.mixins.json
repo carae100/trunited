@@ -6,6 +6,7 @@
   "refmap": "trawakened.refmap.json",
   "mixins": [
     "FlyingPathNavigationMixin",
+    "ForgeEventFactoryMixin",
     "JumpingEntityMoveControlMixin",
     "LivingEntityMixin",
     "LookControlMixin",
@@ -14,11 +15,13 @@
     "PathNavigationMixin",
     "SlimeEntityMixin",
     "SupermassiveSlimeEntityMixin",
-    "TensuraPlayerCapabilityMixin"
+    "TensuraPlayerCapabilityMixin",
+    "UtilMixin"
   ],
   "client": [
     "KeyboardMixin",
-    "MouseHandlerMixin"
+    "MouseHandlerMixin",
+    "TimerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -210,6 +210,7 @@ public class willofhonkai extends Skill implements Transformation {
                         entity.swing(InteractionHand.MAIN_HAND, true);
                         Explosion.BlockInteraction interaction = Explosion.BlockInteraction.BREAK;
                         target.level.explode(entity, target.getX(), target.getY(), target.getZ(), 20F, interaction);
+                        instance.setCoolDown(25);
                     }
                 }
                 break;
@@ -222,7 +223,7 @@ public class willofhonkai extends Skill implements Transformation {
                     } else {
                         this.addMasteryPoint(instance, entity);
                         instance.setCoolDown(10);
-                        double barrierPoints = (double)entity.getMaxHealth() * 1.5;
+                        double barrierPoints = (double)entity.getMaxHealth() * 0.25;
                         attributeInstance.addPermanentModifier(new AttributeModifier(MULTILAYER, "Multilayer Barrier", barrierPoints, AttributeModifier.Operation.ADDITION));
                         entity.getLevel().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
@@ -238,10 +239,10 @@ public class willofhonkai extends Skill implements Transformation {
                             }
 
                             this.addMasteryPoint(instance, entity);
-                            instance.setCoolDown(300);
+                            instance.setCoolDown(1200);
                             entity.setHealth(entity.getMaxHealth());
                             entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WARDEN_ROAR, SoundSource.PLAYERS, 1.0F, 1.0F);
-                            entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 960 : 480, 1, true, true, true));
+                            entity.addEffect(new MobEffectInstance((MobEffect) effectRegistry.HONKAIEFFECT.get(), this.isMastered(instance, entity) ? 1200 : 780, 1, true, true, true));
                             TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.EXPLOSION_EMITTER);
                             TensuraParticleHelper.spawnServerParticles(entity.level, (ParticleOptions) TensuraParticles.LIGHTNING_SPARK.get(), entity.getX(), entity.getY(), entity.getZ(), 55, 0.08, 0.08, 0.08, 0.5, true);
                         } else {

@@ -22,6 +22,7 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
+import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
@@ -201,6 +202,8 @@ public class herrscherofplague extends Skill {
                 if (active) {
                     if (entity instanceof Player player) {
                         player.displayClientMessage(Component.literal("Disabled plague"), true);
+                        System.out.println(trawakenedPlayerCapability.getSoulPoints(player));
+                        System.out.println(player.level.getGameRules().getInt(TensuraGameRules.DEMON_LORD_AWAKEN)/2);
                     }
                     active = false;
                 } else {
@@ -267,13 +270,13 @@ public class herrscherofplague extends Skill {
                 break;
             case 4:
                 if(!SkillHelper.outOfMagicule(entity, instance)){
-                    entity.addEffect(new MobEffectInstance(effectRegistry.PLAGUE_MODE_EFFECT.get(), 5326, 2, false, false, false));
-                    Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
-                    infection = true;
-                    for(int i = 0; i <= 5326; i++){
-                        if(i == 5326 && !instance.onCoolDown()){
-                            instance.setCoolDown(200);
-                        }
+                    if (entity.hasEffect(effectRegistry.PLAGUE_MODE_EFFECT.get())){
+                        return;
+                    } else {
+                        entity.addEffect(new MobEffectInstance(effectRegistry.PLAGUE_MODE_EFFECT.get(), 5326, 2, false, false, false));
+                        Owner = trawakenedPlayerCapability.setOwnerSkill(entity, instance);
+                        infection = true;
+                        instance.setCoolDown(200);
                     }
                 }
             case 5:

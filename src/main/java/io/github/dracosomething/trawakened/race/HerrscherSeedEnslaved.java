@@ -89,7 +89,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
-        if (trawakenedPlayerCapability.getSoulPoints(player) == player.level.getGameRules().getInt(TensuraGameRules.DEMON_LORD_AWAKEN)/2){
+        if (TensuraPlayerCapability.isTrueDemonLord(player)){
             chance += 100;
         }
 

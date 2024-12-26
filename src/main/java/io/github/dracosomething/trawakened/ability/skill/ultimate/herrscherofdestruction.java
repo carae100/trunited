@@ -207,7 +207,7 @@ public class herrscherofdestruction extends Skill {
                             instance.addMasteryPoint(entity);
                         }
                         entity.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1500, 1, false, false, false));
-                        instance.setCoolDown(this.isMastered(instance, entity) ? 180 : 360);
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 80 : 160);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
@@ -243,7 +243,8 @@ public class herrscherofdestruction extends Skill {
                             entity.addEffect(new MobEffectInstance(effectRegistry.SHPPOISON.get(), 1500, 1, false, false, false));
                             instance.addMasteryPoint(entity);
                         }
-                        instance.setCoolDown(this.isMastered(instance, entity) ? 180 : 360);
+                        System.out.println(chance);
+                        instance.setCoolDown(this.isMastered(instance, entity) ? 90 : 180);
                     } else if (entity instanceof Player) {
                         Player player = (Player) entity;
                         player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted")
@@ -269,7 +270,7 @@ public class herrscherofdestruction extends Skill {
                                 }
                             }
                         }
-                        instance.setCoolDown(150);
+                        instance.setCoolDown(100);
                         instance.addMasteryPoint(entity);
                     }
                 }
@@ -292,7 +293,6 @@ public class herrscherofdestruction extends Skill {
             }
             if (heldTicks % 20 == 0) {
                 r++;
-                System.out.println("text      " + r);
             }
             if (living instanceof Player player) {
                 if(heldTicks == 0){
@@ -311,16 +311,13 @@ public class herrscherofdestruction extends Skill {
         if (instance.getMode() == 1) {
             if(heldTicks >= 5) {
                 r = 0;
-                instance.setCoolDown(5 * heldTicks);
+                instance.setCoolDown(3 * (heldTicks % 20));
             }
         }
     }
 
     public void Sinkhole(ManasSkillInstance instance, LivingEntity entity, int heldTicks, int ra,
             BlockHitResult result) {
-        if (heldTicks % 2 == 0) {
-            ra++;
-        }
         if (entity instanceof Player player) {
             if (!SkillHelper.outOfMagicule(entity, instance)) {
                 Level level = entity.getLevel();

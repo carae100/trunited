@@ -292,7 +292,7 @@ public class powerofhonkai extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         if (instance.getMode() == 3){
-            instance.setCoolDown(2 * heldTicks);
+            instance.setCoolDown(2 * (heldTicks % 20));
         }
     }
 

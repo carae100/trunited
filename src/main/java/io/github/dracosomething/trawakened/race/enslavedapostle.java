@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.race;
 
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
@@ -70,11 +71,11 @@ public class enslavedapostle extends honkaiapostle {
         return true;
     }
 
-    public Race getDefaultEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getDefaultEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED);}
 
-    public Race getAwakeningEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getAwakeningEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED);}
 
-    public Race getHarvestFestivalEvolution(Player player){return (Race) TensuraRaces.HUMAN.get();}
+    public Race getHarvestFestivalEvolution(Player player){return (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_ENSLAVED);}
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
