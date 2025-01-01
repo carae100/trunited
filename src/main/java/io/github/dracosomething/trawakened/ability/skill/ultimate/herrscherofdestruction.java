@@ -280,6 +280,7 @@ public class herrscherofdestruction extends Skill {
 
     private int r = 0;
     private BlockHitResult result;
+    private int heldsecond = 0;
 
     @Override
     public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
@@ -292,6 +293,7 @@ public class herrscherofdestruction extends Skill {
                 this.addMasteryPoint(instance, living);
             }
             if (heldTicks % 20 == 0) {
+                heldsecond++;
                 r++;
             }
             if (living instanceof Player player) {
@@ -311,7 +313,8 @@ public class herrscherofdestruction extends Skill {
         if (instance.getMode() == 1) {
             if(heldTicks >= 5) {
                 r = 0;
-                instance.setCoolDown(3 * (heldTicks % 20));
+                instance.setCoolDown(3 * heldsecond);
+                heldsecond = 0;
             }
         }
     }
@@ -451,7 +454,7 @@ public class herrscherofdestruction extends Skill {
                             .getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
                         .getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
             }
         }
     }

@@ -316,7 +316,7 @@ public class willofhonkai extends Skill implements Transformation {
             )
             {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
             }
         }
     }

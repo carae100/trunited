@@ -58,7 +58,7 @@ public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation
 
     }
 
-    @Override
+//    @Override
     public void onPlayerAttack(AttackEntityEvent e) {
         if(e.getTarget() instanceof LivingEntity){
             LivingEntity entity = (LivingEntity) e.getTarget();

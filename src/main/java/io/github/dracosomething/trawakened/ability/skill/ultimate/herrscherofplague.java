@@ -292,20 +292,8 @@ public class herrscherofplague extends Skill {
     @Override
     public boolean canIgnoreCoolDown(ManasSkillInstance instance, LivingEntity entity) {
         switch (instance.getMode()) {
-            case 1 -> {
+            case 1, 2 -> {
                 return true;
-            }
-            case 2 -> {
-                return true;
-            }
-            case 3 -> {
-                return false;
-            }
-            case 4 -> {
-                return false;
-            }
-            case 5 -> {
-                return false;
             }
             default -> {
                 return false;
@@ -350,7 +338,7 @@ public class herrscherofplague extends Skill {
                             .getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
                         .getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
             }
         }
     }

@@ -237,6 +237,8 @@ public class powerofhonkai extends Skill {
         }
     }
 
+    private int heldseconds = 0;
+
     @Override
     public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
         if (instance.getMode() != 3){
@@ -247,6 +249,8 @@ public class powerofhonkai extends Skill {
         else {
             if (heldTicks % 200 == 0 && heldTicks >0){
                 this.addMasteryPoint(instance, living);
+            } else if (heldTicks % 20 == 0){
+                heldseconds++;
             }
 
             HonkaiRelease(instance, living, heldTicks);
@@ -292,7 +296,8 @@ public class powerofhonkai extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         if (instance.getMode() == 3){
-            instance.setCoolDown(2 * (heldTicks % 20));
+            instance.setCoolDown(2 * heldseconds);
+            heldseconds = 0;
         }
     }
 
@@ -335,7 +340,7 @@ public class powerofhonkai extends Skill {
                 !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION)))
             {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
+                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
             }
         }
     }

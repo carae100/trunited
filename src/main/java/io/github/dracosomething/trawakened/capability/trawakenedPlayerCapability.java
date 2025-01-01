@@ -58,6 +58,14 @@ public class trawakenedPlayerCapability {
         return false;
     }
 
+    public static boolean isOverwhelmed(@Nullable LivingEntity entity) {
+        return entity != null &&
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.OVERWHELMED.get()).getEffect()) &&
+                !entity.isSpectator() &&
+                !(entity instanceof Player player && player.isCreative());
+
+    }
+
     public static boolean hasHealPoison(@Nullable LivingEntity entity) {
         return entity != null &&
                 entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.HEALPOISON.get()).getEffect()) &&

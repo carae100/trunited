@@ -23,7 +23,11 @@ public abstract class KeyboardMixin {
             cancellable = true
     )
     public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)){
+            KeyMapping.releaseAll();
+            ci.cancel();
+        }
+        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
             KeyMapping.releaseAll();
             ci.cancel();
         }

@@ -5,6 +5,8 @@ import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofpla
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -34,6 +36,10 @@ public class SlimeEntityMixin {
                 }
             }
         }
+        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+            ci.cancel();
+        }
+
     }
 
     @Inject(
@@ -48,6 +54,9 @@ public class SlimeEntityMixin {
                     ci.cancel();
                 }
             }
+        }
+        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+            ci.cancel();
         }
     }
 }

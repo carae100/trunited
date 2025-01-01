@@ -32,10 +32,10 @@
   "trawakened.race.herrscher_seed_enslaved.notes": "These apostles have made their first step to becoming a herrscher.",
 
   "trawakened.race.herrscher_of_destruction": "Herrscher of Destruction",
-  "trawakened.race.herrscher_of_destruction.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
+  "trawakened.race.herrscher_of_destruction.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
 
   "trawakened.skill.herrscherofdestructionskill": "Herrscher of Destruction",
-  "trawakened.skill.herrscherofdestructionskill.notes": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
+  "trawakened.skill.herrscherofdestructionskill.description": "Rule over destruction. Win wars by destroying anything that gets in your way, be it buildings or magicules, nothing is save from your power.",
 
   "trawakened.skill.mode.herrscherofdestructionskill.destroyblock": "Destroy: Area",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyheart": "Destroy: Heart",
@@ -65,9 +65,21 @@
   "trawakened.requirement.evolution.enslaved_apostle": "Become a demon lord seed",
   "trawakened.requirement.evolution.awakened_apostle": "Master Voice of the Honkai",
 
+  "trawakened.skill.starkill": "Starkill",
+  "trawakened.skill.starkill.description": "Take over the world through being the overlord of flesh.",
+
+  "trawakened.skill.mode.starkill.create_apostle": "Apostle Creation",
+  "trawakened.skill.mode.starkill.infinity": "Concept of Infinity",
+  "trawakened.skill.mode.starkill.infinity.analyze": "Changed Concept of Infinity mode to analyze",
+  "trawakened.skill.mode.starkill.infinity.overwhelmed": "Changed Concept of Infinity mode to overwhelm",
+  "trawakened.skill.mode.starkill.infinity.spatial_attack": "Changed Concept of Infinity mode to spatial cut",
+  "trawakened.skill.mode.starkill.assimilation": "Assimilation",
+
   "effect.trawakened.plague": "Plague",
   "effect.trawakened.honkai_beast_mode": "Honkai Beast Mode",
   "effect.trawakened.plague_mode": "Plague Form",
   "effect.trawakened.shp_poison": "Spiritual Health Poison",
-  "effect.trawakened.heal_poison": "Heal Poison"
+  "effect.trawakened.heal_poison": "Heal Poison",
+
+  "unworthy": "You have been deemed unworthy by the honkai."
 }

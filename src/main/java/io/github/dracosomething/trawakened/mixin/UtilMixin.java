@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(value = {Util.class}, priority = 2147483647)
 public class UtilMixin {
-    /**
-     * @author me
-     * @reason me
-     */
-    @Overwrite
-    public static long getMillis(){
-        return herrscheroftime.time;
-    }
+//    /**
+//     * @author me
+//     * @reason me
+//     */
+//    @Overwrite
+//    public static long getMillis(){
+//        return herrscheroftime.time;
+//    }
 }

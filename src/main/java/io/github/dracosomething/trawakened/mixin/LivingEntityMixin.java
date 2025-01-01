@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,6 +37,8 @@ public abstract class LivingEntityMixin extends Entity{
 
     @Shadow protected abstract float tickHeadTurn(float p_21260_, float p_21261_);
 
+    @Shadow public abstract void forceAddEffect(MobEffectInstance p_147216_, @Nullable Entity p_147217_);
+
     public LivingEntityMixin(EntityType<?> type, Level world) {
         super(type, world);
     }
@@ -50,6 +53,9 @@ public abstract class LivingEntityMixin extends Entity{
         if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())){
             cir.setReturnValue(false);
         }
+        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(
@@ -61,11 +67,22 @@ public abstract class LivingEntityMixin extends Entity{
         if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
             cir.setReturnValue(false);
         }
+        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo callbackInfo) {
         if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
+            this.setXRot(90);
+            this.xRotO = 90;
+            this.setYHeadRot(stuckYaw);
+            this.yHeadRotO = stuckYaw;
+            this.setYBodyRot(stuckYaw);
+            this.setShiftKeyDown(false);
+            this.setSprinting(false);
+        } else if (trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)) {
             this.setXRot(90);
             this.xRotO = 90;
             this.setYHeadRot(stuckYaw);

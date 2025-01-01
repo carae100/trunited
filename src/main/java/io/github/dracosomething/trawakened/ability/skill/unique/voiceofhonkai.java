@@ -96,7 +96,7 @@ public class voiceofhonkai extends Skill {
         analize(instance, entity, false);
     }
 
-    public void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
+    private void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
         if (entity instanceof Player) {
             if (on) {
                 Player player = (Player) entity;
@@ -123,7 +123,7 @@ public class voiceofhonkai extends Skill {
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         if(!SkillHelper.outOfMagicule(entity, instance)) {
             if (target != null) {
-                label52:
+                label68:
                 {
                     entity.swing(InteractionHand.MAIN_HAND, true);
                     ServerLevel level = (ServerLevel) entity.getLevel();
@@ -205,9 +205,9 @@ public class voiceofhonkai extends Skill {
         if (living instanceof Player) {
             Player player = (Player) living;
             if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE)) && !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE))) {
-                System.out.println("playerrace");
-                SkillUtils.learnSkill(player, UniqueSkills.GREAT_SAGE.get());
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));
+                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
+
             }
             if (TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE))) {
                 SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")));

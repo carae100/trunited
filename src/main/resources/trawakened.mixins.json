@@ -7,6 +7,7 @@
   "mixins": [
     "FlyingPathNavigationMixin",
     "ForgeEventFactoryMixin",
+    "GluttonyMistProjectileMixin",
     "JumpingEntityMoveControlMixin",
     "LivingEntityMixin",
     "LookControlMixin",

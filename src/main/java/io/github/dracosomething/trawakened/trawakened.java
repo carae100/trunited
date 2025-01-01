@@ -2,7 +2,6 @@ package io.github.dracosomething.trawakened;
 
 import com.mojang.logging.LogUtils;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
-import io.github.dracosomething.trawakened.util.ModItemProperties;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 import java.io.*;
 
@@ -35,11 +35,12 @@ public class trawakened {
 //        herrscheroftime.create();
 
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::clientSetup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);
+
+        GeckoLib.initialize();
 
         configFile = new File("config/tensura-reincarnated/" + TENSURA_CONFIG);
 
@@ -54,8 +55,10 @@ public class trawakened {
         LOGGER.info("HELLO from server starting");
     }
 
-    @SubscribeEvent
-    public void clientSetup(FMLClientSetupEvent event){
-        ModItemProperties.addCustomItemProperties();
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class clientSetup{
+        @SubscribeEvent
+        public static void  onClientSetup(FMLClientSetupEvent event) {
+        }
     }
 }

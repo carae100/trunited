@@ -11,11 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Timer.class)
 public class TimerMixin {
-    @Inject(
-            method = "advanceTime",
-            at = @At("HEAD")
-    )
-    private void ChangeTime(long p_92526_, CallbackInfoReturnable<Integer> cir){
-        p_92526_ = herrscheroftime.time;
-    }
+//    @Inject(
+//            method = "advanceTime",
+//            at = @At("HEAD")
+//    )
+//    private void ChangeTime(long p_92526_, CallbackInfoReturnable<Integer> cir){
+//        p_92526_ = herrscheroftime.time;
+//    }
 }
