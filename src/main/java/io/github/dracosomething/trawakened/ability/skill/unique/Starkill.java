@@ -68,6 +68,25 @@ public class Starkill extends Skill {
     }
 
     @Override
+    public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        double var10000 = 0;
+        switch (mode) {
+            case 1 -> var10000 = 1000;
+            case 2 -> var10000 = 20;
+            case 3 -> {
+                switch (mode) {
+                    case 1 -> var10000 = 0;
+                    case 2 -> var10000 = 1200;
+                    case 3 -> var10000 = 100;
+                    default -> var10000 = 0;
+                }
+            }
+        }
+
+        return var10000;
+    }
+
+    @Override
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
@@ -113,13 +132,13 @@ public class Starkill extends Skill {
                         }
                         target.kill();
                         this.addMasteryPoint(instance, entity);
-                        instance.setCoolDown(instance.isMastered(entity) ? 1 : 3);
+                        instance.setCoolDown(35);
                     } else {
                         if(target instanceof TamableAnimal animal){
                             if(entity instanceof Player player) {
                                 animal.tame(player);
                                 this.addMasteryPoint(instance, entity);
-                                instance.setCoolDown(instance.isMastered(entity) ? 1 : 3);
+                                instance.setCoolDown(35);
                             }
                         } else {
                             BlockHitResult result = SkillHelper.getPlayerPOVHitResult(target.level, target, ClipContext.Fluid.NONE, 0.0);
@@ -205,7 +224,7 @@ public class Starkill extends Skill {
                                 }
                                 break;
                             case 3:
-                                LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 5.0, false);
+                                LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
                                 target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 6);
                                 TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                                 instance.setCoolDown(10);
