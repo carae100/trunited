@@ -13,12 +13,14 @@ import com.github.manasmods.tensura.entity.magic.breath.BreathEntity;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -33,6 +35,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 public class Starkill extends Skill {
+    public ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/analog_horror_skills/unique/starkill.png");
+    }
+
     public Starkill() {
         super(SkillType.UNIQUE);
     }
@@ -153,8 +159,10 @@ public class Starkill extends Skill {
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.analyze").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
                                     mode = 1;
                                     break;
-                                }
-
+                            }
+                            if(instance.onCoolDown()) {
+                                instance.setCoolDown(instance.getCoolDown());
+                            }
                         }
                     } else {
                         switch (mode){
@@ -187,16 +195,19 @@ public class Starkill extends Skill {
                                     for (Entity entity2 : ret) {
                                         if (entity2 instanceof LivingEntity) {
                                             if (entity2 != entity) {
-                                                SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.OVERWHELMED.get(), 32767, 3);
+                                                SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.OVERWHELMED.get(), entity.level.random.nextInt(600, 6000), 3);
                                             }
                                         }
                                     }
+                                    TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.FLASH, 0.1);
+                                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                                     instance.setCoolDown(40);
                                 }
                                 break;
                             case 3:
                                 LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 5.0, false);
                                 target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 6);
+                                TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                                 instance.setCoolDown(10);
                                 break;
                         }
@@ -215,8 +226,7 @@ public class Starkill extends Skill {
             if (instance.getMode() == 2) {
                 if (heldTicks % 60 == 0 && heldTicks > 0) {
                     this.addMasteryPoint(instance, entity);
-                }
-                if(heldTicks % 20 == 0){
+                } else if (heldTicks % 20 == 0){
                     heldseconds++;
                 }
 
@@ -259,7 +269,7 @@ public class Starkill extends Skill {
 
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
-        if (instance.getMode() == 3){
+        if (instance.getMode() == 2){
             instance.setCoolDown(2 * heldseconds);
             heldseconds = 0;
         }
@@ -301,10 +311,10 @@ public class Starkill extends Skill {
         clone.setPos(position);
         CloneEntity.copyRotation(entity, clone);
         level.addFreshEntity(clone);
-        TensuraParticleHelper.addServerParticlesAroundSelf(owner, ParticleTypes.SQUID_INK, 1.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(owner, ParticleTypes.SQUID_INK, 2.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.SQUID_INK, 1.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.SQUID_INK, 2.0);
+        TensuraParticleHelper.addServerParticlesAroundSelf(owner, particleRegistry.FLESHPARTICLE.get(), 1.0);
+        TensuraParticleHelper.addServerParticlesAroundSelf(owner, particleRegistry.FLESHPARTICLE.get(), 2.0);
+        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 1.0);
+        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 2.0);
         return clone;
     }
 }

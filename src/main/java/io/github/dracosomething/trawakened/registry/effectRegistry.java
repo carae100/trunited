@@ -33,6 +33,6 @@ public class effectRegistry {
         PLAGUE_MODE_EFFECT = registry.register("plague_mode", () -> new PlagueModeEffect(MobEffectCategory.BENEFICIAL, 5000312));
         SHPPOISON = registry.register("shp_poison", () -> new SHPPoisonEffect(MobEffectCategory.HARMFUL, 8924432));
         HEALPOISON = registry.register("heal_poison", () -> new HealPoisonEffect(MobEffectCategory.HARMFUL, 8232144));
-        OVERWHELMED = registry.register("overwhelmed", () -> new overwhelmedEffect(MobEffectCategory.HARMFUL, 835476));
+        OVERWHELMED = registry.register("mad", () -> new overwhelmedEffect(MobEffectCategory.HARMFUL, 835476));
     }
 }

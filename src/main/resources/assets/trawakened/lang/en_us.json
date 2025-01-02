@@ -80,6 +80,10 @@
   "effect.trawakened.plague_mode": "Plague Form",
   "effect.trawakened.shp_poison": "Spiritual Health Poison",
   "effect.trawakened.heal_poison": "Heal Poison",
+  "effect.trawakened.mad": "M.A.D.",
+
+  "death.attack.trawakened.plague": "%1$s died of the plague",
+  "death.attack.trawakened.insanity": "%1$s heard something they didn't want to know",
 
   "unworthy": "You have been deemed unworthy by the honkai."
 }

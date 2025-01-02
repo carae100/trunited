@@ -8,6 +8,6 @@ public class trawakenedregistry {
 
     public static void register(IEventBus modEventBus) {
         effectRegistry.init(modEventBus);
-        itemRegistry.init(modEventBus);
+        particleRegistry.init(modEventBus);
     }
 }
