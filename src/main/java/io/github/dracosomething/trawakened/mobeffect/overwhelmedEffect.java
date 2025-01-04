@@ -4,12 +4,18 @@ import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.util.trawakenedDamage;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 
 public class overwhelmedEffect extends MobEffect {
     public overwhelmedEffect(MobEffectCategory p_19451_, int p_19452_) {
         super(p_19451_, p_19452_);
+    }
+
+    @Override
+    public void applyEffectTick(LivingEntity p_19467_, int p_19468_) {
+        p_19467_.addEffect(new MobEffectInstance(effectRegistry.SHPPOISON.get(), 1000, 1, true,true,true));
     }
 
     @Override

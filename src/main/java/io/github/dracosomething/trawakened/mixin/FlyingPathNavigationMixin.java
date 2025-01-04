@@ -31,8 +31,8 @@ public abstract class FlyingPathNavigationMixin extends PathNavigation {
                 }
             }
         }
-        if(this.mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
-            ci.cancel();
-        }
+//        if(this.mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+//            ci.cancel();
+//        }
     }
 }

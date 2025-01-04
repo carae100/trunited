@@ -14,6 +14,7 @@
     "MobMixin",
     "OnTickHandlerMixin",
     "PathNavigationMixin",
+    "RaceSelectionMenuMixin",
     "SlimeEntityMixin",
     "SupermassiveSlimeEntityMixin",
     "TensuraPlayerCapabilityMixin",

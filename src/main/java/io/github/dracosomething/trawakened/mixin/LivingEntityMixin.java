@@ -53,9 +53,9 @@ public abstract class LivingEntityMixin extends Entity{
         if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())){
             cir.setReturnValue(false);
         }
-        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
-            cir.setReturnValue(false);
-        }
+//        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+//            cir.setReturnValue(false);
+//        }
     }
 
     @Inject(
@@ -67,9 +67,9 @@ public abstract class LivingEntityMixin extends Entity{
         if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
             cir.setReturnValue(false);
         }
-        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-            cir.setReturnValue(false);
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+//            cir.setReturnValue(false);
+//        }
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -82,14 +82,14 @@ public abstract class LivingEntityMixin extends Entity{
             this.setYBodyRot(stuckYaw);
             this.setShiftKeyDown(false);
             this.setSprinting(false);
-        } else if (trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)) {
-            this.setXRot(90);
-            this.xRotO = 90;
-            this.setYHeadRot(stuckYaw);
-            this.yHeadRotO = stuckYaw;
-            this.setYBodyRot(stuckYaw);
-            this.setShiftKeyDown(false);
-            this.setSprinting(false);
+//        } else if (trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)) {
+//            this.setXRot(90);
+//            this.xRotO = 90;
+//            this.setYHeadRot(stuckYaw);
+//            this.yHeadRotO = stuckYaw;
+//            this.setYBodyRot(stuckYaw);
+//            this.setShiftKeyDown(false);
+//            this.setSprinting(false);
         } else {
             this.stuckYaw = this.getYRot();
         }

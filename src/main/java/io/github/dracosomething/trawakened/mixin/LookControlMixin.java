@@ -34,8 +34,8 @@ public class LookControlMixin {
                 }
             }
         }
-        if(this.mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
-            ci.cancel();
-        }
+//        if(this.mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+//            ci.cancel();
+//        }
     }
 }

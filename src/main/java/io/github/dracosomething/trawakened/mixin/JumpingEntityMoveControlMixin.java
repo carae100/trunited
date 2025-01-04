@@ -37,8 +37,8 @@ public @Final PathfinderMob mob;
                 }
             }
         }
-        if(mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
-            ci.cancel();
-        }
+//        if(mob.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+//            ci.cancel();
+//        }
     }
 }

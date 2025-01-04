@@ -36,9 +36,9 @@ public class SlimeEntityMixin {
                 }
             }
         }
-        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-            ci.cancel();
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+//            ci.cancel();
+//        }
 
     }
 
@@ -55,8 +55,8 @@ public class SlimeEntityMixin {
                 }
             }
         }
-        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-            ci.cancel();
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
+//            ci.cancel();
+//        }
     }
 }

@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofdestruction;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.powerofhonkai;
@@ -21,6 +22,7 @@ public class skillregistry {
     public static final ResourceLocation HERRSCHEROFDESTRUCTION = new ResourceLocation("trawakened", "herrscherofdestructionskill");
     public static final ResourceLocation HERRSCHEROFPLAGUE  = new ResourceLocation("trawakened", "herrscherofpestilenceskill");
     public static final ResourceLocation STARKILL  = new ResourceLocation("trawakened", "starkill");
+    public static final ResourceLocation CONCEPTOFINFINITY  = new ResourceLocation("trawakened", "starkill");
 
     public skillregistry() {
     }
@@ -34,6 +36,7 @@ public class skillregistry {
             helper.register("herrscherofdestructionskill", new herrscherofdestruction());
             helper.register("herrscherofpestilenceskill", new herrscherofplague());
             helper.register("starkill", new Starkill());
+            helper.register("concept_of_infinity", new conceptofinfinity());
         });
     }
 }

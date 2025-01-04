@@ -23,10 +23,10 @@ public class MouseHandlerMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
-            KeyMapping.releaseAll();
-            ci.cancel();
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
+//            KeyMapping.releaseAll();
+//            ci.cancel();
+//        }
     }
 
     @Inject(
