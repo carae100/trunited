@@ -82,7 +82,6 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
     @Override
     public void raceTick(Player player) {
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 10, false, false, false));
-        player.removeEffect(effectRegistry.PLAGUEEFFECT.get());
     }
 
     @Override

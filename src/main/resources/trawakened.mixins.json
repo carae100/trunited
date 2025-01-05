@@ -16,7 +16,7 @@
     "PathNavigationMixin",
     "RaceSelectionMenuMixin",
     "SlimeEntityMixin",
-    "SupermassiveSlimeEntityMixin",
+    "SmithingBenchMenuMixin",
     "TensuraPlayerCapabilityMixin",
     "UtilMixin"
   ],

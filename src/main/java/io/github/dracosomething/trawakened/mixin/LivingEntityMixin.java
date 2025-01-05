@@ -53,9 +53,9 @@ public abstract class LivingEntityMixin extends Entity{
         if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())){
             cir.setReturnValue(false);
         }
-//        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
-//            cir.setReturnValue(false);
-//        }
+        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(

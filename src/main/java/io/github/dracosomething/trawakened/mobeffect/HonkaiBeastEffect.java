@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.UUID;
@@ -58,10 +59,10 @@ public class HonkaiBeastEffect  extends SkillMobEffect implements Transformation
 
     }
 
-//    @Override
-    public void onPlayerAttack(AttackEntityEvent e) {
-        if(e.getTarget() instanceof LivingEntity){
-            LivingEntity entity = (LivingEntity) e.getTarget();
+    @Override
+    public void onDamagingEntity(LivingEntity source, LivingHurtEvent e) {
+        if(e.getEntity() instanceof LivingEntity){
+            LivingEntity entity = (LivingEntity) e.getEntity();
             Explosion.BlockInteraction interaction = Explosion.BlockInteraction.BREAK;
             entity.level.explode(entity, entity.getX(), entity.getY(), entity.getZ(), 5F, interaction);
         }

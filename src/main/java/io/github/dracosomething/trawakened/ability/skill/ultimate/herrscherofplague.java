@@ -81,6 +81,13 @@ public class herrscherofplague extends Skill {
         return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscherofpestilence.png");
     }
 
+    @Override
+    public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
+        List<MobEffect> list = new ArrayList<>(List.of());
+        list.add(effectRegistry.PLAGUEEFFECT.get());
+        return list;
+    }
+
     public herrscherofplague() {
         super(SkillType.ULTIMATE);
     }

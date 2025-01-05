@@ -223,7 +223,7 @@ public class willofhonkai extends Skill implements Transformation {
                     } else {
                         this.addMasteryPoint(instance, entity);
                         instance.setCoolDown(10);
-                        double barrierPoints = (double)entity.getMaxHealth() * 0.25;
+                        double barrierPoints = instance.isMastered(entity) ? 50 : 25;
                         attributeInstance.addPermanentModifier(new AttributeModifier(MULTILAYER, "Multilayer Barrier", barrierPoints, AttributeModifier.Operation.ADDITION));
                         entity.getLevel().playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     }

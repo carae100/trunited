@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened.ability.skill.unique;
+package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
@@ -9,22 +9,16 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.manasmods.tensura.entity.human.CloneEntity;
-import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
 import com.github.manasmods.tensura.entity.magic.breath.BreathEntity;
 import com.github.manasmods.tensura.network.play2server.RequestNamingGUIPacket;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
-import com.github.manasmods.tensura.registry.magic.SpiritualMagics;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -42,23 +36,21 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
-public class Starkill extends Skill {
-    protected final DecimalFormat roundDouble = new DecimalFormat("#.#");
-
+public class azazel extends Skill {
     public ResourceLocation getSkillIcon() {
         return new ResourceLocation("trawakened", "textures/skill/analog_horror_skills/unique/starkill.png");
     }
 
-    public Starkill() {
-        super(SkillType.UNIQUE);
+    public azazel() {
+        super(SkillType.ULTIMATE);
     }
 
     @Override

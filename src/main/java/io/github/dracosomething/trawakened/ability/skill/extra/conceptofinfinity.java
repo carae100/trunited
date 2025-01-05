@@ -2,8 +2,10 @@ package io.github.dracosomething.trawakened.ability.skill.extra;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
@@ -16,6 +18,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -32,6 +35,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class conceptofinfinity extends Skill {
+    public ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/extra/concept_of_infinity.png");
+    }
+
     public conceptofinfinity() {
         super(SkillType.EXTRA);
     }
@@ -41,6 +48,51 @@ public class conceptofinfinity extends Skill {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public Component getModeName(int mode) {
+        MutableComponent var10000;
+        switch (mode) {
+            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.infinity.analyze");
+            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.infinity.overwhelmed");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.infinity.spatial_attack");
+            default -> var10000 = Component.empty();
+        }
+
+        return var10000;
+    }
+
+    @Override
+    public int modes() {
+        return 3;
+    }
+
+    @Override
+    public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
+        if (reverse) {
+            return instance.getMode() == 1 ? 3 : instance.getMode() - 1;
+        } else {
+            return instance.getMode() == 3 ? 1 : instance.getMode() + 1;
+        }
+    }
+
+    @Override
+    public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        switch (instance.getMode()) {
+            case 1 -> {
+                return 0;
+            }
+            case 2 -> {
+                return  250;
+            }
+            case 3 -> {
+                return  100;
+            }
+            default -> {
+                return 0;
+            }
         }
     }
 
@@ -66,7 +118,7 @@ public class conceptofinfinity extends Skill {
         }
     }
 
-    private boolean on = true;
+    private boolean on;
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
@@ -111,6 +163,7 @@ public class conceptofinfinity extends Skill {
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                     instance.setCoolDown(40);
                 }
+                break;
             case 3:
                 LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
                 target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 6);
@@ -119,5 +172,26 @@ public class conceptofinfinity extends Skill {
                 instance.setCoolDown(10);
                 break;
         }
+    }
+
+    @Override
+    public boolean canIgnoreCoolDown(ManasSkillInstance instance, LivingEntity entity) {
+        switch (instance.getMode()){
+            case 1 ->{
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        if(living instanceof Player player) {
+            player.displayClientMessage(Component.translatable("learn_infinity").setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)), false);
+        }
+
+        on = false;
     }
 }

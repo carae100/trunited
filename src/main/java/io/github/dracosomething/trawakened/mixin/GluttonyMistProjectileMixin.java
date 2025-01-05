@@ -81,7 +81,7 @@ public class GluttonyMistProjectileMixin {
         }
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
             if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))){
-                if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), entity.getMaxHealth())){
+                if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), entity.getMaxHealth()/4)){
                     var6 = test_addon$getOwner2((Projectile) (Object) this);
                     if (var6 instanceof LivingEntity) {
                         owner = (LivingEntity)var6;
