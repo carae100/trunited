@@ -3,6 +3,8 @@ package io.github.dracosomething.trawakened;
 import com.mojang.logging.LogUtils;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -19,6 +21,7 @@ import java.io.*;
 // The value here should match an entry in the META-IN F/mods.toml file
 @Mod(trawakened.MODID)
 public class trawakened {
+    public static long tickCounter = 0L;
 
     // Define mod id in a common place for everything to reference
     public static final String MODID = "trawakened";

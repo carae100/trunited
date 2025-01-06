@@ -30,7 +30,7 @@ public class SmithingBenchMenuMixin {
     private void allRecipes(Player player, CallbackInfoReturnable<Boolean> cir){
         cir.setReturnValue(
                 player.isCreative() ||
-                SkillUtils.hasSkill(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))
+                SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))
                 ? true : (Boolean) SmithingCapability.getFrom(player).map((data) -> {
                     return data.hasSchematics(this.requiredSchematics);
                 }).orElse(false)
