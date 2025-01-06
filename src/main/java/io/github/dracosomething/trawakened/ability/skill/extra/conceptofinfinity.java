@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class conceptofinfinity extends Skill {
     public ResourceLocation getSkillIcon() {
@@ -44,7 +45,7 @@ public class conceptofinfinity extends Skill {
     }
 
     public boolean meetEPRequirement(Player entity, double newEP) {
-        if(SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity)){
+        if(SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && SkillUtils.hasSkill(entity, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
             return true;
         } else {
             return false;

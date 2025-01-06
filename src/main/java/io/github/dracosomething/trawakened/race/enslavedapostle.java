@@ -1,6 +1,8 @@
 package io.github.dracosomething.trawakened.race;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
@@ -18,6 +20,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class enslavedapostle extends honkaiapostle {
     public enslavedapostle() {}
@@ -99,16 +102,22 @@ public class enslavedapostle extends honkaiapostle {
     @Override
     public double getEvolutionPercentage(Player player) {
         int chance = 0;
+        int chance2 = 0;
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai"))));
         if (trawakenedPlayerCapability.isDemonLordSeed(player)){
-            chance += 100;
+            chance += 50;
+        }
+        if (SkillUtils.hasSkill(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:voiceofhonkai")))) && instance.getMastery() >= instance.getMaxMastery()/2){
+            chance2 += 50;
         }
 
-        return chance;
+        return (double) chance+chance2;
     }
 
     public List<Component> getRequirementsForRendering(Player player) {
         List<Component> list = new ArrayList();
         list.add(Component.translatable("trawakened.requirement.evolution.enslaved_apostle"));
+        list.add(Component.translatable("trawakened.requirement.evolution.half_mastery"));
         return list;
     }
 }
