@@ -163,10 +163,12 @@ public class Starkill extends Skill {
                             }
                         } else {
                             double ep = TensuraEPCapability.getEP(target);
+                            TensuraEPCapability.setLivingEP(target, 100);
                             assert entity instanceof ServerPlayer;
                             RequestNamingGUIPacket.name(target, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.LOW, "");
                             target.setCustomName(Component.empty());
                             target.setCustomNameVisible(true);
+                            TensuraEPCapability.setLivingEP(target, ep);
                         }
                     }
                     instance.setCoolDown(35);
