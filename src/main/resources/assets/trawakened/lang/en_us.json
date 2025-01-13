@@ -71,6 +71,17 @@
   "trawakened.skill.mode.infinity.overwhelmed": "§8overwhelm",
   "trawakened.skill.mode.infinity.spatial_attack": "§5spatial cut",
 
+  "trawakened.skill.azazel": "§cStarkill",
+  "trawakened.skill.azazel.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
+
+  "trawakened.skill.mode.azazel.infect": "§4Infect",
+  "trawakened.skill.mode.azazel.akashic": "§4Akashic Plane",
+  "trawakened.skill.mode.azazel.akashic.analyze": "Changed Akashic Plane mode to §banalyze",
+  "trawakened.skill.mode.azazel.akashic.overwhelmed": "Changed Akashic Plane mode to §8overwhelm",
+  "trawakened.skill.mode.azazel.akashic.spatial_attack": "Changed Akashic Plane mode to §5spatial cut",
+  "trawakened.skill.mode.azazel.assimilation": "§4Assimilation",
+  "trawakened.skill.mode.azazel.apostle": "§4Create Apostle",
+
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",

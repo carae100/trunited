@@ -42,6 +42,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,8 +53,6 @@ import java.util.*;
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class Starkill extends Skill {
-    protected final DecimalFormat roundDouble = new DecimalFormat("#.#");
-
     public ResourceLocation getSkillIcon() {
         return new ResourceLocation("trawakened", "textures/skill/analog_horror_skills/unique/starkill.png");
     }
@@ -87,8 +87,9 @@ public class Starkill extends Skill {
 
     @Override
     public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        int mode = entity.getPersistentData().getInt("mode");
         double var10000 = 0;
-        switch (mode) {
+        switch (instance.getMode()) {
             case 1 -> var10000 = 1000;
             case 2 -> var10000 = 20;
             case 3 -> {
@@ -123,10 +124,10 @@ public class Starkill extends Skill {
     }
 
     private boolean on;
-    private int mode = 1;
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
+        int mode = entity.getPersistentData().getInt("mode");
         switch (instance.getMode()){
             case 1:
                 Level level = entity.getLevel();
@@ -184,15 +185,13 @@ public class Starkill extends Skill {
                             switch (mode) {
                                 case 1:
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.overwhelmed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 2;
-                                    break;
+                                    player.getPersistentData().putInt("mode", 2);                                    break;
                                 case 2:
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.spatial_attack").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 3;
-                                    break;
+                                    player.getPersistentData().putInt("mode", 3);                                    break;
                                 case 3:
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.analyze").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 1;
+                                    player.getPersistentData().putInt("mode", 1);
                                     break;
                             }
                             if(instance.onCoolDown()) {
@@ -256,79 +255,7 @@ public class Starkill extends Skill {
                 break;
         }
     }
-    private void createHelixParticles(Level pLevel, LivingEntity pLivingEntity, int stateTimer) {
-        double baseRadius = 1.5; // Base radius
-        double heightIncrement = 0.1; // Height increment
-        int maxParticlesCount = Math.min(100, stateTimer / 2); // Calculate current particle count based on state timer
 
-        for (int i = 0; i < maxParticlesCount; i++) {
-            // Calculate the angle for the current particle
-            double angle = (i * 2 * Math.PI / 10) + (stateTimer * 0.2); // Adjusted for more winding
-
-            // Calculate position in cylindrical coordinates
-            double x = baseRadius * Math.cos(angle);
-            double y = i * heightIncrement + 1; // Ascend as we go around
-            double z = baseRadius * Math.sin(angle);
-
-            // Add some randomness to help simulate flames
-            x += randomOffset(); // Randomness in x-direction
-            y += randomOffset(); // Randomness in y-direction
-            z += randomOffset(); // Randomness in z-direction
-
-            double particleX = pLivingEntity.getX() + x;
-            double particleY = pLivingEntity.getY() + y;
-            double particleZ = pLivingEntity.getZ() + z;
-
-            TensuraParticleHelper.spawnServerParticles(pLevel, TensuraParticles.RED_FIRE.get(), particleX, particleY, particleZ, 1,0, 0.05, 0, 0.1, false); // Upward velocity
-        }
-    }
-
-    private double randomOffset() {
-        return (random.nextDouble() - 0.5) * .2;
-    }
-
-    private void createFirePillar(Level pLevel, int FIRE_PILLAR_DURATION, int firePillarTimer, LivingEntity pLivingEntity) {
-        double radius = 6.5; // Base radius of the helix
-        double height = 5; // Height of each step in the helix
-        int particlesPerRevolution = 4; // Number of particles per revolution
-        int totalParticles = particlesPerRevolution * FIRE_PILLAR_DURATION; // Total number of particles
-        Vec3 targetPosition = pLivingEntity.getPosition(0);
-
-        System.out.println("radius:"+radius);
-        System.out.println("height:"+height);
-        System.out.println("particlesPerRevolution:"+particlesPerRevolution);
-        System.out.println("totalParticles:"+totalParticles);
-        System.out.println("targetPosition:"+targetPosition);
-
-        for (int i = 0; i < totalParticles; i++) {
-            double t = i / (double) particlesPerRevolution; // Normalize to [0, 1]
-            double angle = 2 * Math.PI * t + firePillarTimer * (Math.PI / FIRE_PILLAR_DURATION); // Use firePillarTimer for rotation
-
-            double x = radius * Math.cos(angle);
-            double y = height * t; // Ascend as we go around
-            double z = radius * Math.sin(angle);
-
-            // Add some randomness for a more natural look
-            x += randomOffset(); // Randomness in x-direction
-            y += randomOffset(); // Randomness in y-direction
-            z += randomOffset(); // Randomness in z-direction
-
-            double particleX = targetPosition.x + x;
-            double particleY = targetPosition.y + y;
-            double particleZ = targetPosition.z + z;
-
-            System.out.println("t:"+t);
-            System.out.println("angle:"+angle);
-            System.out.println("x:"+x);
-            System.out.println("y:"+y);
-            System.out.println("z:"+z);
-            System.out.println("particleX:"+particleX);
-            System.out.println("particleY:"+particleY);
-            System.out.println("particleZ:"+particleZ);
-
-            TensuraParticleHelper.spawnServerParticles(pLevel, TensuraParticles.RED_FIRE.get(), particleX, particleY, particleZ, 1,0, 0.05, 0, 0.1, false); // Upward velocity
-        }
-    }
 
     private void createLineParticles(Level pLevel, LivingEntity pLivingEntity,double length) {
         Vec3 lookVec = pLivingEntity.getLookAngle();
@@ -389,6 +316,7 @@ public class Starkill extends Skill {
 
     @Override
     public boolean canIgnoreCoolDown(ManasSkillInstance instance, LivingEntity entity) {
+        int mode = entity.getPersistentData().getInt("mode");
         switch (instance.getMode()) {
             case 1, 2 -> {
                 return false;
@@ -421,9 +349,9 @@ public class Starkill extends Skill {
         if (instance.getMode() == 2){
             if(heldTicks >= 5) {
                 if (heldseconds != 0) {
-//                    instance.setCoolDown(5 * heldseconds);
+                    instance.setCoolDown(5 * heldseconds);
                 } else {
-//                    instance.setCoolDown(5);
+                    instance.setCoolDown(5);
                 }
                 heldseconds = 0;
             }
@@ -474,11 +402,22 @@ public class Starkill extends Skill {
     }
 
     @Override
+    public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
+        event.getEntity().getPersistentData().putInt("mode", 1);
+    }
+
+    @Override
+    public void onRespawn(ManasSkillInstance instance, PlayerEvent.PlayerRespawnEvent event) {
+        event.getEntity().getPersistentData().putInt("mode", 1);
+    }
+
+    @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         if(living instanceof Player player) {
             player.displayClientMessage(Component.translatable("starkill").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_RED)), false);
         }
 
+        living.getPersistentData().putInt("mode", 1);
         on = false;
     }
 }

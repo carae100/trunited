@@ -9,20 +9,28 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
+import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.manasmods.tensura.entity.human.CloneEntity;
+import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
 import com.github.manasmods.tensura.entity.magic.breath.BreathEntity;
 import com.github.manasmods.tensura.network.play2server.RequestNamingGUIPacket;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
+import com.github.manasmods.tensura.registry.magic.SpiritualMagics;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,26 +44,28 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class azazel extends Skill {
     public ResourceLocation getSkillIcon() {
-        return new ResourceLocation("trawakened", "textures/skill/analog_horror_skills/unique/starkill.png");
+        return new ResourceLocation("trawakened", "textures/skill/analog_horror_skills/ultimate/azazel.png");
     }
 
     public azazel() {
-        super(SkillType.ULTIMATE);
+        super(SkillType.UNIQUE);
     }
 
     @Override
     public int modes() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -71,16 +81,17 @@ public class azazel extends Skill {
     @Override
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
         if (reverse) {
-            return instance.getMode() == 1 ? 3 : instance.getMode() - 1;
+            return instance.getMode() == 1 ? 4 : instance.getMode() - 1;
         } else {
-            return instance.getMode() == 3 ? 1 : instance.getMode() + 1;
+            return instance.getMode() == 4 ? 1 : instance.getMode() + 1;
         }
     }
 
     @Override
     public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        int mode = entity.getPersistentData().getInt("mode_azazel");
         double var10000 = 0;
-        switch (mode) {
+        switch (instance.getMode()) {
             case 1 -> var10000 = 1000;
             case 2 -> var10000 = 20;
             case 3 -> {
@@ -96,6 +107,7 @@ public class azazel extends Skill {
                     }
                 }
             }
+            case 4 -> var10000 = 500;
         }
 
         return var10000;
@@ -105,9 +117,10 @@ public class azazel extends Skill {
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
-            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.starkill.create_apostle");
-            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.starkill.assimilation");
-            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.starkill.infinity");
+            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.azazel.infect");
+            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.azazel.assimilation");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.azazel.akashic");
+            case 4 -> var10000 = Component.translatable("trawakened.skill.mode.azazel.apostle");
             default -> var10000 = Component.empty();
         }
 
@@ -115,55 +128,77 @@ public class azazel extends Skill {
     }
 
     private boolean on;
-    private int mode = 1;
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
+        int mode = entity.getPersistentData().getInt("mode_azazel");
+        int infect_mode = entity.getPersistentData().getInt("infect_mode");
         switch (instance.getMode()){
             case 1:
-                Level level = entity.getLevel();
-                double var10000;
-                LivingEntity target = SkillHelper.getTargetingEntity(entity, 5.0, false);
-                if (entity instanceof Player) {
-                    Player player = (Player)entity;
-                    var10000 = TensuraPlayerCapability.getBaseMagicule(player);
-                } else {
-                    var10000 = TensuraEPCapability.getEP(entity);
-                }
+                List<Entity> entityList = DrawCircle(entity, 15);
 
-                double MP = var10000;
-                double EP = MP * 0.1;
-                if (!SkillHelper.outOfMagicule(entity, EP)) {
-                    if(target instanceof Player) {
-                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(target.level, target, ClipContext.Fluid.NONE, 0.0);
-                        CloneEntity clone = this.summonClone(target, entity, level, EP, result.getLocation());
-                        CloneEntity.copyEffects(target, clone);
-                        EquipmentSlot[] var10 = EquipmentSlot.values();
-                        int var11 = var10.length;
-
-                        for (int var12 = 0; var12 < var11; ++var12) {
-                            EquipmentSlot slot = var10[var12];
-                            clone.setItemSlot(slot, target.getItemBySlot(slot).copy());
-                        }
-                        target.kill();
-                        this.addMasteryPoint(instance, entity);
-                    } else {
-                        if(target instanceof TamableAnimal animal){
-                            if(entity instanceof Player player) {
-                                animal.tame(player);
-                                this.addMasteryPoint(instance, entity);
+                switch (infect_mode){
+                    case 1:{
+                        for (Entity entity2 : entityList) {
+                            Level level = entity.getLevel();
+                            double var10000;
+                            if (entity instanceof Player) {
+                                Player player = (Player)entity;
+                                var10000 = TensuraPlayerCapability.getBaseMagicule(player);
+                            } else {
+                                var10000 = TensuraEPCapability.getEP(entity);
                             }
-                        } else {
-                            double ep = TensuraEPCapability.getEP(target);
-                            assert entity instanceof ServerPlayer;
-                            RequestNamingGUIPacket.name(target, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.LOW, "");
-                            target.setCustomName(Component.empty());
-                            target.setCustomNameVisible(true);
+
+                            double MP = var10000;
+                            double EP = MP * 0.1;
+                            if (!SkillHelper.outOfMagicule(entity, EP)) {
+                                if(entity2 instanceof Player player) {
+                                    BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.NONE, 0.0);
+                                    CloneEntity clone = this.summonClone(player, entity, level, EP, result.getLocation());
+                                    CloneEntity.copyEffects(player, clone);
+                                    EquipmentSlot[] var10 = EquipmentSlot.values();
+                                    int var11 = var10.length;
+
+                                    for (int var12 = 0; var12 < var11; ++var12) {
+                                        EquipmentSlot slot = var10[var12];
+                                        clone.setItemSlot(slot, player.getItemBySlot(slot).copy());
+                                    }
+                                    player.kill();
+                                    this.addMasteryPoint(instance, entity);
+                                } else {
+                                    if(entity2 instanceof TamableAnimal animal){
+                                        if(entity instanceof Player player) {
+                                            animal.tame(player);
+                                            this.addMasteryPoint(instance, entity);
+                                        }
+                                    } else {
+                                        assert entity2 instanceof LivingEntity;
+                                        double ep = TensuraEPCapability.getEP((LivingEntity) entity2);
+                                        TensuraEPCapability.setLivingEP((LivingEntity) entity2, 100);
+                                        assert entity instanceof ServerPlayer;
+                                        RequestNamingGUIPacket.name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.LOW, "");
+                                        entity2.setCustomName(Component.empty());
+                                        entity2.setCustomNameVisible(true);
+                                        TensuraEPCapability.setLivingEP((LivingEntity) entity2, ep);
+                                    }
+                                }
+                                instance.setCoolDown(35);
+                            }
                         }
                     }
-                    instance.setCoolDown(35);
+                    break;
+                    case 2: {
+                        for (Entity entity1 : entityList){
+                            if(entity1 instanceof LivingEntity entity2){
+
+                            }
+                        }
+                    }
                 }
-            break;
+
+
+
+                break;
             case 2:
             default:
                 break;
@@ -173,16 +208,14 @@ public class azazel extends Skill {
                         if(entity instanceof Player player) {
                             switch (mode) {
                                 case 1:
-                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.overwhelmed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 2;
-                                    break;
+                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.overwhelmed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
+                                    player.getPersistentData().putInt("mode_azazel", 2);                                    break;
                                 case 2:
-                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.spatial_attack").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 3;
-                                    break;
+                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.spatial_attack").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
+                                    player.getPersistentData().putInt("mode_azazel", 3);                                    break;
                                 case 3:
-                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.starkill.infinity.analyze").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-                                    mode = 1;
+                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.analyze").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
+                                    player.getPersistentData().putInt("mode_azazel", 1);
                                     break;
                             }
                             if(instance.onCoolDown()) {
@@ -197,30 +230,12 @@ public class azazel extends Skill {
                                 break;
                             case 2:
                                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                                    AABB aabb = new AABB((double) (entity.getX() - 15), (double) (entity.getY() - 15), (double) (entity.getZ() - 15), (double) (entity.getX() + 15), (double) (entity.getY() + 15), (double) (entity.getZ() + 15));
-                                    List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
-                                    List<Entity> ret = new ArrayList();
-                                    new Vec3((double) entity.getX(), (double) entity.getY(), (double) entity.getZ());
-                                    Iterator var16 = entities.iterator();
-
-                                    while (var16.hasNext()) {
-                                        Entity entity2 = (Entity) var16.next();
-
-                                        int radius = 15;
-
-                                        double x = entity2.getX();
-                                        double y = entity2.getY();
-                                        double z = entity2.getZ();
-                                        double cmp = (double) (radius * radius) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
-                                        if (cmp > 0.0) {
-                                            ret.add(entity2);
-                                        }
-                                    }
+                                    List<Entity> ret = DrawCircle(entity, 15);
 
                                     for (Entity entity2 : ret) {
                                         if (entity2 instanceof LivingEntity) {
                                             if (entity2 != entity) {
-                                                SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.OVERWHELMED.get(), entity.level.random.nextInt(600, 6000), 1);
+                                                SkillHelper.checkThenAddEffectSource((LivingEntity) entity2, entity, (MobEffect) effectRegistry.BRAINDAMAGE.get(), entity.level.random.nextInt(600, 6000), 2);
                                             }
                                             if(entity2 instanceof Player player){
                                                 player.displayClientMessage(Component.translatable("hidden_Knowledge").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
@@ -246,79 +261,7 @@ public class azazel extends Skill {
                 break;
         }
     }
-    private void createHelixParticles(Level pLevel, LivingEntity pLivingEntity, int stateTimer) {
-        double baseRadius = 1.5; // Base radius
-        double heightIncrement = 0.1; // Height increment
-        int maxParticlesCount = Math.min(100, stateTimer / 2); // Calculate current particle count based on state timer
 
-        for (int i = 0; i < maxParticlesCount; i++) {
-            // Calculate the angle for the current particle
-            double angle = (i * 2 * Math.PI / 10) + (stateTimer * 0.2); // Adjusted for more winding
-
-            // Calculate position in cylindrical coordinates
-            double x = baseRadius * Math.cos(angle);
-            double y = i * heightIncrement + 1; // Ascend as we go around
-            double z = baseRadius * Math.sin(angle);
-
-            // Add some randomness to help simulate flames
-            x += randomOffset(); // Randomness in x-direction
-            y += randomOffset(); // Randomness in y-direction
-            z += randomOffset(); // Randomness in z-direction
-
-            double particleX = pLivingEntity.getX() + x;
-            double particleY = pLivingEntity.getY() + y;
-            double particleZ = pLivingEntity.getZ() + z;
-
-            TensuraParticleHelper.spawnServerParticles(pLevel, TensuraParticles.RED_FIRE.get(), particleX, particleY, particleZ, 1,0, 0.05, 0, 0.1, false); // Upward velocity
-        }
-    }
-
-    private double randomOffset() {
-        return (random.nextDouble() - 0.5) * .2;
-    }
-
-    private void createFirePillar(Level pLevel, int FIRE_PILLAR_DURATION, int firePillarTimer, LivingEntity pLivingEntity) {
-        double radius = 6.5; // Base radius of the helix
-        double height = 5; // Height of each step in the helix
-        int particlesPerRevolution = 4; // Number of particles per revolution
-        int totalParticles = particlesPerRevolution * FIRE_PILLAR_DURATION; // Total number of particles
-        Vec3 targetPosition = pLivingEntity.getPosition(0);
-
-        System.out.println("radius:"+radius);
-        System.out.println("height:"+height);
-        System.out.println("particlesPerRevolution:"+particlesPerRevolution);
-        System.out.println("totalParticles:"+totalParticles);
-        System.out.println("targetPosition:"+targetPosition);
-
-        for (int i = 0; i < totalParticles; i++) {
-            double t = i / (double) particlesPerRevolution; // Normalize to [0, 1]
-            double angle = 2 * Math.PI * t + firePillarTimer * (Math.PI / FIRE_PILLAR_DURATION); // Use firePillarTimer for rotation
-
-            double x = radius * Math.cos(angle);
-            double y = height * t; // Ascend as we go around
-            double z = radius * Math.sin(angle);
-
-            // Add some randomness for a more natural look
-            x += randomOffset(); // Randomness in x-direction
-            y += randomOffset(); // Randomness in y-direction
-            z += randomOffset(); // Randomness in z-direction
-
-            double particleX = targetPosition.x + x;
-            double particleY = targetPosition.y + y;
-            double particleZ = targetPosition.z + z;
-
-            System.out.println("t:"+t);
-            System.out.println("angle:"+angle);
-            System.out.println("x:"+x);
-            System.out.println("y:"+y);
-            System.out.println("z:"+z);
-            System.out.println("particleX:"+particleX);
-            System.out.println("particleY:"+particleY);
-            System.out.println("particleZ:"+particleZ);
-
-            TensuraParticleHelper.spawnServerParticles(pLevel, TensuraParticles.RED_FIRE.get(), particleX, particleY, particleZ, 1,0, 0.05, 0, 0.1, false); // Upward velocity
-        }
-    }
 
     private void createLineParticles(Level pLevel, LivingEntity pLivingEntity,double length) {
         Vec3 lookVec = pLivingEntity.getLookAngle();
@@ -379,8 +322,9 @@ public class azazel extends Skill {
 
     @Override
     public boolean canIgnoreCoolDown(ManasSkillInstance instance, LivingEntity entity) {
+        int mode = entity.getPersistentData().getInt("mode_azazel");
         switch (instance.getMode()) {
-            case 1, 2 -> {
+            case 1, 2, 4 -> {
                 return false;
             }
             case 3 -> {
@@ -411,9 +355,9 @@ public class azazel extends Skill {
         if (instance.getMode() == 2){
             if(heldTicks >= 5) {
                 if (heldseconds != 0) {
-//                    instance.setCoolDown(5 * heldseconds);
+                    instance.setCoolDown(5 * heldseconds);
                 } else {
-//                    instance.setCoolDown(5);
+                    instance.setCoolDown(5);
                 }
                 heldseconds = 0;
             }
@@ -463,12 +407,63 @@ public class azazel extends Skill {
         return clone;
     }
 
+    private List<Entity> DrawCircle(LivingEntity entity, int radius){
+        AABB aabb = new AABB((double) (entity.getX() - radius), (double) (entity.getY() - radius), (double) (entity.getZ() - radius), (double) (entity.getX() + radius), (double) (entity.getY() + radius), (double) (entity.getZ() + radius));
+        List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
+        List<Entity> ret = new ArrayList();
+        new Vec3((double) entity.getX(), (double) entity.getY(), (double) entity.getZ());
+        Iterator var16 = entities.iterator();
+
+        while (var16.hasNext()) {
+            Entity entity2 = (Entity) var16.next();
+
+            double x = entity2.getX();
+            double y = entity2.getY();
+            double z = entity2.getZ();
+            double cmp = (double) (radius * radius) - ((double) entity2.getX() - x) * ((double) entity2.getX() - x) - ((double) entity2.getY() - y) * ((double) entity2.getY() - y) - ((double) entity2.getZ() - z) * ((double) entity2.getZ() - z);
+            if (cmp > 0.0) {
+                if(!entity2.isAlliedTo(entity)) {
+                    ret.add(entity2);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    private void ParticleSummon(LivingEntity entity, int radius, ParticleOptions particle){
+        AABB aabb = new AABB((double) (entity.getX() - radius), (double) (entity.getY() - radius), (double) (entity.getZ() - radius), (double) (entity.getX() + radius), (double) (entity.getY() + radius), (double) (entity.getZ() + radius));
+        for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius + 1.0F; ++x) {
+            for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius + 1.0F; ++y) {
+                for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius + 1.0F; ++z) {
+                    if (entity.level instanceof ServerLevel world) {
+                        world.sendParticles(particle, (double) x, (double) y, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
+        event.getEntity().getPersistentData().putInt("mode_azazel", 1);
+        event.getEntity().getPersistentData().putInt("infect_mode", 1);
+    }
+
+    @Override
+    public void onRespawn(ManasSkillInstance instance, PlayerEvent.PlayerRespawnEvent event) {
+        event.getEntity().getPersistentData().putInt("mode_azazel", 1);
+        event.getEntity().getPersistentData().putInt("infect_mode", 1);
+    }
+
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         if(living instanceof Player player) {
             player.displayClientMessage(Component.translatable("starkill").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_RED)), false);
         }
 
+        living.getPersistentData().putInt("mode_azazel", 1);
+        living.getPersistentData().putInt("infect_mode", 1);
         on = false;
     }
 }
