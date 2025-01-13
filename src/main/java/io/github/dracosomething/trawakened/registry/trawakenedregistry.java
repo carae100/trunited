@@ -9,5 +9,6 @@ public class trawakenedregistry {
     public static void register(IEventBus modEventBus) {
         effectRegistry.init(modEventBus);
         particleRegistry.init(modEventBus);
+        skillregistry.init(modEventBus);
     }
 }

@@ -81,10 +81,11 @@ public class GluttonyMistProjectileMixin {
         }
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
             if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))){
-                if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), entity.getMaxHealth()/4)){
+                if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), 75)){
                     var6 = test_addon$getOwner2((Projectile) (Object) this);
                     if (var6 instanceof LivingEntity) {
                         owner = (LivingEntity)var6;
+                        owner.getPersistentData().putInt("assimilation_kills", owner.getPersistentData().getInt("assimilation_kills")+1);
 
                             this.devourAllSkills(entity, owner);
                             this.devourEP(entity, owner, 0.8F);
@@ -134,7 +135,7 @@ public class GluttonyMistProjectileMixin {
     }
 
     @Unique
-    protected void devourAllSkills(LivingEntity target, LivingEntity owner) {
+    private void devourAllSkills(LivingEntity target, LivingEntity owner) {
         BreathEntity entity = (BreathEntity) (Object) this;
         if (!target.getType().is(TensuraTags.EntityTypes.NO_SKILL_PLUNDER)) {
             List<ManasSkillInstance> targetSkills = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canDevour).toList();

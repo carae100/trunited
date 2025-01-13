@@ -260,6 +260,7 @@ public class Starkill extends Skill {
     private void createLineParticles(Level pLevel, LivingEntity pLivingEntity,double length) {
         Vec3 lookVec = pLivingEntity.getLookAngle();
         Vec3 startPos = pLivingEntity.getEyePosition(1.0F);
+        System.out.println(lookVec);
 
         HitResult hitResult = pLevel.clip(new ClipContext(startPos, startPos.add(lookVec.scale(20.0)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, pLivingEntity));
 
@@ -273,7 +274,7 @@ public class Starkill extends Skill {
 
             Vec3 pos = startPos.add(lookVec.scale(hitResult.getLocation().distanceTo(startPos) * t)).add(swerveVec);
 
-            System.out.println(length + "------" + pos + "--------" + pos.length());
+//            System.out.println(length + "------" + pos + "--------" + pos.length());
 
             double speedMultiplier = 0.5 + (1 - t) * 0.1;
 
@@ -312,6 +313,11 @@ public class Starkill extends Skill {
             return false;
         }
 
+    }
+
+    @Override
+    public void onSkillMastered(ManasSkillInstance instance, LivingEntity living) {
+        living.getPersistentData().putInt("assimilation_kills", 0);
     }
 
     @Override
@@ -404,11 +410,17 @@ public class Starkill extends Skill {
     @Override
     public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
         event.getEntity().getPersistentData().putInt("mode", 1);
+        if(instance.isMastered(event.getEntity())){
+            event.getEntity().getPersistentData().putInt("assimilation_kills", 0);
+        }
     }
 
     @Override
     public void onRespawn(ManasSkillInstance instance, PlayerEvent.PlayerRespawnEvent event) {
         event.getEntity().getPersistentData().putInt("mode", 1);
+        if(instance.isMastered(event.getEntity())){
+            event.getEntity().getPersistentData().putInt("assimilation_kills", 0);
+        }
     }
 
     @Override

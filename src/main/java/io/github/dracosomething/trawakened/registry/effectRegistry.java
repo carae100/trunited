@@ -36,7 +36,7 @@ public class effectRegistry {
         SHPPOISON = registry.register("shp_poison", () -> new SHPPoisonEffect(MobEffectCategory.HARMFUL, 8924432));
         HEALPOISON = registry.register("heal_poison", () -> new HealPoisonEffect(MobEffectCategory.HARMFUL, 8232144));
         OVERWHELMED = registry.register("mad", () -> new overwhelmedEffect(MobEffectCategory.HARMFUL, 835476));
-        MELT = registry.register("melt", () -> new MeltEffect(MobEffectCategory.HARMFUL, 1));
-        BRAINDAMAGE = registry.register("brain_damage", () -> new DestroyedBrainEffect(MobEffectCategory.HARMFUL, 4));
+        MELT = registry.register("melt", () -> new MeltEffect(MobEffectCategory.NEUTRAL, 1));
+        BRAINDAMAGE = registry.register("brain_damage", () -> new DestroyedBrainEffect(MobEffectCategory.NEUTRAL, 4));
     }
 }

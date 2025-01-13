@@ -17,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Random;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity{
 //    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
@@ -55,6 +57,15 @@ public abstract class LivingEntityMixin extends Entity{
         }
         if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
             cir.setReturnValue(false);
+        }
+        if(hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())){
+            Random rand = new Random();
+            int chance = rand.nextInt(101);
+            if(chance < 10){
+                cir.setReturnValue(true);
+            } else {
+                cir.setReturnValue(false);
+            }
         }
     }
 

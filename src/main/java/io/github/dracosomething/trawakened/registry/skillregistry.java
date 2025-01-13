@@ -1,42 +1,50 @@
 package io.github.dracosomething.trawakened.registry;
 
+import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofdestruction;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.powerofhonkai;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.willofhonkai;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class skillregistry {
-    public static final ResourceLocation VOICEOFHONKAI = new ResourceLocation("trawakened", "voiceofhonkai");
-    public static final ResourceLocation POWEROFHONKAI = new ResourceLocation("trawakened", "powerofhonkai");
-    public static final ResourceLocation WILLOFHONKAI = new ResourceLocation("trawakened", "willofhonkai");
-    public static final ResourceLocation HERRSCHEROFDESTRUCTION = new ResourceLocation("trawakened", "herrscherofdestructionskill");
-    public static final ResourceLocation HERRSCHEROFPLAGUE  = new ResourceLocation("trawakened", "herrscherofpestilenceskill");
-    public static final ResourceLocation STARKILL  = new ResourceLocation("trawakened", "starkill");
-    public static final ResourceLocation CONCEPTOFINFINITY  = new ResourceLocation("trawakened", "starkill");
+    private static final DeferredRegister<ManasSkill> registry;
+
+    public static final RegistryObject<voiceofhonkai> VOICEOFHONKAI;
+    public static final RegistryObject<powerofhonkai> POWEROFHONKAI;
+    public static final RegistryObject<willofhonkai> WILLOFHONKAI;
+    public static final RegistryObject<herrscherofdestruction> HERRSCHEROFDESTRUCTION;
+    public static final RegistryObject<herrscherofplague> HERRSCHEROFPLAGUE;
+    public static final RegistryObject<Starkill> STARKILL;
+    public static final RegistryObject<conceptofinfinity> CONCEPTOFINFINITY;
+    public static final RegistryObject<azazel> AZAZEL;
 
     public skillregistry() {
     }
 
-    @SubscribeEvent
-    public static void register(RegisterEvent event) {
-        event.register(SkillAPI.getSkillRegistry().getRegistryKey(), (helper) -> {
-            helper.register("voiceofhonkai", new voiceofhonkai());
-            helper.register("powerofhonkai", new powerofhonkai());
-            helper.register("willofhonkai", new willofhonkai());
-            helper.register("herrscherofdestructionskill", new herrscherofdestruction());
-            helper.register("herrscherofpestilenceskill", new herrscherofplague());
-            helper.register("starkill", new Starkill());
-            helper.register("concept_of_infinity", new conceptofinfinity());
-        });
+    public static void init(IEventBus modEventBus) {
+        registry.register(modEventBus);
+    }
+
+    static {
+        registry = DeferredRegister.create(SkillAPI.getSkillRegistryKey(), "trawakened");
+        VOICEOFHONKAI = registry.register("voiceofhonkai", voiceofhonkai::new);
+        POWEROFHONKAI = registry.register("powerofhonkai", powerofhonkai::new);
+        WILLOFHONKAI = registry.register("willofhonkai", willofhonkai::new);
+        HERRSCHEROFDESTRUCTION = registry.register("herrscherofdestructionskill", herrscherofdestruction::new);
+        HERRSCHEROFPLAGUE = registry.register("herrscherofpestilenceskill", herrscherofplague::new);
+        STARKILL = registry.register("starkill", Starkill::new);
+        CONCEPTOFINFINITY = registry.register("concept_of_infinity", conceptofinfinity::new);
+        AZAZEL = registry.register("azazel", azazel::new);
     }
 }
