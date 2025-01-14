@@ -71,18 +71,19 @@
   "trawakened.skill.mode.infinity.overwhelmed": "§8overwhelm",
   "trawakened.skill.mode.infinity.spatial_attack": "§5spatial cut",
 
-  "trawakened.skill.azazel": "§cAzazel, Lord of Flesh",
+  "trawakened.skill.azazel": "§c§lAzazel, Lord of Flesh",
   "trawakened.skill.azazel.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
 
-  "trawakened.skill.mode.azazel.infect": "§4Infect",
-  "trawakened.skill.mode.azazel.infect.apostle": "Changed Infect mode to §bApostle Create",
-  "trawakened.skill.mode.azazel.infect.melt": "Changed Infect mode to §bMelt",
-  "trawakened.skill.mode.azazel.akashic": "§4Akashic Plane",
-  "trawakened.skill.mode.azazel.akashic.analyze": "Changed Akashic Plane mode to §banalyze",
-  "trawakened.skill.mode.azazel.akashic.overwhelmed": "Changed Akashic Plane mode to §8overwhelm",
-  "trawakened.skill.mode.azazel.akashic.spatial_attack": "Changed Akashic Plane mode to §5spatial cut",
-  "trawakened.skill.mode.azazel.assimilation": "§4Assimilation",
-  "trawakened.skill.mode.azazel.apostle": "§4Create Apostle",
+  "trawakened.skill.mode.azazel.infect": "§4§lInfect",
+  "trawakened.skill.mode.azazel.infect.apostle": "§lChanged Infect mode to §bApostle Create",
+  "trawakened.skill.mode.azazel.infect.melt": "§lChanged Infect mode to §bMelt",
+  "trawakened.skill.mode.azazel.akashic": "§4§lAkashic Plane",
+  "trawakened.skill.mode.azazel.akashic.analyze": "§lChanged Akashic Plane mode to §banalyze",
+  "trawakened.skill.mode.azazel.akashic.overwhelmed": "§lChanged Akashic Plane mode to §8overwhelm",
+  "trawakened.skill.mode.azazel.akashic.spatial_attack": "§lChanged Akashic Plane mode to §5spatial cut",
+  "trawakened.skill.mode.azazel.akashic.podolsky": "§lChanged Akashic Plane mode to §6Podolsky Neurons",
+  "trawakened.skill.mode.azazel.assimilation": "§4§lAssimilation",
+  "trawakened.skill.mode.azazel.apostle": "§4§lCreate Apostle",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
@@ -106,6 +107,8 @@
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
   "death.attack.trawakened.insanity": "%1$s §7heard something they didn't want to know",
   "death.attack.trawakened.assimilation": "%1$s §4was assimilated",
+
+  "trawakened.skill.thought.mode": "Command: %s",
 
   "unworthy": "You have been deemed unworthy by the honkai.",
   "starkill": "You feel something strangely different within your body.",

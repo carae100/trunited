@@ -77,6 +77,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static com.github.manasmods.tensura.ability.skill.common.ThoughtCommunicationSkill.targetingBehaviour;
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class azazel extends Skill {
@@ -261,6 +262,10 @@ public class azazel extends Skill {
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.spatial_attack").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
                                     player.getPersistentData().putInt("mode_azazel", 3);                                    break;
                                 case 3:
+                                    player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.podolsky").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
+                                    player.getPersistentData().putInt("mode_azazel", 4);
+                                    break;
+                                case 4:
                                     player.displayClientMessage(Component.translatable("trawakened.skill.mode.azazel.akashic.analyze").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
                                     player.getPersistentData().putInt("mode_azazel", 1);
                                     break;
@@ -296,12 +301,48 @@ public class azazel extends Skill {
                                 }
                                 break;
                             case 3:
-                                LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
-                                target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 6);
-                                TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
-                                target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1000, 1, false, false, false));
-                                instance.setCoolDown(10);
+                                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                                    LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 25.0, false);
+                                    assert target2 != null;
+                                    target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 25);
+                                    TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
+                                    target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 2000, 1, false, false, false));
+                                    instance.setCoolDown(10);
+                                }
                                 break;
+                            case 4:
+                                if (!SkillHelper.outOfMagicule(entity, instance) && !entity.isSprinting()) {
+                                    List<Entity> ret = DrawCircle(entity, 60, false);
+
+                                    for (Entity entity2 : ret) {
+                                        if (entity2 instanceof LivingEntity living && SkillHelper.isSubordinate(entity, living)) {
+                                            switch (entity.getPersistentData().getString("thought_mode")) {
+                                                case "aggressive":
+                                                    SkillHelper.setAggressive(living);
+                                                    break;
+                                                case "passive":
+                                                    SkillHelper.setPassive(living);
+                                                    break;
+                                                case "neutral":
+                                                    SkillHelper.setNeutral(living);
+                                                    break;
+                                                case "wander":
+                                                    SkillHelper.setWander(living);
+                                                    break;
+                                                case "follow":
+                                                    SkillHelper.setFollow(living);
+                                                    break;
+                                                case "stay":
+                                                    if(SkillHelper.isOrderedToStay(living)){
+                                                        SkillHelper.setWander(living);
+                                                    } else {
+                                                        SkillHelper.setStay(living);
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
@@ -329,6 +370,32 @@ public class azazel extends Skill {
                     }
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onScroll(ManasSkillInstance instance, LivingEntity living, double delta) {
+        int mode = living.getPersistentData().getInt("mode_azazel");
+        if (instance.getMode() == 3 && mode == 4 && living.isSprinting()) {
+            String newRange = switch (living.getPersistentData().getString("thought_mode")) {
+                case "aggressive" -> "passive";
+                case "passive" -> "neutral";
+                case "neutral" -> "wander";
+                case "wander" -> "follow";
+                case "follow" -> "stay";
+                case "stay" -> "aggressive";
+                default -> "";
+            };
+            System.out.println(living.getPersistentData().getString("thought_mode"));
+            if (living.getPersistentData().getString("thought_mode") != newRange) {
+                living.getPersistentData().putString("thought_mode", newRange);
+                if (living instanceof Player) {
+                    Player player = (Player)living;
+                    player.displayClientMessage(Component.translatable("trawakened.skill.thought.mode", new Object[]{newRange}).setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_AQUA)), true);
+                }
+
+                instance.markDirty();
+            }
         }
     }
 
@@ -752,12 +819,14 @@ public class azazel extends Skill {
     public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
         event.getEntity().getPersistentData().putInt("mode_azazel", 1);
         event.getEntity().getPersistentData().putInt("infect_mode", 1);
+        event.getEntity().getPersistentData().putString("thought_mode", "aggressive");
     }
 
     @Override
     public void onRespawn(ManasSkillInstance instance, PlayerEvent.PlayerRespawnEvent event) {
         event.getEntity().getPersistentData().putInt("mode_azazel", 1);
         event.getEntity().getPersistentData().putInt("infect_mode", 1);
+        event.getEntity().getPersistentData().putString("thought_mode", "aggressive");
     }
 
     @Override
@@ -766,6 +835,7 @@ public class azazel extends Skill {
         for(int z = 0; z < 1000; z++) {
             addLearnPoint(instance, living);
         }
+        living.getPersistentData().putString("thought_mode", "aggressive");
         living.getPersistentData().putInt("mode_azazel", 1);
         living.getPersistentData().putInt("infect_mode", 1);
         living.getPersistentData().putInt("assimilation_kills", 0);
