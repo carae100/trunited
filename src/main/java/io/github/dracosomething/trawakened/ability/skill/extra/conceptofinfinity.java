@@ -13,6 +13,7 @@ import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -40,16 +41,17 @@ public class conceptofinfinity extends Skill {
         return new ResourceLocation("trawakened", "textures/skill/extra/concept_of_infinity.png");
     }
 
+    @Override
+    public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
+        return List.of(effectRegistry.OVERWHELMED.get(), effectRegistry.BRAINDAMAGE.get());
+    }
+
     public conceptofinfinity() {
         super(SkillType.EXTRA);
     }
 
     public boolean meetEPRequirement(Player entity, double newEP) {
-        if(SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && SkillUtils.hasSkill(entity, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
-            return true;
-        } else {
-            return false;
-        }
+        return SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && !(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillregistry.STARKILL.get()));
     }
 
     @Override

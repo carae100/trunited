@@ -93,7 +93,7 @@ public class azazel extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return entity.getPersistentData().getInt("assimilation_kills") >= 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity);
+        return entity.getPersistentData().getInt("assimilation_kills") >= 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity);
     }
 
     @Override
@@ -136,6 +136,7 @@ public class azazel extends Skill {
                         case 1 -> var10000 = 0;
                         case 2 -> var10000 = 250;
                         case 3 -> var10000 = 100;
+                        case 4 -> var10000 = 150;
                         default -> var10000 = 0;
                     }
                 }
@@ -731,6 +732,8 @@ public class azazel extends Skill {
         }
     }
 
+
+
     private void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
         if (entity instanceof Player) {
             if (on) {
@@ -802,6 +805,11 @@ public class azazel extends Skill {
         return ret;
     }
 
+    @Override
+    public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
+        return List.of(effectRegistry.OVERWHELMED.get(), effectRegistry.BRAINDAMAGE.get());
+    }
+
     private void ParticleSummon(LivingEntity entity, int radius, ParticleOptions particle){
         AABB aabb = new AABB((double) (entity.getX() - radius), (double) (entity.getY() - radius), (double) (entity.getZ() - radius), (double) (entity.getX() + radius), (double) (entity.getY() + radius), (double) (entity.getZ() + radius));
         for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius + 1.0F; ++x) {
@@ -835,6 +843,11 @@ public class azazel extends Skill {
         for(int z = 0; z < 1000; z++) {
             addLearnPoint(instance, living);
         }
+
+        if(living instanceof Player player) {
+            player.displayClientMessage(Component.translatable("azazel").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_RED)), false);
+        }
+
         living.getPersistentData().putString("thought_mode", "aggressive");
         living.getPersistentData().putInt("mode_azazel", 1);
         living.getPersistentData().putInt("infect_mode", 1);

@@ -23,6 +23,7 @@ import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import io.github.dracosomething.trawakened.mobeffect.HonkaiBeastEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -267,7 +268,8 @@ public class willofhonkai extends Skill implements Transformation {
                         skill.getType().equals(SkillType.COMMON) ||
                         skill.getType().equals(SkillType.EXTRA) ||
                         skill.getType().equals(SkillType.UNIQUE) ||
-                        skill.getType().equals(SkillType.RESISTANCE);
+                        skill.getType().equals(SkillType.RESISTANCE) ||
+                        skill.getClass().equals(azazel.class);
             }
         } else {
             return false;

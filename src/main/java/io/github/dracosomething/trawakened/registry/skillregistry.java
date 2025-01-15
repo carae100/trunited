@@ -5,6 +5,7 @@ import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
+import io.github.dracosomething.trawakened.ability.skill.unique.akashic_plane;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ public class skillregistry {
     public static final RegistryObject<Starkill> STARKILL;
     public static final RegistryObject<conceptofinfinity> CONCEPTOFINFINITY;
     public static final RegistryObject<azazel> AZAZEL;
+    public static final RegistryObject<akashic_plane> AKASHIC_PLANE;
 
     public skillregistry() {
     }
@@ -46,5 +48,6 @@ public class skillregistry {
         STARKILL = registry.register("starkill", Starkill::new);
         CONCEPTOFINFINITY = registry.register("concept_of_infinity", conceptofinfinity::new);
         AZAZEL = registry.register("azazel", azazel::new);
+        AKASHIC_PLANE = registry.register("akashic_plane", akashic_plane::new);
     }
 }

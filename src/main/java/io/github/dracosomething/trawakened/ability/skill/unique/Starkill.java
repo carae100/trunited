@@ -256,6 +256,10 @@ public class Starkill extends Skill {
         }
     }
 
+    @Override
+    public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
+        return List.of(effectRegistry.OVERWHELMED.get(), effectRegistry.BRAINDAMAGE.get());
+    }
 
     private void createLineParticles(Level pLevel, LivingEntity pLivingEntity,double length) {
         Vec3 lookVec = pLivingEntity.getLookAngle();

@@ -72,7 +72,7 @@
   "trawakened.skill.mode.infinity.spatial_attack": "§5spatial cut",
 
   "trawakened.skill.azazel": "§c§lAzazel, Lord of Flesh",
-  "trawakened.skill.azazel.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
+  "trawakened.skill.azazel.description": "§4After §4§lcountless§4 years you have finally figured it out. You are now the source of the §cstarkill§4. Destroy armies just as easily as you create them. Know things far beyond the capabilities of a normal mortal.",
 
   "trawakened.skill.mode.azazel.infect": "§4§lInfect",
   "trawakened.skill.mode.azazel.infect.apostle": "§lChanged Infect mode to §bApostle Create",
@@ -84,6 +84,14 @@
   "trawakened.skill.mode.azazel.akashic.podolsky": "§lChanged Akashic Plane mode to §6Podolsky Neurons",
   "trawakened.skill.mode.azazel.assimilation": "§4§lAssimilation",
   "trawakened.skill.mode.azazel.apostle": "§4§lCreate Apostle",
+
+  "trawakened.skill.akashic_plane": "§4§lAkashic Plane",
+  "trawakened.skill.akashic_plane.description": "§4Have your §5mental§d network§4 expand beyond the mortal realm, be connected with your §6subordinates§c like no other. You will know §c§leverything.",
+
+  "trawakened.skill.mode.akashic.analyze": "§banalyze",
+  "trawakened.skill.mode.akashic.overwhelmed": "§8overwhelm",
+  "trawakened.skill.mode.akashic.spatial_attack": "§5spatial cut",
+  "trawakened.skill.mode.akashic.podolsky": "§6Podolsky Neurons",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
@@ -112,6 +120,8 @@
 
   "unworthy": "You have been deemed unworthy by the honkai.",
   "starkill": "You feel something strangely different within your body.",
+  "azazel": "After countless years you have finally figured it out. You are now the source of the starkill.",
+  "akashic": "§l§4You almost get overwhelmed by this wave of new information.",
   "hidden_Knowledge": "§kewrqqrqwerqwerwqeteqrgfdgfsdhdyhfg",
   "learn_infinity": "You seem to have obtained some knowledge that is far beyond your comprehension"
 }
