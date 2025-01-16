@@ -83,9 +83,7 @@ public class herrscherofplague extends Skill {
 
     @Override
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
-        List<MobEffect> list = new ArrayList<>(List.of());
-        list.add(effectRegistry.PLAGUEEFFECT.get());
-        return list;
+        return List.of(effectRegistry.PLAGUEEFFECT.get());
     }
 
     public herrscherofplague() {
@@ -330,6 +328,8 @@ public class herrscherofplague extends Skill {
         }
         tag.putInt("artivatedTimes", Time + 1);
     }
+
+
 
     @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {

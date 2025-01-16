@@ -30,9 +30,9 @@ public @Final PathfinderMob mob;
             cancellable = true
     )
     private void StopGoals(CallbackInfo ci){
-        if (herrscherofplague.active) {
             if (mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
+                if (herrscherofplague.active) {
+                    if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
                     ci.cancel();
                 }
             }

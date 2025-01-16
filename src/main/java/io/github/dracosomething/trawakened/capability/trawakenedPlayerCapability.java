@@ -48,7 +48,7 @@ public class trawakenedPlayerCapability {
 
     public static boolean hasPlague(@Nullable LivingEntity entity) {
         if (herrscherofplague.active) {
-            if (PlagueEffect.getOwner(entity) == herrscherofplague.Owner) {
+            if (PlagueEffect.getOwner(entity) != null && PlagueEffect.getOwner(entity) == herrscherofplague.Owner) {
                 return entity != null &&
                         entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) &&
                         !entity.isSpectator() &&

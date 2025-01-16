@@ -1,7 +1,9 @@
 package io.github.dracosomething.trawakened.mixin;
 
 import com.mojang.authlib.minecraft.client.MinecraftClient;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -24,8 +26,12 @@ public abstract class KeyboardMixin {
     )
     public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_, CallbackInfo ci){
         if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)){
-            KeyMapping.releaseAll();
-            ci.cancel();
+            if (herrscherofplague.active) {
+                if (PlagueEffect.getOwner(Minecraft.getInstance().player) == herrscherofplague.Owner) {
+                    KeyMapping.releaseAll();
+                    ci.cancel();
+                }
+            }
         }
 //        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
 //            KeyMapping.releaseAll();

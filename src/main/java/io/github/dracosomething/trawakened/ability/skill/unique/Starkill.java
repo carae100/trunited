@@ -144,7 +144,7 @@ public class Starkill extends Skill {
                 double MP = var10000;
                 double EP = MP * 0.1;
                 if (!SkillHelper.outOfMagicule(entity, EP)) {
-                    if(target instanceof Player) {
+                    if(target instanceof Player player) {
                         BlockHitResult result = SkillHelper.getPlayerPOVHitResult(target.level, target, ClipContext.Fluid.NONE, 0.0);
                         CloneEntity clone = this.summonClone(target, entity, level, EP, result.getLocation());
                         CloneEntity.copyEffects(target, clone);
@@ -155,8 +155,12 @@ public class Starkill extends Skill {
                             EquipmentSlot slot = var10[var12];
                             clone.setItemSlot(slot, target.getItemBySlot(slot).copy());
                         }
-                        target.kill();
-                        this.addMasteryPoint(instance, entity);
+                        double damage = player.getHealth() - (player.getMaxHealth()*0.75);
+                        if (damage <= player.getHealth()){
+                            player.kill();
+                        } else {
+                            player.setHealth((float) damage);
+                        }                        this.addMasteryPoint(instance, entity);
                     } else {
                         if(target instanceof TamableAnimal animal){
                             if(entity instanceof Player player) {

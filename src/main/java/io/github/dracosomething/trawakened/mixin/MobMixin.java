@@ -26,9 +26,9 @@ public abstract class MobMixin extends LivingEntity {
 
     @ModifyVariable(method = "setTarget", at = @At("HEAD"), argsOnly = true)
     public LivingEntity setTarget(LivingEntity value){
-        if (herrscherofplague.active) {
             if (this.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                if (PlagueEffect.getOwner(this) == herrscherofplague.Owner) {
+                if (herrscherofplague.active) {
+                    if (PlagueEffect.getOwner(this) == herrscherofplague.Owner) {
                     return null;
                 }
             }

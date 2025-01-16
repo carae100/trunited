@@ -220,6 +220,7 @@ public class akashic_plane extends Skill {
                                     }
                                     break;
                             }
+                            instance.setCoolDown(20);
                         }
                     }
                 }

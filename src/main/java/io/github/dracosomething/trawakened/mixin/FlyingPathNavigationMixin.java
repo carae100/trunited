@@ -24,9 +24,9 @@ public abstract class FlyingPathNavigationMixin extends PathNavigation {
 
     @Inject(method = "tick ", at = @At("HEAD"), cancellable = true)
     public void tickInject(CallbackInfo ci) {
-        if (herrscherofplague.active) {
             if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
+                if (herrscherofplague.active) {
+                    if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
                     ci.cancel();
                 }
             }

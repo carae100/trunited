@@ -1,7 +1,10 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -76,7 +79,11 @@ public abstract class LivingEntityMixin extends Entity{
     )
     public void canSee(Entity p_147185_, CallbackInfoReturnable<Boolean> cir){
         if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
-            cir.setReturnValue(false);
+            if (herrscherofplague.active) {
+                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
+                    cir.setReturnValue(false);
+                }
+            }
         }
 //        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
 //            cir.setReturnValue(false);
@@ -86,13 +93,17 @@ public abstract class LivingEntityMixin extends Entity{
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo callbackInfo) {
         if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
-            this.setXRot(90);
-            this.xRotO = 90;
-            this.setYHeadRot(stuckYaw);
-            this.yHeadRotO = stuckYaw;
-            this.setYBodyRot(stuckYaw);
-            this.setShiftKeyDown(false);
-            this.setSprinting(false);
+            if (herrscherofplague.active) {
+                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
+                    this.setXRot(90);
+                    this.xRotO = 90;
+                    this.setYHeadRot(stuckYaw);
+                    this.yHeadRotO = stuckYaw;
+                    this.setYBodyRot(stuckYaw);
+                    this.setShiftKeyDown(false);
+                    this.setSprinting(false);
+                }
+            }
 //        } else if (trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)) {
 //            this.setXRot(90);
 //            this.xRotO = 90;

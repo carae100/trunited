@@ -23,6 +23,7 @@ import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.util.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -85,8 +86,9 @@ public class GluttonyMistProjectileMixin {
                     var6 = test_addon$getOwner2((Projectile) (Object) this);
                     if (var6 instanceof LivingEntity) {
                         owner = (LivingEntity)var6;
-                        owner.getPersistentData().putInt("assimilation_kills", owner.getPersistentData().getInt("assimilation_kills")+1);
-
+                        if(SkillUtils.isSkillMastered(owner, skillregistry.STARKILL.get())) {
+                            owner.getPersistentData().putInt("assimilation_kills", owner.getPersistentData().getInt("assimilation_kills") + 1);
+                        }
                             this.devourAllSkills(entity, owner);
                             this.devourEP(entity, owner, 0.8F);
                             if (owner instanceof Player) {

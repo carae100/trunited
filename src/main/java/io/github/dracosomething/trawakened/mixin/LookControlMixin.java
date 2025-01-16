@@ -27,9 +27,9 @@ public class LookControlMixin {
             cancellable = true
     )
     public void setLookAt(double p_24951_, double p_24952_, double p_24953_, float p_24954_, float p_24955_, CallbackInfo ci) {
-        if (herrscherofplague.active) {
             if (this.mob.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
-                if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
+                if (herrscherofplague.active) {
+                    if (PlagueEffect.getOwner(mob) == herrscherofplague.Owner) {
                     ci.cancel();
                 }
             }

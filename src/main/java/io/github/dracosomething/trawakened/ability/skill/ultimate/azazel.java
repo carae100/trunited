@@ -94,7 +94,7 @@ public class azazel extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return entity.getPersistentData().getInt("assimilation_kills") >= 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity);
+        return entity.getPersistentData().getInt("assimilation_kills") == 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity);
     }
 
     @Override
@@ -213,7 +213,12 @@ public class azazel extends Skill {
                                             EquipmentSlot slot = var10[var12];
                                             clone.setItemSlot(slot, player.getItemBySlot(slot).copy());
                                         }
-                                        player.kill();
+                                        double damage = player.getHealth() - (player.getMaxHealth()*0.75);
+                                        if (damage <= player.getHealth()){
+                                            player.kill();
+                                        } else {
+                                            player.setHealth((float) damage);
+                                        }
                                         this.addMasteryPoint(instance, entity);
                                     } else {
                                         if (entity2 instanceof TamableAnimal animal) {
@@ -342,6 +347,7 @@ public class azazel extends Skill {
                                                     }
                                                     break;
                                             }
+                                            instance.setCoolDown(20);
                                         }
                                     }
                                 }
@@ -828,6 +834,7 @@ public class azazel extends Skill {
     public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
         event.getEntity().getPersistentData().putInt("mode_azazel", 1);
         event.getEntity().getPersistentData().putInt("infect_mode", 1);
+        event.getEntity().getPersistentData().putInt("assimilation_kills", 0);
         event.getEntity().getPersistentData().putString("thought_mode", "aggressive");
     }
 
@@ -835,6 +842,7 @@ public class azazel extends Skill {
     public void onRespawn(ManasSkillInstance instance, PlayerEvent.PlayerRespawnEvent event) {
         event.getEntity().getPersistentData().putInt("mode_azazel", 1);
         event.getEntity().getPersistentData().putInt("infect_mode", 1);
+        event.getEntity().getPersistentData().putInt("assimilation_kills", 0);
         event.getEntity().getPersistentData().putString("thought_mode", "aggressive");
     }
 

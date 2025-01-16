@@ -35,14 +35,14 @@ public class MouseHandlerMixin {
             cancellable = true
     )
     private void onScrollInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+        if(!Minecraft.getInstance().isPaused() && trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)){
             KeyMapping.releaseAll();
             ci.cancel();
         }
-        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
-            KeyMapping.releaseAll();
-            ci.cancel();
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+//            KeyMapping.releaseAll();
+//            ci.cancel();
+//        }
     }
 
     @Inject(
@@ -51,13 +51,13 @@ public class MouseHandlerMixin {
             cancellable = true
     )
     private void onMoveInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+        if(!Minecraft.getInstance().isPaused() && trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)){
             KeyMapping.releaseAll();
             ci.cancel();
         }
-        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
-            KeyMapping.releaseAll();
-            ci.cancel();
-        }
+//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
+//            KeyMapping.releaseAll();
+//            ci.cancel();
+//        }
     }
 }
