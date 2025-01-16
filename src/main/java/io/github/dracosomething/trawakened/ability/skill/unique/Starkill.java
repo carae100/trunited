@@ -50,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class Starkill extends Skill {
@@ -244,7 +245,7 @@ public class Starkill extends Skill {
                                 break;
                             case 3:
                                 LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
-                                target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 6);
+                                target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false), 6);
                                 TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                                 target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1000, 1, false, false, false));
                                 instance.setCoolDown(10);

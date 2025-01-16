@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
 import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class akashic_plane extends Skill {
@@ -163,7 +164,7 @@ public class akashic_plane extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 25.0, false);
                     assert target2 != null;
-                    target2.hurt(TensuraDamageSources.SEVERANCE_UPDATE, 25);
+                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false), 25);
                     TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                     target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 2000, 1, false, false, false));
                     instance.setCoolDown(10);

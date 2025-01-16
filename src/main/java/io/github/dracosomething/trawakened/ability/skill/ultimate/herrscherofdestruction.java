@@ -449,12 +449,14 @@ public class herrscherofdestruction extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (living instanceof Player) {
             Player player = (Player) living;
-            if (!TensuraPlayerCapability.getRace(player)
-                    .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-                            .getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
-                SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
-                        .getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
-                player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
+            if(!player.isCreative()) {
+                if (!TensuraPlayerCapability.getRace(player)
+                        .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
+                                .getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
+                    SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
+                            .getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
+                    player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
+                }
             }
         }
     }
