@@ -178,6 +178,7 @@ public class Starkill extends Skill {
                         }
                     }
                     instance.setCoolDown(35);
+                    instance.addMasteryPoint(entity);
                 }
             break;
             case 2:
@@ -245,14 +246,18 @@ public class Starkill extends Skill {
                                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.FLASH, 0.1);
                                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                                     instance.setCoolDown(40);
+                                    instance.addMasteryPoint(entity);
                                 }
                                 break;
                             case 3:
-                                LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
-                                target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false), 6);
-                                TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
-                                target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1000, 1, false, false, false));
-                                instance.setCoolDown(10);
+                                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                                    LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 15.0, false);
+                                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false).bypassArmor().bypassEnchantments().bypassMagic(), 6);
+                                    TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
+                                    target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 1000, 1, false, false, false));
+                                    instance.setCoolDown(10);
+                                    instance.addMasteryPoint(entity);
+                                }
                                 break;
                         }
                     }

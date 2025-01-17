@@ -94,7 +94,7 @@ public class azazel extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return entity.getPersistentData().getInt("assimilation_kills") == 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity);
+        return entity.getPersistentData().getInt("assimilation_kills") == 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && (trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity));
     }
 
     @Override
@@ -250,8 +250,10 @@ public class azazel extends Skill {
                                     }
                                 }
                             }
+                            instance.setCoolDown(25);
                         }
                     }
+                    instance.addMasteryPoint(entity);
                 }
                 break;
             case 2:
@@ -305,16 +307,18 @@ public class azazel extends Skill {
                                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.FLASH, 0.1);
                                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                                     instance.setCoolDown(40);
+                                    instance.addMasteryPoint(entity);
                                 }
                                 break;
                             case 3:
                                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                                     LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 25.0, false);
                                     assert target2 != null;
-                                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false), 25);
+                                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false).bypassArmor().bypassEnchantments().bypassMagic(), 25);
                                     TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                                     target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 2000, 1, false, false, false));
                                     instance.setCoolDown(10);
+                                    instance.addMasteryPoint(entity);
                                 }
                                 break;
                             case 4:
@@ -348,6 +352,7 @@ public class azazel extends Skill {
                                                     break;
                                             }
                                             instance.setCoolDown(20);
+                                            instance.addMasteryPoint(entity);
                                         }
                                     }
                                 }
@@ -375,6 +380,7 @@ public class azazel extends Skill {
                         level.addFreshEntity(entity1);
                         name((LivingEntity) entity1, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
                         entity.getPersistentData().putInt("assimilation_kills", entity.getPersistentData().getInt("assimilation_kills")-1);
+                        instance.addMasteryPoint(entity);
                     }
                 }
                 break;

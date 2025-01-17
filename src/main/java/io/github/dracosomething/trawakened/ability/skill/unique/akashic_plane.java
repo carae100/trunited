@@ -76,7 +76,7 @@ public class akashic_plane extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return !(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillregistry.STARKILL.get())) && SkillUtils.isSkillMastered(entity, skillregistry.CONCEPTOFINFINITY.get()) && TensuraPlayerCapability.isTrueDemonLord(entity) || TensuraPlayerCapability.isTrueHero(entity) && TensuraPlayerCapability.getCurrentEP(entity) == 1000000;
+        return !(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillregistry.STARKILL.get())) && SkillUtils.isSkillMastered(entity, skillregistry.CONCEPTOFINFINITY.get()) && (TensuraPlayerCapability.isTrueDemonLord(entity) || TensuraPlayerCapability.isTrueHero(entity)) && TensuraPlayerCapability.getCurrentEP(entity) == 1000000;
     }
 
     @Override
@@ -158,16 +158,18 @@ public class akashic_plane extends Skill {
                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.FLASH, 0.1);
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                     instance.setCoolDown(40);
+                    instance.addMasteryPoint(entity);
                 }
                 break;
             case 3:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     LivingEntity target2 = SkillHelper.getTargetingEntity(entity, 25.0, false);
                     assert target2 != null;
-                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false), 25);
+                    target2.hurt(TensuraDamageSources.elementalAttack(SPACE_ATTACK, entity, false).bypassArmor().bypassEnchantments().bypassMagic(), 25);
                     TensuraParticleHelper.addServerParticlesAroundSelf(target2, ParticleTypes.SWEEP_ATTACK, 0.5);
                     target2.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 2000, 1, false, false, false));
                     instance.setCoolDown(10);
+                    instance.addMasteryPoint(entity);
                 }
                 break;
             case 4:
@@ -221,6 +223,7 @@ public class akashic_plane extends Skill {
                                     break;
                             }
                             instance.setCoolDown(20);
+                            instance.addMasteryPoint(entity);
                         }
                     }
                 }
