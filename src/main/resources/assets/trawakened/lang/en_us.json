@@ -114,7 +114,9 @@
   "death.attack.trawakened.plague": "%1$s §0died of the plague",
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
   "death.attack.trawakened.insanity": "%1$s §7heard something they didn't want to know",
+  "death.attack.trawakened.insanity.player": "%1$s §7heard something they didn't want to know",
   "death.attack.trawakened.assimilation": "%1$s §4was assimilated",
+  "death.attack.trawakened.assimilation.player": "%1$s §4was assimilated",
 
   "trawakened.skill.thought.mode": "Command: %s",
 
