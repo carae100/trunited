@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 )
 public class ClientOverlayHandler {
     private static final ResourceLocation BLACK_SCREEN = new ResourceLocation("trawakened", "textures/gui/overlay/blackscreen.png");
+    private static final ResourceLocation BLIND_SCREEN = new ResourceLocation("trawakened", "textures/gui/overlay/blind.png");
 
     public ClientOverlayHandler() {
     }
@@ -51,18 +52,25 @@ public class ClientOverlayHandler {
                             }
                         }
                     }
-                }
-            }
-            if (player != null) {
-                if(!player.isCreative()) {
-                    MobEffectInstance effectInstance = player.getEffect((MobEffect) effectRegistry.OVERWHELMED.get());
-                    if (effectInstance != null) {
+                    effectInstance = player.getEffect(effectRegistry.OVERWHELMED.get());
+                    if (effectInstance != null){
                         TensuraGUIHelper.renderFadingTextureWithDuration(effectInstance.getDuration(), 10, BLACK_SCREEN, (double) screenHeight, (double) screenWidth);
                     }
                 }
             }
         });
-
+        event.registerAbove(VanillaGuiOverlay.FROSTBITE.id(), "blind", (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+            gui.setupOverlayRenderState(true, false);
+            LocalPlayer player = gui.getMinecraft().player;
+            if (player != null) {
+                if(!player.isCreative()) {
+                    MobEffectInstance effectInstance = player.getEffect((MobEffect) effectRegistry.BRAINDAMAGE.get());
+                    if (effectInstance != null) {
+                        TensuraGUIHelper.renderFadingTextureWithDuration(effectInstance.getDuration(), 10, BLIND_SCREEN, (double) screenHeight, (double) screenWidth);
+                    }
+                }
+            }
+        });
     }
 }
 

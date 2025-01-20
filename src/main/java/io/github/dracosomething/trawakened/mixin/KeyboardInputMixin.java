@@ -17,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyboardInput.class)
 public class KeyboardInputMixin extends Input {
-    @Shadow private @Final Options options;
+    @Shadow
+    private @Final Options options;
 
     @Shadow
     private static float calculateImpulse(boolean p_205578_, boolean p_205579_) {
@@ -28,22 +29,24 @@ public class KeyboardInputMixin extends Input {
             method = "tick",
             at = @At("HEAD"),
             remap = false,
-            cancellable = true
-    )
-    public void ShuffelMapping(boolean p_234118_, float p_234119_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
-            this.up = this.options.keyRight.isDown();
-            this.down = this.options.keyChat.isDown();
-            this.left = this.options.keySaveHotbarActivator.isDown();
-            this.right = this.options.keyAdvancements.isDown();
-            this.forwardImpulse = calculateImpulse(this.up, this.down);
-            this.leftImpulse = calculateImpulse(this.left, this.right);
+            cancellable = true)
+    public void ShuffelMapping(boolean p_234118_, float p_234119_, CallbackInfo ci) {
+        if (trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)) {
+            if(this.options.keyShift.isDown() && this.options.keySprint.isDown()) {
+                this.up = this.options.keyRight.isDown();
+                this.down = this.options.keyPickItem.isDown();
+                this.left = this.options.keySaveHotbarActivator.isDown();
+                this.right = this.options.keyAdvancements.isDown();
+                this.forwardImpulse = calculateImpulse(this.left, this.up);
+                this.leftImpulse = calculateImpulse(this.down, this.right);
+            }
             this.jumping = this.options.keyUse.isDown();
             this.shiftKeyDown = this.options.keyPlayerList.isDown();
             if (p_234118_) {
-                this.leftImpulse *= p_234119_;
-                this.forwardImpulse *= p_234119_;
+                this.leftImpulse *= p_234119_ - 0.1F;
+                this.forwardImpulse *= p_234119_ - 0.1F;
             }
+            ci.cancel();
         }
     }
 }

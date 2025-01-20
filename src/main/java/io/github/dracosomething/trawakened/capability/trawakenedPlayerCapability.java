@@ -60,7 +60,7 @@ public class trawakenedPlayerCapability {
 
     public static boolean isOverwhelmed(@Nullable LivingEntity entity) {
         return entity != null &&
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.OVERWHELMED.get()).getEffect()) &&
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.BRAINDAMAGE.get()).getEffect()) &&
                 !entity.isSpectator() &&
                 !(entity instanceof Player player && player.isCreative());
 

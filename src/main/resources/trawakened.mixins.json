@@ -21,6 +21,8 @@
     "UtilMixin"
   ],
   "client": [
+    "AdvancementScreenMixin",
+    "KeyboardInputMixin",
     "KeyboardMixin",
     "MouseHandlerMixin",
     "TimerMixin"
