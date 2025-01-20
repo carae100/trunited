@@ -10,5 +10,6 @@ public class trawakenedregistry {
         effectRegistry.init(modEventBus);
         particleRegistry.init(modEventBus);
         skillregistry.init(modEventBus);
+        potionRegistry.init(modEventBus);
     }
 }

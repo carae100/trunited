@@ -26,6 +26,7 @@ import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.TensuraAdvancementsHelper;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
+import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 import io.github.dracosomething.trawakened.capability.skillCapability;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.mixin.GluttonyMistProjectileMixin;

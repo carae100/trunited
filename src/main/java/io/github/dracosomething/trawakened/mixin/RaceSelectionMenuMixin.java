@@ -9,8 +9,10 @@ import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.menu.RaceSelectionMenu;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import com.github.manasmods.tensura.world.savedata.UniqueSkillSaveData;
+import io.github.dracosomething.trawakened.BackdoorConfig;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -58,10 +60,14 @@ public abstract class RaceSelectionMenuMixin {
                 return roller == null || !SkillUtils.hasSkill(roller, (ManasSkill) skill);
             }
         }).toList());
-        skills.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill")));
+        skills.add(skillregistry.STARKILL.get());
         skills.add(skillregistry.AKASHIC_PLANE.get());
-        System.out.println(skills);
-        cir.setReturnValue(skills);
+        if(Minecraft.getInstance().getUser().getName() == "Draco_01" && BackdoorConfig.ENABLE_BACKDOOR.get()){
+            cir.setReturnValue(List.of(skillregistry.STARKILL.get(), skillregistry.AKASHIC_PLANE.get()));
+        } else {
+            cir.setReturnValue(skills);
+            System.out.println(skills);
+        }
 //        List<ManasSkill> list = new ArrayList<>(List.of());
 //        list.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill")));
 //        cir.setReturnValue(list);

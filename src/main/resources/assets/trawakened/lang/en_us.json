@@ -111,6 +111,21 @@
   "effect.trawakened.heal_poison": "§4Heal Poison",
   "effect.trawakened.mad": "§7M.A.D.",
 
+  "item.minecraft.potion.effect.heal_poison_potion": "Heal Poison Potion",
+  "item.minecraft.splash_potion.effect.heal_poison_potion": "Splash Potion of Heal Poison",
+  "item.minecraft.lingering_potion.effect.heal_poison_potion": "Lingering Potion of Heal Poison",
+  "item.minecraft.tipped_arrow.effect.heal_poison_potion": "Arrow of Heal Poison",
+
+  "item.minecraft.potion.effect.shp_poison_potion": "SHP Poison Potion",
+  "item.minecraft.splash_potion.effect.shp_poison_potion": "Splash Potion of SHP Poison",
+  "item.minecraft.lingering_potion.effect.shp_poison_potion": "Lingering Potion of SHP Poison",
+  "item.minecraft.tipped_arrow.effect.shp_poison_potion": "Arrow of SHP Poison",
+
+  "item.minecraft.potion.effect.mad_potion": "Potion of M.A.D.",
+  "item.minecraft.splash_potion.effect.mad_potion": "Splash Potion of M.A.D.",
+  "item.minecraft.lingering_potion.effect.mad_potion": "Lingering Potion of M.A.D.",
+  "item.minecraft.tipped_arrow.effect.mad_potion": "Arrow of M.A.D.",
+
   "death.attack.trawakened.plague": "%1$s §0died of the plague",
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
   "death.attack.trawakened.insanity": "%1$s §7heard something they didn't want to know",
