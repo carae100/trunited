@@ -29,7 +29,7 @@ public class MeltEffect extends TensuraMobEffect {
         if(entity.getHealth() > entity.getMaxHealth()){
             entity.setHealth(entity.getMaxHealth());
         }
-        Objects.requireNonNull(entity.getAttributes().getInstance(Attributes.MAX_HEALTH)).setBaseValue(entity.getAttributeBaseValue(Attributes.MAX_HEALTH)-((double) pAmplifier /2));
+        Objects.requireNonNull(entity.getAttributes().getInstance(Attributes.MAX_HEALTH)).setBaseValue(entity.getAttributeBaseValue(Attributes.MAX_HEALTH)-((double) Math.ceil(pAmplifier / 2)));
         TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 0.3);
     }
 

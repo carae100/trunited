@@ -39,11 +39,10 @@ public class trawakened {
     private static final String TENSURA_CONFIG = "common.toml";
     private File configFile;
 
-
     public trawakened() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-//        herrscheroftime.create();
+        // herrscheroftime.create();
 
         // Register the commonSetup method for modloading
 
@@ -56,20 +55,37 @@ public class trawakened {
 
         configFile = new File("config/tensura-reincarnated/" + TENSURA_CONFIG);
 
-        if(Minecraft.getInstance().getUser().getName() == "Draco_01") {
-            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC, "draco_01-backdoor-config.toml");
+        if (Minecraft.getInstance().getUser().getName() == "Draco_01") {
+            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
+                    "draco_01-backdoor-config.toml");
         }
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC, "trawakened-Starter-Races-config.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC,
+                "trawakened-Starter-Races-config.toml");
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HEALING,
-                    Items.POISONOUS_POTATO, potionRegistry.HEAL_POISON_POTION_1.get()));
-            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HARMING,
-                    Items.POISONOUS_POTATO, potionRegistry.SHP_POISON_POTION_1.get()));
-            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HARMING,
+            BrewingRecipeRegistry
+                    .addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HEALING,
+                            Items.POISONOUS_POTATO, potionRegistry.HEAL_POISON_POTION_1.get()));
+            BrewingRecipeRegistry
+                    .addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HARMING,
+                            Items.POISONOUS_POTATO, potionRegistry.SHP_POISON_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.SHP_POISON_POTION_1.get(),
                     Items.COAL, potionRegistry.MAD_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.MAD_POTION_1.get(),
+                    Items.FERMENTED_SPIDER_EYE, potionRegistry.BRAIN_DAMAGE_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.HEAL_POISON_POTION_1.get(),
+                    Items.COAL, potionRegistry.MELT_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.MELT_POTION_1.get(),
+                    Items.GLOWSTONE_DUST, potionRegistry.MELT_POTION_2.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.MELT_POTION_1.get(),
+                    Items.REDSTONE, potionRegistry.MELT_POTION_LONG.get()));
         });
     }
 
@@ -81,9 +97,9 @@ public class trawakened {
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class clientSetup{
+    public static class clientSetup {
         @SubscribeEvent
-        public static void  onClientSetup(FMLClientSetupEvent event) {
+        public static void onClientSetup(FMLClientSetupEvent event) {
         }
     }
 }
