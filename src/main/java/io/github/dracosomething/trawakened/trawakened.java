@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened;
 
 import com.mojang.logging.LogUtils;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
 import net.minecraft.client.Minecraft;
@@ -42,7 +43,7 @@ public class trawakened {
     public trawakened() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // herrscheroftime.create();
+         herrscheroftime.create();
 
         // Register the commonSetup method for modloading
 

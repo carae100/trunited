@@ -27,9 +27,9 @@ public class potionRegistry {
         HEAL_POISON_POTION_1 = registry.register("heal_poison_potion", () -> new Potion(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 200, 0)));
         SHP_POISON_POTION_1 = registry.register("shp_poison_potion", () -> new Potion(new MobEffectInstance(effectRegistry.SHPPOISON.get(), 200, 0)));
         MAD_POTION_1 = registry.register("mad_potion", () -> new Potion(new MobEffectInstance(effectRegistry.OVERWHELMED.get(), 10, 0)));
-        MELT_POTION_1 = registry.register("melt_potion", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 200, 1)));
-        MELT_POTION_2 = registry.register("melt_potion_2", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 100, 2)));
-        MELT_POTION_LONG = registry.register("melt_potion_long", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 400, 1)));
-        BRAIN_DAMAGE_POTION = registry.register("brain_damage_potion", () -> new Potion(new MobEffectInstance(effectRegistry.BRAINDAMAGE.get(), 200, 1)));
+        MELT_POTION_1 = registry.register("melt_potion", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 200, 0)));
+        MELT_POTION_2 = registry.register("melt_potion_2", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 100, 1)));
+        MELT_POTION_LONG = registry.register("melt_potion_long", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 400, 0)));
+        BRAIN_DAMAGE_POTION = registry.register("brain_damage_potion", () -> new Potion(new MobEffectInstance(effectRegistry.BRAINDAMAGE.get(), 200, 0)));
     }
 }
