@@ -110,13 +110,15 @@
   "effect.trawakened.shp_poison": "§6Spiritual Health Poison",
   "effect.trawakened.heal_poison": "§4Heal Poison",
   "effect.trawakened.mad": "§7M.A.D.",
+  "effect.trawakened.melt": "§cMelt",
+  "effect.trawakened.brain_damage": "§6Brain Damage",
 
-  "item.minecraft.potion.effect.heal_poison_potion": "Heal Poison Potion",
+  "item.minecraft.potion.effect.heal_poison_potion": "Potion of Heal Poison",
   "item.minecraft.splash_potion.effect.heal_poison_potion": "Splash Potion of Heal Poison",
   "item.minecraft.lingering_potion.effect.heal_poison_potion": "Lingering Potion of Heal Poison",
   "item.minecraft.tipped_arrow.effect.heal_poison_potion": "Arrow of Heal Poison",
 
-  "item.minecraft.potion.effect.shp_poison_potion": "SHP Poison Potion",
+  "item.minecraft.potion.effect.shp_poison_potion": "Potion of SHP Poison",
   "item.minecraft.splash_potion.effect.shp_poison_potion": "Splash Potion of SHP Poison",
   "item.minecraft.lingering_potion.effect.shp_poison_potion": "Lingering Potion of SHP Poison",
   "item.minecraft.tipped_arrow.effect.shp_poison_potion": "Arrow of SHP Poison",
@@ -125,6 +127,26 @@
   "item.minecraft.splash_potion.effect.mad_potion": "Splash Potion of M.A.D.",
   "item.minecraft.lingering_potion.effect.mad_potion": "Lingering Potion of M.A.D.",
   "item.minecraft.tipped_arrow.effect.mad_potion": "Arrow of M.A.D.",
+
+  "item.minecraft.potion.effect.melt_potion": "Melt Potion",
+  "item.minecraft.splash_potion.effect.melt_potion": "Splash Melt Potion",
+  "item.minecraft.lingering_potion.effect.melt_potion": "Lingering Melt Potion",
+  "item.minecraft.tipped_arrow.effect.melt_potion": "Melt Arrow",
+
+  "item.minecraft.potion.effect.melt_potion_2": "Melt Potion",
+  "item.minecraft.splash_potion.effect.melt_potion_2": "Splash Melt Potion",
+  "item.minecraft.lingering_potion.effect.melt_potion_2": "Lingering Melt Potion",
+  "item.minecraft.tipped_arrow.effect.melt_potion_2": "Melt Arrow",
+
+  "item.minecraft.potion.effect.melt_potion_long": "Melt Potion",
+  "item.minecraft.splash_potion.effect.melt_potion_long": "Splash Melt Potion",
+  "item.minecraft.lingering_potion.effect.melt_potion_long": "Lingering Melt Potion",
+  "item.minecraft.tipped_arrow.effect.melt_potion_long": "Melt Arrow",
+
+  "item.minecraft.potion.effect.brain_damage_potion": "Potion of Brain Damage",
+  "item.minecraft.splash_potion.effect.brain_damage_potion": "Splash Potion of Brain Damage",
+  "item.minecraft.lingering_potion.effect.brain_damage_potion": "Lingering Potion of Brain Damage",
+  "item.minecraft.tipped_arrow.effect.brain_damage_potion": "Arrow of Brain Damage",
 
   "death.attack.trawakened.plague": "%1$s §0died of the plague",
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
