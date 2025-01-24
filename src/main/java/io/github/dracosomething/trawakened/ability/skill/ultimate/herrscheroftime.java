@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
+import com.github.manasmods.tensura.ability.skill.Skill;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 
 import java.util.Timer;
@@ -8,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class herrscheroftime {
+public class herrscheroftime extends Skill {
     public static long time = 0L;
 
     public static Timer timer;
@@ -18,6 +19,17 @@ public class herrscheroftime {
     public static float PERCENT = 20.0F;
 
     public static double millisF = 0.0D;
+
+    public herrscheroftime() {
+        super(SkillType.ULTIMATE);
+    }
+
+    @Override
+    public int modes() {
+        return 5;
+    }
+
+
 
     public static void create() {
         if (service == null)

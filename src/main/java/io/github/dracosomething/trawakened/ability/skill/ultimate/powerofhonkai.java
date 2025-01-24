@@ -22,6 +22,7 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -288,6 +289,7 @@ public class powerofhonkai extends Skill {
                     player = (Player)target;
                 } while(player.getAbilities().invulnerable);
                 SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect)TensuraMobEffects.MAGICULE_POISON.get(), 200, 5);
+                SkillHelper.checkThenAddEffectSource(target, entity, (MobEffect) effectRegistry.BRAINDAMAGE.get(), 2, 1);
                 HakiSkill.hakiPush(target, entity, 5);
             }
         }

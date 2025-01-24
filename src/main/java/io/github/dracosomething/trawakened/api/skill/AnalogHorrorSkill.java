@@ -1,14 +1,11 @@
-package io.github.dracosomething.trawakened.api;
+package io.github.dracosomething.trawakened.api.skill;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.lowdragmc.lowdraglib.syncdata.managed.IManagedVar;
-import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
@@ -25,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
-
-import static org.openjdk.nashorn.internal.objects.NativeSet.forEach;
 
 public class AnalogHorrorSkill extends Skill {
     private final List<MobEffect> list;

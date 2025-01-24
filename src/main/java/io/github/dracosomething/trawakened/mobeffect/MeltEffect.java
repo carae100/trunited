@@ -26,11 +26,11 @@ public class MeltEffect extends TensuraMobEffect {
     @Override
     public void applyEffectTick(LivingEntity entity, int pAmplifier) {
         entity.addEffect(new MobEffectInstance(effectRegistry.HEALPOISON.get(), 100, 1, true, true, true));
+        Objects.requireNonNull(entity.getAttributes().getInstance(Attributes.MAX_HEALTH)).setBaseValue(entity.getAttributeBaseValue(Attributes.MAX_HEALTH)-(Math.ceil((double) pAmplifier / 2)));
+        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 0.3);
         if(entity.getHealth() > entity.getMaxHealth()){
             entity.setHealth(entity.getMaxHealth());
         }
-        Objects.requireNonNull(entity.getAttributes().getInstance(Attributes.MAX_HEALTH)).setBaseValue(entity.getAttributeBaseValue(Attributes.MAX_HEALTH)-((double) Math.ceil(pAmplifier / 2)));
-        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 0.3);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class MeltEffect extends TensuraMobEffect {
     }
 
     public boolean isDurationEffectTick(int pDuration, int amplifier) {
-        return pDuration % 50 == 0;
+        return pDuration % 20 == 0;
     }
 }

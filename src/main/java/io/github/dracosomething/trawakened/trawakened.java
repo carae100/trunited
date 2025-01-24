@@ -66,15 +66,18 @@ public class trawakened {
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            BrewingRecipeRegistry
-                    .addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HEALING,
-                            Items.POISONOUS_POTATO, potionRegistry.HEAL_POISON_POTION_1.get()));
-            BrewingRecipeRegistry
-                    .addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(Potions.HARMING,
-                            Items.POISONOUS_POTATO, potionRegistry.SHP_POISON_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    Potions.HARMING,
+                    Items.POISONOUS_POTATO, potionRegistry.HEAL_POISON_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.HEAL_POISON_POTION_1.get(),
+                    Items.SOUL_SAND, potionRegistry.SHP_POISON_POTION_1.get()));
             BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
                     potionRegistry.SHP_POISON_POTION_1.get(),
                     Items.COAL, potionRegistry.MAD_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.MAD_POTION_1.get(),
+                    Items.REDSTONE, potionRegistry.MAD_POTION_SHORT.get()));
             BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
                     potionRegistry.MAD_POTION_1.get(),
                     Items.FERMENTED_SPIDER_EYE, potionRegistry.BRAIN_DAMAGE_POTION.get()));

@@ -128,6 +128,11 @@
   "item.minecraft.lingering_potion.effect.mad_potion": "Lingering Potion of M.A.D.",
   "item.minecraft.tipped_arrow.effect.mad_potion": "Arrow of M.A.D.",
 
+  "item.minecraft.potion.effect.mad_potion_short": "Potion of M.A.D.",
+  "item.minecraft.splash_potion.effect.mad_potion_short": "Splash Potion of M.A.D.",
+  "item.minecraft.lingering_potion.effect.mad_potion_short": "Lingering Potion of M.A.D.",
+  "item.minecraft.tipped_arrow.effect.mad_potion_short": "Arrow of M.A.D.",
+
   "item.minecraft.potion.effect.melt_potion": "Melt Potion",
   "item.minecraft.splash_potion.effect.melt_potion": "Splash Melt Potion",
   "item.minecraft.lingering_potion.effect.melt_potion": "Lingering Melt Potion",

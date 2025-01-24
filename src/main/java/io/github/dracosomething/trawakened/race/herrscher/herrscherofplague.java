@@ -8,6 +8,7 @@ import com.github.manasmods.tensura.effect.template.MagicElementalEffect;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
+import io.github.dracosomething.trawakened.api.race.HerrscherRace;
 import io.github.dracosomething.trawakened.race.HerrscherSeedAwakened;
 import io.github.dracosomething.trawakened.race.HerrscherSeedEnslaved;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
@@ -28,44 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class herrscherofplague extends HerrscherSeedEnslaved {
-    @Override
-    public double getBaseHealth() {
-        return 500;
-    }
+public class herrscherofplague extends HerrscherRace {
 
-    @Override
-    public double getBaseAttackDamage() {
-        return 15;
-    }
-
-    @Override
-    public double getBaseAttackSpeed() {
-        return 4;
-    }
-
-    @Override
-    public double getKnockbackResistance() {
-        return 10;
-    }
-
-    @Override
-    public double getMovementSpeed() {
-        return 0.20;
-    }
-
-    public double getJumpHeight() {
-        return JumpPowerHelper.defaultPlayer()+0.15;
-    }
-
-    @Override
-    public Pair<Double, Double> getBaseAuraRange() {
-        return Pair.of(5000.0, 10000.0);
-    }
-
-    @Override
-    public Pair<Double, Double> getBaseMagiculeRange() {
-        return Pair.of(50000.0, 100000.0);
+    public herrscherofplague() {
+        super(Generation.FIRST);
     }
 
     public List<Race> getNextEvolutions(Player player) {
@@ -77,11 +44,6 @@ public class herrscherofplague extends HerrscherSeedEnslaved {
         List<TensuraSkill> list = new ArrayList();
         list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
         return list;
-    }
-
-    @Override
-    public void raceTick(Player player) {
-        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40, 10, false, false, false));
     }
 
     @Override
