@@ -26,6 +26,7 @@ public class skillregistry {
     public static final RegistryObject<willofhonkai> WILLOFHONKAI;
     public static final RegistryObject<herrscherofdestruction> HERRSCHEROFDESTRUCTION;
     public static final RegistryObject<herrscherofplague> HERRSCHEROFPLAGUE;
+    public static final RegistryObject<herrscheroftime> HERRSCHEROFTIME;
     public static final RegistryObject<Starkill> STARKILL;
     public static final RegistryObject<conceptofinfinity> CONCEPTOFINFINITY;
     public static final RegistryObject<azazel> AZAZEL;
@@ -44,6 +45,7 @@ public class skillregistry {
         POWEROFHONKAI = registry.register("powerofhonkai", powerofhonkai::new);
         WILLOFHONKAI = registry.register("willofhonkai", willofhonkai::new);
         HERRSCHEROFDESTRUCTION = registry.register("herrscherofdestructionskill", herrscherofdestruction::new);
+        HERRSCHEROFTIME = registry.register("herrscheroftimeskill", herrscheroftime::new);
         HERRSCHEROFPLAGUE = registry.register("herrscherofpestilenceskill", herrscherofplague::new);
         STARKILL = registry.register("starkill", Starkill::new);
         CONCEPTOFINFINITY = registry.register("concept_of_infinity", conceptofinfinity::new);

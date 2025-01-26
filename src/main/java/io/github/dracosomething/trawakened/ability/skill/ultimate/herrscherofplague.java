@@ -207,8 +207,7 @@ public class herrscherofplague extends Skill {
                 if (active) {
                     if (entity instanceof Player player) {
                         player.displayClientMessage(Component.literal("Disabled plague"), true);
-                        System.out.println(trawakenedPlayerCapability.getSoulPoints(player));
-                        System.out.println(player.level.getGameRules().getInt(TensuraGameRules.DEMON_LORD_AWAKEN)/2);
+
                     }
                     active = false;
                 } else {

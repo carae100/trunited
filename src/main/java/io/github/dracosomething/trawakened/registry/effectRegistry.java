@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened.registry;
+ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.effect.BurdenEffect;
 import io.github.dracosomething.trawakened.mobeffect.*;

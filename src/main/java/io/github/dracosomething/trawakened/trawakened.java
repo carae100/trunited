@@ -31,30 +31,16 @@ import java.io.*;
 @Mod(trawakened.MODID)
 public class trawakened {
     public static long tickCounter = 0L;
-
-    // Define mod id in a common place for everything to reference
     public static final String MODID = "trawakened";
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
-
-    private static final String TENSURA_CONFIG = "common.toml";
-    private File configFile;
 
     public trawakened() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
          herrscheroftime.create();
 
-        // Register the commonSetup method for modloading
-
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);
         modEventBus.addListener(this::setup);
-
-        GeckoLib.initialize();
-
-        configFile = new File("config/tensura-reincarnated/" + TENSURA_CONFIG);
 
         if (Minecraft.getInstance().getUser().getName() == "Draco_01") {
             ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
@@ -91,19 +77,5 @@ public class trawakened {
                     potionRegistry.MELT_POTION_1.get(),
                     Items.REDSTONE, potionRegistry.MELT_POTION_LONG.get()));
         });
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class clientSetup {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-        }
     }
 }
