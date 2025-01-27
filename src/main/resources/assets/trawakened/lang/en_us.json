@@ -55,12 +55,13 @@
   "trawakened.skill.mode.herrscherofplagueskill.plagueform": "§0Plague form",
   "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "§0Infect",
 
-  "trawakened.skill.herrscheroftimeskill": "§dHerrscher§8 of §0Time",
+  "trawakened.skill.herrscheroftimeskill": "§dHerrscher§6 of §6Time",
   "trawakened.skill.herrscheroftimeskill.description": "§6With this skill you will control the flow of time itself.",
 
   "trawakened.skill.mode.herrscheroftimeskill.time_manip_world": "§6Time Manipulation: World",
   "trawakened.skill.mode.herrscheroftimeskill.time_manip_self": "§6Time Manipulation: self",
   "trawakened.skill.mode.herrscheroftimeskill.time_stop": "§6Time Stop",
+  "trawakened.skill.mode.herrscheroftimeskill.time_jump": "§6Time Jump",
 
   "trawakened.skill.starkill": "§cStarkill",
   "trawakened.skill.starkill.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
@@ -176,6 +177,6 @@
   "hidden_Knowledge": "§kewrqqrqwerqwerwqeteqrgfdgfsdhdyhfg",
   "learn_infinity": "You seem to have obtained some knowledge that is far beyond your comprehension",
   "trawakened.skill.time": "Time: %s",
-  "trawakened.skill.time_self": "Self Time: %s"
-
+  "trawakened.skill.time_self": "Self Time: %s",
+  "trawakened.skill.time_jump": "Time Jump: %s"
 }

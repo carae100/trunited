@@ -57,7 +57,7 @@ public class herrscheroftime extends Skill {
 
     @Override
     public int modes() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -65,9 +65,10 @@ public class herrscheroftime extends Skill {
         int var10000;
         if (reverse) {
             switch (instance.getMode()) {
-                case 1 -> var10000 = 3;
+                case 1 -> var10000 = 4;
                 case 2 -> var10000 = 1;
                 case 3 -> var10000 = 2;
+                case 4 -> var10000 = 3;
                 default -> var10000 = 0;
             }
 
@@ -76,7 +77,8 @@ public class herrscheroftime extends Skill {
             switch (instance.getMode()) {
                 case 1 -> var10000 = 2;
                 case 2 -> var10000 = 3;
-                case 3 -> var10000 = 1;
+                case 3 -> var10000 = 4;
+                case 4 -> var10000 = 1;
                 default -> var10000 = 0;
             }
 
@@ -116,6 +118,9 @@ public class herrscheroftime extends Skill {
             case 3:
                 var10000 = 5000.0;
                 break;
+            case 4:
+                var10000 = 250.0;
+                break;
             default:
                 var10000 = 0.0;
                 break;
@@ -152,87 +157,102 @@ public class herrscheroftime extends Skill {
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         switch (instance.getMode()) {
             case 1:
-                if(!entity.isShiftKeyDown()) {
-                    CompoundTag tag = instance.getOrCreateTag();
-                    if (tag.getDouble("time") < 1.0) {
-                        tag.putDouble("time", 20.0);
+                if(SkillHelper.outOfMagicule(entity, instance)) {
+                    if (!entity.isShiftKeyDown()) {
+                        CompoundTag tag = instance.getOrCreateTag();
+                        if (tag.getDouble("time") < 1.0) {
+                            tag.putDouble("time", 20.0);
+                        }
+                        changeAll((float) tag.getDouble("time"));
+                        update();
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
+                                .setBaseValue(tag.getDouble("time") < 20 ?
+                                        entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1 - (tag.getDouble("time") / 100)) :
+                                        0.10000000149011612);
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
+                                .setBaseValue(tag.getDouble("time") < 20 ?
+                                        entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1 - (tag.getDouble("time") / 100)) :
+                                        0.02);
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
+                                .setBaseValue(tag.getDouble("time") < 20 ?
+                                        entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1 - (tag.getDouble("time") / 100)) :
+                                        ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
+                                .setBaseValue(tag.getDouble("time") < 20 ?
+                                        entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time") / 100)) :
+                                        ForgeMod.SWIM_SPEED.get().getDefaultValue());
                     }
-                    changeAll((float) tag.getDouble("time"));
-                    update();
-                    Objects.requireNonNull(
-                            entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
-                            .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1-(tag.getDouble("time")/100)):
-                                    0.10000000149011612);
-                    Objects.requireNonNull(
-                                    entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
-                            .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1-(tag.getDouble("time")/100)):
-                                    0.02);
-                    Objects.requireNonNull(
-                                    entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
-                            .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1-(tag.getDouble("time")/100)):
-                                    ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
-                    Objects.requireNonNull(
-                                    entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
-                            .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1-(tag.getDouble("time")/100)):
-                                    ForgeMod.SWIM_SPEED.get().getDefaultValue());
                 }
                 break;
             case 2:
-                if(!entity.isShiftKeyDown()) {
-                    CompoundTag tag = instance.getOrCreateTag();
-                    if (!(tag.getDouble("time_self") == 20)) {
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
-                                .setBaseValue(tag.getDouble("time_self") > 20 ?
-                                        entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
-                                        entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) - (1 - (tag.getDouble("time_self") / 100))
-                                );
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
-                                .setBaseValue(tag.getDouble("time_self") > 20 ?
-                                        entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
-                                        entity.getAttributeBaseValue(Attributes.FLYING_SPEED) - (1 - (tag.getDouble("time_self") / 100))
-                                );
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
-                                .setBaseValue(tag.getDouble("time_self") > 20 ?
-                                        entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1 - (tag.getDouble("time_self") / 100)) :
-                                        entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) - (1 - (tag.getDouble("time_self") / 100))
-                                );
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
-                                .setBaseValue(tag.getDouble("time_self") > 20 ?
-                                        entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time_self") / 100)) :
-                                        entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) - (1 - (tag.getDouble("time_self") / 100))
-                                );
-                    } else {
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
-                                .setBaseValue(0.10000000149011612);
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
-                                .setBaseValue(0.02);
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
-                                .setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
-                        Objects.requireNonNull(
-                                        entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
-                                .setBaseValue(ForgeMod.SWIM_SPEED.get().getDefaultValue());
+                if(SkillHelper.outOfMagicule(entity, instance)) {
+                    if (!entity.isShiftKeyDown()) {
+                        CompoundTag tag = instance.getOrCreateTag();
+                        if (!(tag.getDouble("time_self") == 20)) {
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
+                                    .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                            entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
+                                            entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) - (1 - (tag.getDouble("time_self") / 100))
+                                    );
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
+                                    .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                            entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
+                                            entity.getAttributeBaseValue(Attributes.FLYING_SPEED) - (1 - (tag.getDouble("time_self") / 100))
+                                    );
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
+                                    .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                            entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1 - (tag.getDouble("time_self") / 100)) :
+                                            entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) - (1 - (tag.getDouble("time_self") / 100))
+                                    );
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
+                                    .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                            entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time_self") / 100)) :
+                                            entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) - (1 - (tag.getDouble("time_self") / 100))
+                                    );
+                        } else {
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
+                                    .setBaseValue(0.10000000149011612);
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
+                                    .setBaseValue(0.02);
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
+                                    .setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
+                            Objects.requireNonNull(
+                                            entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
+                                    .setBaseValue(ForgeMod.SWIM_SPEED.get().getDefaultValue());
+                        }
                     }
                 }
                 break;
             case 3:
-                entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 9998, 1));
-                List<Entity> list = skillHelper.DrawCircle(entity, 160, false);
-                for (Entity entity1 : list){
-                    if(entity1 instanceof LivingEntity living && living != entity) {
-                        living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 9998, 1));
+                if(SkillHelper.outOfMagicule(entity, instance)) {
+                    entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 9998, 1));
+                    List<Entity> list = skillHelper.DrawCircle(entity, 160, false);
+                    for (Entity entity1 : list) {
+                        if (entity1 instanceof LivingEntity living && living != entity) {
+                            living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 9998, 1));
+                        }
                     }
                 }
+                break;
+            case 4:
+                if(SkillHelper.outOfMagicule(entity, instance)) {
+                    if (entity.isShiftKeyDown()){
+                        CompoundTag tag = instance.getOrCreateTag();
+                        jump((int) tag.getDouble("time_jump"));
+                    }
+                }
+                break;
         }
     }
 
@@ -273,6 +293,24 @@ public class herrscheroftime extends Skill {
                 }
                 instance.markDirty();
             }
+        } else if(instance.getMode() == 4 && entity.isShiftKeyDown()) {
+            CompoundTag tag = instance.getOrCreateTag();
+            double newRange = tag.getDouble("time_jump") + delta;
+            int maxRange = 20;
+            if (newRange > (double)maxRange) {
+                newRange = -20;
+            } else if (newRange < -20.0) {
+                newRange = (double)maxRange;
+            }
+
+            if (tag.getDouble("time_jump") != newRange) {
+                tag.putDouble("time_jump", newRange);
+                if (entity instanceof Player) {
+                    Player player = (Player)entity;
+                    player.displayClientMessage(Component.translatable("trawakened.skill.time_jump", new Object[]{newRange}).setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_AQUA)), true);
+                }
+                instance.markDirty();
+            }
         }
     }
 
@@ -305,4 +343,7 @@ public class herrscheroftime extends Skill {
         System.out.println("TickLengthChanged ->" + PERCENT);
     }
 
+    public static void jump(int ticks) {
+        millisF += (ticks * 50L);
+    }
 }
