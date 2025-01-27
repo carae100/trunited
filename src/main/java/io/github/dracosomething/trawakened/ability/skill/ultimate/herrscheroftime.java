@@ -261,7 +261,7 @@ public class herrscheroftime extends Skill {
                     }
 //                    jump(-2400);
 //                    update();
-                    instance.setCoolDown(instance.isMastered(entity)? 6000 : 12000);
+                    instance.setCoolDown(instance.isMastered(entity)? 8400 : 14400);
                 }
                 break;
             case 4:
