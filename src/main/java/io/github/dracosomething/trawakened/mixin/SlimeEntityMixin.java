@@ -44,8 +44,5 @@ public class SlimeEntityMixin {
         if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
             ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-//            ci.cancel();
-//        }
     }
 }

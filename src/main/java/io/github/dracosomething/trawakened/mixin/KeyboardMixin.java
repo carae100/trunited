@@ -4,6 +4,7 @@ import com.mojang.authlib.minecraft.client.MinecraftClient;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,10 @@ public abstract class KeyboardMixin {
     )
     public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_, CallbackInfo ci) {
         if (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)) {
+            KeyMapping.releaseAll();
+            ci.cancel();
+        }
+        if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP.get())) {
             KeyMapping.releaseAll();
             ci.cancel();
         }

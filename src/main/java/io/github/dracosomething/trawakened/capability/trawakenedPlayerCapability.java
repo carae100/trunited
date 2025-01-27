@@ -54,11 +54,6 @@ public class trawakenedPlayerCapability {
                         !entity.isSpectator() &&
                         !(entity instanceof Player player && player.isCreative());
             }
-        } else {
-            return entity != null &&
-                    entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect()) &&
-                    !entity.isSpectator() &&
-                    !(entity instanceof Player player && player.isCreative());
         }
         return false;
     }

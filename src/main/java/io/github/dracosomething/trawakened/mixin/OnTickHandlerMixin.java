@@ -20,7 +20,7 @@ public class OnTickHandlerMixin {
             remap = false
     )
     private static void StopRegen(LivingEntity entity, CallbackInfo ci){
-        if(entity.hasEffect(effectRegistry.SHPPOISON.get()) || entity.hasEffect(effectRegistry.TIMESTOP.get())){
+        if(entity.hasEffect(effectRegistry.SHPPOISON.get()) || entity.hasEffect(effectRegistry.TIMESTOP.get()) || entity.hasEffect(effectRegistry.TIMESTOP_CORE.get())){
             ci.cancel();
         }
     }

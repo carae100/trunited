@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -32,15 +33,6 @@ public class ModEvents {
             event.setCanceled(true);
         }
     }
-
-//    @SubscribeEvent
-//    public static void stopTickServer(TickEvent.ClientTickEvent event){
-//        if(Minecraft.getInstance().player != null) {
-//            if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
 
     @SubscribeEvent
     public static void notRemoveEffect(MobEffectEvent.Remove event) {

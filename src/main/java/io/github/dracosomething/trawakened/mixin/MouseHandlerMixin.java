@@ -23,10 +23,6 @@ public class MouseHandlerMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
-//            KeyMapping.releaseAll();
-//            ci.cancel();
-//        }
     }
 
     @Inject(
@@ -39,10 +35,6 @@ public class MouseHandlerMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
-//            KeyMapping.releaseAll();
-//            ci.cancel();
-//        }
     }
 
     @Inject(
@@ -55,9 +47,5 @@ public class MouseHandlerMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player) && !Minecraft.getInstance().isPaused()){
-//            KeyMapping.releaseAll();
-//            ci.cancel();
-//        }
     }
 }

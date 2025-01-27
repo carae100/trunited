@@ -250,16 +250,16 @@ public class herrscheroftime extends Skill {
                 break;
             case 3:
                 if(!SkillHelper.outOfMagicule(entity, instance)) {
-                    entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 9998, 1));
+                    entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 2400, 1, true, true, true));
                     List<Entity> list = skillHelper.DrawCircle(entity, 160, false);
                     for (Entity entity1 : list) {
                         if (entity1 instanceof LivingEntity living && living != entity) {
-                            living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 9998, 1));
+                            living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 2400, 1, true, true, true));
                         }
                     }
-                    jump(-9998);
+                    jump(-2400);
                     update();
-                    instance.setCoolDown(1500);
+                    instance.setCoolDown(12000);
                 }
                 break;
             case 4:

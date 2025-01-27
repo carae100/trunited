@@ -33,9 +33,6 @@ public abstract class MobMixin extends LivingEntity {
                 }
             }
         }
-        if(this.hasEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get()).getEffect())){
-            return null;
-        }
 
         return value;
     }

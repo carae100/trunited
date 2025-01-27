@@ -37,8 +37,5 @@ public @Final PathfinderMob mob;
                 }
             }
         }
-        if(mob.hasEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get()).getEffect())){
-            ci.cancel();
-        }
     }
 }

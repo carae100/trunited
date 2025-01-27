@@ -31,8 +31,5 @@ public class PathNavigationMixin {
                 }
             }
         }
-        if (mob.hasEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get()).getEffect())){
-            ci.cancel();
-        }
     }
 }
