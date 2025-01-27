@@ -1,9 +1,6 @@
-package io.github.dracosomething.trawakened;
+package io.github.dracosomething.trawakened.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class BackdoorConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();

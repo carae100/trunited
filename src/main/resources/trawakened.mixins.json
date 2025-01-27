@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "trawakened.refmap.json",
   "mixins": [
+    "entityMixin",
     "FlyingPathNavigationMixin",
     "GluttonyMistProjectileMixin",
     "JumpingEntityMoveControlMixin",

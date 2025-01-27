@@ -1,17 +1,20 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
+import com.github.manasmods.tensura.effect.template.DamageAction;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import lombok.Getter;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class TimeStopCoreEffect extends TensuraMobEffect {
+public class TimeStopCoreEffect extends TensuraMobEffect implements DamageAction {
     public TimeStopCoreEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }

@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,6 +22,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void cancelHealing(LivingHealEvent event){
         if(event.getEntity().hasEffect(effectRegistry.HEALPOISON.get())){
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void cancelDamage(LivingDamageEvent event){
+        if(event.getEntity().hasEffect(effectRegistry.TIMESTOP_CORE.get())){
             event.setCanceled(true);
         }
     }
@@ -40,7 +48,9 @@ public class ModEvents {
 
         if (entity.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect()) ||
                 entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) ||
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.BRAINDAMAGE.get()).getEffect())){
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.BRAINDAMAGE.get()).getEffect()) ||
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP_CORE.get()).getEffect()) ||
+                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())){
             event.setCanceled(true);
         }
         if(entity.hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())){

@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened;
+package io.github.dracosomething.trawakened.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

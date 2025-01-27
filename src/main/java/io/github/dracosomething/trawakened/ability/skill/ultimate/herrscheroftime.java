@@ -4,17 +4,25 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.handler.SkillHandler;
+import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.mobeffect.TimeStopCoreEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +31,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
 import java.util.Objects;
@@ -100,6 +110,8 @@ public class herrscheroftime extends Skill {
                     var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_manip_self");
             case 3 ->
                     var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_stop");
+            case 4 ->
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_jump");
             default -> var10000 = Component.empty();
         }
 
@@ -157,7 +169,7 @@ public class herrscheroftime extends Skill {
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         switch (instance.getMode()) {
             case 1:
-                if(SkillHelper.outOfMagicule(entity, instance)) {
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
                     if (!entity.isShiftKeyDown()) {
                         CompoundTag tag = instance.getOrCreateTag();
                         if (tag.getDouble("time") < 1.0) {
@@ -185,11 +197,12 @@ public class herrscheroftime extends Skill {
                                 .setBaseValue(tag.getDouble("time") < 20 ?
                                         entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time") / 100)) :
                                         ForgeMod.SWIM_SPEED.get().getDefaultValue());
+                        instance.setCoolDown(50);
                     }
                 }
                 break;
             case 2:
-                if(SkillHelper.outOfMagicule(entity, instance)) {
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
                     if (!entity.isShiftKeyDown()) {
                         CompoundTag tag = instance.getOrCreateTag();
                         if (!(tag.getDouble("time_self") == 20)) {
@@ -231,11 +244,12 @@ public class herrscheroftime extends Skill {
                                             entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
                                     .setBaseValue(ForgeMod.SWIM_SPEED.get().getDefaultValue());
                         }
+                        instance.setCoolDown(100);
                     }
                 }
                 break;
             case 3:
-                if(SkillHelper.outOfMagicule(entity, instance)) {
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
                     entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 9998, 1));
                     List<Entity> list = skillHelper.DrawCircle(entity, 160, false);
                     for (Entity entity1 : list) {
@@ -243,13 +257,21 @@ public class herrscheroftime extends Skill {
                             living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 9998, 1));
                         }
                     }
+                    jump(-9998);
+                    update();
+                    instance.setCoolDown(1500);
                 }
                 break;
             case 4:
-                if(SkillHelper.outOfMagicule(entity, instance)) {
-                    if (entity.isShiftKeyDown()){
+                System.out.println("text");
+                if(!SkillHelper.outOfMagicule(entity, instance)) {
+                    System.out.println("text2");
+                    if (!entity.isShiftKeyDown()){
                         CompoundTag tag = instance.getOrCreateTag();
+                        System.out.println(tag);
                         jump((int) tag.getDouble("time_jump"));
+                        update();
+                        instance.setCoolDown(20);
                     }
                 }
                 break;
@@ -344,6 +366,30 @@ public class herrscheroftime extends Skill {
     }
 
     public static void jump(int ticks) {
+        System.out.println(millisF);
         millisF += (ticks * 50L);
+        System.out.println(millisF);
+    }
+
+    @Override
+    public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
+        return true;
+    }
+
+    @Override
+    public void onTick(ManasSkillInstance instance, LivingEntity living) {
+        if (living instanceof Player) {
+            Player player = (Player) living;
+            if(!player.isCreative()) {
+                if (!Objects
+                        .equals(
+                                TensuraPlayerCapability.getRace(player),
+                                (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
+                                        .getValue(raceregistry.HERRSCHER_OF_TIME))) {
+                    SkillAPI.getSkillsFrom(player).forgetSkill(skillregistry.HERRSCHEROFTIME.get());
+                    player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
+                }
+            }
+        }
     }
 }

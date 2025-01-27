@@ -76,6 +76,7 @@ public class HerrscherSeedEnslaved extends enslavedapostle {
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
         list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_PLAGUE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
         return list;
     }
 
