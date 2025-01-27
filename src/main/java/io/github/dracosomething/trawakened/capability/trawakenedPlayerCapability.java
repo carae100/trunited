@@ -73,4 +73,12 @@ public class trawakenedPlayerCapability {
                 !(entity instanceof Player player && player.isCreative());
 
     }
+
+    public static boolean hasTimeStop(@Nullable LivingEntity entity) {
+        return entity != null &&
+                (entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect()) || entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())) &&
+                !entity.isSpectator() &&
+                !(entity instanceof Player player && player.isCreative());
+
+    }
 }

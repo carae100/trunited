@@ -32,7 +32,7 @@ public abstract class KeyboardMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-        if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP.get())) {
+        if (trawakenedPlayerCapability.hasTimeStop(Minecraft.getInstance().player)) {
             KeyMapping.releaseAll();
             ci.cancel();
         }

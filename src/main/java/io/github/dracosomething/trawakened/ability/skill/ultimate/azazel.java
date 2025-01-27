@@ -35,6 +35,7 @@ import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.util.trawakenedDamage;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Options;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -323,7 +324,7 @@ public class azazel extends Skill {
                                 }
                                 break;
                             case 4:
-                                if (!SkillHelper.outOfMagicule(entity, instance) && !entity.isSprinting()) {
+                                if (!SkillHelper.outOfMagicule(entity, instance) && entity.isSprinting()) {
                                     List<Entity> ret = DrawCircle(entity, 60, false);
 
                                     for (Entity entity2 : ret) {

@@ -55,13 +55,25 @@
   "trawakened.skill.mode.herrscherofplagueskill.plagueform": "§0Plague form",
   "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "§0Infect",
 
-  "trawakened.skill.herrscheroftimeskill": "§dHerrscher§6 of §6Time",
+  "trawakened.race.herrscher_of_time": "§dHerrscher§6 of §6Time",
+  "trawakened.race.herrscher_of_time.notes": "§6With this skill you will control the flow of time itself.",
+
+  "trawakened.skill.herrscheroftimeskill": "§dHerrscher§8 of §6Time",
   "trawakened.skill.herrscheroftimeskill.description": "§6With this skill you will control the flow of time itself.",
 
   "trawakened.skill.mode.herrscheroftimeskill.time_manip_world": "§6Time Manipulation: World",
   "trawakened.skill.mode.herrscheroftimeskill.time_manip_self": "§6Time Manipulation: self",
   "trawakened.skill.mode.herrscheroftimeskill.time_stop": "§6Time Stop",
   "trawakened.skill.mode.herrscheroftimeskill.time_jump": "§6Time Jump",
+
+  "trawakened.race.herrscher_of_the_world": "§dHerrscher§8 of §9the Time",
+  "trawakened.race.herrscher_of_the_world.notes": "§9You have been given arcane knowledge, now you have the ability to stop other attacks.",
+
+  "trawakened.skill.herrscheroftheworldskill": "§dHerrscher§8 of §9the World",
+  "trawakened.skill.herrscheroftheworldskill.description": "§9You have been given arcane knowledge, now you have the ability to stop other attacks.",
+
+  "trawakened.skill.mode.herrscheroftheworldskill.time_manip_world": "§6Time Manipulation: World",
+  "trawakened.skill.mode.herrscheroftheworldskill.time_manip_self": "§6Time Manipulation: self",
 
   "trawakened.skill.starkill": "§cStarkill",
   "trawakened.skill.starkill.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
@@ -106,6 +118,7 @@
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",
   "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "§7Have §apoison§7 and §0blindness",
   "trawakened.requirement.evolution.herrscher_of_time.item": "§6Have a clock in your main hand while being under half your max hp.",
+  "trawakened.requirement.evolution.herrscher_of_the_world.effect": "§9Have the M.A.D. effect while being under half your max shp.",
   "trawakened.requirement.evolution.herrscher_of_destruction": "§4Master Power of the Honkai",
   "trawakened.requirement.evolution.herrscher_seed_enslaved": "§8Become a true demon lord",
   "trawakened.requirement.evolution.herrscher_seed_awakened": "§6Become a hero egg",

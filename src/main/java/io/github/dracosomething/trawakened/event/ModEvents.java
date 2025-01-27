@@ -28,13 +28,6 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void cancelDamage(LivingDamageEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.TIMESTOP_CORE.get())){
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
     public static void notRemoveEffect(MobEffectEvent.Remove event) {
         LivingEntity entity = event.getEntity();
 

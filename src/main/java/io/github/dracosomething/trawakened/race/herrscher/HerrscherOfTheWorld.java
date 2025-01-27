@@ -3,13 +3,16 @@ package io.github.dracosomething.trawakened.race.herrscher;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.api.race.HerrscherRace;
+import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 
@@ -17,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HerrscherOfTime extends HerrscherRace {
-    public HerrscherOfTime() {
+public class HerrscherOfTheWorld extends HerrscherRace {
+    public HerrscherOfTheWorld() {
         super(Generation.FIRST);
     }
 
@@ -29,7 +32,7 @@ public class HerrscherOfTime extends HerrscherRace {
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-        list.add(skillregistry.HERRSCHEROFTIME.get());
+        list.add(skillregistry.HERRSCHEROFTHEWORLD.get());
         return list;
     }
 
@@ -41,9 +44,9 @@ public class HerrscherOfTime extends HerrscherRace {
         if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
             chance += 25;
         }
-        if (player.getMainHandItem() == Items.CLOCK.getDefaultInstance() && player.getHealth() <= player.getMaxHealth()/2) {
-            chance1 += 50;
+        if (player.hasEffect(effectRegistry.OVERWHELMED.get()) && TensuraEPCapability.getSpiritualHealth(player) <= trawakenedPlayerCapability.getMaxSpiritualHealth(player)/2) {
         }
+        chance1 += 50;
         if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
             chance2 += 25;
         }

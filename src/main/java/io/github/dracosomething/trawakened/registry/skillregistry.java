@@ -27,6 +27,7 @@ public class skillregistry {
     public static final RegistryObject<herrscherofdestruction> HERRSCHEROFDESTRUCTION;
     public static final RegistryObject<herrscherofplague> HERRSCHEROFPLAGUE;
     public static final RegistryObject<herrscheroftime> HERRSCHEROFTIME;
+    public static final RegistryObject<herrscheroftheworld> HERRSCHEROFTHEWORLD;
     public static final RegistryObject<Starkill> STARKILL;
     public static final RegistryObject<conceptofinfinity> CONCEPTOFINFINITY;
     public static final RegistryObject<azazel> AZAZEL;
@@ -47,6 +48,7 @@ public class skillregistry {
         HERRSCHEROFDESTRUCTION = registry.register("herrscherofdestructionskill", herrscherofdestruction::new);
         HERRSCHEROFTIME = registry.register("herrscheroftimeskill", herrscheroftime::new);
         HERRSCHEROFPLAGUE = registry.register("herrscherofpestilenceskill", herrscherofplague::new);
+        HERRSCHEROFTHEWORLD = registry.register("herrscheroftheworldskill", herrscheroftheworld::new);
         STARKILL = registry.register("starkill", Starkill::new);
         CONCEPTOFINFINITY = registry.register("concept_of_infinity", conceptofinfinity::new);
         AZAZEL = registry.register("azazel", azazel::new);

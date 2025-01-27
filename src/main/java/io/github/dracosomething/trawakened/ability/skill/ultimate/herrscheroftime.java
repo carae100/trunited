@@ -18,11 +18,13 @@ import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -257,18 +259,15 @@ public class herrscheroftime extends Skill {
                             living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 2400, 1, true, true, true));
                         }
                     }
-                    jump(-2400);
-                    update();
-                    instance.setCoolDown(12000);
+//                    jump(-2400);
+//                    update();
+                    instance.setCoolDown(instance.isMastered(entity)? 6000 : 12000);
                 }
                 break;
             case 4:
-                System.out.println("text");
                 if(!SkillHelper.outOfMagicule(entity, instance)) {
-                    System.out.println("text2");
                     if (!entity.isShiftKeyDown()){
                         CompoundTag tag = instance.getOrCreateTag();
-                        System.out.println(tag);
                         jump((int) tag.getDouble("time_jump"));
                         update();
                         instance.setCoolDown(20);
@@ -302,8 +301,8 @@ public class herrscheroftime extends Skill {
             double newRange = tag.getDouble("time_self") + delta;
             int maxRange = instance.isMastered(entity) ? 60 : 40;
             if (newRange > (double)maxRange) {
-                newRange = 1.0;
-            } else if (newRange < 1.0) {
+                newRange = 5.0;
+            } else if (newRange < 5.0) {
                 newRange = (double)maxRange;
             }
 

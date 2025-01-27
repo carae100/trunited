@@ -5,6 +5,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import lombok.AllArgsConstructor;
@@ -74,13 +75,14 @@ public class HerrscherRace extends Race {
 
     @Override
     public void raceTick(Player player) {
-        player.addEffect(new MobEffectInstance(gen.getEffect(), 40, 10, false, false, false));
+        player.addEffect(new MobEffectInstance(gen.getEffect(), 40, gen.getAmplifier(), false, false, false));
     }
 
     @Getter
     @AllArgsConstructor
     public enum Generation{
-       FIRST(500, 15, 4, 10, 0.20, JumpPowerHelper.defaultPlayer()+0.15, Pair.of(5000.0, 10000.0), Pair.of(50000.0, 100000.0), MobEffects.REGENERATION);
+        FIRST(500, 15, 4, 10, 0.20, JumpPowerHelper.defaultPlayer()+0.15, Pair.of(5000.0, 10000.0), Pair.of(50000.0, 100000.0), MobEffects.REGENERATION, 10),
+        SECOND(2500, 20, 3, 12, 0.22, JumpPowerHelper.defaultPlayer()+0.20, Pair.of(15000.0, 50000.0), Pair.of(150000.0, 500000.0), TensuraMobEffects.INSTANT_REGENERATION.get(), 1);
         private final double health;
         private final double damage;
         private final double attackspeed;
@@ -90,6 +92,7 @@ public class HerrscherRace extends Race {
         private final Pair<Double, Double> ap;
         private final Pair<Double, Double> mp;
         private final MobEffect effect;
+        private final int amplifier;
         }
 
 }
