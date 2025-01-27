@@ -28,32 +28,21 @@ public class SlimeEntityMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private void jumpingSquishTick(CallbackInfo ci){
-        if (herrscherofplague.active) {
-            if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
-                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
-                    ci.cancel();
-                }
-            }
+    private void jumpingSquishTick(CallbackInfo ci) {
+        if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
+            ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-//            ci.cancel();
-//        }
-
     }
+
 
     @Inject(
             method = "damageCollidedEntity",
             at = @At("HEAD"),
             cancellable = true,
-    remap = false)
-    private void noDamage(Entity entity, CallbackInfo ci){
-        if (herrscherofplague.active) {
-            if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
-                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
-                    ci.cancel();
-                }
-            }
+            remap = false)
+    private void noDamage(Entity entity, CallbackInfo ci) {
+        if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
+            ci.cancel();
         }
 //        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
 //            ci.cancel();

@@ -21,6 +21,8 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> OVERWHELMED;
     public static final RegistryObject<MobEffect> MELT;
     public static final RegistryObject<MobEffect> BRAINDAMAGE;
+    public static final RegistryObject<MobEffect> TIMESTOP;
+    public static final RegistryObject<MobEffect> TIMESTOP_CORE;
 
     public effectRegistry(){}
 
@@ -38,5 +40,7 @@ public class effectRegistry {
         OVERWHELMED = registry.register("mad", () -> new overwhelmedEffect(MobEffectCategory.HARMFUL, 0));
         MELT = registry.register("melt", () -> new MeltEffect(MobEffectCategory.NEUTRAL, 15622684));
         BRAINDAMAGE = registry.register("brain_damage", () -> new DestroyedBrainEffect(MobEffectCategory.NEUTRAL, 14163341));
+        TIMESTOP = registry.register("time_stop", () -> new TimeStopEffect(MobEffectCategory.NEUTRAL, 14914605));
+        TIMESTOP_CORE = registry.register("time_stop_core", () -> new TimeStopCoreEffect(MobEffectCategory.BENEFICIAL, 14914605));
     }
 }

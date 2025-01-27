@@ -10,6 +10,7 @@
     "JumpingEntityMoveControlMixin",
     "LivingEntityMixin",
     "LookControlMixin",
+    "MinecraftServerMixin",
     "MobMixin",
     "OnTickHandlerMixin",
     "PathNavigationMixin",

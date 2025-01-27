@@ -1,9 +1,15 @@
 package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.handler.SkillHandler;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
+import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -12,11 +18,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,7 +57,7 @@ public class herrscheroftime extends Skill {
 
     @Override
     public int modes() {
-        return 5;
+        return 3;
     }
 
     @Override
@@ -57,10 +65,9 @@ public class herrscheroftime extends Skill {
         int var10000;
         if (reverse) {
             switch (instance.getMode()) {
-                case 1 -> var10000 = 4;
+                case 1 -> var10000 = 3;
                 case 2 -> var10000 = 1;
                 case 3 -> var10000 = 2;
-                case 4 -> var10000 = 3;
                 default -> var10000 = 0;
             }
 
@@ -69,8 +76,7 @@ public class herrscheroftime extends Skill {
             switch (instance.getMode()) {
                 case 1 -> var10000 = 2;
                 case 2 -> var10000 = 3;
-                case 3 -> var10000 = 4;
-                case 4 -> var10000 = 1;
+                case 3 -> var10000 = 1;
                 default -> var10000 = 0;
             }
 
@@ -78,17 +84,20 @@ public class herrscheroftime extends Skill {
         }
     }
 
+    @Override
+    public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
+        return List.of(effectRegistry.TIMESTOP.get());
+    }
+
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
             case 1 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyblock");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_manip_world");
             case 2 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroyheart");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_manip_self");
             case 3 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroymind");
-            case 4 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscherofdestructionskill.destroychunk");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftimeskill.time_stop");
             default -> var10000 = Component.empty();
         }
 
@@ -99,16 +108,13 @@ public class herrscheroftime extends Skill {
         double var10000;
         switch (instance.getMode()) {
             case 1:
-                var10000 = 50.0;
+                var10000 = 1000.0;
                 break;
             case 2:
-                var10000 = 10000.0;
+                var10000 = 100.0;
                 break;
             case 3:
-                var10000 = 50000.0;
-                break;
-            case 4:
-                var10000 = 5000;
+                var10000 = 5000.0;
                 break;
             default:
                 var10000 = 0.0;
@@ -155,26 +161,78 @@ public class herrscheroftime extends Skill {
                     update();
                     Objects.requireNonNull(
                             entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
-                            .setBaseValue(tag.getDouble("time") < 15?
-                                    entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (10-(tag.getDouble("time")/1000)):
+                            .setBaseValue(tag.getDouble("time") < 20?
+                                    entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1-(tag.getDouble("time")/100)):
                                     0.10000000149011612);
                     Objects.requireNonNull(
                                     entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
                             .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (10-(tag.getDouble("time")/100)):
+                                    entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1-(tag.getDouble("time")/100)):
                                     0.02);
                     Objects.requireNonNull(
                                     entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
                             .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (10-(tag.getDouble("time")/100)):
+                                    entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1-(tag.getDouble("time")/100)):
                                     ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
                     Objects.requireNonNull(
                                     entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
                             .setBaseValue(tag.getDouble("time") < 20?
-                                    entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (10-(tag.getDouble("time")/100)):
+                                    entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1-(tag.getDouble("time")/100)):
                                     ForgeMod.SWIM_SPEED.get().getDefaultValue());
                 }
                 break;
+            case 2:
+                if(!entity.isShiftKeyDown()) {
+                    CompoundTag tag = instance.getOrCreateTag();
+                    if (!(tag.getDouble("time_self") == 20)) {
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
+                                .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                        entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
+                                        entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) - (1 - (tag.getDouble("time_self") / 100))
+                                );
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
+                                .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                        entity.getAttributeBaseValue(Attributes.FLYING_SPEED) + (1 - (tag.getDouble("time_self") / 100)) :
+                                        entity.getAttributeBaseValue(Attributes.FLYING_SPEED) - (1 - (tag.getDouble("time_self") / 100))
+                                );
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
+                                .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                        entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) + (1 - (tag.getDouble("time_self") / 100)) :
+                                        entity.getAttributeBaseValue(ForgeMod.ENTITY_GRAVITY.get()) - (1 - (tag.getDouble("time_self") / 100))
+                                );
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
+                                .setBaseValue(tag.getDouble("time_self") > 20 ?
+                                        entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time_self") / 100)) :
+                                        entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) - (1 - (tag.getDouble("time_self") / 100))
+                                );
+                    } else {
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED))
+                                .setBaseValue(0.10000000149011612);
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(Attributes.FLYING_SPEED))
+                                .setBaseValue(0.02);
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.ENTITY_GRAVITY.get()))
+                                .setBaseValue(ForgeMod.ENTITY_GRAVITY.get().getDefaultValue());
+                        Objects.requireNonNull(
+                                        entity.getAttributes().getInstance(ForgeMod.SWIM_SPEED.get()))
+                                .setBaseValue(ForgeMod.SWIM_SPEED.get().getDefaultValue());
+                    }
+                }
+                break;
+            case 3:
+                entity.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP_CORE.get(), 9998, 1));
+                List<Entity> list = skillHelper.DrawCircle(entity, 160, false);
+                for (Entity entity1 : list){
+                    if(entity1 instanceof LivingEntity living && living != entity) {
+                        living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 9998, 1));
+                    }
+                }
         }
     }
 
@@ -185,7 +243,7 @@ public class herrscheroftime extends Skill {
             int maxRange = instance.isMastered(entity) ? 60 : 40;
             if (newRange > (double)maxRange) {
                 newRange = 1.0;
-            } else if (newRange < 3.0) {
+            } else if (newRange < 1.0) {
                 newRange = (double)maxRange;
             }
 
@@ -197,7 +255,24 @@ public class herrscheroftime extends Skill {
                 }
                 instance.markDirty();
             }
+        } else if(instance.getMode() == 2 && entity.isShiftKeyDown()){
+            CompoundTag tag = instance.getOrCreateTag();
+            double newRange = tag.getDouble("time_self") + delta;
+            int maxRange = instance.isMastered(entity) ? 60 : 40;
+            if (newRange > (double)maxRange) {
+                newRange = 1.0;
+            } else if (newRange < 1.0) {
+                newRange = (double)maxRange;
+            }
 
+            if (tag.getDouble("time_self") != newRange) {
+                tag.putDouble("time_self", newRange);
+                if (entity instanceof Player) {
+                    Player player = (Player)entity;
+                    player.displayClientMessage(Component.translatable("trawakened.skill.time_self", new Object[]{newRange}).setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_AQUA)), true);
+                }
+                instance.markDirty();
+            }
         }
     }
 

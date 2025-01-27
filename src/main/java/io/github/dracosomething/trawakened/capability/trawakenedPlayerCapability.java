@@ -54,6 +54,11 @@ public class trawakenedPlayerCapability {
                         !entity.isSpectator() &&
                         !(entity instanceof Player player && player.isCreative());
             }
+        } else {
+            return entity != null &&
+                    entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect()) &&
+                    !entity.isSpectator() &&
+                    !(entity instanceof Player player && player.isCreative());
         }
         return false;
     }
@@ -68,7 +73,7 @@ public class trawakenedPlayerCapability {
 
     public static boolean hasHealPoison(@Nullable LivingEntity entity) {
         return entity != null &&
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.HEALPOISON.get()).getEffect()) &&
+                (entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.HEALPOISON.get()).getEffect()) || entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())) &&
                 !entity.isSpectator() &&
                 !(entity instanceof Player player && player.isCreative());
 

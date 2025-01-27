@@ -55,6 +55,13 @@
   "trawakened.skill.mode.herrscherofplagueskill.plagueform": "§0Plague form",
   "trawakened.skill.mode.herrscherofplagueskill.plaguepound": "§0Infect",
 
+  "trawakened.skill.herrscheroftimeskill": "§dHerrscher§8 of §0Time",
+  "trawakened.skill.herrscheroftimeskill.description": "§6With this skill you will control the flow of time itself.",
+
+  "trawakened.skill.mode.herrscheroftimeskill.time_manip_world": "§6Time Manipulation: World",
+  "trawakened.skill.mode.herrscheroftimeskill.time_manip_self": "§6Time Manipulation: self",
+  "trawakened.skill.mode.herrscheroftimeskill.time_stop": "§6Time Stop",
+
   "trawakened.skill.starkill": "§cStarkill",
   "trawakened.skill.starkill.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
 
@@ -71,21 +78,21 @@
   "trawakened.skill.mode.infinity.overwhelmed": "§8overwhelm",
   "trawakened.skill.mode.infinity.spatial_attack": "§5spatial cut",
 
-  "trawakened.skill.azazel": "§c§lAzazel, Lord of Flesh",
+  "trawakened.skill.azazel": "§cAzazel, Lord of Flesh",
   "trawakened.skill.azazel.description": "§4After §4§lcountless§4 years you have finally figured it out. You are now the source of the §cstarkill§4. Destroy armies just as easily as you create them. Know things far beyond the capabilities of a normal mortal.",
 
-  "trawakened.skill.mode.azazel.infect": "§4§lInfect",
-  "trawakened.skill.mode.azazel.infect.apostle": "§lChanged Infect mode to §bApostle Create",
-  "trawakened.skill.mode.azazel.infect.melt": "§lChanged Infect mode to §bMelt",
-  "trawakened.skill.mode.azazel.akashic": "§4§lAkashic Plane",
-  "trawakened.skill.mode.azazel.akashic.analyze": "§lChanged Akashic Plane mode to §banalyze",
-  "trawakened.skill.mode.azazel.akashic.overwhelmed": "§lChanged Akashic Plane mode to §8overwhelm",
-  "trawakened.skill.mode.azazel.akashic.spatial_attack": "§lChanged Akashic Plane mode to §5spatial cut",
-  "trawakened.skill.mode.azazel.akashic.podolsky": "§lChanged Akashic Plane mode to §6Podolsky Neurons",
-  "trawakened.skill.mode.azazel.assimilation": "§4§lAssimilation",
-  "trawakened.skill.mode.azazel.apostle": "§4§lCreate Apostle",
+  "trawakened.skill.mode.azazel.infect": "§4Infect",
+  "trawakened.skill.mode.azazel.infect.apostle": "Changed Infect mode to §bApostle Create",
+  "trawakened.skill.mode.azazel.infect.melt": "Changed Infect mode to §bMelt",
+  "trawakened.skill.mode.azazel.akashic": "§4Akashic Plane",
+  "trawakened.skill.mode.azazel.akashic.analyze": "Changed Akashic Plane mode to §banalyze",
+  "trawakened.skill.mode.azazel.akashic.overwhelmed": "Changed Akashic Plane mode to §8overwhelm",
+  "trawakened.skill.mode.azazel.akashic.spatial_attack": "Changed Akashic Plane mode to §5spatial cut",
+  "trawakened.skill.mode.azazel.akashic.podolsky": "Changed Akashic Plane mode to §6Podolsky Neurons",
+  "trawakened.skill.mode.azazel.assimilation": "§4Assimilation",
+  "trawakened.skill.mode.azazel.apostle": "§4Create Apostle",
 
-  "trawakened.skill.akashic_plane": "§4§lAkashic Plane",
+  "trawakened.skill.akashic_plane": "§4Akashic Plane",
   "trawakened.skill.akashic_plane.description": "§4Have your §5mental§d network§4 expand beyond the mortal realm, be connected with your §6subordinates§c like no other. You will know §c§leverything.",
 
   "trawakened.skill.mode.akashic.analyze": "§banalyze",
@@ -168,5 +175,7 @@
   "akashic": "§l§4You almost get overwhelmed by this wave of new information.",
   "hidden_Knowledge": "§kewrqqrqwerqwerwqeteqrgfdgfsdhdyhfg",
   "learn_infinity": "You seem to have obtained some knowledge that is far beyond your comprehension",
-  "trawakened.skill.time": "Time: %s"
+  "trawakened.skill.time": "Time: %s",
+  "trawakened.skill.time_self": "Self Time: %s"
+
 }

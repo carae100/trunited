@@ -23,26 +23,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Random;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity{
+public abstract class LivingEntityMixin extends Entity {
 //    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
 
     @Shadow
     public float yHeadRotO;
     float stuckYaw = 0;
 
-    @Shadow public abstract boolean hasEffect(MobEffect p_21024_);
+    @Shadow
+    public abstract boolean hasEffect(MobEffect p_21024_);
 
 //    @Shadow public float flyingSpeed;
 
-    @Shadow public abstract void setYBodyRot(float p_21309_);
+    @Shadow
+    public abstract void setYBodyRot(float p_21309_);
 
-    @Shadow public abstract void setYHeadRot(float p_21306_);
+    @Shadow
+    public abstract void setYHeadRot(float p_21306_);
 
-    @Shadow public abstract void setSprinting(boolean p_21284_);
+    @Shadow
+    public abstract void setSprinting(boolean p_21284_);
 
-    @Shadow protected abstract float tickHeadTurn(float p_21260_, float p_21261_);
+    @Shadow
+    protected abstract float tickHeadTurn(float p_21260_, float p_21261_);
 
-    @Shadow public abstract void forceAddEffect(MobEffectInstance p_147216_, @Nullable Entity p_147217_);
+    @Shadow
+    public abstract void forceAddEffect(MobEffectInstance p_147216_, @Nullable Entity p_147217_);
+
+    @Shadow @javax.annotation.Nullable public abstract MobEffectInstance getEffect(MobEffect p_21125_);
 
     public LivingEntityMixin(EntityType<?> type, Level world) {
         super(type, world);
@@ -55,16 +63,19 @@ public abstract class LivingEntityMixin extends Entity{
             remap = false
     )
     private void InjectPlague(ItemStack curativeItem, CallbackInfoReturnable<Boolean> cir) {
-        if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())){
+        if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect())) {
             cir.setReturnValue(false);
         }
-        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())){
+        if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())) {
             cir.setReturnValue(false);
         }
-        if(hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())){
+        if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())) {
+            cir.setReturnValue(false);
+        }
+        if (hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())) {
             Random rand = new Random();
             int chance = rand.nextInt(101);
-            if(chance < 10){
+            if (chance < 10) {
                 cir.setReturnValue(true);
             } else {
                 cir.setReturnValue(false);
@@ -77,43 +88,28 @@ public abstract class LivingEntityMixin extends Entity{
             at = @At("HEAD"),
             cancellable = true
     )
-    public void canSee(Entity p_147185_, CallbackInfoReturnable<Boolean> cir){
-        if(trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)){
-            if (herrscherofplague.active) {
-                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
-                    cir.setReturnValue(false);
-                }
-            }
+    public void canSee(Entity p_147185_, CallbackInfoReturnable<Boolean> cir) {
+        if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
+            cir.setReturnValue(false);
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)){
-//            cir.setReturnValue(false);
-//        }
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tick", at = @At("TAIL"), cancellable = true)
     public void tick(CallbackInfo callbackInfo) {
+        LivingEntity living = (LivingEntity) (Object) this;
         if (trawakenedPlayerCapability.hasPlague((LivingEntity) (Object) this)) {
-            if (herrscherofplague.active) {
-                if (PlagueEffect.getOwner((LivingEntity) (Object) this) == herrscherofplague.Owner) {
-                    this.setXRot(90);
-                    this.xRotO = 90;
-                    this.setYHeadRot(stuckYaw);
-                    this.yHeadRotO = stuckYaw;
-                    this.setYBodyRot(stuckYaw);
-                    this.setShiftKeyDown(false);
-                    this.setSprinting(false);
-                }
-            }
-//        } else if (trawakenedPlayerCapability.isOverwhelmed((LivingEntity) (Object) this)) {
-//            this.setXRot(90);
-//            this.xRotO = 90;
-//            this.setYHeadRot(stuckYaw);
-//            this.yHeadRotO = stuckYaw;
-//            this.setYBodyRot(stuckYaw);
-//            this.setShiftKeyDown(false);
-//            this.setSprinting(false);
+            this.setXRot(90);
+            this.xRotO = 90;
+            this.setYHeadRot(stuckYaw);
+            this.yHeadRotO = stuckYaw;
+            this.setYBodyRot(stuckYaw);
+            this.setShiftKeyDown(false);
+            this.setSprinting(false);
         } else {
             this.stuckYaw = this.getYRot();
+        }
+        if(living.hasEffect(effectRegistry.TIMESTOP.get())){
+            callbackInfo.cancel();
         }
     }
 
@@ -122,8 +118,8 @@ public abstract class LivingEntityMixin extends Entity{
             at = @At("HEAD"),
             cancellable = true
     )
-    private void stopHeal(float p_21116_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.hasHealPoison((LivingEntity) (Object) this)){
+    private void stopHeal(float p_21116_, CallbackInfo ci) {
+        if (trawakenedPlayerCapability.hasHealPoison((LivingEntity) (Object) this)) {
             ci.cancel();
         }
     }

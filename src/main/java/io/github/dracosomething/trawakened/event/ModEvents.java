@@ -1,10 +1,14 @@
 package io.github.dracosomething.trawakened.event;
 
+import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,6 +24,15 @@ public class ModEvents {
             event.setCanceled(true);
         }
     }
+
+//    @SubscribeEvent
+//    public static void stopTickServer(TickEvent.ClientTickEvent event){
+//        if(Minecraft.getInstance().player != null) {
+//            if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+//                event.setCanceled(true);
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public static void notRemoveEffect(MobEffectEvent.Remove event) {

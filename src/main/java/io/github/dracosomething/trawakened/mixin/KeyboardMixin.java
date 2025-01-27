@@ -15,27 +15,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardMixin {
-    @Shadow public abstract void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_);
+    @Shadow
+    public abstract void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_);
 
-    private KeyboardMixin(){}
+    private KeyboardMixin() {
+    }
 
     @Inject(
             method = "keyPress",
             at = @At("HEAD"),
             cancellable = true
     )
-    public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_, CallbackInfo ci){
-        if(trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)){
-            if (herrscherofplague.active) {
-                if (PlagueEffect.getOwner(Minecraft.getInstance().player) == herrscherofplague.Owner) {
-                    KeyMapping.releaseAll();
-                    ci.cancel();
-                }
-            }
+    public void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_, CallbackInfo ci) {
+        if (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player)) {
+            KeyMapping.releaseAll();
+            ci.cancel();
         }
-//        if(trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)){
-//            KeyMapping.releaseAll();
-//            ci.cancel();
-//        }
     }
 }
