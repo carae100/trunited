@@ -1,10 +1,10 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
-import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class TimeStopEffect extends TensuraMobEffect {
-    public TimeStopEffect(MobEffectCategory pCategory, int pColor) {
+public class emptyEffect extends MobEffect {
+    public emptyEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 

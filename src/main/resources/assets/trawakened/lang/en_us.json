@@ -72,8 +72,8 @@
   "trawakened.skill.herrscheroftheworldskill": "§dHerrscher§8 of §9the World",
   "trawakened.skill.herrscheroftheworldskill.description": "§9You have been given arcane knowledge, now you have the ability to stop other attacks.",
 
-  "trawakened.skill.mode.herrscheroftheworldskill.time_manip_world": "§6Time Manipulation: World",
-  "trawakened.skill.mode.herrscheroftheworldskill.time_manip_self": "§6Time Manipulation: self",
+  "trawakened.skill.mode.herrscheroftheworldskill.spiritual_block": "§3Spiritual blocking",
+  "trawakened.skill.mode.herrscheroftheworldskill.arcane_knowledge": "§3Arcane Knowledge",
 
   "trawakened.skill.starkill": "§cStarkill",
   "trawakened.skill.starkill.description": "§4You seem to have §cfallen§4 from §dthe heavens§4 above. Take over the world through being the overlord of §4flesh.",
@@ -134,6 +134,10 @@
   "effect.trawakened.mad": "§7M.A.D.",
   "effect.trawakened.melt": "§cMelt",
   "effect.trawakened.brain_damage": "§6Brain Damage",
+  "effect.trawakened.time_stop": "§9Time Stop",
+  "effect.trawakened.time_stop_core": "§9Time Stop Core",
+  "effect.trawakened.creative_menu_effect": "§9Arcane Knowledge",
+  "effect.trawakened.spiritual_blocking": "§bSpiritual Blocking",
 
   "item.minecraft.potion.effect.heal_poison_potion": "Potion of Heal Poison",
   "item.minecraft.splash_potion.effect.heal_poison_potion": "Splash Potion of Heal Poison",

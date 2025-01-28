@@ -56,9 +56,9 @@ public class herrscheroftheworld extends Skill {
             case 1 ->
                     var10000 = Component.translatable("trawakened.skill.mode.starkill.infinity");
             case 2 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftheworldskill.time_manip_self");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftheworldskill.spiritual_block");
             case 3 ->
-                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftheworldskill.time_manip_world");
+                    var10000 = Component.translatable("trawakened.skill.mode.herrscheroftheworldskill.arcane_knowledge");
             default -> var10000 = Component.empty();
         }
 
@@ -92,6 +92,8 @@ public class herrscheroftheworld extends Skill {
                     }
                 }
             }
+            case 2 -> var10000 = 500;
+            case 3 -> var10000 = 1000000;
         }
 
         return var10000;
@@ -183,8 +185,24 @@ public class herrscheroftheworld extends Skill {
                 }
                 break;
             case 2:
+                if(!SkillHelper.outOfMagicule(entity, instance) && entity.hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
+                    entity.addEffect(new MobEffectInstance(effectRegistry.SPIRITUAL_BLOCK.get(), instance.isMastered(entity)?3500:2000, instance.isMastered(entity)?55:50, false, false, false));
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.CRIT, 0.7);
+                    instance.addMasteryPoint(entity);
+                    instance.setCoolDown(50);
+                }
                 break;
             case 3:
+                if(!SkillHelper.outOfMagicule(entity, instance)){
+                    entity.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), instance.isMastered(entity)?200:100, 0, false, false, false));
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_ADDITIONS, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.ENCHANT, 1);
+                    instance.addMasteryPoint(entity);
+                    instance.setCoolDown(instance.isMastered(entity)?25000:50000);
+                }
                 break;
         }
     }
@@ -270,8 +288,7 @@ public class herrscheroftheworld extends Skill {
         return true;
     }
 
-    @Override
-    public void onTick(ManasSkillInstance instance, LivingEntity living) {
+    private void Unworthy(LivingEntity living){
         if (living instanceof Player) {
             Player player = (Player) living;
             if(!player.isCreative()) {
@@ -285,12 +302,21 @@ public class herrscheroftheworld extends Skill {
                 }
             }
         }
+    }
+
+    private void Cure(LivingEntity living){
         Collection<MobEffectInstance> list = living.getActiveEffects();
         for(MobEffectInstance effect : list){
             if(effect.getEffect().getCategory() == MobEffectCategory.HARMFUL){
                 living.removeEffect(effect.getEffect());
             }
         }
+    }
+
+    @Override
+    public void onTick(ManasSkillInstance instance, LivingEntity living) {
+        Unworthy(living);
+        Cure(living);
     }
 
     @Override

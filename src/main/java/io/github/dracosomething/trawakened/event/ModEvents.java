@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.event;
 
+import com.github.manasmods.tensura.event.SpiritualHurtEvent;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.trawakened;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Objects;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID)
@@ -24,6 +26,50 @@ public class ModEvents {
     public static void cancelHealing(LivingHealEvent event){
         if(event.getEntity().hasEffect(effectRegistry.HEALPOISON.get())){
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void DoubleSpiritualDamage(SpiritualHurtEvent event){
+        if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
+            event.setAmount(
+                    (float) (event.getAmount() *
+                    Math.ceil(
+                            (double) Objects.requireNonNull(
+                                    event.getEntity().getEffect(
+                                            effectRegistry.CREATIVE_MENU.get()
+                                    )
+                            ).getAmplifier() /2)
+                    )
+            );
+        }
+        if(event.getEntity().hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
+            event.setAmount(
+                    (float) Math.floor(event.getAmount() -
+                            Math.ceil(
+                                    (double) Objects.requireNonNull(
+                                            event.getEntity().getEffect(
+                                                    effectRegistry.SPIRITUAL_BLOCK.get()
+                                            )
+                                    ).getAmplifier() / 15)
+                    )
+            );
+        }
+    }
+
+    @SubscribeEvent
+    public static void DoubleDamage(LivingDamageEvent event){
+        if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
+            event.setAmount(
+                    (float) (event.getAmount() *
+                            Math.ceil(
+                                    (double) Objects.requireNonNull(
+                                            event.getEntity().getEffect(
+                                                    effectRegistry.CREATIVE_MENU.get()
+                                            )
+                                    ).getAmplifier() /2)
+                    )
+            );
         }
     }
 
