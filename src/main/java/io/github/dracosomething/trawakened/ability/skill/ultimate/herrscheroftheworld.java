@@ -202,7 +202,7 @@ public class herrscheroftheworld extends Skill {
                 break;
             case 3:
                 if(!SkillHelper.outOfMagicule(entity, instance)){
-                    entity.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), instance.isMastered(entity)?200:100, 0, false, false, false));
+                    entity.addEffect(new MobEffectInstance(effectRegistry.WHEAK.get(), instance.isMastered(entity)?200:100, 0, false, false, false));
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD, SoundSource.PLAYERS, 1.0F, 1.0F);
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_ADDITIONS, SoundSource.PLAYERS, 1.0F, 1.0F);

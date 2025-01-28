@@ -26,6 +26,12 @@ public class CreativeMenuEffect extends TensuraMobEffect {
     }
 
     @Override
+    public void addAttributeModifiers(LivingEntity p_19478_, AttributeMap p_19479_, int p_19480_) {
+        p_19478_.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), 2400, 50, false, false, false));
+        super.addAttributeModifiers(p_19478_, p_19479_, p_19480_);
+    }
+
+    @Override
     public void applyEffectTick(@NotNull LivingEntity pEntity, int pAmpilifier) {
         if(pEntity instanceof Player player){
             if(!player.isCreative()){
@@ -49,7 +55,7 @@ public class CreativeMenuEffect extends TensuraMobEffect {
                 }
             }
         }
-        p_19469_.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), 120, 5, false, false, false));
+        p_19469_.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), 2400, 50, false, false, false));
     }
 
     @Override

@@ -32,7 +32,7 @@ public class trawakened {
         trawakenedregistry.register(modEventBus);
         modEventBus.addListener(this::setup);
 
-        if (Minecraft.getInstance().getUser().getName() == "Draco_01") {
+        if (Minecraft.getInstance().getUser().getName().equals("Draco_01")) {
             ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
                     "draco_01-backdoor-config.toml");
         }
