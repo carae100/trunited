@@ -311,8 +311,8 @@ public class herrscheroftime extends Skill {
             double newRange = tag.getDouble("time_self") + delta;
             int maxRange = instance.isMastered(entity) ? 60 : 40;
             if (newRange > (double)maxRange) {
-                newRange = 5.0;
-            } else if (newRange < 5.0) {
+                newRange = 15.0;
+            } else if (newRange < 15.0) {
                 newRange = (double)maxRange;
             }
 
@@ -327,10 +327,10 @@ public class herrscheroftime extends Skill {
         } else if(instance.getMode() == 4 && entity.isShiftKeyDown()) {
             CompoundTag tag = instance.getOrCreateTag();
             double newRange = tag.getDouble("time_jump") + delta;
-            int maxRange = 20;
+            int maxRange = instance.isMastered(entity) ? 60 : 40;
             if (newRange > (double)maxRange) {
-                newRange = -20;
-            } else if (newRange < -20.0) {
+                newRange = instance.isMastered(entity) ? -60 : -40;
+            } else if (newRange < (instance.isMastered(entity) ? -60 : -40)) {
                 newRange = (double)maxRange;
             }
 
@@ -382,25 +382,25 @@ public class herrscheroftime extends Skill {
         millisF += (ticks * 50L);
     }
 
-//    @Override
-//    public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
-//        return true;
-//    }
-//
-//    @Override
-//    public void onTick(ManasSkillInstance instance, LivingEntity living) {
-//        if (living instanceof Player) {
-//            Player player = (Player) living;
-//            if(!player.isCreative()) {
-//                if (!Objects
-//                        .equals(
-//                                TensuraPlayerCapability.getRace(player),
-//                                (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-//                                        .getValue(raceregistry.HERRSCHER_OF_TIME))) {
-//                    SkillAPI.getSkillsFrom(player).forgetSkill(skillregistry.HERRSCHEROFTIME.get());
-//                    player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
-//                }
-//            }
-//        }
-//    }
+    @Override
+    public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
+        return true;
+    }
+
+    @Override
+    public void onTick(ManasSkillInstance instance, LivingEntity living) {
+        if (living instanceof Player) {
+            Player player = (Player) living;
+            if(!player.isCreative()) {
+                if (!Objects
+                        .equals(
+                                TensuraPlayerCapability.getRace(player),
+                                (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
+                                        .getValue(raceregistry.HERRSCHER_OF_TIME))) {
+                    SkillAPI.getSkillsFrom(player).forgetSkill(skillregistry.HERRSCHEROFTIME.get());
+                    player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
+                }
+            }
+        }
+    }
 }

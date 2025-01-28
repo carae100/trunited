@@ -69,6 +69,9 @@ public abstract class LivingEntityMixin extends Entity {
         if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())) {
             cir.setReturnValue(false);
         }
+        if (hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP_CORE.get()).getEffect())) {
+            cir.setReturnValue(false);
+        }
         if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())) {
             cir.setReturnValue(false);
         }

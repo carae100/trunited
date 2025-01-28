@@ -66,7 +66,7 @@
   "trawakened.skill.mode.herrscheroftimeskill.time_stop": "§6Time Stop",
   "trawakened.skill.mode.herrscheroftimeskill.time_jump": "§6Time Jump",
 
-  "trawakened.race.herrscher_of_the_world": "§dHerrscher§8 of §9the Time",
+  "trawakened.race.herrscher_of_the_world": "§dHerrscher§8 of §9the World",
   "trawakened.race.herrscher_of_the_world.notes": "§9You have been given arcane knowledge, now you have the ability to stop other attacks.",
 
   "trawakened.skill.herrscheroftheworldskill": "§dHerrscher§8 of §9the World",
@@ -117,7 +117,8 @@
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",
   "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "§7Have §apoison§7 and §0blindness",
-  "trawakened.requirement.evolution.herrscher_of_time.item": "§6Have a clock in your main hand while being under half your max hp.",
+  "trawakened.requirement.evolution.herrscher_of_time.item": "§6Craft at least 1 clock",
+  "trawakened.requirement.evolution.herrscher_of_time.health": "§6  while being under half your max hp.",
   "trawakened.requirement.evolution.herrscher_of_the_world.effect": "§9Have the M.A.D. effect while being under half your max shp.",
   "trawakened.requirement.evolution.herrscher_of_destruction": "§4Master Power of the Honkai",
   "trawakened.requirement.evolution.herrscher_seed_enslaved": "§8Become a true demon lord",
