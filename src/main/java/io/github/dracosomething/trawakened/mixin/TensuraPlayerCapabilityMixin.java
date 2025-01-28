@@ -28,7 +28,7 @@ public abstract class TensuraPlayerCapabilityMixin {
             cancellable = true,
             remap=false
     )
-    private static void injectRaces(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+    private static void loadRaces(CallbackInfoReturnable<List<ResourceLocation>> cir) {
         System.out.println("ewrqqwrwet");
 
         List<ResourceLocation> races = new ArrayList(((List<String>)TensuraConfig.INSTANCE.racesConfig.startingRaces.get()).stream().map(ResourceLocation::new).toList());

@@ -8,6 +8,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.entity.EntityTickList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,12 +38,12 @@ public abstract class ClientLevelMixin {
         }
     }
 
-    @Inject(
-            method = "tickEntities",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    public void stopTimeEntities(CallbackInfo ci) {
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public void tickEntities() {
         ClientLevel level = ((ClientLevel) (Object) this);
         ProfilerFiller profilerfiller = level.getProfiler();
         profilerfiller.push("entities");
@@ -50,7 +51,7 @@ public abstract class ClientLevelMixin {
             if (Minecraft.getInstance().player != null) {
                 if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
                     if (entity != Minecraft.getInstance().player) {
-                        ci.cancel();
+//                        ci.cancel();
                         return;
                     }
                 }

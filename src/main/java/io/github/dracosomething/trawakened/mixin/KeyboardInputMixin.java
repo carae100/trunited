@@ -10,6 +10,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,19 +21,19 @@ public class KeyboardInputMixin extends Input {
     @Shadow
     private @Final Options options;
 
-    private KeyboardInputMixin(){}
+    public KeyboardInputMixin(){}
 
     @Shadow
     private static float calculateImpulse(boolean p_205578_, boolean p_205579_) {
         return 0;
     }
 
-    @Inject(
-            method = "tick",
-            at = @At("HEAD"),
-            remap = false,
-            cancellable = true)
-    public void ShuffelMapping(boolean p_234118_, float p_234119_, CallbackInfo ci) {
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public void tick(boolean p_234118_, float p_234119_) {
         if (trawakenedPlayerCapability.isOverwhelmed(Minecraft.getInstance().player)) {
             if(this.options.keyShift.isDown() && this.options.keySprint.isDown()) {
                 this.up = this.options.keyRight.isDown();
@@ -48,7 +49,19 @@ public class KeyboardInputMixin extends Input {
                 this.leftImpulse *= p_234119_ - 0.1F;
                 this.forwardImpulse *= p_234119_ - 0.1F;
             }
-            ci.cancel();
         }
+        this.up = this.options.keyUp.isDown();
+        this.down = this.options.keyDown.isDown();
+        this.left = this.options.keyLeft.isDown();
+        this.right = this.options.keyRight.isDown();
+        this.forwardImpulse = calculateImpulse(this.up, this.down);
+        this.leftImpulse = calculateImpulse(this.left, this.right);
+        this.jumping = this.options.keyJump.isDown();
+        this.shiftKeyDown = this.options.keyShift.isDown();
+        if (p_234118_) {
+            this.leftImpulse *= p_234119_;
+            this.forwardImpulse *= p_234119_;
+        }
+
     }
 }
