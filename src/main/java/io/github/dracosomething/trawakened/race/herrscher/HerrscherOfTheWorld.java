@@ -44,7 +44,7 @@ public class HerrscherOfTheWorld extends HerrscherRace {
         if (SkillUtils.isSkillMastered(player, skillregistry.POWEROFHONKAI.get())) {
             chance += 25;
         }
-        if (player.hasEffect(effectRegistry.OVERWHELMED.get()) && TensuraEPCapability.getSpiritualHealth(player) <= trawakenedPlayerCapability.getMaxSpiritualHealth(player)/2) {
+        if (player.hasEffect(effectRegistry.SHPPOISON.get()) && TensuraEPCapability.getSpiritualHealth(player) <= trawakenedPlayerCapability.getMaxSpiritualHealth(player)/2) {
         }
         chance1 += 50;
         if (TensuraPlayerCapability.getBaseEP(player) >= 1000000) {
