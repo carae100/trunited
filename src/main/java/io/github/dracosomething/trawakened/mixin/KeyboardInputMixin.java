@@ -38,7 +38,7 @@ public class KeyboardInputMixin extends Input {
                 this.up = this.options.keyRight.isDown();
                 this.down = this.options.keyPickItem.isDown();
                 this.left = this.options.keySaveHotbarActivator.isDown();
-                this.right = this.options.keyAdvancements.isDown();
+                this.right = this.options.keySwapOffhand.isDown();
                 this.forwardImpulse = calculateImpulse(this.up, this.left);
                 this.leftImpulse = calculateImpulse(this.down, this.right);
             }

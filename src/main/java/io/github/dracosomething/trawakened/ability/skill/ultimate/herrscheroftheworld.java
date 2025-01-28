@@ -21,6 +21,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -41,6 +43,11 @@ import java.util.function.Predicate;
 import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
 
 public class herrscheroftheworld extends Skill {
+    @Override
+    public @Nullable ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscher_of_the_world.png");
+    }
+
     public herrscheroftheworld() {
         super(SkillType.ULTIMATE);
     }
@@ -201,7 +208,7 @@ public class herrscheroftheworld extends Skill {
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_ADDITIONS, SoundSource.PLAYERS, 1.0F, 1.0F);
                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.ENCHANT, 1);
                     instance.addMasteryPoint(entity);
-                    instance.setCoolDown(instance.isMastered(entity)?25000:50000);
+                    instance.setCoolDown(instance.isMastered(entity)?3600:7200);
                 }
                 break;
         }

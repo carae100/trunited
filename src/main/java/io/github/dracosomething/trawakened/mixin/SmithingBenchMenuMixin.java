@@ -33,7 +33,8 @@ public class SmithingBenchMenuMixin {
                 player.isCreative() ||
                 SkillUtils.isSkillMastered(player, skillregistry.STARKILL.get()) ||
                 SkillUtils.isSkillMastered(player, skillregistry.AZAZEL.get()) ||
-                SkillUtils.isSkillMastered(player, skillregistry.AKASHIC_PLANE.get())
+                SkillUtils.isSkillMastered(player, skillregistry.AKASHIC_PLANE.get()) ||
+                SkillUtils.isSkillMastered(player, skillregistry.HERRSCHEROFTHEWORLD.get())
                 ? true : (Boolean) SmithingCapability.getFrom(player).map((data) -> {
                     return data.hasSchematics(this.requiredSchematics);
                 }).orElse(false)

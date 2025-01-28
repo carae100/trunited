@@ -41,7 +41,7 @@ public class HerrscherOfTheWorld extends HerrscherRace {
         int chance = 0;
         int chance1 = 0;
         int chance2 = 0;
-        if (SkillUtils.isSkillMastered(player, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))))) {
+        if (SkillUtils.isSkillMastered(player, skillregistry.POWEROFHONKAI.get())) {
             chance += 25;
         }
         if (player.hasEffect(effectRegistry.OVERWHELMED.get()) && TensuraEPCapability.getSpiritualHealth(player) <= trawakenedPlayerCapability.getMaxSpiritualHealth(player)/2) {
@@ -55,8 +55,8 @@ public class HerrscherOfTheWorld extends HerrscherRace {
 
     public List<Component> getRequirementsForRendering (Player player) {
         List<Component> list = new ArrayList();
-        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_time.item"));
-        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_pestilence.skill"));
+        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_the_world.effect"));
+        list.add(Component.translatable("trawakened.requirement.evolution.herrscher_of_destruction"));
         list.add(Component.translatable("trawakened.requirement.evolution.MoreEp"));
         return list;
     }

@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class herrscheroftime extends Skill {
+    @Override
+    public @Nullable ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/ultimate/herrscher_of_time.png");
+    }
+
     public static long time = 0L;
 
     public static Timer timer;
@@ -200,6 +206,7 @@ public class herrscheroftime extends Skill {
                                         entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) + (1 - (tag.getDouble("time") / 100)) :
                                         ForgeMod.SWIM_SPEED.get().getDefaultValue());
                         instance.setCoolDown(50);
+                        instance.addMasteryPoint(entity);
                     }
                 }
                 break;
@@ -247,6 +254,7 @@ public class herrscheroftime extends Skill {
                                     .setBaseValue(ForgeMod.SWIM_SPEED.get().getDefaultValue());
                         }
                         instance.setCoolDown(100);
+                        instance.addMasteryPoint(entity);
                     }
                 }
                 break;
@@ -261,7 +269,8 @@ public class herrscheroftime extends Skill {
                     }
 //                    jump(-2400);
 //                    update();
-                    instance.setCoolDown(instance.isMastered(entity)? 8400 : 14400);
+                    instance.setCoolDown(instance.isMastered(entity)? 420 : 720);
+                    instance.addMasteryPoint(entity);
                 }
                 break;
             case 4:
@@ -271,6 +280,7 @@ public class herrscheroftime extends Skill {
                         jump((int) tag.getDouble("time_jump"));
                         update();
                         instance.setCoolDown(20);
+                        instance.addMasteryPoint(entity);
                     }
                 }
                 break;
@@ -354,6 +364,7 @@ public class herrscheroftime extends Skill {
     static void update() {
         float p = PERCENT / 20.0F;
         millisF = p + millisF;
+//        System.out.println(time);
         time = (long)millisF;
     }
 

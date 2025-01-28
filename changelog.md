@@ -1,41 +1,71 @@
-# Azazel, Lord of Flesh
+# changelog
 
-[passive] Knowledge
-player is immune to both brain damage effect and M.A.D. effect.
+- added herrscher of time
+- added herrscher of the worl
+- added custom health bars for when the player has sertain effects
+- added a lot of potion items + tiped arrows
 
-[active] Infect\
-change modes by shifting and pressing the ability key\
-Infect modes:
+------------------------------------------------------------------------------------------------------------------
+Herrscher of time - evolves from enslaved herrscher seed
+evo requirements:
+Have a clock in your main hand while being under half your max hp.
+master will of the honkai
+have over 1000000 ep
 
-melt\
-gives all entities in a 15 block radius the melt effect\
-melt decreases ones max hp the longer you have it. Can not be removed with reverser or 
-isolation, has a 10% chance to be removed with milk.
+[passive-toggle] herrscher
+player gets the ability to fly
 
-apostle creation\
-makes everything in a 15 block radius your subordinate. Makes a clone of players.
+[passive] herrscher of time
+player is immume to time stop
 
+[active] time manipulation: world
+when shifting and ability presses down, the player can scroll and change the new time, max 40, 60 when mastery
+when pressed it sets the time of the world to the value inserted, player retains normal speed when slowed down
+cooldown: 50 seconds
+cost: 1000 mp
 
-[active] assimilation\
-Basically gluttony breath in a 15 block radius. every killed entity gives a assimilation point.
+[active] time manipulation: self
+when shifting and ability presses down, the player can scroll and change the new time, max 40, 60 when mastery
+when pressed the player fast their own time forward or slows it down
+cooldown: 100 seconds
+cost: 100 mp
 
-[active] Akashic Plane\
-has 4 modes, switch modes by shift and pressing the ability key
+[active] time stop
+stops the worlds time for 2 minutes
+cooldown: 10 minutes/ 5 minutes on mastery
+cost: 5000 mp
 
-analyze\
-normal analyze
+[active] time jump
+when shifting and ability presses down, the player can scroll and change the new time, max 20, min -20
+jumps the time the specified amount of ticks forward
+cooldown: 20 seconds
+cost: 250 mp
+------------------------------------------------------------------------------------------------------------------
 
-Overwhelm\
-gives all entities in a 15 block radius the brain damage effect
+herrscher of the world - evolves from awakened herrscher seed
+evo requirements:
+Have the M.A.D. effect while being under half your max shp.
+master power of the honkai
+have over 1000000 ep
 
-spatial cut\
-deals 25 damage to a target, also stops their healing
+[passive-toggle] herrscher
+player gets the ability to fly
 
-podolsky neurons\
-gives a command to all subordinates in a 60 block radius.\
-commands can be changed by sprinting, holding the ability key and scrolling(shift was already taken)
+[passive] the cure
+removes all negative effects the player has
+also makes the player imume to overwhelmed, timestop and braindamage
 
-[active] create apostle\
-uses a assimilation point to summon a random entity from this list.\
-EntityType.ZOMBIE, EntityType.PIGLIN_BRUTE, EntityType.SKELETON, EntityType.ZOMBIFIED_PIGLIN, EntityType.ZOMBIE_VILLAGER, EntityType.ZOGLIN, EntityType.CREEPER, EntityType.EVOKER, EntityType.PIGLIN_BRUTE, EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN, EntityType.ILLUSIONER, EntityType.PILLAGER, EntityType.VINDICATOR, EntityType.SILVERFISH, EntityType.RAVAGER, EntityType.HUSK, EntityType.DROWNED, EntityType.HOGLIN, EntityType.PIGLIN, EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.PHANTOM, EntityType.STRAY, TensuraEntityTypes.BARGHEST.get(), TensuraEntityTypes.ARMOURSAURUS.get(), TensuraEntityTypes.BLACK_SPIDER.get(), TensuraEntityTypes.KNIGHT_SPIDER.get()\
-the summoned entity is your subordinate.
+[active] concept of infinity
+this is just the same concept of infinity as always
+
+[active] spiritual blockade
+gives the player the spiritual blockade effect for 2000 ticks, 3500 ticks when mastered with an amplifier of 50, 55 when mastered
+cooldown: 50 seconds
+costs: 500 mp
+
+[active] arcane knowledge
+allows the player to open the creative inventory for 5 seconds, 10 seconds when mastered.
+this wheekens the player a lot for the duration
+cooldown: 2 hours, 1 hour when mastered
+costs: 1000000 mp
+

@@ -21,13 +21,12 @@ import software.bernie.geckolib3.GeckoLib;
 // The value here should match an entry in the META-IN F/mods.toml file
 @Mod(trawakened.MODID)
 public class trawakened {
-    public static long tickCounter = 0L;
     public static final String MODID = "trawakened";
 
     public trawakened() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-         herrscheroftime.create();
+        herrscheroftime.create();
 
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);
