@@ -192,7 +192,7 @@ public class herrscheroftheworld extends Skill {
                 }
                 break;
             case 2:
-                if(!SkillHelper.outOfMagicule(entity, instance) && entity.hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
+                if(!SkillHelper.outOfMagicule(entity, instance) && !entity.hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
                     entity.addEffect(new MobEffectInstance(effectRegistry.SPIRITUAL_BLOCK.get(), instance.isMastered(entity)?3500:2000, instance.isMastered(entity)?55:50, false, false, false));
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.CRIT, 0.7);
@@ -312,7 +312,7 @@ public class herrscheroftheworld extends Skill {
     }
 
     private void Cure(LivingEntity living){
-        Collection<MobEffectInstance> list = living.getActiveEffects();
+        List<MobEffectInstance> list = living.getActiveEffects().stream().toList();
         for(MobEffectInstance effect : list){
             if(effect.getEffect().getCategory() == MobEffectCategory.HARMFUL){
                 living.removeEffect(effect.getEffect());
@@ -322,8 +322,8 @@ public class herrscheroftheworld extends Skill {
 
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        Unworthy(living);
         Cure(living);
+        Unworthy(living);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -26,12 +29,31 @@ public class CreativeMenuEffect extends TensuraMobEffect {
     public void applyEffectTick(@NotNull LivingEntity pEntity, int pAmpilifier) {
         if(pEntity instanceof Player player){
             if(!player.isCreative()){
+                System.out.println("ewrwer");
                 if(player instanceof ServerPlayer serverPlayer){
+                    System.out.println("trewtrewt");
                     serverPlayer.setGameMode(GameType.CREATIVE);
                     serverPlayer.getAbilities().invulnerable = false;
                     serverPlayer.getAbilities().instabuild = false;
                 }
             }
         }
+    }
+
+    @Override
+    public void removeAttributeModifiers(LivingEntity p_19469_, AttributeMap p_19470_, int p_19471_) {
+        if(p_19469_ instanceof Player player){
+            if(player.isCreative()){
+                if(player instanceof ServerPlayer serverPlayer){
+                    serverPlayer.setGameMode(GameType.SURVIVAL);
+                }
+            }
+        }
+        p_19469_.addEffect(new MobEffectInstance(effectRegistry.CREATIVE_MENU.get(), 120, 5, false, false, false));
+    }
+
+    @Override
+    public boolean isDurationEffectTick(int p_19455_, int p_19456_) {
+        return p_19455_%20==0;
     }
 }
