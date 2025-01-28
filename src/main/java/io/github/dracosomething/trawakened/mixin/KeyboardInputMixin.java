@@ -20,6 +20,8 @@ public class KeyboardInputMixin extends Input {
     @Shadow
     private @Final Options options;
 
+    private KeyboardInputMixin(){}
+
     @Shadow
     private static float calculateImpulse(boolean p_205578_, boolean p_205579_) {
         return 0;

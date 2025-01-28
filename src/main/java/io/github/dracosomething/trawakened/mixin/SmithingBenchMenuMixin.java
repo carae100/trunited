@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 import java.util.Objects;
 
-@Mixin(SmithingBenchRecipe.class)
+@Mixin(value = SmithingBenchRecipe.class, priority = 1000000)
 public class SmithingBenchMenuMixin {
     @Shadow
     private @Final List<ResourceLocation> requiredSchematics;

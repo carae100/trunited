@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(KeyboardHandler.class)
+@Mixin(value = KeyboardHandler.class, priority = 10000)
 public abstract class KeyboardMixin {
     @Shadow
     public abstract void keyPress(long p_90894_, int p_90895_, int p_90896_, int p_90897_, int p_90898_);

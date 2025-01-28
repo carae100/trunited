@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.BooleanSupplier;
 
-@Mixin(ServerLevel.class)
+@Mixin(value = ServerLevel.class, priority = 1000000)
 public class ServerLevelMixin {
     @Inject(
             method = "tickChunk",
