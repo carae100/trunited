@@ -1,11 +1,14 @@
 package io.github.dracosomething.trawakened.event;
 
+import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
 import io.github.dracosomething.trawakened.particles.FleshParticles;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.entityRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,5 +20,10 @@ public class ModEventBusEvents {
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event)
     {
         Minecraft.getInstance().particleEngine.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(entityRegistry.DEFAULT_OTHER_WORLDER.get(), defaultOtherWolder.setAttributes());
     }
 }

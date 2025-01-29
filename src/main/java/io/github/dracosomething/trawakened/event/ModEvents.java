@@ -1,7 +1,13 @@
 package io.github.dracosomething.trawakened.event;
 
+import com.github.manasmods.manascore.api.skills.ManasSkill;
+import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.event.SpiritualHurtEvent;
 import com.github.manasmods.tensura.registry.enchantment.TensuraEnchantments;
+import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
@@ -16,7 +22,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -29,7 +37,7 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber(modid = trawakened.MODID)
 public class ModEvents {
     @SubscribeEvent
-    public static void SlowBreak(TickEvent.PlayerTickEvent event){
+    public static void SlowBreak(TickEvent.PlayerTickEvent event) {
         LivingEntity entity = event.player;
         Random random = new Random();
         List<ItemStack> list = List.of(entity.getItemBySlot(EquipmentSlot.CHEST),
@@ -38,17 +46,58 @@ public class ModEvents {
                 entity.getItemBySlot(EquipmentSlot.LEGS),
                 entity.getItemBySlot(EquipmentSlot.MAINHAND),
                 entity.getItemBySlot(EquipmentSlot.OFFHAND));
-        for(ItemStack item : list){
-            if(random.nextInt(1, 100) <= 1) {
+        for (ItemStack item : list) {
+            if (random.nextInt(1, 100) <= 1) {
                 if (item.getEnchantmentLevel(enchantRegistry.KOJIMA_PARTICLE.get()) >= 1) {
                     item.setDamageValue(item.getDamageValue() + 1);
                     int level = (item.getEnchantmentLevel(enchantRegistry.KOJIMA_PARTICLE.get()) - 1);
                     EngravingHelper.RemoveEnchantments(item, enchantRegistry.KOJIMA_PARTICLE.get());
-                    if(level > 0) {
+                    if (level > 0) {
                         item.enchant(enchantRegistry.KOJIMA_PARTICLE.get(), level);
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void GrantUnique(LivingSpawnEvent event){
+        LivingEntity entity = event.getEntity();
+        event.setPhase(EventPriority.LOWEST);
+        if(entity instanceof defaultOtherWolder) {
+            List<ManasSkill> list_unique = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
+                boolean var10000;
+                if (manasSkill instanceof Skill skill) {
+                    if (skill.getType().equals(Skill.SkillType.UNIQUE)) {
+                        var10000 = true;
+                        return var10000;
+                    }
+                }
+
+                var10000 = false;
+                return var10000;
+            }).toList();
+            List<ManasSkill> list_ultimate = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
+                boolean var10000;
+                if (manasSkill instanceof Skill skill) {
+                    if (skill.getType().equals(Skill.SkillType.ULTIMATE)) {
+                        var10000 = true;
+                        return var10000;
+                    }
+                }
+
+                var10000 = false;
+                return var10000;
+            }).toList();
+            ManasSkill skill;
+            Random random1 = new Random();
+            if (random1.nextInt() >= 90) {
+                skill = list_unique.get(random1.nextInt(1, list_unique.size()));
+            } else {
+                skill = list_ultimate.get(random1.nextInt(1, list_ultimate.size()));
+            }
+            SkillUtils.learnSkill(entity, skill);
+            event.setCanceled(true);
         }
     }
 

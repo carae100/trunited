@@ -187,6 +187,9 @@
   "death.attack.trawakened.assimilation": "%1$s §4was assimilated",
   "death.attack.trawakened.assimilation.player": "%1$s §4was assimilated",
 
+  "enchantment.trawakened.primal_armor": "Primal Armor",
+  "enchantment.trawakened.kojima_particle": "Kojima Particle",
+
   "trawakened.skill.thought.mode": "Command: %s",
 
   "unworthy": "You have been deemed unworthy by the honkai.",
