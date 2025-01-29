@@ -49,7 +49,7 @@ public class defaultOtherWolder  extends OtherworlderEntity implements IOtherwor
     }
 
     public static AttributeSupplier setAttributes() {
-        return Mob.createMobAttributes().add(Attributes.ARMOR, 0.0).add(Attributes.ATTACK_DAMAGE, 20.0).add(Attributes.ATTACK_KNOCKBACK, 5.0).add(Attributes.MAX_HEALTH, 200.0).add(Attributes.MOVEMENT_SPEED, 0.20000000298023224).add(Attributes.FOLLOW_RANGE, 32.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.0).add((Attribute) ForgeMod.SWIM_SPEED.get(), 1.0).add((Attribute)ForgeMod.ATTACK_RANGE.get(), 2.0).build();
+        return Mob.createMobAttributes().add(Attributes.ARMOR, 0.5).add(Attributes.ATTACK_DAMAGE, 55.0).add(Attributes.ATTACK_KNOCKBACK, 5.0).add(Attributes.MAX_HEALTH, 500.0).add(Attributes.MOVEMENT_SPEED, 0.20000000298023224).add(Attributes.FOLLOW_RANGE, 32.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.2).add((Attribute) ForgeMod.SWIM_SPEED.get(), 1.0).add((Attribute)ForgeMod.ATTACK_RANGE.get(), 2.0).build();
     }
 
     protected void registerGoals() {

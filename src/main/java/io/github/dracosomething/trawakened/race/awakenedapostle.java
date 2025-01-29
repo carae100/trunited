@@ -41,7 +41,7 @@ public class awakenedapostle extends honkaiapostle {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 5.5;
+        return 2.5;
     }
 
     @Override

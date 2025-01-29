@@ -24,6 +24,7 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -231,7 +232,9 @@ public class powerofhonkai extends Skill {
                         skill.getType().equals(SkillType.ULTIMATE) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill"))) ||
-                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
+                        !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))) ||
+                        !skill.equals(skillregistry.HERRSCHEROFTHEWORLD.get()) ||
+                        !skill.equals(skillregistry.HERRSCHEROFTIME.get());
             }
         } else {
             return false;

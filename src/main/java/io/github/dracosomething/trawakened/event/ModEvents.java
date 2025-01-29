@@ -7,11 +7,14 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.event.SpiritualHurtEvent;
 import com.github.manasmods.tensura.registry.enchantment.TensuraEnchantments;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
+import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -90,14 +93,18 @@ public class ModEvents {
                 return var10000;
             }).toList();
             ManasSkill skill;
-            Random random1 = new Random();
-            if (random1.nextInt() >= 90) {
-                skill = list_unique.get(random1.nextInt(1, list_unique.size()));
-            } else {
-                skill = list_ultimate.get(random1.nextInt(1, list_ultimate.size()));
+            while(!(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size() >= 1)) {
+                System.out.println(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size());
+                Random random1 = new Random();
+                if (random1.nextInt(1, 100) >= 90) {
+                    skill = list_unique.get(random1.nextInt(1, list_unique.size()));
+                } else {
+                    skill = list_ultimate.get(random1.nextInt(1, list_ultimate.size()));
+                }
+                if(!(skill instanceof voiceofhonkai || skill instanceof willofhonkai || skill instanceof powerofhonkai || skill instanceof herrscheroftime || skill instanceof  herrscherofdestruction || skill instanceof herrscherofplague || skill instanceof herrscheroftheworld)) {
+                    SkillUtils.learnSkill(entity, skill);
+                }
             }
-            SkillUtils.learnSkill(entity, skill);
-            event.setCanceled(true);
         }
     }
 

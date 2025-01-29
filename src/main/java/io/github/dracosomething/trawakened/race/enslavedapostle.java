@@ -37,7 +37,7 @@ public class enslavedapostle extends honkaiapostle {
 
     @Override
     public double getBaseAttackDamage() {
-        return 5;
+        return 2;
     }
 
     @Override

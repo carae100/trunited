@@ -41,7 +41,7 @@ public class honkaiapostle extends Race {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 6.5;
+        return 0.5;
     }
 
     @Override

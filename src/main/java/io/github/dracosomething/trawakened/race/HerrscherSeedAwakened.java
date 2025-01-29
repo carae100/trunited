@@ -35,7 +35,7 @@ public class HerrscherSeedAwakened extends awakenedapostle {
 
     @Override
     public double getBaseAttackSpeed() {
-        return 5;
+        return 3;
     }
 
     @Override
