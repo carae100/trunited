@@ -15,6 +15,8 @@ public class potionRegistry {
     public static final RegistryObject<Potion> MAD_POTION_1, MAD_POTION_SHORT;
     public static final RegistryObject<Potion> MELT_POTION_1, MELT_POTION_2, MELT_POTION_LONG;
     public static final RegistryObject<Potion> BRAIN_DAMAGE_POTION;
+    public static final RegistryObject<Potion> EXTREME_WEAK_POTION_1, EXTREME_WEAK_POTION_2, EXTREME_WEAK_POTION_3, EXTREME_WEAK_POTION_LONG;
+    public static final RegistryObject<Potion> SPIRITUAL_BLOCK_POTION_1,SPIRITUAL_BLOCK_POTION_2 ,SPIRITUAL_BLOCK_POTION_LONG;
 
     public potionRegistry(){}
 
@@ -32,5 +34,12 @@ public class potionRegistry {
         MELT_POTION_2 = registry.register("melt_potion_2", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 600, 1)));
         MELT_POTION_LONG = registry.register("melt_potion_long", () -> new Potion(new MobEffectInstance(effectRegistry.MELT.get(), 2400, 0)));
         BRAIN_DAMAGE_POTION = registry.register("brain_damage_potion", () -> new Potion(new MobEffectInstance(effectRegistry.BRAINDAMAGE.get(), 1200, 0)));
+        EXTREME_WEAK_POTION_1 = registry.register("extreme_weak_potion_1", () -> new Potion(new MobEffectInstance(effectRegistry.WHEAK.get(), 3000, 0, false, false, false)));
+        EXTREME_WEAK_POTION_2 = registry.register("extreme_weak_potion_2", () -> new Potion(new MobEffectInstance(effectRegistry.WHEAK.get(), 2400, 1, false, false, false)));
+        EXTREME_WEAK_POTION_3 = registry.register("extreme_weak_potion_3", () -> new Potion(new MobEffectInstance(effectRegistry.WHEAK.get(), 1200, 2, false, false, false)));
+        EXTREME_WEAK_POTION_LONG = registry.register("extreme_weak_potion_long", () -> new Potion(new MobEffectInstance(effectRegistry.WHEAK.get(), 4800, 0, false, false, false)));
+        SPIRITUAL_BLOCK_POTION_1 = registry.register("spiritual_block_potion_1", () -> new Potion(new MobEffectInstance(effectRegistry.SPIRITUAL_BLOCK.get(), 2400, 0, false, false, false)));
+        SPIRITUAL_BLOCK_POTION_2 = registry.register("spiritual_block_potion_2", () -> new Potion(new MobEffectInstance(effectRegistry.SPIRITUAL_BLOCK.get(), 1200, 1, false, false, false)));
+        SPIRITUAL_BLOCK_POTION_LONG = registry.register("spiritual_block_potion_long", () -> new Potion(new MobEffectInstance(effectRegistry.SPIRITUAL_BLOCK.get(), 3000, 0, false, false, false)));
     }
 }

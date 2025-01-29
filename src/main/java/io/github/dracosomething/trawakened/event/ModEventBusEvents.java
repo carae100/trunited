@@ -17,7 +17,5 @@ public class ModEventBusEvents {
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event)
     {
         Minecraft.getInstance().particleEngine.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
-//        event.register(ModParticles.CONCENTRATE_PARTICLES.get(), ConcentrateParticles.Provider::new);
     }
-
 }

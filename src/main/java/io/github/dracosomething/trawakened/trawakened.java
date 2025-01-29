@@ -1,5 +1,7 @@
 package io.github.dracosomething.trawakened;
 
+import com.github.manasmods.tensura.registry.items.TensuraMaterialItems;
+import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
@@ -66,6 +68,27 @@ public class trawakened {
             BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
                     potionRegistry.MELT_POTION_1.get(),
                     Items.REDSTONE, potionRegistry.MELT_POTION_LONG.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    Potions.WEAKNESS,
+                    TensuraMaterialItems.ADAMANTITE_INGOT.get(), potionRegistry.EXTREME_WEAK_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.EXTREME_WEAK_POTION_1.get(),
+                    Items.GLOWSTONE_DUST, potionRegistry.EXTREME_WEAK_POTION_2.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.EXTREME_WEAK_POTION_2.get(),
+                    Items.GLOWSTONE_DUST, potionRegistry.EXTREME_WEAK_POTION_3.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.EXTREME_WEAK_POTION_1.get(),
+                    Items.REDSTONE, potionRegistry.EXTREME_WEAK_POTION_LONG.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    Potions.TURTLE_MASTER,
+                    TensuraToolItems.DEAD_END_RAINBOW.get(), potionRegistry.SPIRITUAL_BLOCK_POTION_1.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.SPIRITUAL_BLOCK_POTION_1.get(),
+                    Items.GLOWSTONE_DUST, potionRegistry.SPIRITUAL_BLOCK_POTION_2.get()));
+            BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
+                    potionRegistry.SPIRITUAL_BLOCK_POTION_1.get(),
+                    Items.REDSTONE, potionRegistry.SPIRITUAL_BLOCK_POTION_LONG.get()));
         });
     }
 }
