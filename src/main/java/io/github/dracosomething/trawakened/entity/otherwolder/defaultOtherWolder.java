@@ -66,7 +66,6 @@ public class defaultOtherWolder  extends OtherworlderEntity implements IOtherwor
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new TensuraTamableEntity.TensuraOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new TensuraTamableEntity.TensuraOwnerHurtTargetGoal(this));
-//        this.targetSelector.addGoal(5, new NonTameRandomTargetGoal(this, Player.class, false, this.shouldAttackPlayer());
         this.targetSelector.addGoal(6, new NonTameRandomTargetGoal(this, LivingEntity.class, false, (entity) -> {
             Entity entity1 = (Entity) entity;
             return entity1.getType().is(TensuraTags.EntityTypes.OTHERWORLDER_PREY);
@@ -80,78 +79,9 @@ public class defaultOtherWolder  extends OtherworlderEntity implements IOtherwor
 
     public void tick() {
         super.tick();
-        if (this.isAlive() && this.getHealth() < this.getMaxHealth() && this.tickCount % 40 == 0 && this.getSurvivor() != null) {
-            this.heal(10.0F);
-            TensuraParticleHelper.addServerParticlesAroundSelf(this, ParticleTypes.HEART);
-        }
-
     }
 
     public void setTarget(@Nullable LivingEntity pLivingEntity) {
-        LivingEntity oldTarget = this.getTarget();
         super.setTarget(pLivingEntity);
-        LivingEntity newTarget = this.getTarget();
-        ManasSkillInstance instance = this.getBerserker();
-        if (instance != null) {
-            if (oldTarget == null && newTarget != null) {
-                this.activateBerserker();
-            } else if (oldTarget != null && newTarget == null) {
-                this.activateBerserker();
-            }
-
-        }
-    }
-
-    private void activateBerserker() {
-        double EP = TensuraEPCapability.getEP(this) * 12.5;
-        AttributeInstance armor = (AttributeInstance) Objects.requireNonNull(this.getAttribute(Attributes.ARMOR));
-        if (armor.getModifier(BerserkerSkill.BERSERKER) != null) {
-            armor.removePermanentModifier(BerserkerSkill.BERSERKER);
-            this.getLevel().playSound((Player)null, this.getX(), this.getY(), this.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
-        } else {
-            AttributeModifier armorModifier = new AttributeModifier(BerserkerSkill.BERSERKER, "BerserkerArmor", BerserkerSkill.getArmor(EP) / 4.0, AttributeModifier.Operation.ADDITION);
-            armor.addPermanentModifier(armorModifier);
-            this.getLevel().playSound((Player)null, this.getX(), this.getY(), this.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0F, 1.0F);
-            this.getLevel().playSound((Player)null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.5F, 1.0F);
-            TensuraParticleHelper.addServerParticlesAroundSelf(this, (ParticleOptions) TensuraParticles.SOLAR_FLASH.get(), 1.0);
-            TensuraParticleHelper.addServerParticlesAroundSelf(this, (ParticleOptions)TensuraParticles.YELLOW_LIGHTNING_SPARK.get(), 3.0);
-            TensuraParticleHelper.addServerParticlesAroundSelf(this, (ParticleOptions)TensuraParticles.YELLOW_LIGHTNING_SPARK.get(), 2.0);
-            TensuraParticleHelper.spawnServerParticles(this.level, (ParticleOptions)TensuraParticles.PURPLE_LIGHTNING_SPARK.get(), this.getX(), this.getY() + (double)(this.getBbHeight() / 2.0F), this.getZ(), 100, 0.08, 0.08, 0.08, 0.2, true);
-        }
-
-        AttributeInstance damage = (AttributeInstance)Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE));
-        if (damage.getModifier(BerserkerSkill.BERSERKER) != null) {
-            damage.removePermanentModifier(BerserkerSkill.BERSERKER);
-        } else {
-            damage.addPermanentModifier(new AttributeModifier(BerserkerSkill.BERSERKER, "BerserkerAttack", BerserkerSkill.getAttack(EP) * 1.5, AttributeModifier.Operation.ADDITION));
-        }
-
-        AttributeInstance speed = (AttributeInstance)Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED));
-        if (speed.getModifier(BerserkerSkill.BERSERKER) != null) {
-            speed.removePermanentModifier(BerserkerSkill.BERSERKER);
-        } else {
-            speed.addPermanentModifier(new AttributeModifier(BerserkerSkill.BERSERKER, "BerserkerSpeed", BerserkerSkill.getSpeed(EP) / 200.0, AttributeModifier.Operation.ADDITION));
-        }
-
-    }
-
-    @Nullable
-    private ManasSkillInstance getBerserker() {
-        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)UniqueSkills.BERSERKER.get());
-        if (skill.isEmpty()) {
-            return null;
-        } else {
-            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
-        }
-    }
-
-    @Nullable
-    private ManasSkillInstance getSurvivor() {
-        Optional<ManasSkillInstance> skill = SkillAPI.getSkillsFrom(this).getSkill((ManasSkill)UniqueSkills.SURVIVOR.get());
-        if (skill.isEmpty()) {
-            return null;
-        } else {
-            return !((ManasSkillInstance)skill.get()).canInteractSkill(this) ? null : (ManasSkillInstance)skill.get();
-        }
     }
 }
