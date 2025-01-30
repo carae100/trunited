@@ -13,5 +13,6 @@ public class trawakenedregistry {
         potionRegistry.init(modEventBus);
         enchantRegistry.init(modEventBus);
         entityRegistry.init(modEventBus);
+        itemRegistry.init(modEventBus);
     }
 }

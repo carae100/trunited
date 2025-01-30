@@ -5,8 +5,12 @@ import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.event.SpiritualHurtEvent;
 import com.github.manasmods.tensura.registry.enchantment.TensuraEnchantments;
+import com.github.manasmods.tensura.registry.items.TensuraArmorItems;
+import com.github.manasmods.tensura.registry.items.TensuraToolItems;
+import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
@@ -14,7 +18,11 @@ import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,6 +30,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -52,11 +62,27 @@ public class ModEvents {
         for (ItemStack item : list) {
             if (random.nextInt(1, 100) <= 1) {
                 if (item.getEnchantmentLevel(enchantRegistry.KOJIMA_PARTICLE.get()) >= 1) {
+                    TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1), 2);
                     item.setDamageValue(item.getDamageValue() + 1);
                     int level = (item.getEnchantmentLevel(enchantRegistry.KOJIMA_PARTICLE.get()) - 1);
                     EngravingHelper.RemoveEnchantments(item, enchantRegistry.KOJIMA_PARTICLE.get());
                     if (level > 0) {
                         item.enchant(enchantRegistry.KOJIMA_PARTICLE.get(), level);
+                    }
+                    TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1), 2);
+                }
+                if (item.getEnchantmentLevel(enchantRegistry.CORAL.get()) >= 1) {
+                    if (!((item.getEnchantmentLevel(Enchantments.FIRE_PROTECTION) >= 4 || item.getEnchantmentLevel(Enchantments.FIRE_ASPECT) >= 2) &&
+                            item.getEnchantmentLevel(TensuraEnchantments.MAGIC_INTERFERENCE.get()) >= 1)) {
+                        entity.setSecondsOnFire(120);
+                        TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(14702884)), 1), 2);
+                        item.setDamageValue(item.getDamageValue() + 3);
+                        int level = (item.getEnchantmentLevel(enchantRegistry.CORAL.get()) - 1);
+                        EngravingHelper.RemoveEnchantments(item, enchantRegistry.CORAL.get());
+                        if (level > 0) {
+                            item.enchant(enchantRegistry.CORAL.get(), level);
+                        }
+                        TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(14702884)), 1), 2);
                     }
                 }
             }
@@ -105,6 +131,11 @@ public class ModEvents {
                     SkillUtils.learnSkill(entity, skill);
                 }
             }
+            entity.setItemInHand(InteractionHand.MAIN_HAND, TensuraToolItems.ADAMANTITE_SCYTHE.get().getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.HEAD, TensuraArmorItems.ADAMANTITE_HELMET.get().getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.CHEST, TensuraArmorItems.ADAMANTITE_CHESTPLATE.get().getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.LEGS, TensuraArmorItems.ADAMANTITE_LEGGINGS.get().getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.FEET, TensuraArmorItems.ADAMANTITE_BOOTS.get().getDefaultInstance());
         }
     }
 
@@ -119,14 +150,7 @@ public class ModEvents {
     public static void DoubleSpiritualDamage(SpiritualHurtEvent event){
         if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
             event.setAmount(
-                    (float) (event.getAmount() *
-                    Math.ceil(
-                            (double) Objects.requireNonNull(
-                                    event.getEntity().getEffect(
-                                            effectRegistry.CREATIVE_MENU.get()
-                                    )
-                            ).getAmplifier() /2)
-                    )
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
             );
         }
         if(event.getEntity().hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
@@ -147,14 +171,7 @@ public class ModEvents {
     public static void DoubleDamage(LivingDamageEvent event){
         if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
             event.setAmount(
-                    (float) (event.getAmount() *
-                            Math.ceil(
-                                    (double) Objects.requireNonNull(
-                                            event.getEntity().getEffect(
-                                                    effectRegistry.CREATIVE_MENU.get()
-                                            )
-                                    ).getAmplifier() /2)
-                    )
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
             );
         }
     }
@@ -162,7 +179,6 @@ public class ModEvents {
     @SubscribeEvent
     public static void notRemoveEffect(MobEffectEvent.Remove event) {
         LivingEntity entity = event.getEntity();
-
         if (entity.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect()) ||
                 entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) ||
                 entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.BRAINDAMAGE.get()).getEffect()) ||

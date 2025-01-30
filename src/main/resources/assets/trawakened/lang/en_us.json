@@ -138,6 +138,7 @@
   "effect.trawakened.time_stop": "§9Time Stop",
   "effect.trawakened.time_stop_core": "§9Time Stop Core",
   "effect.trawakened.creative_menu_effect": "§9Arcane Knowledge",
+  "effect.trawakened.extreme_weakening": "§7Extreme Weakness",
   "effect.trawakened.spiritual_blocking": "§bSpiritual Blocking",
 
   "item.minecraft.potion.effect.heal_poison_potion": "Potion of Heal Poison",
@@ -180,6 +181,41 @@
   "item.minecraft.lingering_potion.effect.brain_damage_potion": "Lingering Potion of Brain Damage",
   "item.minecraft.tipped_arrow.effect.brain_damage_potion": "Arrow of Brain Damage",
 
+  "item.minecraft.potion.effect.extreme_weak_potion_1": "Potion of Extreme Weakness",
+  "item.minecraft.splash_potion.effect.extreme_weak_potion_1": "Splash Potion of Extreme Weakness",
+  "item.minecraft.lingering_potion.effect.extreme_weak_potion_1": "Lingering Potion of Extreme Weakness",
+  "item.minecraft.tipped_arrow.effect.extreme_weak_potion_1": "Arrow of Extreme Weakness",
+
+  "item.minecraft.potion.effect.extreme_weak_potion_2": "Potion of Extreme Weakness",
+  "item.minecraft.splash_potion.effect.extreme_weak_potion_2": "Splash Potion of Extreme Weakness",
+  "item.minecraft.lingering_potion.effect.extreme_weak_potion_2": "Lingering Potion of Extreme Weakness",
+  "item.minecraft.tipped_arrow.effect.extreme_weak_potion_2": "Arrow of Extreme Weakness",
+
+  "item.minecraft.potion.effect.extreme_weak_potion_3": "Potion of Extreme Weakness",
+  "item.minecraft.splash_potion.effect.extreme_weak_potion_3": "Splash Potion of Extreme Weakness",
+  "item.minecraft.lingering_potion.effect.extreme_weak_potion_3": "Lingering Potion of Extreme Weakness",
+  "item.minecraft.tipped_arrow.effect.extreme_weak_potion_3": "Arrow of Extreme Weakness",
+
+  "item.minecraft.potion.effect.extreme_weak_potion_long": "Potion of Extreme Weakness",
+  "item.minecraft.splash_potion.effect.extreme_weak_potion_long": "Splash Potion of Extreme Weakness",
+  "item.minecraft.lingering_potion.effect.extreme_weak_potion_long": "Lingering Potion of Extreme Weakness",
+  "item.minecraft.tipped_arrow.effect.extreme_weak_potion_long": "Arrow of Extreme Weakness",
+
+  "item.minecraft.potion.effect.spiritual_block_potion_1": "Spiritual Blockade Potion",
+  "item.minecraft.splash_potion.effect.spiritual_block_potion_1": "Spiritual Blockade Splash Potion",
+  "item.minecraft.lingering_potion.effect.spiritual_block_potion_1": "Spiritual Blockade Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.spiritual_block_potion_1": "Arrow of Spiritual Blockade",
+
+  "item.minecraft.potion.effect.spiritual_block_potion_2": "Spiritual Blockade Potion",
+  "item.minecraft.splash_potion.effect.spiritual_block_potion_2": "Spiritual Blockade Splash Potion",
+  "item.minecraft.lingering_potion.effect.spiritual_block_potion_2": "Spiritual Blockade Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.spiritual_block_potion_2": "Arrow of Spiritual Blockade",
+
+  "item.minecraft.potion.effect.spiritual_block_potion_long": "Spiritual Blockade Potion",
+  "item.minecraft.splash_potion.effect.spiritual_block_potion_long": "Spiritual Blockade Splash Potion",
+  "item.minecraft.lingering_potion.effect.spiritual_block_potion_long": "Spiritual Blockade Lingering Potion",
+  "item.minecraft.tipped_arrow.effect.spiritual_block_potion_long": "Arrow of Spiritual Blockade",
+
   "death.attack.trawakened.plague": "%1$s §0died of the plague",
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
   "death.attack.trawakened.insanity": "%1$s §7heard something they didn't want to know",
@@ -189,6 +225,9 @@
 
   "enchantment.trawakened.primal_armor": "Primal Armor",
   "enchantment.trawakened.kojima_particle": "Kojima Particle",
+  "enchantment.trawakened.coral": "Coral",
+
+  "entity.trawakened.default_other_worlder": "Other Worlder",
 
   "trawakened.skill.thought.mode": "Command: %s",
 

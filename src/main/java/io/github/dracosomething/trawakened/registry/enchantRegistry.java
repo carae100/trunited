@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.registry;
 import com.github.manasmods.tensura.enchantment.EngravingEnchantment;
 import io.github.dracosomething.trawakened.enchantment.KojimaParticleEnchantment;
 import io.github.dracosomething.trawakened.enchantment.PrimalArmorEnchantment;
+import io.github.dracosomething.trawakened.enchantment.CoralEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,6 +14,7 @@ public class enchantRegistry {
     private static final DeferredRegister<Enchantment> registry;
     public static final RegistryObject<EngravingEnchantment> KOJIMA_PARTICLE;
     public static final RegistryObject<EngravingEnchantment> PRIMAL_ARMOR;
+    public static final RegistryObject<EngravingEnchantment> CORAL;
 
     public enchantRegistry(){}
 
@@ -24,5 +26,6 @@ public class enchantRegistry {
         registry = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "trawakened");
         KOJIMA_PARTICLE = registry.register("kojima_particle", KojimaParticleEnchantment::new);
         PRIMAL_ARMOR = registry.register("primal_armor", PrimalArmorEnchantment::new);
+        CORAL = registry.register("coral", CoralEnchantment::new);
     }
 }
