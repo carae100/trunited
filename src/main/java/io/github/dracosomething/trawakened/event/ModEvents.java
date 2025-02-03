@@ -13,7 +13,7 @@ import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
-import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
+import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
