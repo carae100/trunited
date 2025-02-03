@@ -2,9 +2,8 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.enchantment.EngravingEnchantment;
 import com.github.manasmods.tensura.entity.human.ShogoTaguchiEntity;
-import io.github.dracosomething.trawakened.enchantment.KojimaParticleEnchantment;
-import io.github.dracosomething.trawakened.enchantment.PrimalArmorEnchantment;
-import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
+import io.github.dracosomething.trawakened.enchantment.*;
+import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

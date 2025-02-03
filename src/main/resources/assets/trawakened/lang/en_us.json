@@ -216,6 +216,8 @@
   "item.minecraft.lingering_potion.effect.spiritual_block_potion_long": "Spiritual Blockade Lingering Potion",
   "item.minecraft.tipped_arrow.effect.spiritual_block_potion_long": "Arrow of Spiritual Blockade",
 
+  "item.trawakened.other_worlder_spawn_egg": "Other Worlder Spawn Egg",
+
   "death.attack.trawakened.plague": "%1$s §0died of the plague",
   "death.attack.trawakened.plague.player": "%1$s §0died of the plague",
   "death.attack.trawakened.insanity": "%1$s §7heard something they didn't want to know",

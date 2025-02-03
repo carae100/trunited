@@ -1,6 +1,6 @@
 package io.github.dracosomething.trawakened.event;
 
-import io.github.dracosomething.trawakened.entity.otherwolder.defaultOtherWolder;
+import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.particles.FleshParticles;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
