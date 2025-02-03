@@ -71,6 +71,9 @@ public class ModEvents {
                     }
                     TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1), 2);
                 }
+                if (item.getEnchantmentLevel(enchantRegistry.PRIMAL_ARMOR.get()) >= 1) {
+                    TensuraParticleHelper.addParticlesAroundSelf(entity, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1), 2);
+                }
                 if (item.getEnchantmentLevel(enchantRegistry.CORAL.get()) >= 1) {
                     if (!((item.getEnchantmentLevel(Enchantments.FIRE_PROTECTION) >= 4 || item.getEnchantmentLevel(Enchantments.FIRE_ASPECT) >= 2) &&
                             item.getEnchantmentLevel(TensuraEnchantments.MAGIC_INTERFERENCE.get()) >= 1)) {
