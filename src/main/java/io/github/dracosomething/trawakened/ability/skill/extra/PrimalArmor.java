@@ -46,6 +46,7 @@ public class PrimalArmor extends Skill {
                 return SkillUtils.isSkillMastered(entity, ExtraSkills.STRENGTHEN_BODY.get()) && newEP >= 1000000;
             }
         }
+        return false;
     }
 
     @Override
