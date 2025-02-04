@@ -46,7 +46,7 @@ public class skillHelper {
             for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius; ++y) {
                 for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius; ++z) {
                     float cmp = (float) ((float)(radius * radius) - (entity.getX() - x) * (entity.getX() - x) - (entity.getY() - y) * (entity.getY() - y) - (entity.getZ() - z) * (entity.getZ() - z));
-                    if (cmp > 0.0F && entity.level instanceof ServerLevel world) {
+                    if (cmp > 0.0F && cmp < 6.1F && entity.level instanceof ServerLevel world) {
                         world.sendParticles(type, (double) x, (double) y, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
                     }
                 }

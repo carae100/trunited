@@ -1,10 +1,13 @@
 package io.github.dracosomething.trawakened.ability.skill.extra;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.github.manasmods.tensura.registry.skill.ExtraSkills;
+import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
@@ -16,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +32,20 @@ import java.util.List;
 public class PrimalArmor extends Skill {
     public PrimalArmor() {
         super(SkillType.EXTRA);
+    }
+
+    @Override
+    public boolean meetEPRequirement(Player entity, double newEP) {
+        List<ItemStack> list = List.of(
+                entity.getItemBySlot(EquipmentSlot.CHEST),
+                entity.getItemBySlot(EquipmentSlot.FEET),
+                entity.getItemBySlot(EquipmentSlot.HEAD),
+                entity.getItemBySlot(EquipmentSlot.LEGS));
+        for (ItemStack item : list) {
+            if (item.getDisplayName().contains(Component.literal("Adamantite"))) {
+                return SkillUtils.isSkillMastered(entity, ExtraSkills.STRENGTHEN_BODY.get()) && newEP >= 1000000;
+            }
+        }
     }
 
     @Override
@@ -67,6 +85,7 @@ public class PrimalArmor extends Skill {
             case 1:
                 boolean shouldIncrease = tag.getInt("Time") >= 10 ? heldTicks % 1 == 0 : heldTicks % 2 == 0;
                 if (heldTicks > 0 && shouldIncrease) {
+                    living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4, 255, false, false, false));
                     tag.putInt("Time", tag.getInt("Time") + 1);
                     instance.markDirty();
                     int time = tag.getInt("Time") / 10;
@@ -81,6 +100,7 @@ public class PrimalArmor extends Skill {
                                     });
                                     entity1.addEffect(new MobEffectInstance(TensuraMobEffects.MAGICULE_POISON.get(), 120, 5, false, false, false));
                                 }
+                                entity.hurt(TensuraDamageSources.MAGICULE_POISON, (float)(5 * 2));
                             }
                         }
                     } else {
@@ -99,6 +119,7 @@ public class PrimalArmor extends Skill {
             case 2:
                 boolean shouldIncrease2 = tag.getInt("Time") >= 10 ? heldTicks % 1 == 0 : heldTicks % 2 == 0;
                 if (heldTicks > 0 && shouldIncrease2) {
+                    living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 4, 255, false, false, false));
                     tag.putInt("Time", tag.getInt("Time") + 1);
                     instance.markDirty();
                     int time = tag.getInt("Time") / 10;
@@ -114,6 +135,7 @@ public class PrimalArmor extends Skill {
                                     entity1.addEffect(new MobEffectInstance(TensuraMobEffects.MAGICULE_POISON.get(), 120, 5, false, false, false));
                                     entity1.setSecondsOnFire(100);
                                 }
+                                entity.hurt(TensuraDamageSources.MAGICULE_POISON, (float)(5 * 2));
                             }
                         }
                     } else {
@@ -135,7 +157,7 @@ public class PrimalArmor extends Skill {
 
     @Override
     public int getMaxHeldTime(ManasSkillInstance instance, LivingEntity living) {
-        return 5*20;
+        return 5*19;
     }
 
     @Override
@@ -157,14 +179,15 @@ public class PrimalArmor extends Skill {
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (instance.isToggled()) {
-            List<ItemStack> list = List.of(living.getItemBySlot(EquipmentSlot.CHEST),
+            List<ItemStack> list = List.of(
+                    living.getItemBySlot(EquipmentSlot.CHEST),
                     living.getItemBySlot(EquipmentSlot.FEET),
                     living.getItemBySlot(EquipmentSlot.HEAD),
-                    living.getItemBySlot(EquipmentSlot.LEGS),
-                    living.getItemBySlot(EquipmentSlot.MAINHAND),
-                    living.getItemBySlot(EquipmentSlot.OFFHAND));
+                    living.getItemBySlot(EquipmentSlot.LEGS));
             for (ItemStack item : list) {
-                item.enchant(enchantRegistry.PRIMAL_ARMOR.get(), instance.isMastered(living) ? 5 : 2);
+                if(item.getEnchantmentLevel(enchantRegistry.PRIMAL_ARMOR.get()) < 1) {
+                    item.enchant(enchantRegistry.PRIMAL_ARMOR.get(), instance.isMastered(living) ? 5 : 2);
+                }
             }
         }
     }

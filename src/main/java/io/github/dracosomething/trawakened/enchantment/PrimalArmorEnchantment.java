@@ -36,26 +36,26 @@ public class PrimalArmorEnchantment extends EngravingEnchantment {
     }
 
     @Override
-    public void doPostHurt(LivingEntity pAttacker, Entity pTarget, int pLevel) {
+    public void doPostHurt(LivingEntity pTarget, Entity Attacker, int pLevel) {
+    if(Attacker instanceof LivingEntity pAttacker) {
         pAttacker.addEffect(new MobEffectInstance(TensuraMobEffects.MAGICULE_POISON.get(), 480, 5, false, false, false));
         if (!pAttacker.getLevel().isClientSide()) {
-            if (pTarget instanceof LivingEntity target) {
-                SkillHelper.reduceEnergy(pAttacker, target, 0.01 * (double)pLevel, true);
-            }
+            SkillHelper.reduceEnergy(pAttacker, pTarget, 0.01 * (double) pLevel, true);
         }
 
         Random random = new Random();
         int chance = (int) Math.ceil((double) pLevel / 2);
         List<ItemStack> list = List.of(pAttacker.getItemBySlot(EquipmentSlot.CHEST),
-                pAttacker.getItemBySlot(EquipmentSlot.FEET),
-                pAttacker.getItemBySlot(EquipmentSlot.HEAD),
-                pAttacker.getItemBySlot(EquipmentSlot.LEGS),
-                pAttacker.getItemBySlot(EquipmentSlot.MAINHAND),
-                pAttacker.getItemBySlot(EquipmentSlot.OFFHAND));
-        for(ItemStack item : list){
-            if(random.nextInt()>= chance){
-                item.enchant(enchantRegistry.KOJIMA_PARTICLE.get(), (item.getEnchantmentLevel(enchantRegistry.PRIMAL_ARMOR.get())+5));
+            pAttacker.getItemBySlot(EquipmentSlot.FEET),
+            pAttacker.getItemBySlot(EquipmentSlot.HEAD),
+            pAttacker.getItemBySlot(EquipmentSlot.LEGS),
+            pAttacker.getItemBySlot(EquipmentSlot.MAINHAND),
+            pAttacker.getItemBySlot(EquipmentSlot.OFFHAND));
+        for (ItemStack item : list) {
+            if (random.nextInt() >= chance) {
+                item.enchant(enchantRegistry.KOJIMA_PARTICLE.get(), (item.getEnchantmentLevel(enchantRegistry.PRIMAL_ARMOR.get()) + 5));
             }
         }
+    }
     }
 }

@@ -18,6 +18,7 @@ import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -177,6 +178,9 @@ public class ModEvents {
                     (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
             );
         }
+//        if (Minecraft.getInstance().getUser().getName().equals("Scarqueen0698")) {
+//            event.setCanceled(true);
+//        }
     }
 
     @SubscribeEvent
