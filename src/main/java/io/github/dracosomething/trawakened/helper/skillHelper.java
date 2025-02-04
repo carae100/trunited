@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.helper;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -40,13 +41,13 @@ public class skillHelper {
         return ret;
     }
 
-    public static void ParticleCircle(LivingEntity entity){
-        AABB aabb = new AABB((double) (entity.getX() - 8), (double) (entity.getY() - 8), (double) (entity.getZ() - 8), (double) (entity.getX() + 8), (double) (entity.getY() + 8), (double) (entity.getZ() + 8));
-        for(float x = (float) (entity.getX() - (float)8); x < entity.getX() + (float)8 + 1.0F; ++x) {
-            for(float y = (float) (entity.getY() - (float)8); y < entity.getY() + (float)8 + 1.0F; ++y) {
-                for(float z = (float) (entity.getZ() - (float)8); z < entity.getZ() + (float)8 + 1.0F; ++z) {
-                    if (entity.level instanceof ServerLevel world) {
-                        world.sendParticles(ParticleTypes.SQUID_INK, (double) x, (double) y, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+    public static void ParticleCircle(LivingEntity entity, double radius, ParticleOptions type) {
+        for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
+            for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius; ++y) {
+                for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius; ++z) {
+                    float cmp = (float) ((float)(radius * radius) - (entity.getX() - x) * (entity.getX() - x) - (entity.getY() - y) * (entity.getY() - y) - (entity.getZ() - z) * (entity.getZ() - z));
+                    if (cmp > 0.0F && entity.level instanceof ServerLevel world) {
+                        world.sendParticles(type, (double) x, (double) y, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
                     }
                 }
             }

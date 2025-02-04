@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.capability.SkillStorage;
+import com.github.manasmods.tensura.ability.SkillClientUtils;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
@@ -81,7 +82,7 @@ public class GluttonyMistProjectileMixin {
             damageSource = trawakenedDamage.assimilation(owner);
         }
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
-            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))){
+            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(entity, skillregistry.STARKILL.get())){
                 if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), 75)){
                     var6 = test_addon$getOwner2((Projectile) (Object) this);
                     if (var6 instanceof LivingEntity) {

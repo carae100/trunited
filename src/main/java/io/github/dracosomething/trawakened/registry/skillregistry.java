@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import io.github.dracosomething.trawakened.ability.skill.extra.PrimalArmor;
 import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
@@ -32,6 +33,7 @@ public class skillregistry {
     public static final RegistryObject<conceptofinfinity> CONCEPTOFINFINITY;
     public static final RegistryObject<azazel> AZAZEL;
     public static final RegistryObject<akashic_plane> AKASHIC_PLANE;
+    public static final RegistryObject<PrimalArmor> PRIMAL_ARMOR;
 
     public skillregistry() {
     }
@@ -53,5 +55,6 @@ public class skillregistry {
         CONCEPTOFINFINITY = registry.register("concept_of_infinity", conceptofinfinity::new);
         AZAZEL = registry.register("azazel", azazel::new);
         AKASHIC_PLANE = registry.register("akashic_plane", akashic_plane::new);
+        PRIMAL_ARMOR = registry.register("primal_armor", PrimalArmor::new);
     }
 }
