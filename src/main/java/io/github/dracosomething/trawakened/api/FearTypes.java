@@ -44,6 +44,7 @@ public enum FearTypes {
                     TensuraEntityTypes.DARKNESS_CANNON.get()
             )),
     TRUTH("truth", null, null, null),
+    OCEAN("ocean", null, null, null),
     CREEPER("creeper",
             List.of(
                     Blocks.CREEPER_HEAD,
