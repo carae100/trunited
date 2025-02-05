@@ -1,71 +1,96 @@
-# changelog
+mandela catalogue research\
+# vid 1
+## think:
+- temporal phenoma
+- time
+- alternates
+- - can look like humans
+- - can look weird
+- - use psychological warfare against humans
+- think
+- - tell authority
+- - hinder alternates movement
+- - identify class
+- - neutralize alternate if possible
+- - kys, not enough room for 2
+- - - alternate can only become alternate by taking over the role of someone else
+- - alternate speaking to us
+- - know your place in reality
+- know your enemy
+- Alternate classes
+- - type 1: doppelgänger
+- - - looks identical to human
+- - type 2: detectable
+- - - gabriel, distorted face
+- - type 3: redacted
+- - - don't look like human, weird features
 
-- added herrscher of time
-- added herrscher of the worl
-- added custom health bars for when the player has sertain effects
-- added a lot of potion items + tiped arrows
+## vol 1:
+- sound distorted
+- torment ppl
+- something with fear
+- intruder/ hoodie guy
 
-------------------------------------------------------------------------------------------------------------------
-Herrscher of time - evolves from enslaved herrscher seed
-evo requirements:
-Have a clock in your main hand while being under half your max hp.
-master will of the honkai
-have over 1000000 ep
+## overthrown
+- Christmas story
+- angel mary redacted
+- angel will know the shepherds fear
+- angel will trick the shepherds
+- gabriel knows what makes humans human
+- gabriel knows what you love and what you dread
+- someone deceived them? something about weak minds
 
-[passive-toggle] herrscher
-player gets the ability to fly
+## intruder alert
+- intruder is inside your home
+- intruders exist on different spectrum's
+- can use tv's
+- missing children
+- children cant be close to tv's or anything that can produce frightening imagery
+- intruders invisible, but can interact with the world
+- use fear to get to you so you kys, and they get to replace you
+- start out as intruder(cant directly interact with ppl but can get you to kys), then they possess the corpse and become an alternate.
 
-[passive] herrscher of time
-player is immume to time stop
+## mad
+- Metaphysical Awareness Disorder(MAD)
+- mad is exposure to verbal information that is not desired to be known. 97% of cases ppl commit suicide.
+- avoiding
+- - religion/philosophy bad
+- - if you're falling asleep, and you think its eyes are in your face, do not open your eyes, it's watching.
 
-[active] time manipulation: world
-when shifting and ability presses down, the player can scroll and change the new time, max 40, 60 when mastery
-when pressed it sets the time of the world to the value inserted, player retains normal speed when slowed down
-cooldown: 50 seconds
-cost: 1000 mp
+## theory vid 1
+- binary message overthrown: "I am the one true savior, I must reverse the delusion. Joseph is next"
+- gabriel wants to replace Jesus.
+- gabriel is satan
+- Lucifer overthrew christ
+- alternates are demons
+- intruders cant directly harm you
+- if you come into contact with an intruder the intruder will torment you until you die, and they possess your body
 
-[active] time manipulation: self
-when shifting and ability presses down, the player can scroll and change the new time, max 40, 60 when mastery
-when pressed the player fast their own time forward or slows it down
-cooldown: 100 seconds
-cost: 100 mp
+# vid 2
+## exhibition
+- alternate/intruder can work through mirrors
 
-[active] time stop
-stops the worlds time for 2 minutes
-cooldown: 10 minutes/ 5 minutes on mastery
-cost: 5000 mp
+## vol 2
+- cat alternate
+- cesar's house still infested with alternates 16 years later
+- alternates cause glitches in technology
+- immune to mad if your obsessed with knowing the knowledge of the alternates
+- Patients report multiple sleepless nights after their symptoms initially become apparent. It is not difficult to avoid, however. The patient must try to actively seek it out.
+- mark of protection or something
 
-[active] time jump
-when shifting and ability presses down, the player can scroll and change the new time, max 20, min -20
-jumps the time the specified amount of ticks forward
-cooldown: 20 seconds
-cost: 250 mp
-------------------------------------------------------------------------------------------------------------------
+## vol 333
+- children can make alternates
+- alternate can enter through any form of invitation
+- can look like anything
+- alternates can do nothing
 
-herrscher of the world - evolves from awakened herrscher seed
-evo requirements:
-Have the M.A.D. effect while being under half your max shp.
-master power of the honkai
-have over 1000000 ep
+# vid 3
+## interlude
+- different assimilation's:
+- - flawed assimilation = type 3 alternate, kinda human looking but not fully
+- - complete assimilation = type 1 alternate, humans
+- - overdriven assimilation = type 3 alternate, very weird looking
+- nun - a messenger
 
-[passive-toggle] herrscher
-player gets the ability to fly
-
-[passive] the cure
-removes all negative effects the player has
-also makes the player imume to overwhelmed, timestop and braindamage
-
-[active] concept of infinity
-this is just the same concept of infinity as always
-
-[active] spiritual blockade
-gives the player the spiritual blockade effect for 2000 ticks, 3500 ticks when mastered with an amplifier of 50, 55 when mastered
-cooldown: 50 seconds
-costs: 500 mp
-
-[active] arcane knowledge
-allows the player to open the creative inventory for 5 seconds, 10 seconds when mastered.
-this wheekens the player a lot for the duration
-cooldown: 2 hours, 1 hour when mastered
-costs: 1000000 mp
-
+## vol 4
+- 

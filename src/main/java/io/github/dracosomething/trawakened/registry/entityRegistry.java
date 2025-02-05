@@ -2,7 +2,9 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.enchantment.EngravingEnchantment;
 import com.github.manasmods.tensura.entity.human.ShogoTaguchiEntity;
+import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
 import io.github.dracosomething.trawakened.enchantment.*;
+import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class entityRegistry {
     private static final DeferredRegister<EntityType<?>> registry;
     public static final RegistryObject<EntityType<defaultOtherWolder>> DEFAULT_OTHER_WORLDER;
+    public static final RegistryObject<EntityType<IntruderBarrier>> INTRUDER_BARRIER;
 
     public entityRegistry(){}
 
@@ -28,6 +31,9 @@ public class entityRegistry {
         registry = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, "trawakened");
         DEFAULT_OTHER_WORLDER = registry.register("default_other_worlder", () -> {
             return EntityType.Builder.of(defaultOtherWolder::new, MobCategory.MONSTER).canSpawnFarFromPlayer().updateInterval(2).clientTrackingRange(32).sized(0.6F, 1.8F).build((new ResourceLocation("trawakened", "default_other_worlder")).toString());
+        });
+        INTRUDER_BARRIER = registry.register("intruder_barrier", () -> {
+            return EntityType.Builder.<IntruderBarrier>of(IntruderBarrier::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(64).updateInterval(Integer.MAX_VALUE).fireImmune().build((new ResourceLocation("tensura", "holy_field")).toString());
         });
     }
 }

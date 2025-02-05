@@ -4,6 +4,7 @@ import com.github.manasmods.tensura.entity.client.player.OtherworlderRenderer;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,5 +22,6 @@ public class mobRenderers {
         EntityRenderers.register((EntityType) entityRegistry.DEFAULT_OTHER_WORLDER.get(), (pContext) -> {
             return new OtherworlderRenderer(pContext, false);
         });
+        EntityRenderers.register((EntityType) entityRegistry.INTRUDER_BARRIER.get(), NoopRenderer::new);
     }
 }

@@ -5,6 +5,7 @@ import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
+import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ public class trawakened {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         herrscheroftime.create();
+        TRAwakenedNetwork.register();
 
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);

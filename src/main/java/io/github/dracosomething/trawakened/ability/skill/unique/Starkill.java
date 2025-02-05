@@ -18,6 +18,7 @@ import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.github.manasmods.tensura.registry.magic.SpiritualMagics;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
+import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.ChatFormatting;

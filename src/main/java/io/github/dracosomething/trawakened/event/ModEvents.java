@@ -2,7 +2,6 @@ package io.github.dracosomething.trawakened.event;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
-import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
@@ -13,24 +12,19 @@ import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
+import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.trawakened;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -43,10 +37,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID)
 public class ModEvents {
@@ -96,7 +88,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void GrantUnique(LivingSpawnEvent event){
         LivingEntity entity = event.getEntity();
-        event.setPhase(EventPriority.LOWEST);
+        AwakenedFearCapability.sync(event.getEntity());
         if(entity instanceof defaultOtherWolder) {
             List<ManasSkill> list_unique = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
                 boolean var10000;
@@ -178,9 +170,6 @@ public class ModEvents {
                     (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
             );
         }
-//        if (Minecraft.getInstance().getUser().getName().equals("Scarqueen0698")) {
-//            event.setCanceled(true);
-//        }
     }
 
     @SubscribeEvent
