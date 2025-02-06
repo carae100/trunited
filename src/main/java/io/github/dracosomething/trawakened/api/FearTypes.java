@@ -2,13 +2,18 @@ package io.github.dracosomething.trawakened.api;
 
 import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
 import com.github.manasmods.tensura.entity.human.PlayerLikeEntity;
+import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,6 +47,11 @@ public enum FearTypes {
             List.of(
                     TensuraEntityTypes.DARK_CUBE.get(),
                     TensuraEntityTypes.DARKNESS_CANNON.get()
+            ),
+            List.of(
+                    MobEffects.DARKNESS,
+                    MobEffects.BLINDNESS,
+                    TensuraMobEffects.TRUE_BLINDNESS.get()
             )),
     TRUTH("truth", null, null, null),
     OCEAN("ocean", null, null, null),
@@ -56,19 +66,21 @@ public enum FearTypes {
                     Items.CREEPER_SPAWN_EGG
             ),
             List.of(EntityType.CREEPER)),
-    OTHERWORLDER("otherworlder", null, null, List.of(
-            TensuraEntityTypes.CLONE_DEFAULT.get(),
-            TensuraEntityTypes.CLONE_SLIM.get(),
-            TensuraEntityTypes.HINATA_SAKAGUCHI.get(),
-            TensuraEntityTypes.KIRARA_MIZUTANI.get(),
-            TensuraEntityTypes.KYOYA_TACHIBANA.get(),
-            TensuraEntityTypes.MAI_FURUKI.get(),
-            TensuraEntityTypes.MARK_LAUREN.get(),
-            TensuraEntityTypes.SHIN_RYUSEI.get(),
-            TensuraEntityTypes.SHINJI_TANIMURA.get(),
-            TensuraEntityTypes.SHIZU.get(),
-            TensuraEntityTypes.SHOGO_TAGUCHI.get(),
-            entityRegistry.DEFAULT_OTHER_WORLDER.get())),
+    OTHERWORLDER("otherworlder", null, null,
+            List.of(
+                TensuraEntityTypes.CLONE_DEFAULT.get(),
+                TensuraEntityTypes.CLONE_SLIM.get(),
+                TensuraEntityTypes.HINATA_SAKAGUCHI.get(),
+                TensuraEntityTypes.KIRARA_MIZUTANI.get(),
+                TensuraEntityTypes.KYOYA_TACHIBANA.get(),
+                TensuraEntityTypes.MAI_FURUKI.get(),
+                TensuraEntityTypes.MARK_LAUREN.get(),
+                TensuraEntityTypes.SHIN_RYUSEI.get(),
+                TensuraEntityTypes.SHINJI_TANIMURA.get(),
+                TensuraEntityTypes.SHIZU.get(),
+                TensuraEntityTypes.SHOGO_TAGUCHI.get(),
+                entityRegistry.DEFAULT_OTHER_WORLDER.get()
+            )),
     LIQUID("liquid",
             List.of(
                 Blocks.WATER,
@@ -79,20 +91,127 @@ public enum FearTypes {
             List.of(
                     Items.WATER_BUCKET,
                     Items.LAVA_BUCKET,
-                    Items.MILK_BUCKET
+                    Items.MILK_BUCKET,
+                    Items.POTION,
+                    Items.LINGERING_POTION,
+                    Items.SPLASH_POTION
             ),
-            null);
+            null),
+    TRYPOFOBIA("trypofobia", List.of(
+                Blocks.SPONGE,
+                Blocks.WET_SPONGE
+            ),
+            List.of(
+                    Items.SPONGE,
+                    Items.WET_SPONGE
+            ),
+            null),
+    SPIDER("spider",
+            Registry.BLOCK.stream().filter((block1) -> {
+                return block1.getName().contains(Component.literal("spider")) || block1.getName().contains(Component.literal("Spider"));
+            }).toList(),
+            Registry.ITEM.stream().filter((item1) -> {
+                return item1.getName(item1.getDefaultInstance()).contains(Component.literal("spider")) || item1.getName(item1.getDefaultInstance()).contains(Component.literal("Spider"));
+            }).toList(),
+            List.of(
+                    TensuraEntityTypes.BLACK_SPIDER.get(),
+                    TensuraEntityTypes.KNIGHT_SPIDER.get(),
+                    EntityType.SPIDER,
+                    EntityType.CAVE_SPIDER
+            )),
+    WARMTH("heat",
+            List.of(
+                    Blocks.FIRE,
+                    Blocks.LAVA,
+                    Blocks.LAVA_CAULDRON,
+                    Blocks.CAMPFIRE,
+                    Blocks.SOUL_CAMPFIRE,
+                    Blocks.SOUL_FIRE,
+                    Blocks.TORCH,
+                    Blocks.SOUL_TORCH,
+                    Blocks.WALL_TORCH,
+                    Blocks.SOUL_WALL_TORCH,
+                    Blocks.GLOWSTONE,
+                    Blocks.LANTERN,
+                    Blocks.SOUL_LANTERN,
+                    TensuraBlocks.BLACK_FIRE.get()
+            ),
+            List.of(
+                    Items.LAVA_BUCKET,
+                    Items.FIRE_CHARGE,
+                    Items.TORCH,
+                    Items.SOUL_TORCH,
+                    Items.GLOWSTONE,
+                    Items.CAMPFIRE,
+                    Items.LANTERN,
+                    Items.SOUL_TORCH,
+                    Items.SOUL_CAMPFIRE,
+                    Items.SOUL_LANTERN
+            ),
+            null,
+            List.of(
+                    TensuraMobEffects.MAGIC_FLAME.get(),
+                    TensuraMobEffects.BLACK_BURN.get()
+            )
+    ),
+    COLD("cold",
+            List.of(
+                    Blocks.ICE,
+                    Blocks.BLUE_ICE,
+                    Blocks.FROSTED_ICE,
+                    Blocks.PACKED_ICE,
+                    Blocks.SNOW,
+                    Blocks.SNOW_BLOCK,
+                    Blocks.POWDER_SNOW,
+                    Blocks.POWDER_SNOW_CAULDRON,
+                    Blocks.WATER,
+                    Blocks.WATER_CAULDRON
+            ),
+            List.of(
+                    Items.WATER_BUCKET,
+                    Items.ICE,
+                    Items.BLUE_ICE,
+                    Items.PACKED_ICE,
+                    Items.SNOW,
+                    Items.SNOW_BLOCK,
+                    Items.SNOWBALL,
+                    Items.POWDER_SNOW_BUCKET
+            ),
+            null,
+            List.of(TensuraMobEffects.CHILL.get())),
+    GERM("germ",
+            null,
+            List.of(Items.POISONOUS_POTATO),
+            null,
+            List.of(
+                    MobEffects.POISON,
+                    MobEffects.CONFUSION,
+                    MobEffects.WITHER,
+                    TensuraMobEffects.FATAL_POISON.get(),
+                    effectRegistry.PLAGUEEFFECT.get(),
+                    effectRegistry.BRAINDAMAGE.get()
+            ));
 
     private final String name;
     private final List<Block> block;
     private final List<Item> item;
     private final List<EntityType<?>> entity;
+    private final List<MobEffect> effect;
+
+    private FearTypes(String name, List<Block> block, List<Item> item, List<EntityType<?>> entity, List<MobEffect> effect) {
+        this.name = name;
+        this.block = block;
+        this.item = item;
+        this.entity = entity;
+        this.effect = effect;
+    }
 
     private FearTypes(String name, List<Block> block, List<Item> item, List<EntityType<?>> entity) {
         this.name = name;
         this.block = block;
         this.item = item;
         this.entity = entity;
+        this.effect = null;
     }
 
     private FearTypes() {
@@ -100,6 +219,7 @@ public enum FearTypes {
         this.block = null;
         this.item = null;
         this.entity = null;
+        this.effect = null;
     }
 
     private static final List<FearTypes> list = FearTypes.getFears().stream().toList();
@@ -158,6 +278,14 @@ public enum FearTypes {
 
     public List<Item> getItem() {
         return item;
+    }
+
+    public List<MobEffect> getEffect() {
+        return effect;
+    }
+
+    public static List<FearTypes> getList() {
+        return list;
     }
 
     @Override

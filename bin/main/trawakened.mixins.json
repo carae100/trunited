@@ -11,7 +11,7 @@
     "LivingEntityMixin",
     "LookControlMixin",
     "MobMixin",
-    "OnTickHandlerMixin",
+    "TensuraEPCapabilityMixin",
     "PathNavigationMixin",
     "RaceSelectionMenuMixin",
     "ServerLevelMixin",

@@ -30,6 +30,8 @@ public class AwakenedFearCapability implements IFearCapability{
     private static final ResourceLocation ID = new ResourceLocation("trawakened", "fear");
 
     private FearTypes fear = FearTypes.getRandom();
+    private int scaredAmount = 0;
+    private int cooldown = 0;
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
@@ -56,12 +58,17 @@ public class AwakenedFearCapability implements IFearCapability{
         CompoundTag tag = new CompoundTag();
 
         tag.putString("fear", this.fear.getName());
+        tag.putInt("scared_amount", this.scaredAmount);
+        tag.putInt("cooldown", this.cooldown);
+
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         this.fear = FearTypes.getByName(tag.getString("fear"));
+        this.scaredAmount = tag.getInt("scared_amount");
+        this.cooldown = tag.getInt("cooldown");
     }
 
     public static void setFearType(LivingEntity entity, FearTypes fear) {
@@ -75,13 +82,61 @@ public class AwakenedFearCapability implements IFearCapability{
         return capability == null ? FearTypes.ALTERNATES : capability.getFear(entity);
     }
 
-    @Override
+    public static void setScared(LivingEntity entity, int amount) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setScaredAmount(amount, entity);
+    }
+
+    public static int getScared(LivingEntity entity) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? 0 : capability.getScaredAmount(entity);
+    }
+
+    public static void setScaredCooldown(LivingEntity entity, int amount) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setCooldown(entity, amount);
+    }
+
+    public static int getScaredCooldown(LivingEntity entity) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? 0 : capability.getCooldown(entity);
+    }
+
+    public static void increaseScared(LivingEntity entity) {
+        setScared(entity, getScared(entity) + 1);
+    }
+
+    public static void decreaseCooldown(LivingEntity entity) {
+        setScaredCooldown(entity, getScaredCooldown(entity) - 1);
+    }
+
+    public static boolean onCooldown(LivingEntity entity) {
+        return getScaredCooldown(entity) > 0;
+    }
+
     public FearTypes getFear(LivingEntity entity) {
         return fear;
     }
 
-    @Override
     public void setFear(LivingEntity entity, FearTypes types) {
         this.fear = types;
+    }
+
+    public int getScaredAmount(LivingEntity entity) {
+        return scaredAmount;
+    }
+
+    public void setScaredAmount(int amount, LivingEntity entity) {
+        this.scaredAmount = amount;
+    }
+
+    public int getCooldown(LivingEntity entity) {
+        return cooldown;
+    }
+
+    public void setCooldown(LivingEntity entity, int amount) {
+        this.cooldown = amount;
     }
 }
