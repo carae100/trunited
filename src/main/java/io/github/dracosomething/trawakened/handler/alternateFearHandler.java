@@ -14,9 +14,12 @@ import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.capability.smithing.ISmithingCapability;
 import com.github.manasmods.tensura.capability.smithing.SmithingCapability;
 import com.github.manasmods.tensura.entity.human.CloneEntity;
+import com.github.manasmods.tensura.race.Race;
+import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.IFearCapability;
+import io.github.dracosomething.trawakened.registry.raceregistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.core.BlockPos;
@@ -40,6 +43,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -100,8 +104,18 @@ public class alternateFearHandler {
             List<Item> items = fear.getItem();
             List<EntityType<?>> entityTypes = fear.getEntity();
             List<MobEffect> mobEffects = fear.getEffect();
-            Vec3 vec3 = entity.getEyePosition();
-            Vec3 vec31 = entity.getEyePosition().add(10, 10, 10);
+            Vec3 vec3 = entity.getEyePosition(1).add(0, -3, 0);
+            Vec3 vec31 = entity.getEyePosition();
+            if (entity.getYRot() >= 0 && entity.getYRot() <= 90) {
+                vec31.add(0, 10, 0);
+                System.out.println(vec3);
+            } else if (entity.getYRot() >= 91 && entity.getYRot() <= 180) {
+                System.out.println(vec3);
+            } else if (entity.getYRot() >= 181 && entity.getYRot() <= 270) {
+                System.out.println(vec3);
+            } else if (entity.getYRot() >= 271 && entity.getYRot() <= 360) {
+                System.out.println(vec3);
+            }
             AABB sight = new AABB(vec3, vec31);
             Iterable<BlockPos> blocksInSight = BlockPos.betweenClosed(new BlockPos(vec3), new BlockPos(vec31));
             List<Entity> entities = entity.level.getEntities(entity, sight, Entity::isAlive);

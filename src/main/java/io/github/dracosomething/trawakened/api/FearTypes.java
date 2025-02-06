@@ -14,12 +14,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -190,7 +189,29 @@ public enum FearTypes {
                     TensuraMobEffects.FATAL_POISON.get(),
                     effectRegistry.PLAGUEEFFECT.get(),
                     effectRegistry.BRAINDAMAGE.get()
-            ));
+            )),
+    INSECT("insect",
+            Registry.BLOCK.stream().filter((block1) -> {
+                return block1.getName().contains(Component.literal("spider")) ||
+                        block1.getName().contains(Component.literal("Spider")) ||
+                        block1.getName().contains(Component.literal("ant")) ||
+                        block1.getName().contains(Component.literal("Ant"));
+            }).toList(),
+            Registry.ITEM.stream().filter((item1) -> {
+                return item1.getName(item1.getDefaultInstance()).contains(Component.literal("spider")) ||
+                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("Spider")) ||
+                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("ant")) ||
+                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("Ant"));
+            }).toList(),
+            List.of(
+                    TensuraEntityTypes.BLACK_SPIDER.get(),
+                    TensuraEntityTypes.KNIGHT_SPIDER.get(),
+                    EntityType.SPIDER,
+                    EntityType.CAVE_SPIDER,
+                    TensuraEntityTypes.GIANT_ANT.get(),
+                    EntityType.BEE
+            )),
+    HEIGHT("height", null, null, null);
 
     private final String name;
     private final List<Block> block;
