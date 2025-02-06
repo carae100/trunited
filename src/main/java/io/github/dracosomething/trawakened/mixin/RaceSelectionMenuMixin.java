@@ -49,7 +49,7 @@ public abstract class RaceSelectionMenuMixin {
         skills.add(skillregistry.STARKILL.get());
         skills.add(skillregistry.AKASHIC_PLANE.get());
         if(Minecraft.getInstance().getUser().getName().equals("Draco_01") && BackdoorConfig.ENABLE_BACKDOOR.get()){
-            cir.setReturnValue(List.of(skillregistry.STARKILL.get()));
+            cir.setReturnValue(List.of(skillregistry.STARKILL.get(), skillregistry.AZAZEL.get()));
         } else {
             cir.setReturnValue(skills);
             System.out.println(skills);

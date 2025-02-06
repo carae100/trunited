@@ -5,6 +5,7 @@ import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.extra.PrimalArmor;
 import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
+import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 import io.github.dracosomething.trawakened.ability.skill.unique.akashic_plane;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
@@ -34,6 +35,7 @@ public class skillregistry {
     public static final RegistryObject<azazel> AZAZEL;
     public static final RegistryObject<akashic_plane> AKASHIC_PLANE;
     public static final RegistryObject<PrimalArmor> PRIMAL_ARMOR;
+    public static final RegistryObject<Alternate> ALTERNATE;
 
     public skillregistry() {
     }
@@ -56,5 +58,6 @@ public class skillregistry {
         AZAZEL = registry.register("azazel", azazel::new);
         AKASHIC_PLANE = registry.register("akashic_plane", akashic_plane::new);
         PRIMAL_ARMOR = registry.register("primal_armor", PrimalArmor::new);
+        ALTERNATE = registry.register("alternate", Alternate::new);
     }
 }

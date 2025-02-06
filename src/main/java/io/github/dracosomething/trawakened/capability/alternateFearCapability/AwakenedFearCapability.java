@@ -7,6 +7,7 @@ import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +22,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.UUID;
+
 @Mod.EventBusSubscriber(
         modid = trawakened.MODID,
         bus = Mod.EventBusSubscriber.Bus.FORGE
@@ -32,6 +35,7 @@ public class AwakenedFearCapability implements IFearCapability{
     private FearTypes fear = FearTypes.getRandom();
     private int scaredAmount = 0;
     private int cooldown = 0;
+    private String alternate = "";
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
@@ -60,6 +64,7 @@ public class AwakenedFearCapability implements IFearCapability{
         tag.putString("fear", this.fear.getName());
         tag.putInt("scared_amount", this.scaredAmount);
         tag.putInt("cooldown", this.cooldown);
+        tag.putString("alternate", this.alternate);
 
         return tag;
     }
@@ -69,6 +74,7 @@ public class AwakenedFearCapability implements IFearCapability{
         this.fear = FearTypes.getByName(tag.getString("fear"));
         this.scaredAmount = tag.getInt("scared_amount");
         this.cooldown = tag.getInt("cooldown");
+        this.alternate = tag.getString("alternate");
     }
 
     public static void setFearType(LivingEntity entity, FearTypes fear) {
@@ -102,6 +108,17 @@ public class AwakenedFearCapability implements IFearCapability{
     public static int getScaredCooldown(LivingEntity entity) {
         IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
         return capability == null ? 0 : capability.getCooldown(entity);
+    }
+
+    public static void setAlternateO(LivingEntity entity, LivingEntity alternate) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setAlternate(entity, alternate);
+    }
+
+    public static String getAlternateO(LivingEntity entity) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? "" : capability.getAlternate(entity);
     }
 
     public static void increaseScared(LivingEntity entity) {
@@ -138,5 +155,13 @@ public class AwakenedFearCapability implements IFearCapability{
 
     public void setCooldown(LivingEntity entity, int amount) {
         this.cooldown = amount;
+    }
+
+    public String getAlternate(LivingEntity entity) {
+        return alternate;
+    }
+
+    public void setAlternate(LivingEntity entity, LivingEntity alternate) {
+        this.alternate = alternate.getUUID().toString();
     }
 }

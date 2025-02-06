@@ -34,7 +34,7 @@ public enum FearTypes {
             List.of(
                     Items.BREWING_STAND,
                     Items.LECTERN
-            ), null),
+            ), null, List.of(MobEffects.HERO_OF_THE_VILLAGE)),
     ALTERNATES("alternate", null, null, null),
     DARKNESS("dark",
             Registry.BLOCK.stream().filter((block1) -> {
@@ -67,8 +67,6 @@ public enum FearTypes {
             List.of(EntityType.CREEPER)),
     OTHERWORLDER("otherworlder", null, null,
             List.of(
-                TensuraEntityTypes.CLONE_DEFAULT.get(),
-                TensuraEntityTypes.CLONE_SLIM.get(),
                 TensuraEntityTypes.HINATA_SAKAGUCHI.get(),
                 TensuraEntityTypes.KIRARA_MIZUTANI.get(),
                 TensuraEntityTypes.KYOYA_TACHIBANA.get(),
@@ -244,7 +242,7 @@ public enum FearTypes {
     }
 
     private static final List<FearTypes> list = FearTypes.getFears().stream().toList();
-    private static final Map<String, FearTypes> FEARS_BY_NAME = (Map)Arrays.stream(values()).collect(Collectors.toMap((fearType) -> {
+    private static final Map<String, FearTypes> FEARS_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((fearType) -> {
         return cleanName(fearType.name);
     }, (fearType) -> {
         return fearType;
@@ -268,16 +266,16 @@ public enum FearTypes {
     }
 
     public static Collection<FearTypes> getFears() {
-        List<FearTypes> $$2 = Lists.newArrayList();
-        FearTypes[] var3 = values();
-        int var4 = var3.length;
+        List<FearTypes> fearList = Lists.newArrayList();
+        FearTypes[] fearArray = values();
+        int length = fearArray.length;
 
-        for(int var5 = 0; var5 < var4; ++var5) {
-            FearTypes $$3 = var3[var5];
-            $$2.add($$3);
+        for(int i = 0; i < length; ++i) {
+            FearTypes fearTypes = fearArray[i];
+            fearList.add(fearTypes);
         }
 
-        return $$2;
+        return fearList;
     }
 
     @Nullable
@@ -309,7 +307,10 @@ public enum FearTypes {
         return list;
     }
 
-    @Override
+    public static Map<String, FearTypes> getFearsByName() {
+        return FEARS_BY_NAME;
+    }
+
     public String toString() {
         return name;
     }
