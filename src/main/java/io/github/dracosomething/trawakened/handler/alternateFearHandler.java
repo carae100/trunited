@@ -105,8 +105,6 @@ public class alternateFearHandler {
             AABB sight = new AABB(vec3, vec31);
             Iterable<BlockPos> blocksInSight = BlockPos.betweenClosed(new BlockPos(vec3), new BlockPos(vec31));
             List<Entity> entities = entity.level.getEntities(entity, sight, Entity::isAlive);
-            System.out.println(entities);
-            System.out.println(blocksInSight);
             if(fear.equals(FearTypes.ALTERNATES)) {
                 for (Entity entity1 : entities) {
                     if (entity1 instanceof LivingEntity living) {
