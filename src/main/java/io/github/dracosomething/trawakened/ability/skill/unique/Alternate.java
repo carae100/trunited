@@ -12,6 +12,7 @@ import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.checkerframework.checker.units.qual.C;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -105,6 +107,7 @@ public class Alternate extends Skill {
         if (!SkillHelper.outOfMagicule(entity, 100)) {
             target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
             IntruderBarrier holyField = new IntruderBarrier(target.level, target);
+            System.out.println(holyField);
             holyField.setRadius(50.0F);
             holyField.setLife(-1);
             holyField.setPos(target.position().add(0.0, -25.0, 0.0));
@@ -138,10 +141,10 @@ public class Alternate extends Skill {
                 if (AwakenedFearCapability.getScared(living) >= 3) {
                     if (living.getPersistentData().getUUID("alternate_UUID").equals(entity.getUUID())) {
                         if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getEffect()}, new Object[]{living}), false);
-                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getItem()}, new Object[]{living}), false);
-                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getEntity()}, new Object[]{living}), false);
-                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getBlock()}, new Object[]{living}), false);
+                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getItem().toString().replace("[", "").replace("]", ""), living.getName()), false);
+                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getBlock().toString().replace("[", "").replace("Block{", "").replace("}", "").replace("]", ""), living.getName()), false);
+                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getEffect().toString().replace("[", "").replace("]", ""), living.getName()), false);
+                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getEntity().toString().replace("[", "").replace("]", ""), living.getName()), false);
                         }
                     }
                 } else {
@@ -175,11 +178,17 @@ public class Alternate extends Skill {
     }
 
     @Override
+    public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
+        return true;
+    }
+
+    @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 5, 255, false, false, false));
+        living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
         if (living instanceof Player player) {
             if (!player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = true;
+                player.onUpdateAbilities();
             }
         }
     }

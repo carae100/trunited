@@ -114,8 +114,9 @@
   "trawakened.skill.mode.akashic.podolsky": "§6Podolsky Neurons",
 
   "trawakened.skill.alternate": "Alternate",
+  "trawakened.skill.alternate.description": "",
 
-  "trawakened.skill.mode.alternate.fear": "Get Fear",
+  "trawakened.skill.mode.alternate.fear": "Get Scared Amount",
   "trawakened.skill.mode.alternate.scary": "Get Fear Object",
   "trawakened.skill.mode.alternate.kill": "Undesired Knowledge",
 

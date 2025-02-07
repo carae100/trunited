@@ -212,7 +212,7 @@ public class alternateFearHandler {
         } else {
             AwakenedFearCapability.decreaseCooldown(entity);
         }
-        FearTypes.fearPenalty(entity);
+//        FearTypes.fearPenalty(entity);
     }
 
     @Nullable

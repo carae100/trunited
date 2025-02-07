@@ -4,6 +4,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -29,7 +30,7 @@ public class IntruderBarrier extends BarrierEntity {
         if (entity == owner) {
             return true;
         } else {
-            if (SkillUtils.hasSkill(entity, null) && owner != null && owner.getStringUUID().equals(entity.getPersistentData().getString("target"))) {
+            if (SkillUtils.hasSkill(entity, skillregistry.ALTERNATE.get()) && entity.getUUID().equals(owner.getPersistentData().getUUID("alternate_UUID"))) {
                 return false;
             } else {
                 return true;

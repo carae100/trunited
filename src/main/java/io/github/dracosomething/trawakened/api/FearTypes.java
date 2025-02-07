@@ -42,10 +42,10 @@ public enum FearTypes {
     ALTERNATES("alternate", null, null, null),
     DARKNESS("dark",
             Registry.BLOCK.stream().filter((block1) -> {
-                return block1.getName().contains(Component.literal("black")) || block1.getName().contains(Component.literal("Black"));
+                return block1.getName().toString().contains("black") || block1.getName().toString().contains("Black");
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
-                return item1.getName(item1.getDefaultInstance()).contains(Component.literal("black")) || item1.getName(item1.getDefaultInstance()).contains(Component.literal("Black"));
+                return item1.getName(item1.getDefaultInstance()).toString().contains("black") || item1.getName(item1.getDefaultInstance()).toString().contains("Black");
             }).toList(),
             List.of(
                     TensuraEntityTypes.DARK_CUBE.get(),
@@ -109,10 +109,10 @@ public enum FearTypes {
             null),
     SPIDER("spider",
             Registry.BLOCK.stream().filter((block1) -> {
-                return block1.getName().contains(Component.literal("spider")) || block1.getName().contains(Component.literal("Spider"));
+                return block1.getName().toString().contains("spider") || block1.getName().toString().contains("Spider");
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
-                return item1.getName(item1.getDefaultInstance()).contains(Component.literal("spider")) || item1.getName(item1.getDefaultInstance()).contains(Component.literal("Spider"));
+                return (item1.getName(item1.getDefaultInstance()).toString().contains("spider") || item1.getName(item1.getDefaultInstance()).toString().contains("Spider")) && (!item1.getName(item1.getDefaultInstance()).toString().contains("schematic") || !item1.getName(item1.getDefaultInstance()).toString().contains("Schematic"));
             }).toList(),
             List.of(
                     TensuraEntityTypes.BLACK_SPIDER.get(),
