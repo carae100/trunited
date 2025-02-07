@@ -49,5 +49,10 @@ public class IntruderBarrier extends BarrierEntity {
         } else {
             this.discard();
         }
+        if (owner instanceof LivingEntity entity) {
+            if (entity.getPersistentData().hasUUID("original_scared")) {
+                this.kill();
+            }
+        }
     }
 }

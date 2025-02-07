@@ -64,7 +64,6 @@ public class AwakenedFearCapability implements IFearCapability{
         tag.putString("fear", this.fear.getName());
         tag.putInt("scared_amount", this.scaredAmount);
         tag.putInt("cooldown", this.cooldown);
-        tag.putString("alternate", this.alternate);
 
         return tag;
     }
@@ -74,7 +73,6 @@ public class AwakenedFearCapability implements IFearCapability{
         this.fear = FearTypes.getByName(tag.getString("fear"));
         this.scaredAmount = tag.getInt("scared_amount");
         this.cooldown = tag.getInt("cooldown");
-        this.alternate = tag.getString("alternate");
     }
 
     public static void setFearType(LivingEntity entity, FearTypes fear) {

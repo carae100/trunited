@@ -7,11 +7,14 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
+import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,10 +23,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.checkerframework.checker.units.qual.C;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Alternate extends Skill {
@@ -33,7 +38,34 @@ public class Alternate extends Skill {
 
     @Override
     public int modes() {
-        return 3;
+        return 4;
+    }
+
+    @Override
+    public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        double var10000;
+        CompoundTag tag = instance.getOrCreateTag();
+        switch (instance.getMode()) {
+            case 1 -> var10000 = 0;
+            case 2 -> var10000 = 0;
+            case 3 -> var10000 = 1000;
+            default -> var10000 = 0;
+        }
+
+        return var10000;
+    }
+
+    @Override
+    public Component getModeName(int mode) {
+        MutableComponent var10000;
+        switch (mode) {
+            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.fear");
+            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.scary");
+            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.kill");
+            default -> var10000 = Component.empty();
+        }
+
+        return var10000;
     }
 
     @Override
@@ -42,7 +74,7 @@ public class Alternate extends Skill {
         CompoundTag tag = instance.getOrCreateTag();
         if (reverse) {
             switch (instance.getMode()) {
-                case 1 -> var10000 = AwakenedFearCapability.getScared(entity) >= tag.getInt("original_scared")+10 ? 3 : 2;
+                case 1 -> var10000 = 3;
                 case 2 -> var10000 = 1;
                 case 3 -> var10000 = 2;
                 default -> var10000 = 0;
@@ -52,7 +84,7 @@ public class Alternate extends Skill {
         } else {
             switch (instance.getMode()) {
                 case 1 -> var10000 = 2;
-                case 2 -> var10000 = AwakenedFearCapability.getScared(entity) >= tag.getInt("original_scared")+10 ? 3 : 1;
+                case 2 -> var10000 = 3;
                 case 3 -> var10000 = 1;
                 default -> var10000 = 0;
             }
@@ -71,13 +103,13 @@ public class Alternate extends Skill {
         LivingEntity target = event.getEntity();
         CompoundTag tag = instance.getOrCreateTag();
         if (!SkillHelper.outOfMagicule(entity, 100)) {
+            target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
             IntruderBarrier holyField = new IntruderBarrier(target.level, target);
             holyField.setRadius(50.0F);
             holyField.setLife(-1);
             holyField.setPos(target.position().add(0.0, -25.0, 0.0));
             target.level.addFreshEntity(holyField);
             tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
-            AwakenedFearCapability.setAlternateO(entity, target);
             if (AwakenedFearCapability.getScared(target) >= 3) {
                 if (entity instanceof Player player) {
                     player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
@@ -96,11 +128,15 @@ public class Alternate extends Skill {
                     if (entity instanceof Player player) {
                         player.displayClientMessage(Component.translatable("trawakened.fear.scared", new Object[]{AwakenedFearCapability.getScared(living)}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
                     }
+                } else {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    }
                 }
                 break;
             case 2:
                 if (AwakenedFearCapability.getScared(living) >= 3) {
-                    if (living.getUUID().equals(AwakenedFearCapability.getAlternateO(entity))) {
+                    if (living.getPersistentData().getUUID("alternate_UUID").equals(entity.getUUID())) {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getEffect()}, new Object[]{living}), false);
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getItem()}, new Object[]{living}), false);
@@ -108,18 +144,44 @@ public class Alternate extends Skill {
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", new Object[]{AwakenedFearCapability.getFearType(entity).getBlock()}, new Object[]{living}), false);
                         }
                     }
+                } else {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    }
                 }
                 break;
             case 3:
-                if (AwakenedFearCapability.getScared(entity) >= 13) {
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10)) {
+                        living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
+                        if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
+                            Iterator var9 = living.level.players().iterator();
 
+                            while (var9.hasNext()) {
+                                Player everyone = (Player) var9.next();
+                                if (everyone != entity) {
+                                    everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
+                                }
+                            }
+                        }
+                    } else {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        }
+                    }
                 }
+                break;
         }
     }
 
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 5, 255, false, false, false));
+        if (living instanceof Player player) {
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+            }
+        }
     }
 
     @Override

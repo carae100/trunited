@@ -247,5 +247,9 @@
   "learn_infinity": "You seem to have obtained some knowledge that is far beyond your comprehension",
   "trawakened.skill.time": "Time: %s",
   "trawakened.skill.time_self": "Self Time: %s",
-  "trawakened.skill.time_jump": "Time Jump: %s"
+  "trawakened.skill.time_jump": "Time Jump: %s",
+  "trawakened.fear.learn": "This creature is afraid of %s, use this information to get them to commit suicide.",
+  "trawakened.fear.learn_self": "You are afraid of %s.",
+  "trawakened.fear.scared": "This creature has been scared %s times.",
+  "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s."
 }
