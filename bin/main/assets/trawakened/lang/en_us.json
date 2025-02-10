@@ -113,6 +113,13 @@
   "trawakened.skill.mode.akashic.spatial_attack": "§5spatial cut",
   "trawakened.skill.mode.akashic.podolsky": "§6Podolsky Neurons",
 
+  "trawakened.skill.alternate": "Alternate",
+  "trawakened.skill.alternate.description": "",
+
+  "trawakened.skill.mode.alternate.fear": "Get Scared Amount",
+  "trawakened.skill.mode.alternate.scary": "Get Fear Object",
+  "trawakened.skill.mode.alternate.kill": "Undesired Knowledge",
+
   "trawakened.skill.primal_armor": "§3Primal Armor",
   "trawakened.skill.primal_armor.description": "§3Using the powerful new particle, the kojima particle, you are now able to empower your gear and release them in a powerful wave. However there seems to be something even more dangerous possible.",
 
@@ -230,6 +237,7 @@
   "death.attack.trawakened.insanity.player": "%1$s §7heard something they didn't want to know",
   "death.attack.trawakened.assimilation": "%1$s §4was assimilated",
   "death.attack.trawakened.assimilation.player": "%1$s §4was assimilated",
+  "trawakened.fake_attack.suicide": "%1$s was slain by %1$s",
 
   "enchantment.trawakened.primal_armor": "Primal Armor",
   "enchantment.trawakened.kojima_particle": "Kojima Particle",
@@ -251,5 +259,6 @@
   "trawakened.fear.learn": "This creature is afraid of %s, use this information to get them to commit suicide.",
   "trawakened.fear.learn_self": "You are afraid of %s.",
   "trawakened.fear.scared": "This creature has been scared %s times.",
-  "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s."
+  "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s.",
+  "trawakened.fear.brave": "This creature has not been scared enough times."
 }

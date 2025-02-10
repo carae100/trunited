@@ -7,6 +7,8 @@ import io.github.dracosomething.trawakened.registry.entityRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -16,10 +18,11 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID,bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerParticleFactories(final RegisterParticleProvidersEvent event)
     {
-        Minecraft.getInstance().particleEngine.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
+        event.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
     }
 
     @SubscribeEvent

@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened.mixin;
+package io.github.dracosomething.trawakened.mixin.client;
 
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import net.minecraft.client.KeyMapping;

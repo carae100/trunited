@@ -1,7 +1,7 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.util.trawakenedDamage;
+import io.github.dracosomething.trawakened.world.trawakenedDamage;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;

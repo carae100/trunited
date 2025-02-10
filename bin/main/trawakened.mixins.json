@@ -21,12 +21,12 @@
     "UtilMixin"
   ],
   "client": [
-    "ClientLevelMixin",
-    "GuiMixin",
-    "KeyboardInputMixin",
-    "KeyboardMixin",
-    "MouseHandlerMixin",
-    "TimerMixin"
+    "client.ClientLevelMixin",
+    "client.GuiMixin",
+    "client.KeyboardInputMixin",
+    "client.KeyboardMixin",
+    "client.MouseHandlerMixin",
+    "client.TimerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

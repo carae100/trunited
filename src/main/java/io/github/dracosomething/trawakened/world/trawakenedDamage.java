@@ -1,4 +1,4 @@
-package io.github.dracosomething.trawakened.util;
+package io.github.dracosomething.trawakened.world;
 
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import com.github.manasmods.tensura.util.damage.TensuraEntityDamageSource;
