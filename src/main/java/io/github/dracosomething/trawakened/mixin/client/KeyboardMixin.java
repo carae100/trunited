@@ -1,10 +1,6 @@
-package io.github.dracosomething.trawakened.mixin;
+package io.github.dracosomething.trawakened.mixin.client;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
-import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
-import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;

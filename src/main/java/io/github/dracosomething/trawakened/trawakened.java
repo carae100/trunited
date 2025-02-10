@@ -17,6 +17,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
@@ -35,11 +36,8 @@ public class trawakened {
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);
         modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::onClientSetup);
 
-        if (Minecraft.getInstance().getUser().getName().equals("Draco_01")) {
-            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
-                    "draco_01-backdoor-config.toml");
-        }
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC,
                 "trawakened-Starter-Races-config.toml");
     }
@@ -91,6 +89,15 @@ public class trawakened {
             BrewingRecipeRegistry.addRecipe(new io.github.dracosomething.trawakened.util.BrewingRecipeRegistry(
                     potionRegistry.SPIRITUAL_BLOCK_POTION_1.get(),
                     Items.REDSTONE, potionRegistry.SPIRITUAL_BLOCK_POTION_LONG.get()));
+        });
+    }
+
+    private void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() ->{
+        if (Minecraft.getInstance().getUser().getName().equals("Draco_01")) {
+            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
+                    "draco_01-backdoor-config.toml");
+        }
         });
     }
 }

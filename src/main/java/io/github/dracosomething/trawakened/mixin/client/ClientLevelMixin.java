@@ -1,9 +1,8 @@
-package io.github.dracosomething.trawakened.mixin;
+package io.github.dracosomething.trawakened.mixin.client;
 
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.entity.EntityTickList;
 import org.spongepowered.asm.mixin.Final;

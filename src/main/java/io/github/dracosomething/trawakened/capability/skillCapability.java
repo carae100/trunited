@@ -15,6 +15,7 @@ import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.manasmods.tensura.entity.magic.breath.BreathEntity;
 import com.github.manasmods.tensura.world.TensuraGameRules;
+import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +63,7 @@ public class skillCapability {
                 return false;
             } else if (instance.getSkill() instanceof StarvedSkill) {
                 return true;
-            } else if (instance.getSkill() instanceof DegenerateSkill) {
+            } else if (instance.getSkill() instanceof DegenerateSkill || instance.getSkill() instanceof Alternate) {
                 return true;
             } else {
                 ManasSkill var3 = instance.getSkill();

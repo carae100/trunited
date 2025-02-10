@@ -1,8 +1,6 @@
-package io.github.dracosomething.trawakened.mixin;
+package io.github.dracosomething.trawakened.mixin.client;
 
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
-import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
-import net.minecraft.Util;
 import net.minecraft.client.Timer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

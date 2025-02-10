@@ -22,10 +22,12 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTickChunk(LevelChunk p_8715_, int p_8716_, CallbackInfo ci){
-        if(Minecraft.getInstance().player != null) {
-            if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
-                ci.cancel();
-            }
+        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+                if (player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+                    ci.cancel();
+                }
+            });
         }
     }
 
@@ -35,10 +37,12 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTick(BooleanSupplier p_129871_, CallbackInfo ci){
-        if(Minecraft.getInstance().player != null) {
-            if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
-                ci.cancel();
-            }
+        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+                if (player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+                    ci.cancel();
+                }
+            });
         }
     }
 }
