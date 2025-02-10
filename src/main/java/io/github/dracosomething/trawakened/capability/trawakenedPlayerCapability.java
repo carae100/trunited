@@ -52,7 +52,8 @@ public class trawakenedPlayerCapability {
                 return entity != null &&
                         entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) &&
                         !entity.isSpectator() &&
-                        !(entity instanceof Player player && player.isCreative());
+                        !(entity instanceof Player player && player.isCreative()) &&
+                        !entity.isDeadOrDying();
             }
         }
         return false;
@@ -78,7 +79,8 @@ public class trawakenedPlayerCapability {
         return entity != null &&
                 (entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect()) || entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())) &&
                 !entity.isSpectator() &&
-                !(entity instanceof Player player && player.isCreative());
+                !(entity instanceof Player player && player.isCreative()) &&
+                !entity.isDeadOrDying();
 
     }
 }

@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.skill.ExtraSkills;
@@ -42,8 +43,8 @@ public class PrimalArmor extends Skill {
                 entity.getItemBySlot(EquipmentSlot.HEAD),
                 entity.getItemBySlot(EquipmentSlot.LEGS));
         for (ItemStack item : list) {
-            if (item.getDisplayName().contains(Component.literal("Adamantite"))) {
-                return SkillUtils.isSkillMastered(entity, ExtraSkills.STRENGTHEN_BODY.get()) && newEP >= 1000000;
+            if (item.getDisplayName().toString().contains("adamantite")) {
+                return SkillUtils.isSkillMastered(entity, ExtraSkills.STRENGTHEN_BODY.get()) && TensuraPlayerCapability.getCurrentEP(entity) >= 100000;
             }
         }
         return false;
@@ -164,6 +165,7 @@ public class PrimalArmor extends Skill {
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
         CompoundTag tag = instance.getOrCreateTag();
+        instance.setCoolDown(tag.getInt("Time")*20);
         tag.putInt("Time", 0);
     }
 

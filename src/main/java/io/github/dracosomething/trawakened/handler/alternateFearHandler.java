@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.handler;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.capability.effects.ITensuraEffectsCapability;
@@ -137,7 +138,7 @@ public class alternateFearHandler {
             List<Entity> entities = entity.level.getEntities(entity, sight);
             if(fear.equals(FearTypes.ALTERNATES)) {
                 for (Entity entity1 : entities) {
-                    if (entity1 instanceof LivingEntity living) {
+                    if (entity1 instanceof LivingEntity living && !AwakenedFearCapability.onCooldown(entity)) {
                         if (SkillUtils.hasSkill(entity1, skillregistry.ALTERNATE.get())) {
                             AwakenedFearCapability.increaseScared(entity);
                             AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
@@ -164,7 +165,7 @@ public class alternateFearHandler {
             } else {
                 if (mobEffects != null) {
                     for (MobEffect effect : mobEffects) {
-                        if (entity.hasEffect(effect)) {
+                        if (entity.hasEffect(effect) && !AwakenedFearCapability.onCooldown(entity) && !AwakenedFearCapability.onCooldown(entity)) {
                             AwakenedFearCapability.increaseScared(entity);
                             AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                         }
@@ -173,14 +174,14 @@ public class alternateFearHandler {
                 if (items != null) {
                     for (Item item : items) {
                         for (EquipmentSlot slot : EquipmentSlot.values()) {
-                            if (entity.getItemBySlot(slot).getItem().equals(item)) {
+                            if (entity.getItemBySlot(slot).getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
                                 AwakenedFearCapability.increaseScared(entity);
                                 AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                             }
                         }
                         for (Entity entity1 : entities) {
                             if (entity1 instanceof ItemEntity itemEntity) {
-                                if (itemEntity.getItem().getItem().equals(item)) {
+                                if (itemEntity.getItem().getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
                                     AwakenedFearCapability.increaseScared(entity);
                                     AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                                 }
@@ -190,18 +191,19 @@ public class alternateFearHandler {
                 }
                 if (blocks != null) {
                     for (Block block : blocks) {
-                        blocksInSight.forEach((blockPos) -> {
-                            if (entity.level.getBlockState(blockPos).getBlock().equals(block)) {
+                        for (BlockPos blockPos : blocksInSight) {
+                            if (entity.level.getBlockState(blockPos).getBlock().equals(block) && !AwakenedFearCapability.onCooldown(entity)) {
                                 AwakenedFearCapability.increaseScared(entity);
                                 AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                                break;
                             }
-                        });
+                        }
                     }
                 }
                 if (entityTypes != null) {
                     for (EntityType<?> entityType : entityTypes) {
                         for (Entity entity1 : entities) {
-                            if (entity1.getType().equals(entityType)) {
+                            if (entity1.getType().equals(entityType) && !AwakenedFearCapability.onCooldown(entity)) {
                                 AwakenedFearCapability.increaseScared(entity);
                                 AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                             }
@@ -213,6 +215,16 @@ public class alternateFearHandler {
             AwakenedFearCapability.decreaseCooldown(entity);
         }
 //        FearTypes.fearPenalty(entity);
+        if (entity.isDeadOrDying()) {
+            if (entity.getPersistentData().hasUUID("alternate_UUID")) {
+                ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity.level.getPlayerByUUID(entity.getPersistentData().getUUID("alternate_UUID")), skillregistry.ALTERNATE.get());
+                if (instance != null) {
+                    CompoundTag tag = instance.getOrCreateTag();
+                    tag.putInt("original_scared", 0);
+                    tag.putBoolean("is_locked", false);
+                }
+            }
+        }
     }
 
     @Nullable

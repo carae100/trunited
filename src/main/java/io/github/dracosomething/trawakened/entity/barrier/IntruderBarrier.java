@@ -1,5 +1,7 @@
 package io.github.dracosomething.trawakened.entity.barrier;
 
+import com.github.manasmods.manascore.skill.SkillRegistry;
+import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
@@ -25,16 +27,16 @@ public class IntruderBarrier extends BarrierEntity {
         return true;
     }
 
+    public boolean blockBuilding() {
+        return false;
+    }
+
     public boolean canWalkThrough(Entity entity) {
         Entity owner = this.getOwner();
         if (entity == owner) {
             return true;
         } else {
-            if (SkillUtils.hasSkill(entity, skillregistry.ALTERNATE.get()) && entity.getUUID().equals(owner.getPersistentData().getUUID("alternate_UUID"))) {
-                return false;
-            } else {
-                return true;
-            }
+            return !SkillUtils.hasSkill(entity, skillregistry.ALTERNATE.get());
         }
     }
 

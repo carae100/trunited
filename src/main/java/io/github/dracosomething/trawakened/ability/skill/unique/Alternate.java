@@ -6,9 +6,11 @@ import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
+import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
+import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import net.minecraft.ChatFormatting;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.checkerframework.checker.units.qual.C;
 
@@ -104,15 +107,16 @@ public class Alternate extends Skill {
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
         CompoundTag tag = instance.getOrCreateTag();
-        if (!SkillHelper.outOfMagicule(entity, 100)) {
+        if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && tag.getBoolean("is_locked")) {
             target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
             IntruderBarrier holyField = new IntruderBarrier(target.level, target);
             System.out.println(holyField);
-            holyField.setRadius(50.0F);
+            holyField.setRadius(25.0F);
             holyField.setLife(-1);
-            holyField.setPos(target.position().add(0.0, -25.0, 0.0));
+            holyField.setPos(target.position().add(0.0, -12.5, 0.0));
             target.level.addFreshEntity(holyField);
             tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
+            tag.putBoolean("is_locked", true);
             if (AwakenedFearCapability.getScared(target) >= 3) {
                 if (entity instanceof Player player) {
                     player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
@@ -143,8 +147,10 @@ public class Alternate extends Skill {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getItem().toString().replace("[", "").replace("]", ""), living.getName()), false);
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getBlock().toString().replace("[", "").replace("Block{", "").replace("}", "").replace("]", ""), living.getName()), false);
-                            player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getEffect().toString().replace("[", "").replace("]", ""), living.getName()), false);
                             player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getEntity().toString().replace("[", "").replace("]", ""), living.getName()), false);
+                            AwakenedFearCapability.getFearType(living).getEffect().forEach((effect) -> {
+                                player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", effect.getDisplayName(), living.getName()), false);
+                            });
                         }
                     }
                 } else {
@@ -155,7 +161,7 @@ public class Alternate extends Skill {
                 break;
             case 3:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10)) {
+                    if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                         living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
                         if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                             Iterator var9 = living.level.players().iterator();
@@ -186,11 +192,20 @@ public class Alternate extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
         if (living instanceof Player player) {
-            if (!player.getAbilities().mayfly) {
+            if (!player.getAbilities().mayfly && !player.getAbilities().invulnerable && player.getAbilities().mayBuild) {
                 player.getAbilities().mayfly = true;
+                player.getAbilities().invulnerable = true;
+                player.getAbilities().mayBuild = false;
                 player.onUpdateAbilities();
             }
         }
+    }
+
+    @Override
+    public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
+        CompoundTag tag = instance.getOrCreateTag();
+        tag.putInt("original_scared", 0);
+        tag.putBoolean("is_locked", false);
     }
 
     @Override
