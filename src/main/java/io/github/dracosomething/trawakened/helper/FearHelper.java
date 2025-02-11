@@ -249,12 +249,13 @@ public class FearHelper extends SightHelper{
             Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY() - 10, entity.getZ() - 10);
             Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 10, entity.getZ() + 10);
             Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
-            oceanBlocksAround.forEach((blockPos) -> {
+            for (BlockPos blockPos : oceanBlocksAround) {
                 if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
                     AwakenedFearCapability.increaseScared(entity);
                     AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                 }
-            });
+                return false;
+            }
             return false;
         } else if (fear.equals(FearTypes.TRUTH)) {
             return false;

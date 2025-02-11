@@ -138,20 +138,14 @@ public class Alternate extends Skill {
     @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
         if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
-            System.out.println(!instance.getOrCreateTag().getBoolean("is_alternate"));
             LivingEntity target = event.getEntity();
             CompoundTag tag = instance.getOrCreateTag();
-            System.out.println(!SkillHelper.outOfMagicule(entity, 100));
-            System.out.println(!target.getPersistentData().hasUUID("alternate_UUID"));
-            System.out.println(!tag.getBoolean("is_locked"));
             if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && !tag.getBoolean("is_locked")) {
                 target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
                 IntruderBarrier holyField = new IntruderBarrier(target.level, target);
                 holyField.setRadius(25.0F);
                 holyField.setLife(-1);
                 holyField.setPos(target.position().add(0.0, -12.5, 0.0));
-                System.out.println(holyField);
-                System.out.println(holyField.getOwner());
                 target.level.addFreshEntity(holyField);
                 tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
                 tag.putBoolean("is_locked", true);
@@ -214,7 +208,7 @@ public class Alternate extends Skill {
                             }
                         }
                         if (entity instanceof Player player) {
-                            if (player.getAbilities().mayfly && player.getAbilities().invulnerable && !player.getAbilities().mayBuild) {
+                            if (!player.isCreative()) {
                                 player.getAbilities().mayfly = false;
                                 player.getAbilities().invulnerable = false;
                                 player.getAbilities().mayBuild = true;
@@ -266,7 +260,7 @@ public class Alternate extends Skill {
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
         if (living instanceof Player player) {
-            if (!player.getAbilities().mayfly && !player.getAbilities().invulnerable && player.getAbilities().mayBuild) {
+            if (!player.isCreative()) {
                 player.getAbilities().mayfly = true;
                 player.getAbilities().invulnerable = true;
                 player.getAbilities().mayBuild = false;
@@ -282,6 +276,7 @@ public class Alternate extends Skill {
             tag.putInt("original_scared", 0);
             tag.putBoolean("is_locked", false);
             tag.putBoolean("is_alternate", false);
+            tag.put("alternate_type", AlternateType.INTRUDER.toNBT());
         }
     }
 
@@ -290,6 +285,7 @@ public class Alternate extends Skill {
         instance.getOrCreateTag().putBoolean("is_alternate", false);
         instance.getOrCreateTag().putInt("original_scared", 0);
         instance.getOrCreateTag().putBoolean("is_locked", false);
+        instance.getOrCreateTag().put("alternate_type", AlternateType.INTRUDER.toNBT());
         if (living instanceof Player player) {
             player.displayClientMessage(Component.translatable("trawakened.fear.learn_self", new Object[]{AwakenedFearCapability.getFearType(player).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
         }

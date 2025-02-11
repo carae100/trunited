@@ -51,19 +51,21 @@ public class IntruderBarrier extends HolyFieldEntity {
             this.discard();
         }
         if (owner instanceof LivingEntity entity) {
-            if (entity.getPersistentData().hasUUID("original_scared")) {
+            if (!entity.getPersistentData().hasUUID("alternate_UUID")) {
                 this.kill();
             }
         }
-        if (owner.getPersistentData().hasUUID("original_scared")) {
-            LivingEntity alternate = owner.level.getPlayerByUUID(owner.getPersistentData().getUUID("original_scared"));
-            AABB radius = this.getBoundingBox();
-            List<Entity> list = owner.level.getEntities((Entity) owner, radius, Entity::isAlive);
-            for (Entity entity : list) {
-                if (entity == alternate) {
-                    Vec3 position = new Vec3(entity.getX(), entity.getY(), entity.getZ());
-                    if (!radius.contains(position)) {
-                        alternate.setPos(radius.getCenter());
+        if (owner != null) {
+            if (owner.getPersistentData().hasUUID("alternate_UUID")) {
+                LivingEntity alternate = owner.level.getPlayerByUUID(owner.getPersistentData().getUUID("alternate_UUID"));
+                AABB radius = this.getAffectedArea();
+                List<Entity> list = owner.level.getEntities((Entity) null, new AABB(new Vec3(radius.maxX + 25, radius.maxY + 25, radius.maxZ + 25), new Vec3(radius.minX - 25, radius.minY - 25, radius.minZ - 25)));
+                for (Entity entity : list) {
+                    if (entity == alternate) {
+                        Vec3 position = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                        if (!radius.contains(position)) {
+                            alternate.setPos(radius.getCenter());
+                        }
                     }
                 }
             }
