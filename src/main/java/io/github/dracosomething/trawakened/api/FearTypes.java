@@ -1,29 +1,18 @@
 package io.github.dracosomething.trawakened.api;
 
-import com.github.manasmods.tensura.ability.SkillHelper;
-import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
-import com.github.manasmods.tensura.entity.human.PlayerLikeEntity;
-import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
-import io.github.dracosomething.trawakened.api.fear.FearOperations;
-import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -31,7 +20,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public enum FearTypes implements FearOperations {
+public enum FearTypes {
     RELIGION("religion",
             List.of(
                 Blocks.BREWING_STAND,

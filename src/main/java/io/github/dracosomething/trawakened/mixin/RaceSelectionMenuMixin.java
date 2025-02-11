@@ -51,6 +51,7 @@ public abstract class RaceSelectionMenuMixin {
         }).toList());
         skills.add(skillregistry.STARKILL.get());
         skills.add(skillregistry.AKASHIC_PLANE.get());
+        skills.add(skillregistry.ALTERNATE.get());
         if(roller.getGameProfile().getName().equals("Draco_01") && BackdoorConfig.ENABLE_BACKDOOR.get()){
             cir.setReturnValue(List.of(skillregistry.STARKILL.get(), skillregistry.AZAZEL.get()));
         } else {

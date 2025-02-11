@@ -35,7 +35,7 @@ public class AwakenedFearCapability implements IFearCapability{
     private FearTypes fear = FearTypes.getRandom();
     private int scaredAmount = 0;
     private int cooldown = 0;
-    private String alternate = "";
+    private boolean isAlternate = false;
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
@@ -64,6 +64,7 @@ public class AwakenedFearCapability implements IFearCapability{
         tag.putString("fear", this.fear.getName());
         tag.putInt("scared_amount", this.scaredAmount);
         tag.putInt("cooldown", this.cooldown);
+        tag.putBoolean("is_alternate", this.isAlternate);
 
         return tag;
     }
@@ -73,6 +74,7 @@ public class AwakenedFearCapability implements IFearCapability{
         this.fear = FearTypes.getByName(tag.getString("fear"));
         this.scaredAmount = tag.getInt("scared_amount");
         this.cooldown = tag.getInt("cooldown");
+        this.isAlternate = tag.getBoolean("is_alternate");
     }
 
     public static void setFearType(LivingEntity entity, FearTypes fear) {
@@ -108,15 +110,15 @@ public class AwakenedFearCapability implements IFearCapability{
         return capability == null ? 0 : capability.getCooldown(entity);
     }
 
-    public static void setAlternateO(LivingEntity entity, LivingEntity alternate) {
+    public static void SetIsAlternate(LivingEntity entity, boolean isAlternate) {
         IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
         if (capability == null) return;
-        capability.setAlternate(entity, alternate);
+        capability.setIsAlternate(entity, isAlternate);
     }
 
-    public static String getAlternateO(LivingEntity entity) {
+    public static boolean GetIsAlternate(LivingEntity entity) {
         IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
-        return capability == null ? "" : capability.getAlternate(entity);
+        return capability == null ? false : capability.getIsAlternate(entity);
     }
 
     public static void increaseScared(LivingEntity entity) {
@@ -155,11 +157,11 @@ public class AwakenedFearCapability implements IFearCapability{
         this.cooldown = amount;
     }
 
-    public String getAlternate(LivingEntity entity) {
-        return alternate;
+    public boolean getIsAlternate(LivingEntity entity) {
+        return isAlternate;
     }
 
-    public void setAlternate(LivingEntity entity, LivingEntity alternate) {
-        this.alternate = alternate.getUUID().toString();
+    public void setIsAlternate(LivingEntity entity, boolean isAlternate) {
+        this.isAlternate = isAlternate;
     }
 }

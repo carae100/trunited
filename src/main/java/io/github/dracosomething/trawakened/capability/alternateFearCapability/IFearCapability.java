@@ -51,7 +51,7 @@ public interface IFearCapability extends INBTSerializable<CompoundTag> {
      */
     void setCooldown(LivingEntity entity, int amount);
 
-    String getAlternate(LivingEntity entity);
+    boolean getIsAlternate(LivingEntity entity);
 
-    void setAlternate(LivingEntity entity, LivingEntity alternate);
+    void setIsAlternate(LivingEntity entity, boolean isAlternate);
 }

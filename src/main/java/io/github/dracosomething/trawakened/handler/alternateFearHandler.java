@@ -109,7 +109,7 @@ public class alternateFearHandler {
     static void onTickLiving(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         FearHelper.fearUpdates(entity);
-        if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+        if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR) || !AwakenedFearCapability.GetIsAlternate(entity)) {
             FearHelper.fearPenalty(entity);
         }
         FearHelper.resetData(entity);

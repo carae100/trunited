@@ -3,8 +3,6 @@ package io.github.dracosomething.trawakened;
 import com.github.manasmods.tensura.registry.items.TensuraMaterialItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
-import io.github.dracosomething.trawakened.api.FearTypes;
-import io.github.dracosomething.trawakened.api.fear.FearOperations;
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
@@ -23,12 +21,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import software.bernie.geckolib3.GeckoLib;
-
-import java.lang.invoke.TypeDescriptor;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
 // The value here should match an entry in the META-IN F/mods.toml file
 @Mod(trawakened.MODID)

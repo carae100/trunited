@@ -13,6 +13,7 @@ import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
+import io.github.dracosomething.trawakened.helper.skillHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +80,7 @@ public class Alternate extends Skill {
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
         int var10000;
         CompoundTag tag = instance.getOrCreateTag();
-        if (!tag.getBoolean("is_alternate")) {
+        if (!AwakenedFearCapability.GetIsAlternate(entity)) {
             if (reverse) {
                 switch (instance.getMode()) {
                     case 1 -> var10000 = 3;
@@ -128,7 +129,7 @@ public class Alternate extends Skill {
 
     @Override
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
-        if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
+        if (!AwakenedFearCapability.GetIsAlternate(entity)) {
             return List.of(MobEffects.GLOWING);
         } else {
             return null;
@@ -137,7 +138,7 @@ public class Alternate extends Skill {
 
     @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
-        if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
+        if (!AwakenedFearCapability.GetIsAlternate(entity)) {
             LivingEntity target = event.getEntity();
             CompoundTag tag = instance.getOrCreateTag();
             if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && !tag.getBoolean("is_locked")) {
@@ -149,8 +150,9 @@ public class Alternate extends Skill {
                 target.level.addFreshEntity(holyField);
                 tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
                 tag.putBoolean("is_locked", true);
-                if (AwakenedFearCapability.getScared(target) >= 3) {
-                    if (entity instanceof Player player) {
+                if (entity instanceof Player player) {
+                    player.displayClientMessage(Component.translatable("trawakened.fear.scared", new Object[]{AwakenedFearCapability.getScared(target)}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
+                    if (AwakenedFearCapability.getScared(target) >= 3) {
                         player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
                     }
                 }
@@ -167,6 +169,7 @@ public class Alternate extends Skill {
                 if (AwakenedFearCapability.getScared(living) >= 3) {
                     if (entity instanceof Player player) {
                         player.displayClientMessage(Component.translatable("trawakened.fear.scared", new Object[]{AwakenedFearCapability.getScared(living)}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
+                        player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(living).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
                     }
                 } else {
                     if (entity instanceof Player player) {
@@ -196,7 +199,7 @@ public class Alternate extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                         living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
-                        tag.putBoolean("is_alternate", true);
+                        AwakenedFearCapability.SetIsAlternate(entity, true);
                         if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                             Iterator var9 = living.level.players().iterator();
 
@@ -215,7 +218,9 @@ public class Alternate extends Skill {
                                 player.onUpdateAbilities();
                             }
                         }
-                        tag.put("assimilation", Assimilation.getRandomAssimilation().toNBT());
+                        Assimilation assimilation = Assimilation.getRandomAssimilation();
+                        tag.put("assimilation", assimilation.toNBT());
+                        tag.put("alternate_type", assimilation.getType().toNBT());
                     } else {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
@@ -225,12 +230,20 @@ public class Alternate extends Skill {
                 break;
             case 4:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-
+                    if (AwakenedFearCapability.getScared(living) >= 3) {
+                        AwakenedFearCapability.setScared(living, 0);
+                        AwakenedFearCapability.setScaredCooldown(living, 0);
+                        AwakenedFearCapability.setFearType(living, FearTypes.getRandom());
+                    }
                 }
                 break;
             case 5:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-
+                    skillHelper.DrawCircle(entity, 25, false).forEach((Entity) -> {
+                        if (Entity instanceof LivingEntity livingEntity) {
+                            AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                        }
+                    });
                 }
                 break;
             case 6:
@@ -253,7 +266,7 @@ public class Alternate extends Skill {
 
     @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
-        return !instance.getOrCreateTag().getBoolean("is_alternate");
+        return !AwakenedFearCapability.GetIsAlternate(entity);
     }
 
     @Override
@@ -275,14 +288,14 @@ public class Alternate extends Skill {
         if (!tag.getBoolean("is_alternate")) {
             tag.putInt("original_scared", 0);
             tag.putBoolean("is_locked", false);
-            tag.putBoolean("is_alternate", false);
+            AwakenedFearCapability.SetIsAlternate(event.getEntity(), false);
             tag.put("alternate_type", AlternateType.INTRUDER.toNBT());
         }
     }
 
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
-        instance.getOrCreateTag().putBoolean("is_alternate", false);
+        AwakenedFearCapability.SetIsAlternate(living, false);
         instance.getOrCreateTag().putInt("original_scared", 0);
         instance.getOrCreateTag().putBoolean("is_locked", false);
         instance.getOrCreateTag().put("alternate_type", AlternateType.INTRUDER.toNBT());
@@ -350,9 +363,12 @@ public class Alternate extends Skill {
         }
 
         public static Assimilation getRandomAssimilation() {
-            List<Assimilation> list = List.of(values());
             Random random = new Random();
-            return list.get(random.nextInt(0, list.size()));
+            if (random.nextInt(0, 100) < 75) {
+                return random.nextInt(0, 100) >= 75 ? Assimilation.FLAWED : Assimilation.OVERDRIVEN;
+            } else {
+                return Assimilation.COMPLETE;
+            }
         }
 
         public final CompoundTag toNBT() {
