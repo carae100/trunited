@@ -200,16 +200,7 @@ public class Alternate extends Skill {
                     if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                         living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
                         AwakenedFearCapability.SetIsAlternate(entity, true);
-                        if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
-                            Iterator var9 = living.level.players().iterator();
-
-                            while (var9.hasNext()) {
-                                Player everyone = (Player) var9.next();
-                                if (everyone != entity) {
-                                    everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
-                                }
-                            }
-                        }
+                        entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
                         if (entity instanceof Player player) {
                             if (!player.isCreative()) {
                                 player.getAbilities().mayfly = false;
@@ -221,6 +212,17 @@ public class Alternate extends Skill {
                         Assimilation assimilation = Assimilation.getRandomAssimilation();
                         tag.put("assimilation", assimilation.toNBT());
                         tag.put("alternate_type", assimilation.getType().toNBT());
+                        instance.setMode(4);
+                        if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
+                            Iterator var9 = living.level.players().iterator();
+
+                            while (var9.hasNext()) {
+                                Player everyone = (Player) var9.next();
+                                if (everyone != entity) {
+                                    everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
+                                }
+                            }
+                        }
                     } else {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
@@ -285,7 +287,7 @@ public class Alternate extends Skill {
     @Override
     public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
         CompoundTag tag = instance.getOrCreateTag();
-        if (!tag.getBoolean("is_alternate")) {
+        if (!AwakenedFearCapability.GetIsAlternate(event.getEntity())) {
             tag.putInt("original_scared", 0);
             tag.putBoolean("is_locked", false);
             AwakenedFearCapability.SetIsAlternate(event.getEntity(), false);
@@ -365,7 +367,7 @@ public class Alternate extends Skill {
         public static Assimilation getRandomAssimilation() {
             Random random = new Random();
             if (random.nextInt(0, 100) < 75) {
-                return random.nextInt(0, 100) >= 75 ? Assimilation.FLAWED : Assimilation.OVERDRIVEN;
+                return random.nextInt(0, 100) < 75 ? Assimilation.FLAWED : Assimilation.OVERDRIVEN;
             } else {
                 return Assimilation.COMPLETE;
             }
