@@ -31,10 +31,12 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class Alternate extends Skill {
     public Alternate() {
@@ -43,7 +45,7 @@ public class Alternate extends Skill {
 
     @Override
     public int modes() {
-        return 4;
+        return 8;
     }
 
     @Override
@@ -77,49 +79,80 @@ public class Alternate extends Skill {
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
         int var10000;
         CompoundTag tag = instance.getOrCreateTag();
-        if (reverse) {
-            switch (instance.getMode()) {
-                case 1 -> var10000 = 3;
-                case 2 -> var10000 = 1;
-                case 3 -> var10000 = 2;
-                default -> var10000 = 0;
-            }
+        if (!tag.getBoolean("is_alternate")) {
+            if (reverse) {
+                switch (instance.getMode()) {
+                    case 1 -> var10000 = 3;
+                    case 2 -> var10000 = 1;
+                    case 3 -> var10000 = 2;
+                    default -> var10000 = 0;
+                }
 
-            return var10000;
+                return var10000;
+            } else {
+                switch (instance.getMode()) {
+                    case 1 -> var10000 = 2;
+                    case 2 -> var10000 = 3;
+                    case 3 -> var10000 = 1;
+                    default -> var10000 = 0;
+                }
+
+                return var10000;
+            }
         } else {
-            switch (instance.getMode()) {
-                case 1 -> var10000 = 2;
-                case 2 -> var10000 = 3;
-                case 3 -> var10000 = 1;
-                default -> var10000 = 0;
-            }
+            if (reverse) {
+                switch (instance.getMode()) {
+                    case 4 -> var10000 = 8;
+                    case 5 -> var10000 = 4;
+                    case 6 -> var10000 = 5;
+                    case 7 -> var10000 = 6;
+                    case 8 -> var10000 = 7;
+                    default -> var10000 = 0;
+                }
 
-            return var10000;
+                return var10000;
+            } else {
+                switch (instance.getMode()) {
+                    case 4 -> var10000 = 5;
+                    case 5 -> var10000 = 6;
+                    case 6 -> var10000 = 7;
+                    case 7 -> var10000 = 8;
+                    case 8 -> var10000 = 4;
+                    default -> var10000 = 0;
+                }
+
+                return var10000;
+            }
         }
     }
 
     @Override
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
-        return List.of(MobEffects.GLOWING);
+        if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
+            return List.of(MobEffects.GLOWING);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
-        LivingEntity target = event.getEntity();
-        CompoundTag tag = instance.getOrCreateTag();
-        if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && tag.getBoolean("is_locked")) {
-            target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
-            IntruderBarrier holyField = new IntruderBarrier(target.level, target);
-            System.out.println(holyField);
-            holyField.setRadius(25.0F);
-            holyField.setLife(-1);
-            holyField.setPos(target.position().add(0.0, -12.5, 0.0));
-            target.level.addFreshEntity(holyField);
-            tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
-            tag.putBoolean("is_locked", true);
-            if (AwakenedFearCapability.getScared(target) >= 3) {
-                if (entity instanceof Player player) {
-                    player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
+        if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
+            LivingEntity target = event.getEntity();
+            CompoundTag tag = instance.getOrCreateTag();
+            if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && tag.getBoolean("is_locked")) {
+                target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
+                IntruderBarrier holyField = new IntruderBarrier(target.level, target);
+                holyField.setRadius(25.0F);
+                holyField.setLife(-1);
+                holyField.setPos(target.position().add(0.0, -12.5, 0.0));
+                target.level.addFreshEntity(holyField);
+                tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
+                tag.putBoolean("is_locked", true);
+                if (AwakenedFearCapability.getScared(target) >= 3) {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
+                    }
                 }
             }
         }
@@ -163,6 +196,7 @@ public class Alternate extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                         living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
+                        tag.putBoolean("is_alternate", true);
                         if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                             Iterator var9 = living.level.players().iterator();
 
@@ -173,6 +207,15 @@ public class Alternate extends Skill {
                                 }
                             }
                         }
+                        if (entity instanceof Player player) {
+                            if (player.getAbilities().mayfly && player.getAbilities().invulnerable && !player.getAbilities().mayBuild) {
+                                player.getAbilities().mayfly = false;
+                                player.getAbilities().invulnerable = false;
+                                player.getAbilities().mayBuild = true;
+                                player.onUpdateAbilities();
+                            }
+                        }
+                        tag.put("assimilation", Assimilation.getRandomAssimilation().toNBT());
                     } else {
                         if (entity instanceof Player player) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
@@ -180,12 +223,37 @@ public class Alternate extends Skill {
                     }
                 }
                 break;
+            case 4:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
+            case 5:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
+            case 6:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
+            case 7:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
+            case 8:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
         }
     }
 
     @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
-        return true;
+        return !instance.getOrCreateTag().getBoolean("is_alternate");
     }
 
     @Override
@@ -204,14 +272,89 @@ public class Alternate extends Skill {
     @Override
     public void onDeath(ManasSkillInstance instance, LivingDeathEvent event) {
         CompoundTag tag = instance.getOrCreateTag();
-        tag.putInt("original_scared", 0);
-        tag.putBoolean("is_locked", false);
+        if (!tag.getBoolean("is_alternate")) {
+            tag.putInt("original_scared", 0);
+            tag.putBoolean("is_locked", false);
+        }
     }
 
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        instance.getOrCreateTag().putBoolean("is_alternate", false);
         if (living instanceof Player player) {
             player.displayClientMessage(Component.translatable("trawakened.fear.learn_self", new Object[]{AwakenedFearCapability.getFearType(player).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
+        }
+    }
+
+    public enum AlternateType {
+        INTRUDER("intruder"),
+        DOPPELGANGER("doppelgänger"),
+        DETECTABLE("detectable"),
+        REDACTED("redacted");
+        private String name;
+
+        private AlternateType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public static AlternateType getRandomType() {
+            List<AlternateType> list = List.of(values());
+            Random random = new Random();
+            return list.get(random.nextInt(0, list.size()));
+        }
+
+        public final CompoundTag toNBT() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("name", name);
+            return tag;
+        }
+    }
+
+    public enum Assimilation {
+        FLAWED("flawed", AlternateType.REDACTED),
+        COMPLETE("complete", AlternateType.DOPPELGANGER),
+        OVERDRIVEN("overdriven", AlternateType.REDACTED);
+        private String name;
+        private AlternateType type;
+
+        private Assimilation(String name, AlternateType type) {
+            this.name = name;
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public AlternateType getType() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public static Assimilation getRandomAssimilation() {
+            List<Assimilation> list = List.of(values());
+            Random random = new Random();
+            return list.get(random.nextInt(0, list.size()));
+        }
+
+        public final CompoundTag toNBT() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("name", name);
+            tag.put("type", getType().toNBT());
+            return tag;
         }
     }
 }

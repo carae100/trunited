@@ -8,6 +8,7 @@ import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
+import io.github.dracosomething.trawakened.api.fear.FearOperations;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
@@ -30,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public enum FearTypes {
+public enum FearTypes implements FearOperations {
     RELIGION("religion",
             List.of(
                 Blocks.BREWING_STAND,

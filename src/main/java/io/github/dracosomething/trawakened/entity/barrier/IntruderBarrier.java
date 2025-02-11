@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.skill.SkillRegistry;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
+import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
@@ -13,8 +14,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-public class IntruderBarrier extends BarrierEntity {
-    public IntruderBarrier(EntityType<? extends BarrierEntity> entityType, Level level) {
+public class IntruderBarrier extends HolyFieldEntity {
+    public IntruderBarrier(EntityType<? extends HolyFieldEntity> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -23,12 +24,9 @@ public class IntruderBarrier extends BarrierEntity {
         this.setOwner(entity);
     }
 
-    public boolean shouldRenderAtSqrDistance(double pDistance) {
-        return true;
-    }
-
-    public boolean blockBuilding() {
-        return false;
+    @Override
+    public void applyEffect(LivingEntity entity) {
+        return;
     }
 
     public boolean canWalkThrough(Entity entity) {
@@ -38,10 +36,6 @@ public class IntruderBarrier extends BarrierEntity {
         } else {
             return !SkillUtils.hasSkill(entity, skillregistry.ALTERNATE.get());
         }
-    }
-
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        return false;
     }
 
     public void tick() {

@@ -25,7 +25,6 @@ import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
-import io.github.dracosomething.trawakened.util.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

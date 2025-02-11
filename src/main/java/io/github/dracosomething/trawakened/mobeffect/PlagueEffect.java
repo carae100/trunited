@@ -19,7 +19,7 @@ import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.util.trawakenedDamage;
+import io.github.dracosomething.trawakened.world.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

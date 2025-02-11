@@ -33,7 +33,7 @@ import io.github.dracosomething.trawakened.mixin.GluttonyMistProjectileMixin;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
-import io.github.dracosomething.trawakened.util.trawakenedDamage;
+import io.github.dracosomething.trawakened.world.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Options;
 import net.minecraft.core.BlockPos;
