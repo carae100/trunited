@@ -10,6 +10,7 @@ import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
 import io.github.dracosomething.trawakened.registry.trawakenedregistry;
+import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -39,6 +40,7 @@ public class trawakened {
 
         herrscheroftime.create();
         TRAwakenedNetwork.register();
+        trawakenedGamerules.registryGameRules();
 
         MinecraftForge.EVENT_BUS.register(this);
         trawakenedregistry.register(modEventBus);

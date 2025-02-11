@@ -13,6 +13,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class IntruderBarrier extends HolyFieldEntity {
     public IntruderBarrier(EntityType<? extends HolyFieldEntity> entityType, Level level) {
@@ -49,6 +53,19 @@ public class IntruderBarrier extends HolyFieldEntity {
         if (owner instanceof LivingEntity entity) {
             if (entity.getPersistentData().hasUUID("original_scared")) {
                 this.kill();
+            }
+        }
+        if (owner.getPersistentData().hasUUID("original_scared")) {
+            LivingEntity alternate = owner.level.getPlayerByUUID(owner.getPersistentData().getUUID("original_scared"));
+            AABB radius = this.getBoundingBox();
+            List<Entity> list = owner.level.getEntities((Entity) owner, radius, Entity::isAlive);
+            for (Entity entity : list) {
+                if (entity == alternate) {
+                    Vec3 position = new Vec3(entity.getX(), entity.getY(), entity.getZ());
+                    if (!radius.contains(position)) {
+                        alternate.setPos(radius.getCenter());
+                    }
+                }
             }
         }
     }

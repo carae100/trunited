@@ -138,14 +138,20 @@ public class Alternate extends Skill {
     @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
         if (!instance.getOrCreateTag().getBoolean("is_alternate")) {
+            System.out.println(!instance.getOrCreateTag().getBoolean("is_alternate"));
             LivingEntity target = event.getEntity();
             CompoundTag tag = instance.getOrCreateTag();
-            if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && tag.getBoolean("is_locked")) {
+            System.out.println(!SkillHelper.outOfMagicule(entity, 100));
+            System.out.println(!target.getPersistentData().hasUUID("alternate_UUID"));
+            System.out.println(!tag.getBoolean("is_locked"));
+            if (!SkillHelper.outOfMagicule(entity, 100) && !target.getPersistentData().hasUUID("alternate_UUID") && !tag.getBoolean("is_locked")) {
                 target.getPersistentData().putUUID("alternate_UUID", entity.getUUID());
                 IntruderBarrier holyField = new IntruderBarrier(target.level, target);
                 holyField.setRadius(25.0F);
                 holyField.setLife(-1);
                 holyField.setPos(target.position().add(0.0, -12.5, 0.0));
+                System.out.println(holyField);
+                System.out.println(holyField.getOwner());
                 target.level.addFreshEntity(holyField);
                 tag.putInt("original_scared", AwakenedFearCapability.getScared(target));
                 tag.putBoolean("is_locked", true);
@@ -275,12 +281,15 @@ public class Alternate extends Skill {
         if (!tag.getBoolean("is_alternate")) {
             tag.putInt("original_scared", 0);
             tag.putBoolean("is_locked", false);
+            tag.putBoolean("is_alternate", false);
         }
     }
 
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         instance.getOrCreateTag().putBoolean("is_alternate", false);
+        instance.getOrCreateTag().putInt("original_scared", 0);
+        instance.getOrCreateTag().putBoolean("is_locked", false);
         if (living instanceof Player player) {
             player.displayClientMessage(Component.translatable("trawakened.fear.learn_self", new Object[]{AwakenedFearCapability.getFearType(player).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
         }

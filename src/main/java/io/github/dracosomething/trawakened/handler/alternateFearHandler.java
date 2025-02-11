@@ -23,10 +23,12 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.IFearCapability;
+import io.github.dracosomething.trawakened.helper.FearHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.trawakened;
+import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
@@ -106,125 +108,11 @@ public class alternateFearHandler {
     @SubscribeEvent
     static void onTickLiving(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!AwakenedFearCapability.onCooldown(entity)) {
-            FearTypes fear = AwakenedFearCapability.getFearType(entity);
-            List<Block> blocks = fear.getBlock();
-            List<Item> items = fear.getItem();
-            List<EntityType<?>> entityTypes = fear.getEntity();
-            List<MobEffect> mobEffects = fear.getEffect();
-            Vec3 vec3 = entity.getEyePosition().subtract(0, 10, 0);
-            Vec3 vec31 = entity.getEyePosition();
-            if (entity.getYHeadRot() >= -45.0F && entity.getYHeadRot() <= 45.0F) {
-                vec31 = vec31.add(5, 10, 10);
-                vec3 = vec3.subtract(5, 0,0);
-            } else if (entity.getYHeadRot() >= 45.1F && entity.getYHeadRot() <= 135.0F) {
-                vec31 = vec31.add(0, 10, 5);
-                vec31 = vec31.subtract(10, 0, 0);
-                vec3 = vec3.subtract(0,0,5);
-            } else if (entity.getYHeadRot() >= -135F && entity.getYHeadRot() <= -45.1F) {
-                vec31 = vec31.add(10, 10, 5);
-                vec3 = vec3.subtract(0,0,5);
-            } else if(entity.getYHeadRot() >= 135.1F && entity.getYHeadRot() <= 180F) {
-                vec31 = vec31.add(5, 10, 0);
-                vec31 = vec31.subtract(0,0,10);
-                vec3 = vec3.subtract(5,0,0);
-            } else if (entity.getYHeadRot() <= -135.1F && entity.getYHeadRot() >= -180F) {
-                vec31 = vec31.add(5, 10, 0);
-                vec31 = vec31.subtract(0,0,10);
-                vec3 = vec3.subtract(5,0,0);
-            }
-            AABB sight = new AABB(vec3, vec31);
-            Iterable<BlockPos> blocksInSight = BlockPos.betweenClosed(new BlockPos(vec3), new BlockPos(vec31));
-            List<Entity> entities = entity.level.getEntities(entity, sight);
-            if(fear.equals(FearTypes.ALTERNATES)) {
-                for (Entity entity1 : entities) {
-                    if (entity1 instanceof LivingEntity living && !AwakenedFearCapability.onCooldown(entity)) {
-                        if (SkillUtils.hasSkill(entity1, skillregistry.ALTERNATE.get())) {
-                            AwakenedFearCapability.increaseScared(entity);
-                            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                        }
-                    }
-                }
-            } else if (fear.equals(FearTypes.OCEAN)) {
-                Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY() - 10, entity.getZ() - 10);
-                Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 10, entity.getZ() + 10);
-                Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
-                oceanBlocksAround.forEach((blockPos) -> {
-                    if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
-                        AwakenedFearCapability.increaseScared(entity);
-                        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                    }
-                });
-            } else if (fear.equals(FearTypes.TRUTH)) {
-                return;
-            } else if (fear.equals(FearTypes.HEIGHT)) {
-                if (entity.getY() >= 200) {
-                    AwakenedFearCapability.increaseScared(entity);
-                    AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                }
-            } else {
-                if (mobEffects != null) {
-                    for (MobEffect effect : mobEffects) {
-                        if (entity.hasEffect(effect) && !AwakenedFearCapability.onCooldown(entity) && !AwakenedFearCapability.onCooldown(entity)) {
-                            AwakenedFearCapability.increaseScared(entity);
-                            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                        }
-                    }
-                }
-                if (items != null) {
-                    for (Item item : items) {
-                        for (EquipmentSlot slot : EquipmentSlot.values()) {
-                            if (entity.getItemBySlot(slot).getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
-                                AwakenedFearCapability.increaseScared(entity);
-                                AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                            }
-                        }
-                        for (Entity entity1 : entities) {
-                            if (entity1 instanceof ItemEntity itemEntity) {
-                                if (itemEntity.getItem().getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
-                                    AwakenedFearCapability.increaseScared(entity);
-                                    AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (blocks != null) {
-                    for (Block block : blocks) {
-                        for (BlockPos blockPos : blocksInSight) {
-                            if (entity.level.getBlockState(blockPos).getBlock().equals(block) && !AwakenedFearCapability.onCooldown(entity)) {
-                                AwakenedFearCapability.increaseScared(entity);
-                                AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (entityTypes != null) {
-                    for (EntityType<?> entityType : entityTypes) {
-                        for (Entity entity1 : entities) {
-                            if (entity1.getType().equals(entityType) && !AwakenedFearCapability.onCooldown(entity)) {
-                                AwakenedFearCapability.increaseScared(entity);
-                                AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            AwakenedFearCapability.decreaseCooldown(entity);
+        FearHelper.fearUpdates(entity);
+        if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+            FearHelper.fearPenalty(entity);
         }
-//        FearTypes.fearPenalty(entity);
-        if (entity.isDeadOrDying()) {
-            if (entity.getPersistentData().hasUUID("alternate_UUID")) {
-                ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity.level.getPlayerByUUID(entity.getPersistentData().getUUID("alternate_UUID")), skillregistry.ALTERNATE.get());
-                if (instance != null) {
-                    CompoundTag tag = instance.getOrCreateTag();
-                    tag.putInt("original_scared", 0);
-                    tag.putBoolean("is_locked", false);
-                }
-            }
-        }
+        FearHelper.resetData(entity);
     }
 
     @Nullable
