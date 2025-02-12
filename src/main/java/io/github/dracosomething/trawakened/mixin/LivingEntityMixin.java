@@ -1,15 +1,22 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
+import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +32,7 @@ import java.util.Random;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
 //    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
+    @Shadow public abstract MobType getMobType();
 
     @Shadow
     public float yHeadRotO;
@@ -124,6 +132,22 @@ public abstract class LivingEntityMixin extends Entity {
     private void stopHeal(float p_21116_, CallbackInfo ci) {
         if (trawakenedPlayerCapability.hasHealPoison((LivingEntity) (Object) this)) {
             ci.cancel();
+        }
+    }
+
+    @Inject(
+            method = "getMobType",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void IsNotFriendly(CallbackInfoReturnable<MobType> cir) {
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(((LivingEntity) (Object) this), skillregistry.ALTERNATE.get());
+        if (instance != null) {
+            CompoundTag tag = instance.getOrCreateTag();
+            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            if (assimilation == Alternate.Assimilation.OVERDRIVEN || assimilation == Alternate.Assimilation.FLAWED) {
+                cir.setReturnValue(MobType.ILLAGER);
+            }
         }
     }
 }

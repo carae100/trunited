@@ -119,6 +119,8 @@
   "trawakened.skill.mode.alternate.fear": "Get Scared Amount",
   "trawakened.skill.mode.alternate.scary": "Get Fear Object",
   "trawakened.skill.mode.alternate.kill": "Undesired Knowledge",
+  "trawakened.skill.mode.alternate.new_fear": "Set Fear/Increase Scared",
+  "trawakened.skill.mode.alternate.scare": "Scare",
 
   "trawakened.skill.primal_armor": "§3Primal Armor",
   "trawakened.skill.primal_armor.description": "§3Using the powerful new particle, the kojima particle, you are now able to empower your gear and release them in a powerful wave. However there seems to be something even more dangerous possible.",

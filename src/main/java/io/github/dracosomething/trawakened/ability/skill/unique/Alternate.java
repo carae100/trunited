@@ -13,7 +13,9 @@ import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
+import io.github.dracosomething.trawakened.helper.FearHelper;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -34,10 +36,9 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Alternate extends Skill {
     public Alternate() {
@@ -67,9 +68,11 @@ public class Alternate extends Skill {
     public Component getModeName(int mode) {
         MutableComponent var10000;
         switch (mode) {
-            case 1 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.fear");
-            case 2 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.scary");
-            case 3 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.kill");
+            case 1, 6 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.fear");
+            case 2, 7 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.scary");
+            case 3, 8 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.kill");
+            case 4 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.new_fear");
+            case 5 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.scare");
             default -> var10000 = Component.empty();
         }
 
@@ -233,9 +236,18 @@ public class Alternate extends Skill {
             case 4:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= 3) {
-                        AwakenedFearCapability.setScared(living, 0);
-                        AwakenedFearCapability.setScaredCooldown(living, 0);
-                        AwakenedFearCapability.setFearType(living, FearTypes.getRandom());
+                        if(entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+                            AwakenedFearCapability.setScared(living, 0);
+                            AwakenedFearCapability.setScaredCooldown(living, 0);
+                            AwakenedFearCapability.setFearType(living, FearTypes.getRandom());
+                        } else {
+                            AwakenedFearCapability.setScared(living, AwakenedFearCapability.getScared(living) + 10);
+                            AwakenedFearCapability.setScaredCooldown(living, 0);
+                        }
+                    } else {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        }
                     }
                 }
                 break;
@@ -243,24 +255,66 @@ public class Alternate extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     skillHelper.DrawCircle(entity, 25, false).forEach((Entity) -> {
                         if (Entity instanceof LivingEntity livingEntity) {
-                            AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                            if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+                                AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                            } else {
+                                FearHelper.fearPenalty(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                            }
                         }
                     });
                 }
                 break;
             case 6:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
+                        living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
+                        if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
+                            Iterator var9 = living.level.players().iterator();
 
+                            while (var9.hasNext()) {
+                                Player everyone = (Player) var9.next();
+                                if (everyone != entity) {
+                                    everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
+                                }
+                            }
+                        }
+                    } else {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        }
+                    }
                 }
                 break;
             case 7:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-
+                    if (AwakenedFearCapability.getScared(living) >= 3) {
+                        if (living.getPersistentData().getUUID("alternate_UUID").equals(entity.getUUID())) {
+                            if (entity instanceof Player player) {
+                                player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getItem().toString().replace("[", "").replace("]", ""), living.getName()), false);
+                                player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getBlock().toString().replace("[", "").replace("Block{", "").replace("}", "").replace("]", ""), living.getName()), false);
+                                player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", AwakenedFearCapability.getFearType(living).getEntity().toString().replace("[", "").replace("]", ""), living.getName()), false);
+                                AwakenedFearCapability.getFearType(living).getEffect().forEach((effect) -> {
+                                    player.displayClientMessage(Component.translatable("trawakened.fear.trigger_objects", effect.getDisplayName(), living.getName()), false);
+                                });
+                            }
+                        }
+                    } else {
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        }
+                    }
                 }
                 break;
             case 8:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
-
+                if (AwakenedFearCapability.getScared(living) >= 3) {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.translatable("trawakened.fear.scared", new Object[]{AwakenedFearCapability.getScared(living)}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
+                        player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(living).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
+                    }
+                } else {
+                    if (entity instanceof Player player) {
+                        player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    }
                 }
                 break;
         }
@@ -351,6 +405,16 @@ public class Alternate extends Skill {
             this.type = type;
         }
 
+        private static final Map<String, Assimilation> ASSIMILATION_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((assimilation) -> {
+            return cleanName(assimilation.name);
+        }, (assimilation) -> {
+            return assimilation;
+        }));
+
+        private static String cleanName(String p_126663_) {
+            return p_126663_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
+        }
+
         public String getName() {
             return name;
         }
@@ -373,11 +437,20 @@ public class Alternate extends Skill {
             }
         }
 
+        @Nullable
+        private static Assimilation getByName(@Nullable String p_126658_) {
+            return p_126658_ == null ? null : (Assimilation) ASSIMILATION_BY_NAME.get(cleanName(p_126658_));
+        }
+
         public final CompoundTag toNBT() {
             CompoundTag tag = new CompoundTag();
             tag.putString("name", name);
             tag.put("type", getType().toNBT());
             return tag;
+        }
+
+        public static Assimilation fromNBT(CompoundTag tag) {
+            return getByName(tag.getString("name"));
         }
     }
 }
