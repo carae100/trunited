@@ -4,9 +4,11 @@ import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
+import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
@@ -313,5 +315,43 @@ public enum FearTypes {
         Random random = new Random();
         FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
         return fear;
+    }
+
+    public CompoundTag ToNBT() {
+        CompoundTag tag = new CompoundTag();
+        tag.putString("name", getName());
+        CompoundTag blocks = new CompoundTag();
+        getBlock().forEach((block) -> {
+            if (block != null) {
+                blocks.put(block.toString(), block.asItem().getShareTag(block.asItem().getDefaultInstance()));
+            }
+        });
+        tag.put("blocks", blocks);
+        CompoundTag items = new CompoundTag();
+        getItem().forEach((block) -> {
+            if (block != null) {
+                items.put(block.toString(), block.getShareTag(block.getDefaultInstance()));
+            }
+        });
+        tag.put("items", items);
+        CompoundTag entities = new CompoundTag();
+        getEntity().forEach((block) -> {
+            if (block != null) {
+                entities.putString(block.toString(), block.toString());
+            }
+        });
+        tag.put("entities", entities);
+        CompoundTag effects = new CompoundTag();
+        getEffect().forEach((block) -> {
+            if (block != null) {
+                effects.putString(block.toString(), block.toString());
+            }
+        });
+        tag.put("effects", effects);
+        return tag;
+    }
+
+    public static FearTypes fromNBT(CompoundTag tag) {
+        return getByName(tag.getString("name"));
     }
 }

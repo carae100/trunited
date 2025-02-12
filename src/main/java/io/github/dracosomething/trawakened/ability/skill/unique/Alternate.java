@@ -236,13 +236,11 @@ public class Alternate extends Skill {
             case 4:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= 3) {
-                        if(entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
-                            AwakenedFearCapability.setScared(living, 0);
-                            AwakenedFearCapability.setScaredCooldown(living, 0);
-                            AwakenedFearCapability.setFearType(living, FearTypes.getRandom());
-                        } else {
-                            AwakenedFearCapability.setScared(living, AwakenedFearCapability.getScared(living) + 10);
-                            AwakenedFearCapability.setScaredCooldown(living, 0);
+                        AwakenedFearCapability.setScared(living, 0);
+                        AwakenedFearCapability.setScaredCooldown(living, 0);
+                        AwakenedFearCapability.setFearType(living, FearTypes.getRandom());
+                        if (entity instanceof Player player) {
+                            player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(living).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
                         }
                     } else {
                         if (entity instanceof Player player) {

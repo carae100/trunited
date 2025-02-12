@@ -77,6 +77,10 @@ public class AwakenedFearCapability implements IFearCapability{
         this.isAlternate = tag.getBoolean("is_alternate");
     }
 
+    public static CompoundTag toNBT(LivingEntity entity) {
+        return getFearType(entity).ToNBT();
+    }
+
     public static void setFearType(LivingEntity entity, FearTypes fear) {
         IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
         if (capability == null) return;
