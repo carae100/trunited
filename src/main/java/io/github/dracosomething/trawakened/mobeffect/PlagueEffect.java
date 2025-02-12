@@ -6,6 +6,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
 import com.github.manasmods.tensura.capability.ep.ITensuraEPCapability;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.DamageAction;
 import com.github.manasmods.tensura.effect.template.SkillMobEffect;
@@ -109,18 +110,24 @@ public class PlagueEffect extends SkillMobEffect implements DamageAction {
             if(herrscherofplague.active) {
                 Player source = getOwner(entity);
                 if (source != null) {
-                    double OwnerEP = TensuraEPCapability.getEP(source);
-                    double TargetEP = TensuraEPCapability.getEP(entity);
-                    double EPgain = entity.getLevel().getGameRules().getInt(TensuraGameRules.EP_GAIN);
-                    TensuraEPCapability.setLivingEP(source, OwnerEP + (TargetEP * (EPgain / 100)));
-                    double newstats = (TargetEP * (EPgain / 100))/2;
-                    AttributeInstance magicule = source.getAttribute(TensuraAttributeRegistry.MAX_MAGICULE.get());
-                    assert magicule != null;
-                    magicule.addPermanentModifier(new AttributeModifier("", newstats, AttributeModifier.Operation.ADDITION));
-                    AttributeInstance aura = source.getAttribute(TensuraAttributeRegistry.MAX_AURA.get());
-                    assert aura != null;
-                    aura.addPermanentModifier(new AttributeModifier("", newstats, AttributeModifier.Operation.ADDITION));
-                    TensuraEPCapability.sync(source);
+
+                    TensuraEPCapability.getFrom(source).ifPresent((cap) -> {
+                        double OwnerEP = TensuraEPCapability.getEP(source);
+                        double TargetEP = TensuraEPCapability.getEP(entity);
+                        double EPgain = entity.getLevel().getGameRules().getInt(TensuraGameRules.EP_GAIN);
+                        double newstats = (TargetEP * (EPgain / 100))/2;
+                        cap.setEP(source, OwnerEP + (TargetEP * (EPgain / 100)), true);
+                        cap.setCurrentEP(source, OwnerEP + (TargetEP * (EPgain / 100)));
+                        TensuraPlayerCapability.getFrom(source).ifPresent((capability) -> {
+                            capability.setBaseMagicule(capability.getBaseMagicule() + newstats, source);
+                            capability.setMagicule(capability.getBaseMagicule());
+                            capability.setBaseAura(capability.getBaseAura() + newstats, source);
+                            capability.setAura(capability.getBaseAura());
+                        });
+                        TensuraPlayerCapability.sync(source);
+
+                    });
+                    TensuraEPCapability.updateEP(source, true);
                 }
             }
         }
