@@ -192,54 +192,56 @@ public class azazel extends Skill {
                     switch (infect_mode) {
                         case 1: {
                             for (Entity entity2 : entityList) {
-                                Level level = entity.getLevel();
-                                double var10000;
-                                if (entity instanceof Player) {
-                                    Player player = (Player) entity;
-                                    var10000 = TensuraPlayerCapability.getBaseMagicule(player);
-                                } else {
-                                    var10000 = TensuraEPCapability.getEP(entity);
-                                }
-
-                                double MP = var10000;
-                                double EP = MP * 0.1;
-                                if (!SkillHelper.outOfMagicule(entity, EP)) {
-                                    if (entity2 instanceof Player player && player != entity) {
-                                        BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.NONE, 0.0);
-                                        CloneEntity clone = this.summonClone(player, entity, level, EP, result.getLocation());
-                                        CloneEntity.copyEffects(player, clone);
-                                        EquipmentSlot[] var10 = EquipmentSlot.values();
-                                        int var11 = var10.length;
-
-                                        for (int var12 = 0; var12 < var11; ++var12) {
-                                            EquipmentSlot slot = var10[var12];
-                                            clone.setItemSlot(slot, player.getItemBySlot(slot).copy());
-                                        }
-                                        double damage = player.getHealth() - (player.getMaxHealth()*0.75);
-                                        if (damage <= player.getHealth()){
-                                            player.kill();
-                                        } else {
-                                            player.setHealth((float) damage);
-                                        }
-                                        this.addMasteryPoint(instance, entity);
+                                if (entity2 != entity) {
+                                    Level level = entity.getLevel();
+                                    double var10000;
+                                    if (entity instanceof Player) {
+                                        Player player = (Player) entity;
+                                        var10000 = TensuraPlayerCapability.getBaseMagicule(player);
                                     } else {
-                                        if (entity2 instanceof TamableAnimal animal) {
-                                            if (entity instanceof Player player) {
-                                                animal.tame(player);
-                                                this.addMasteryPoint(instance, entity);
-                                            }
-                                        } else {
-                                            assert entity2 instanceof LivingEntity;
-                                            double ep = TensuraEPCapability.getEP((LivingEntity) entity2);
-                                            TensuraEPCapability.setLivingEP((LivingEntity) entity2, 100);
-                                            assert entity instanceof ServerPlayer;
-                                            name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
-                                            entity2.setCustomName(Component.empty());
-                                            entity2.setCustomNameVisible(true);
-                                            TensuraEPCapability.setLivingEP((LivingEntity) entity2, ep);
-                                        }
+                                        var10000 = TensuraEPCapability.getEP(entity);
                                     }
-                                    instance.setCoolDown(35);
+
+                                    double MP = var10000;
+                                    double EP = MP * 0.1;
+                                    if (!SkillHelper.outOfMagicule(entity, EP)) {
+                                        if (entity2 instanceof Player player && player != entity) {
+                                            BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.NONE, 0.0);
+                                            CloneEntity clone = this.summonClone(player, entity, level, EP, result.getLocation());
+                                            CloneEntity.copyEffects(player, clone);
+                                            EquipmentSlot[] var10 = EquipmentSlot.values();
+                                            int var11 = var10.length;
+
+                                            for (int var12 = 0; var12 < var11; ++var12) {
+                                                EquipmentSlot slot = var10[var12];
+                                                clone.setItemSlot(slot, player.getItemBySlot(slot).copy());
+                                            }
+                                            double damage = player.getHealth() - (player.getMaxHealth() * 0.75);
+                                            if (damage <= player.getHealth()) {
+                                                player.kill();
+                                            } else {
+                                                player.setHealth((float) damage);
+                                            }
+                                            this.addMasteryPoint(instance, entity);
+                                        } else {
+                                            if (entity2 instanceof TamableAnimal animal) {
+                                                if (entity instanceof Player player) {
+                                                    animal.tame(player);
+                                                    this.addMasteryPoint(instance, entity);
+                                                }
+                                            } else {
+                                                assert entity2 instanceof LivingEntity;
+                                                double ep = TensuraEPCapability.getEP((LivingEntity) entity2);
+                                                TensuraEPCapability.setLivingEP((LivingEntity) entity2, 100);
+                                                assert entity instanceof ServerPlayer;
+                                                name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
+                                                entity2.setCustomName(Component.empty());
+                                                entity2.setCustomNameVisible(true);
+                                                TensuraEPCapability.setLivingEP((LivingEntity) entity2, ep);
+                                            }
+                                        }
+                                        instance.setCoolDown(35);
+                                    }
                                 }
                             }
                         }

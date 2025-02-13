@@ -325,13 +325,15 @@ public class Alternate extends Skill {
 
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
-        if (living instanceof Player player) {
-            if (!player.isCreative()) {
-                player.getAbilities().mayfly = true;
-                player.getAbilities().invulnerable = true;
-                player.getAbilities().mayBuild = false;
-                player.onUpdateAbilities();
+        if (!AwakenedFearCapability.GetIsAlternate(living)) {
+            living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
+            if (living instanceof Player player) {
+                if (!player.isCreative()) {
+                    player.getAbilities().mayfly = true;
+                    player.getAbilities().invulnerable = true;
+                    player.getAbilities().mayBuild = false;
+                    player.onUpdateAbilities();
+                }
             }
         }
     }

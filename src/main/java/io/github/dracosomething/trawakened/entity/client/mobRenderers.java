@@ -1,7 +1,6 @@
-package io.github.dracosomething.trawakened.client;
+package io.github.dracosomething.trawakened.entity.client;
 
 import com.github.manasmods.tensura.entity.client.player.OtherworlderRenderer;
-import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.NoopRenderer;
