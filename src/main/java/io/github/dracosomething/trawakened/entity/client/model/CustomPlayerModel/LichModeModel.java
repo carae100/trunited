@@ -2,11 +2,15 @@ package io.github.dracosomething.trawakened.entity.client.model.CustomPlayerMode
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.AnimationUtils;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 
 public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
@@ -17,17 +21,21 @@ public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
     private final ModelPart rightWingTip;
     private final ModelPart tailBase;
     private final ModelPart tailTip;
+    private final ModelPart head;
+    private final ModelPart body;
 
     public LichModeModel(ModelPart p_170821_) {
         super(p_170821_, false);
         this.root = p_170821_;
         ModelPart main = p_170821_.getChild("body");
+        this.body = p_170821_.getChild("body");
         this.tailBase = main.getChild("tail_base");
         this.tailTip = this.tailBase.getChild("tail_tip");
         this.leftWingBase = main.getChild("left_wing_base");
         this.leftWingTip = this.leftWingBase.getChild("left_wing_tip");
         this.rightWingBase = main.getChild("right_wing_base");
         this.rightWingTip = this.rightWingBase.getChild("right_wing_tip");
+        this.head = main.getChild("body");
     }
 
     public static MeshDefinition createMesh(CubeDeformation p_170812_) {
@@ -64,8 +72,8 @@ public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
         return LayerDefinition.create(definition, 64, 64);
     }
 
-    public void setupAnim(T p_170791_, float p_170792_, float p_170793_, float p_170794_, float p_170795_, float p_170796_) {
-        float $$6 = ((float)3 + p_170794_) * 7.448451F * 0.017453292F;
+    public void setupAnim(T p_102866_, float p_102867_, float p_102868_, float p_102869_, float p_102870_, float p_102871_) {
+        float $$6 = ((float)3 + p_102869_) * 7.448451F * 0.017453292F;
         float $$7 = 16.0F;
         this.leftWingBase.zRot = Mth.cos($$6) * 16.0F * 0.017453292F;
         this.leftWingTip.zRot = Mth.cos($$6) * 16.0F * 0.017453292F;
@@ -73,6 +81,36 @@ public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
         this.rightWingTip.zRot = -this.leftWingTip.zRot;
         this.tailBase.xRot = -(5.0F + Mth.cos($$6 * 2.0F) * 5.0F) * 0.017453292F;
         this.tailTip.xRot = -(5.0F + Mth.cos($$6 * 2.0F) * 5.0F) * 0.017453292F;
+        boolean flag = p_102866_.getFallFlyingTicks() > 4;
+        boolean flag1 = p_102866_.isVisuallySwimming();
+        this.head.yRot = p_102870_ * 0.017453292F;
+        if (flag) {
+            this.head.xRot = -0.7853982F;
+        } else if (this.swimAmount > 0.0F) {
+            if (flag1) {
+                this.head.xRot = this.rotlerpRad(this.swimAmount, this.head.xRot, -0.7853982F);
+            } else {
+                this.head.xRot = this.rotlerpRad(this.swimAmount, this.head.xRot, p_102871_ * 0.017453292F);
+            }
+        } else {
+            this.head.xRot = p_102871_ * 0.017453292F;
+        }
+
+        this.body.yRot = 0.0F;
+        this.rightArm.z = 0.0F;
+        this.rightArm.x = -5.0F;
+        this.leftArm.z = 0.0F;
+        this.leftArm.x = 5.0F;
+        float f = 1.0F;
+        if (flag) {
+            f = (float)p_102866_.getDeltaMovement().lengthSqr();
+            f /= 0.2F;
+            f *= f * f;
+        }
+
+        if (f < 1.0F) {
+            f = 1.0F;
+        }
     }
 
     public Iterable<ModelPart> modifiedBodyParts() {
