@@ -35,7 +35,7 @@ public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
         this.leftWingTip = this.leftWingBase.getChild("left_wing_tip");
         this.rightWingBase = main.getChild("right_wing_base");
         this.rightWingTip = this.rightWingBase.getChild("right_wing_tip");
-        this.head = main.getChild("body");
+        this.head = main.getChild("head");
     }
 
     public static MeshDefinition createMesh(CubeDeformation p_170812_) {
