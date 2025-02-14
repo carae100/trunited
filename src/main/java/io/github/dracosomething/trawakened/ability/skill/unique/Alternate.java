@@ -326,7 +326,7 @@ public class Alternate extends Skill {
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (!AwakenedFearCapability.GetIsAlternate(living)) {
-            living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
+//            living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
             if (living instanceof Player player) {
                 if (!player.isCreative()) {
                     player.getAbilities().mayfly = true;
@@ -377,6 +377,16 @@ public class Alternate extends Skill {
             this.name = name;
         }
 
+        private static final Map<String, AlternateType> ALTERNATETYPES_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((type) -> {
+            return cleanName(type.name);
+        }, (type) -> {
+            return type;
+        }));
+
+        private static String cleanName(String p_126663_) {
+            return p_126663_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
+        }
+
         public String getName() {
             return name;
         }
@@ -396,6 +406,15 @@ public class Alternate extends Skill {
             CompoundTag tag = new CompoundTag();
             tag.putString("name", name);
             return tag;
+        }
+
+        @Nullable
+        private static AlternateType getByName(@Nullable String p_126658_) {
+            return p_126658_ == null ? null : (AlternateType) ALTERNATETYPES_BY_NAME.get(cleanName(p_126658_));
+        }
+
+        public static AlternateType fromNBT(CompoundTag tag) {
+            return getByName(tag.getString("name"));
         }
     }
 

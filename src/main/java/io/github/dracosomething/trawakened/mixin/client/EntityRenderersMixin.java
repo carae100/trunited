@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.mixin.client;
 
 import com.google.common.collect.ImmutableMap;
+import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.IntruderRenderer;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.OverdrivenRenderer;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -22,7 +23,8 @@ public class EntityRenderersMixin {
     @Inject(method = "createPlayerRenderers(Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/ImmutableMap$Builder;build()Lcom/google/common/collect/ImmutableMap;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void createLichRenderer(EntityRendererProvider.Context context, CallbackInfoReturnable<Map<String, EntityRenderer<? extends Player>>> cir, ImmutableMap.Builder<String, EntityRenderer<? extends Player>> builder) {
         if (noLoadingExceptions()) {
-            builder.put(trawakened.MODID + ":lich", new OverdrivenRenderer(context));
+            builder.put(trawakened.MODID + ":overdriven", new OverdrivenRenderer(context));
+            builder.put(trawakened.MODID + ":intruder", new IntruderRenderer(context));
         }
     }
 

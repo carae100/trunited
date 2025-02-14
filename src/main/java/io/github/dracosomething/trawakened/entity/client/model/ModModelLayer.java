@@ -5,7 +5,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 
 public class ModModelLayer {
-    public static final ModelLayerLocation LICH = register("lich");
+    public static final ModelLayerLocation OVERDRIVEN = register("overdriven");
+    public static final ModelLayerLocation INTRUDER = register("intruder");
 
     private static ModelLayerLocation register(String p_171294_) {
         return register(p_171294_, "main");

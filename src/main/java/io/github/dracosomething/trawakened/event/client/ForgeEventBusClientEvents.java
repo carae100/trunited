@@ -1,9 +1,10 @@
-package io.github.dracosomething.trawakened.client.events;
+package io.github.dracosomething.trawakened.event.client;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.IntruderModel;
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.OverdrivenRenderer;
 import io.github.dracosomething.trawakened.registry.skillregistry;
@@ -33,13 +34,27 @@ public class ForgeEventBusClientEvents {
             if (assimilation == Alternate.Assimilation.OVERDRIVEN) {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, OverdrivenRenderer.TEXTURE);
-                getModel(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+                getModelOverdriven(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+            }
+            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == Alternate.AlternateType.INTRUDER) {
+                getModelIntruder(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
             }
         }
     }
 
-    public static Optional<PlayerModel<AbstractClientPlayer>> getModel(final PlayerRenderer renderer) {
+    public static Optional<PlayerModel<AbstractClientPlayer>> getModelOverdriven(final PlayerRenderer renderer) {
         final OverdrivenModel<AbstractClientPlayer> model = new OverdrivenModel<>(OverdrivenModel.createMesh(new CubeDeformation(1, 1, 1)).getRoot().bake(64, 64));
+        //Remove Player Model Layers
+        renderer.layers.clear();
+        //Add Armor Layer
+//        renderer.addLayer(new SmallSlimeArmorLayer<>(renderer));
+
+        return Optional.of(model);
+    }
+
+    public static Optional<PlayerModel<AbstractClientPlayer>> getModelIntruder(final PlayerRenderer renderer) {
+        final OverdrivenModel<AbstractClientPlayer> model = new OverdrivenModel<>(IntruderModel.createMesh(new CubeDeformation(1, 1, 1)).getRoot().bake(64, 64));
         //Remove Player Model Layers
         renderer.layers.clear();
         //Add Armor Layer

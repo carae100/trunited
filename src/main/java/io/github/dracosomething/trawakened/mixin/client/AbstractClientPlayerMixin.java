@@ -20,6 +20,6 @@ public abstract class AbstractClientPlayerMixin extends Player {
 
 //    @Inject(method = "getModelName", at = @At("HEAD"), cancellable = true)
 //    private void getLichModelName(CallbackInfoReturnable<String> cir) {
-//        LichPlayerRenderer.getLichRenderer(((AbstractClientPlayer)(Object) this)).ifPresent(cir::setReturnValue);
+//        LichPlayerRenderer.getOverdrivenRenderer(((AbstractClientPlayer)(Object) this)).ifPresent(cir::setReturnValue);
 //    }
 }
