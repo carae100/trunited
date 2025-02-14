@@ -54,7 +54,7 @@ public class ForgeEventBusClientEvents {
     }
 
     public static Optional<PlayerModel<AbstractClientPlayer>> getModelIntruder(final PlayerRenderer renderer) {
-        final OverdrivenModel<AbstractClientPlayer> model = new OverdrivenModel<>(IntruderModel.createMesh(new CubeDeformation(1, 1, 1)).getRoot().bake(64, 64));
+        final IntruderModel<AbstractClientPlayer> model = new IntruderModel<>(IntruderModel.createMesh(new CubeDeformation(1, 1, 1)).getRoot().bake(64, 64));
         //Remove Player Model Layers
         renderer.layers.clear();
         //Add Armor Layer
