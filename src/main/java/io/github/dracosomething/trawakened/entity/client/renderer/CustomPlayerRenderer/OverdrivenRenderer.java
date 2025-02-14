@@ -1,7 +1,7 @@
 package io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.LichModeModel;
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
 import io.github.dracosomething.trawakened.entity.client.model.ModModelLayer;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Based and modified from @TeamLapen's Werewolf Rendering codes: <a href="https://github.com/TeamLapen/Werewolves/blob/1.20/src/main/java/de/teamlapen/werewolves/client/render/player/WerewolfPlayerBeastRenderer.java">...</a>
  */
-public class LichModeRenderer extends LichPlayerRenderer<AbstractClientPlayer, LichModeModel<AbstractClientPlayer>> {
+public class OverdrivenRenderer extends OverdrivenPlayerRenderer<AbstractClientPlayer, OverdrivenModel<AbstractClientPlayer>> {
     public static ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/entity/phantom.png");
 
-    public LichModeRenderer(EntityRendererProvider.Context context) {
-        super(context, new LichModeModel<>(context.bakeLayer(ModModelLayer.LICH)));
+    public OverdrivenRenderer(EntityRendererProvider.Context context) {
+        super(context, new OverdrivenModel<>(context.bakeLayer(ModModelLayer.LICH)));
 //        this.addLayer(new LichCuriosLayer<>(this));
     }
 

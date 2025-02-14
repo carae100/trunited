@@ -265,7 +265,7 @@ public class Alternate extends Skill {
             case 6:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
-                        living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
+                        living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
                         if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                             Iterator var9 = living.level.players().iterator();
 
@@ -320,7 +320,7 @@ public class Alternate extends Skill {
 
     @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
-        return !AwakenedFearCapability.GetIsAlternate(entity);
+        return true;
     }
 
     @Override
@@ -334,6 +334,12 @@ public class Alternate extends Skill {
                     player.getAbilities().mayBuild = false;
                     player.onUpdateAbilities();
                 }
+            }
+        } else {
+            switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                case FLAWED -> Assimilation.flawedBuff(living);
+                case OVERDRIVEN -> Assimilation.overdrivenBuff(living);
+                case COMPLETE -> Assimilation.completeBuff(living);
             }
         }
     }
@@ -451,6 +457,26 @@ public class Alternate extends Skill {
 
         public static Assimilation fromNBT(CompoundTag tag) {
             return getByName(tag.getString("name"));
+        }
+
+        public static void overdrivenBuff(LivingEntity entity) {
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 2, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 3, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 5, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false, false));
+        }
+
+        public static void completeBuff(LivingEntity entity) {
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 3, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 3, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false, false));
+        }
+
+        public static void flawedBuff(LivingEntity entity) {
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 1, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 1, false, false, false));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 1, false, false, false));
         }
     }
 }

@@ -2,18 +2,15 @@ package io.github.dracosomething.trawakened.entity.client.model.CustomPlayerMode
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import software.bernie.geckolib3.geo.render.built.GeoModel;
 
-public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
+public class OverdrivenModel<T extends LivingEntity> extends PlayerModel<T> {
     private final ModelPart root;
     private final ModelPart leftWingBase;
     private final ModelPart leftWingTip;
@@ -24,7 +21,7 @@ public class LichModeModel<T extends LivingEntity> extends PlayerModel<T> {
     private final ModelPart head;
     private final ModelPart body;
 
-    public LichModeModel(ModelPart p_170821_) {
+    public OverdrivenModel(ModelPart p_170821_) {
         super(p_170821_, false);
         this.root = p_170821_;
         ModelPart main = p_170821_.getChild("body");

@@ -11,13 +11,13 @@ import java.util.Optional;
 /**
  * Based on @TeamLapen's Werewolf Rendering codes: <a href="https://github.com/TeamLapen/Werewolves/blob/1.20/src/main/java/de/teamlapen/werewolves/client/render/WerewolfPlayerRenderer.java">...</a>
  */
-public abstract class LichPlayerRenderer <T extends AbstractClientPlayer, E extends PlayerModel<T>> extends PlayerRenderer {
+public abstract class OverdrivenPlayerRenderer<T extends AbstractClientPlayer, E extends PlayerModel<T>> extends PlayerRenderer {
 
     public static Optional<String> getLichRenderer(AbstractClientPlayer player) {
         return Optional.of(trawakened.MODID +":lich");
     }
 
-    public LichPlayerRenderer(EntityRendererProvider.Context context, PlayerModel<AbstractClientPlayer> model) {
+    public OverdrivenPlayerRenderer(EntityRendererProvider.Context context, PlayerModel<AbstractClientPlayer> model) {
         super(context, true);
         this.model = model;
     }
