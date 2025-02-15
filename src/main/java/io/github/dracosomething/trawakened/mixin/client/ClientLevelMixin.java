@@ -38,8 +38,8 @@ public abstract class ClientLevelMixin {
     }
 
     /**
-     * @author
-     * @reason
+     * @author Draco_01
+     * @reason needed to stop time
      */
     @Overwrite
     public void tickEntities() {

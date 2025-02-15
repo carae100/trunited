@@ -93,6 +93,5 @@ public class HerrscherRace extends Race {
         private final Pair<Double, Double> mp;
         private final MobEffect effect;
         private final int amplifier;
-        }
-
+    }
 }
