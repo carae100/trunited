@@ -1,24 +1,19 @@
 package io.github.dracosomething.trawakened.race.herrscher;
 
-import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.api.race.HerrscherRace;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HerrscherOfTheWorld extends HerrscherRace {
     public HerrscherOfTheWorld() {

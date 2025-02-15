@@ -29,12 +29,6 @@ public class trawakenedPlayerCapability {
         return capability == null ? false : capability.isHeroEgg();
     }
 
-    public static int getSoulPoints(Player player) {
-        ITensuraPlayerCapability capability = (ITensuraPlayerCapability) CapabilityHandler.getCapability(player, CAPABILITY);
-        return capability == null ? 0 : capability.getSoulPoints();
-    }
-
-
     public static float getMaxSpiritualHealth(LivingEntity entity) {
         return (float) entity.getAttributeValue((Attribute) TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get());
     }

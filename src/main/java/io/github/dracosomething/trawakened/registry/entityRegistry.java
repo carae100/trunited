@@ -1,16 +1,10 @@
 package io.github.dracosomething.trawakened.registry;
 
-import com.github.manasmods.tensura.enchantment.EngravingEnchantment;
-import com.github.manasmods.tensura.entity.human.ShogoTaguchiEntity;
-import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
-import io.github.dracosomething.trawakened.enchantment.*;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
 import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

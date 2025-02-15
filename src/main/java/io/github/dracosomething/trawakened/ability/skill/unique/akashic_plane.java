@@ -1,68 +1,39 @@
 package io.github.dracosomething.trawakened.ability.skill.unique;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
-import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.config.TensuraConfig;
-import com.github.manasmods.tensura.entity.human.CloneEntity;
-import com.github.manasmods.tensura.event.NamingEvent;
-import com.github.manasmods.tensura.network.play2server.RequestNamingGUIPacket;
-import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
-import com.github.manasmods.tensura.util.TensuraAdvancementsHelper;
-import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
-import io.github.dracosomething.trawakened.capability.skillCapability;
-import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
-import static com.lowdragmc.lowdraglib.LDLib.random;
 
 public class akashic_plane extends Skill {
     public ResourceLocation getSkillIcon() {

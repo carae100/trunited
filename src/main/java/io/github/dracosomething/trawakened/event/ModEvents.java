@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.event;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
@@ -11,14 +12,17 @@ import com.github.manasmods.tensura.registry.items.TensuraArmorItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
+import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
+import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,6 +36,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -188,6 +193,18 @@ public class ModEvents {
                 event.setCanceled(true);
             } else {
                 event.setCanceled(false);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void cantBreak(BlockEvent.BreakEvent event) {
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillregistry.ALTERNATE.get());
+        if (instance != null) {
+            CompoundTag tag = instance.getOrCreateTag();
+            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == Alternate.AlternateType.INTRUDER) {
+                event.setCanceled(true);
             }
         }
     }

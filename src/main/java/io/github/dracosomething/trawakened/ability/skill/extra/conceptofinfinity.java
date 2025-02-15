@@ -1,7 +1,6 @@
 package io.github.dracosomething.trawakened.ability.skill.extra;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
-import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
@@ -11,7 +10,6 @@ import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
-import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
@@ -30,12 +28,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
 

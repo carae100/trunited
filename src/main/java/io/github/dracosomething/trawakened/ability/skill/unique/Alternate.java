@@ -5,10 +5,7 @@ import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
-import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
-import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
@@ -17,7 +14,6 @@ import io.github.dracosomething.trawakened.helper.FearHelper;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,16 +21,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import org.checkerframework.checker.units.qual.C;
-import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -135,7 +128,7 @@ public class Alternate extends Skill {
         if (!AwakenedFearCapability.GetIsAlternate(entity)) {
             return List.of(MobEffects.GLOWING);
         } else {
-            return null;
+            return List.of();
         }
     }
 
@@ -250,36 +243,55 @@ public class Alternate extends Skill {
                 }
                 break;
             case 5:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    skillHelper.DrawCircle(entity, 25, false).forEach((Entity) -> {
-                        if (Entity instanceof LivingEntity livingEntity) {
-                            if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
-                                AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
-                            } else {
-                                FearHelper.fearPenalty(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                List<Entity> entities = skillHelper.DrawCircle(entity, 25, false);
+                if (!entities.isEmpty()) {
+                    if (!SkillHelper.outOfMagicule(entity, instance)) {
+                        entities.forEach((Entity) -> {
+                            if (Entity instanceof LivingEntity livingEntity) {
+                                if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+                                    AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                                } else {
+                                    FearHelper.fearPenalty(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 10);
+                                }
                             }
+                        });
+                        if (entity instanceof Player) {
+                            Player player = (Player) entity;
+                            player.displayClientMessage(Component.translatable("trawakened.fear.inspire_fear", new Object[]{entities.size()}).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                         }
-                    });
+                    }
+                } else {
+                    if (entity instanceof Player) {
+                        Player player = (Player) entity;
+                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    }
                 }
                 break;
             case 6:
-                if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
-                        living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
-                        if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
-                            Iterator var9 = living.level.players().iterator();
+                if (living != null) {
+                    if (!SkillHelper.outOfMagicule(entity, instance)) {
+                        if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
+                            living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
+                            if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
+                                Iterator var9 = living.level.players().iterator();
 
-                            while (var9.hasNext()) {
-                                Player everyone = (Player) var9.next();
-                                if (everyone != entity) {
-                                    everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
+                                while (var9.hasNext()) {
+                                    Player everyone = (Player) var9.next();
+                                    if (everyone != entity) {
+                                        everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
+                                    }
                                 }
                             }
+                        } else {
+                            if (entity instanceof Player player) {
+                                player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                            }
                         }
-                    } else {
-                        if (entity instanceof Player player) {
-                            player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                        }
+                    }
+                } else {
+                    if (entity instanceof Player) {
+                        Player player = (Player) entity;
+                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                     }
                 }
                 break;
@@ -326,7 +338,7 @@ public class Alternate extends Skill {
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         if (!AwakenedFearCapability.GetIsAlternate(living)) {
-//            living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
+            living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
             if (living instanceof Player player) {
                 if (!player.isCreative()) {
                     player.getAbilities().mayfly = true;

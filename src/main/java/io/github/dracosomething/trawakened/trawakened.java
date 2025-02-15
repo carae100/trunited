@@ -22,7 +22,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-// The value here should match an entry in the META-IN F/mods.toml file
 @Mod(trawakened.MODID)
 public class trawakened {
     public static final String MODID = "trawakened";

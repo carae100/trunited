@@ -1,15 +1,12 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
-import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.particleRegistry;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;

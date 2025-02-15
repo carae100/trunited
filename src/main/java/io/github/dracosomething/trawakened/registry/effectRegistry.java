@@ -1,15 +1,10 @@
  package io.github.dracosomething.trawakened.registry;
 
-import com.github.manasmods.tensura.effect.BurdenEffect;
 import io.github.dracosomething.trawakened.mobeffect.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.*;
-
-import java.awt.*;
 
 public class effectRegistry {
     private static final DeferredRegister<MobEffect> registry;

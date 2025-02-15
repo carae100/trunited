@@ -6,16 +6,12 @@ import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
-import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.ability.skill.common.ThoughtCommunicationSkill;
-import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -29,11 +25,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
-import java.util.Objects;
 
 public class voiceofhonkai extends Skill {
 

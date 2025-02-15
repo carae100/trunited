@@ -7,7 +7,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
-import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

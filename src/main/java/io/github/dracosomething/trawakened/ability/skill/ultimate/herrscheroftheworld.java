@@ -6,7 +6,6 @@ import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
@@ -38,7 +37,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import static com.github.manasmods.tensura.util.damage.TensuraDamageSources.SPACE_ATTACK;
 

@@ -1,63 +1,20 @@
 package io.github.dracosomething.trawakened.handler;
 
-import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
-import com.github.manasmods.tensura.ability.SkillHelper;
-import com.github.manasmods.tensura.ability.SkillUtils;
-import com.github.manasmods.tensura.capability.effects.ITensuraEffectsCapability;
-import com.github.manasmods.tensura.capability.effects.TensuraEffectsCapability;
-import com.github.manasmods.tensura.capability.ep.ITensuraEPCapability;
-import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
-import com.github.manasmods.tensura.capability.magicule.MagiculeChunkCapability;
-import com.github.manasmods.tensura.capability.magicule.MagiculeChunkCapabilityImpl;
-import com.github.manasmods.tensura.capability.race.ITensuraPlayerCapability;
-import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
-import com.github.manasmods.tensura.capability.skill.ITensuraSkillCapability;
-import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
-import com.github.manasmods.tensura.capability.smithing.ISmithingCapability;
-import com.github.manasmods.tensura.capability.smithing.SmithingCapability;
-import com.github.manasmods.tensura.entity.human.CloneEntity;
-import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
-import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
-import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.IFearCapability;
 import io.github.dracosomething.trawakened.helper.FearHelper;
-import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
 import io.github.dracosomething.trawakened.trawakened;
 import io.github.dracosomething.trawakened.world.trawakenedGamerules;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class alternateFearHandler {

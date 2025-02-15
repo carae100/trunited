@@ -1,31 +1,23 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
-import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
-import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.DamageAction;
 import com.github.manasmods.tensura.effect.template.SkillMobEffect;
 import com.github.manasmods.tensura.effect.template.Transformation;
-import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 import java.util.UUID;
 

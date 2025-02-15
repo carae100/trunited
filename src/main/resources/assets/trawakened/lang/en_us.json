@@ -264,6 +264,7 @@
   "trawakened.fear.scared": "This creature has been scared %s times.",
   "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s.",
   "trawakened.fear.brave": "This creature has not been scared enough times.",
+  "trawakened.fear.inspire_fear": "You have inspired fear in %i entities.",
 
   "gamerule.fears": "Fear Penalty",
   "gamerule.fears.description": "Enables the fear penalties, enabling this game rule could lag out your game."

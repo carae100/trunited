@@ -10,13 +10,9 @@ import io.github.dracosomething.trawakened.ability.skill.unique.Starkill;
 import io.github.dracosomething.trawakened.ability.skill.unique.akashic_plane;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.trawakened;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)

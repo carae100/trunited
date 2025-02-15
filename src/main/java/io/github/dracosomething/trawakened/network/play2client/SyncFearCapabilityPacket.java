@@ -1,6 +1,5 @@
 package io.github.dracosomething.trawakened.network.play2client;
 
-import com.github.manasmods.tensura.capability.ep.ITensuraEPCapability;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.IFearCapability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

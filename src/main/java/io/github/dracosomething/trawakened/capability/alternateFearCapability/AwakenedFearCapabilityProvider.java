@@ -1,7 +1,5 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
-import com.github.manasmods.tensura.capability.race.ITensuraPlayerCapability;
-import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;

@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public class ModModelLayer {
     public static final ModelLayerLocation OVERDRIVEN = register("overdriven");
     public static final ModelLayerLocation INTRUDER = register("intruder");
+    public static final ModelLayerLocation FLAWED = register("flawed");
 
     private static ModelLayerLocation register(String p_171294_) {
         return register(p_171294_, "main");

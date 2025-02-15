@@ -1,18 +1,13 @@
 package io.github.dracosomething.trawakened.race;
 
-import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
-import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
-import com.github.manasmods.tensura.world.TensuraGameRules;
 import com.mojang.datafixers.util.Pair;
-import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
 

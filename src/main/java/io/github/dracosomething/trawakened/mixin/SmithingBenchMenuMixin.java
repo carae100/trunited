@@ -1,10 +1,8 @@
 package io.github.dracosomething.trawakened.mixin;
 
-import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.capability.smithing.SmithingCapability;
 import com.github.manasmods.tensura.data.recipe.SmithingBenchRecipe;
-import com.github.manasmods.tensura.menu.SmithingBenchMenu;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.Objects;
 
 @Mixin(value = SmithingBenchRecipe.class, priority = 1000000)
 public class SmithingBenchMenuMixin {

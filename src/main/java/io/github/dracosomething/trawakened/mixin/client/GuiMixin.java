@@ -5,7 +5,6 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.handler.client.HUDHandler;
 import com.github.manasmods.tensura.race.Race;
-import com.github.manasmods.tensura.race.human.HumanRace;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;

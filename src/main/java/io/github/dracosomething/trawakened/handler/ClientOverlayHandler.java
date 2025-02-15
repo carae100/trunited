@@ -1,13 +1,6 @@
 package io.github.dracosomething.trawakened.handler;
 
-import com.github.manasmods.tensura.ability.skill.extra.SpatialDominationSkill;
-import com.github.manasmods.tensura.ability.skill.unique.ReflectorSkill;
 import com.github.manasmods.tensura.client.TensuraGUIHelper;
-import com.github.manasmods.tensura.handler.client.ClientRaceHandler;
-import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
-
-import java.awt.Color;
-import javax.annotation.Nullable;
 
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
@@ -17,7 +10,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;

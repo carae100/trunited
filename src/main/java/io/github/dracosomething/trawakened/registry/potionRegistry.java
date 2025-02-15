@@ -1,6 +1,5 @@
 package io.github.dracosomething.trawakened.registry;
 
-import com.github.manasmods.manascore.api.skills.ManasSkill;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraftforge.eventbus.api.IEventBus;

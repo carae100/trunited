@@ -1,7 +1,6 @@
 package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.item.TensuraCreativeTab;
-import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;

@@ -13,7 +13,6 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.data.TensuraTags;
-import com.github.manasmods.tensura.entity.magic.breath.BreathEntity;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.skillregistry;
@@ -30,7 +29,6 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class skillCapability {
     public static void devourAllSkills(LivingEntity target, LivingEntity owner){

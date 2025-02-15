@@ -1,5 +1,7 @@
 package io.github.dracosomething.trawakened.event.client;
 
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.FlawedModel;
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.IntruderModel;
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
 import io.github.dracosomething.trawakened.entity.client.model.ModModelLayer;
 import io.github.dracosomething.trawakened.trawakened;
@@ -15,6 +17,7 @@ public class ModEventBusClientEvents {
     @SubscribeEvent
     public static void RegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayer.OVERDRIVEN, () -> LayerDefinition.create(OverdrivenModel.createMesh(CubeDeformation.NONE), 64, 64));
-        event.registerLayerDefinition(ModModelLayer.INTRUDER, () -> LayerDefinition.create(OverdrivenModel.createMesh(CubeDeformation.NONE), 64, 64));
+        event.registerLayerDefinition(ModModelLayer.INTRUDER, () -> LayerDefinition.create(IntruderModel.createMesh(CubeDeformation.NONE), 64, 64));
+        event.registerLayerDefinition(ModModelLayer.FLAWED, () -> LayerDefinition.create(FlawedModel.createMesh(CubeDeformation.NONE), 64, 64));
     }
 }

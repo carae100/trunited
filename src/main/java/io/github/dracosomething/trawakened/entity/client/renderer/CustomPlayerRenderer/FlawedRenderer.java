@@ -1,7 +1,8 @@
 package io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.FlawedModel;
+import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.IntruderModel;
 import io.github.dracosomething.trawakened.entity.client.model.ModModelLayer;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,11 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Based and modified from @TeamLapen's Werewolf Rendering codes: <a href="https://github.com/TeamLapen/Werewolves/blob/1.20/src/main/java/de/teamlapen/werewolves/client/render/player/WerewolfPlayerBeastRenderer.java">...</a>
  */
-public class OverdrivenRenderer extends OverdrivenPlayerRenderer<AbstractClientPlayer, OverdrivenModel<AbstractClientPlayer>> {
-    public static ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/entity/phantom.png");
+public class FlawedRenderer extends IntruderPlayerRenderer<AbstractClientPlayer, IntruderModel<AbstractClientPlayer>> {
+    public static ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/entity/enderman/enderman.png");
 
-    public OverdrivenRenderer(EntityRendererProvider.Context context) {
-        super(context, new OverdrivenModel<>(context.bakeLayer(ModModelLayer.OVERDRIVEN)));
+    public FlawedRenderer(EntityRendererProvider.Context context) {
+        super(context, new FlawedModel<>(context.bakeLayer(ModModelLayer.FLAWED)));
 //        this.addLayer(new LichCuriosLayer<>(this));
     }
 

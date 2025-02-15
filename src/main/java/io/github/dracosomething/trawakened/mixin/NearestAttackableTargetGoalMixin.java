@@ -2,7 +2,6 @@ package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import com.github.manasmods.tensura.ability.skill.Skill;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.nbt.CompoundTag;

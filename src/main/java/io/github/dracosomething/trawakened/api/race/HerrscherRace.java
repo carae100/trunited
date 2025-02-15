@@ -1,25 +1,15 @@
 package io.github.dracosomething.trawakened.api.race;
 
-import com.github.manasmods.manascore.api.skills.SkillAPI;
-import com.github.manasmods.tensura.ability.SkillUtils;
-import com.github.manasmods.tensura.ability.TensuraSkill;
-import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class HerrscherRace extends Race {
     private final Generation gen;

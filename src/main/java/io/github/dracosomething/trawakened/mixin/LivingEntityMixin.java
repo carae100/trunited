@@ -1,15 +1,11 @@
 package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
-import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscherofplague;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
-import io.github.dracosomething.trawakened.mobeffect.PlagueEffect;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,7 +27,6 @@ import java.util.Random;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-//    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
     @Shadow public abstract MobType getMobType();
 
     @Shadow
@@ -40,8 +35,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     public abstract boolean hasEffect(MobEffect p_21024_);
-
-//    @Shadow public float flyingSpeed;
 
     @Shadow
     public abstract void setYBodyRot(float p_21309_);

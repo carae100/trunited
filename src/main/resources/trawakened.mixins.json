@@ -22,7 +22,6 @@
     "UtilMixin"
   ],
   "client": [
-    "client.AbstractClientPlayerMixin",
     "client.ClientLevelMixin",
     "client.ClientModLoaderAccessor",
     "client.EntityRenderersMixin",

@@ -1,18 +1,14 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
 import com.github.manasmods.tensura.handler.CapabilityHandler;
-import com.github.manasmods.tensura.network.TensuraNetwork;
-import com.github.manasmods.tensura.network.play2client.SyncEPCapabilityPacket;
 import io.github.dracosomething.trawakened.api.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
 import io.github.dracosomething.trawakened.trawakened;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -21,8 +17,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
-
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(
         modid = trawakened.MODID,
