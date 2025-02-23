@@ -43,10 +43,10 @@
   "trawakened.skill.mode.herrscherofdestructionskill.destroychunk": "§5Destroy: Chunk",
   "trawakened.skill.mode.herrscherofdestructionskill.destroyarea": "§5Destroy: Area",
 
-  "trawakened.race.herrscher_of_pestilence": "§dHerrscher§8 of §0Pestilence",
+  "trawakened.race.herrscher_of_pestilence": "§dHerrscher§7 of §8Pestilence",
   "trawakened.race.herrscher_of_pestilence.notes": "§8Win any battle by §4infecting§8 your enemies. Become the §0plague§8 itself. You shall §4infect§8 the §2world§8 with this §4skill",
 
-  "trawakened.skill.herrscherofpestilenceskill": "§dHerrscher§8 of §0Pestilence",
+  "trawakened.skill.herrscherofpestilenceskill": "§dHerrscher§7 of §8pestilence",
   "trawakened.skill.herrscherofpestilenceskill.description": "§8Win any battle by §4infecting§8 your enemies. Become the §0plague§8 itself. You shall §4infect§8 the §2world§8 with this §4skill",
 
   "trawakened.skill.mode.herrscherofplagueskill.toggleplague": "§8Toggle§0 plague",
@@ -121,6 +121,8 @@
   "trawakened.skill.mode.alternate.kill": "Undesired Knowledge",
   "trawakened.skill.mode.alternate.new_fear": "Set Fear/Increase Scared",
   "trawakened.skill.mode.alternate.scare": "Scare",
+  "trawakened.skill.mode.alternate.hideous_laughter": "Hideous Laughter",
+  "trawakened.skill.mode.alternate.alternate_mode": "Alternate Mode",
 
   "trawakened.skill.primal_armor": "§3Primal Armor",
   "trawakened.skill.primal_armor.description": "§3Using the powerful new particle, the kojima particle, you are now able to empower your gear and release them in a powerful wave. However there seems to be something even more dangerous possible.",
@@ -131,7 +133,7 @@
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",
-  "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "§7Have §apoison§7 and §0blindness",
+  "trawakened.requirement.evolution.herrscher_of_pestilence.effect": "§7Have §apoison§7 and §8blindness",
   "trawakened.requirement.evolution.herrscher_of_time.item": "§6Craft at least 1 clock",
   "trawakened.requirement.evolution.herrscher_of_time.health": "§6  while being under half your max hp.",
   "trawakened.requirement.evolution.herrscher_of_the_world.effect": "§9Have the SHP poison effect while being under half your max shp.",
@@ -264,7 +266,7 @@
   "trawakened.fear.scared": "This creature has been scared %s times.",
   "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s.",
   "trawakened.fear.brave": "This creature has not been scared enough times.",
-  "trawakened.fear.inspire_fear": "You have inspired fear in %i entities.",
+  "trawakened.fear.inspire_fear": "You have inspired fear in %d entities.",
 
   "gamerule.fears": "Fear Penalty",
   "gamerule.fears.description": "Enables the fear penalties, enabling this game rule could lag out your game."

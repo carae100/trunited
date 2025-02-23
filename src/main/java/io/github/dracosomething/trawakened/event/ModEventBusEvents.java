@@ -20,9 +20,4 @@ public class ModEventBusEvents {
     {
         event.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
     }
-
-    @SubscribeEvent
-    public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(entityRegistry.DEFAULT_OTHER_WORLDER.get(), defaultOtherWolder.setAttributes());
-    }
 }

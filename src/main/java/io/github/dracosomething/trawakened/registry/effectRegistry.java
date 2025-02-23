@@ -21,6 +21,7 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> CREATIVE_MENU;
     public static final RegistryObject<MobEffect> SPIRITUAL_BLOCK;
     public static final RegistryObject<MobEffect> WHEAK;
+    public static final RegistryObject<MobEffect> ALTERNATE_MODE;
 
     public effectRegistry(){}
 
@@ -43,5 +44,6 @@ public class effectRegistry {
         CREATIVE_MENU = registry.register("extreme_weakening", () -> new emptyEffect(MobEffectCategory.NEUTRAL, 258276));
         SPIRITUAL_BLOCK = registry.register("spiritual_blocking", () -> new emptyEffect(MobEffectCategory.BENEFICIAL, 13407025));
         WHEAK = registry.register("creative_menu_effect", () -> new CreativeMenuEffect(MobEffectCategory.NEUTRAL, 14914605));
+        ALTERNATE_MODE = registry.register("alternate_mode", () -> new AlternateModeEffect(MobEffectCategory.BENEFICIAL, 0));
     }
 }
