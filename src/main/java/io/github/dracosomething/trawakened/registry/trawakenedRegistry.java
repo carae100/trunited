@@ -2,14 +2,14 @@ package io.github.dracosomething.trawakened.registry;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 
-public class trawakenedregistry {
-    public trawakenedregistry() {
+public class trawakenedRegistry {
+    public trawakenedRegistry() {
     }
 
     public static void register(IEventBus modEventBus) {
         effectRegistry.init(modEventBus);
         particleRegistry.init(modEventBus);
-        skillregistry.init(modEventBus);
+        skillRegistry.init(modEventBus);
         potionRegistry.init(modEventBus);
         enchantRegistry.init(modEventBus);
         entityRegistry.init(modEventBus);

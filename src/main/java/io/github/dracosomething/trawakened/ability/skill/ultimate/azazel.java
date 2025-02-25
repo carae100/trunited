@@ -24,7 +24,7 @@ import io.github.dracosomething.trawakened.capability.skillCapability;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.world.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
@@ -75,7 +75,7 @@ public class azazel extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return entity.getPersistentData().getInt("assimilation_kills") == 300 && SkillUtils.isSkillMastered(entity, skillregistry.STARKILL.get()) && (trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity));
+        return entity.getPersistentData().getInt("assimilation_kills") == 300 && SkillUtils.isSkillMastered(entity, skillRegistry.STARKILL.get()) && (trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity));
     }
 
     @Override
@@ -647,7 +647,7 @@ public class azazel extends Skill {
                         damageSource = trawakenedDamage.assimilation(owner);
                     }
                     if(entity != null){
-                        if(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get())){
+                        if(SkillUtils.hasSkill(entity, skillRegistry.AZAZEL.get())){
                             if(entity2.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(entity, Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), 75)){
                                 if (entity instanceof LivingEntity && entity2 instanceof LivingEntity) {
                                     owner = (LivingEntity)entity;
@@ -837,7 +837,7 @@ public class azazel extends Skill {
 
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
-        SkillAPI.getSkillsFrom(living).forgetSkill(skillregistry.STARKILL.get());
+        SkillAPI.getSkillsFrom(living).forgetSkill(skillRegistry.STARKILL.get());
         for(int z = 0; z < 1000; z++) {
             addLearnPoint(instance, living);
         }

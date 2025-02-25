@@ -18,8 +18,8 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -227,8 +227,8 @@ public class powerofhonkai extends Skill {
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai"))) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill"))) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))) ||
-                        !skill.equals(skillregistry.HERRSCHEROFTHEWORLD.get()) ||
-                        !skill.equals(skillregistry.HERRSCHEROFTIME.get());
+                        !skill.equals(skillRegistry.HERRSCHEROFTHEWORLD.get()) ||
+                        !skill.equals(skillRegistry.HERRSCHEROFTIME.get());
             }
         } else {
             return false;
@@ -335,9 +335,9 @@ public class powerofhonkai extends Skill {
         if (living instanceof Player) {
             Player player = (Player) living;
             if(!player.isCreative()) {
-                if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE)) &&
-                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_AWAKENED)) &&
-                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
+                if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.AWAKENED_APOSTLE)) &&
+                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_SEED_AWAKENED)) &&
+                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_DESTRUCTION))) {
                     SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
                 }

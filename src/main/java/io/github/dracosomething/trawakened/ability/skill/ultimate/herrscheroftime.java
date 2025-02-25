@@ -10,8 +10,8 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -387,8 +387,8 @@ public class herrscheroftime extends Skill {
                         .equals(
                                 TensuraPlayerCapability.getRace(player),
                                 (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-                                        .getValue(raceregistry.HERRSCHER_OF_TIME))) {
-                    SkillAPI.getSkillsFrom(player).forgetSkill(skillregistry.HERRSCHEROFTIME.get());
+                                        .getValue(raceRegistry.HERRSCHER_OF_TIME))) {
+                    SkillAPI.getSkillsFrom(player).forgetSkill(skillRegistry.HERRSCHEROFTIME.get());
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
                 }
             }

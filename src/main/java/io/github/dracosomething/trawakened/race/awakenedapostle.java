@@ -9,7 +9,7 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.registry.skill.ResistanceSkills;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
-import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -72,11 +72,11 @@ public class awakenedapostle extends honkaiapostle {
         return false;
     }
 
-    public Race getDefaultEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getDefaultEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.HERRSCHER_SEED_AWAKENED);}
 
-    public Race getAwakeningEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getAwakeningEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.HERRSCHER_SEED_AWAKENED);}
 
-    public Race getHarvestFestivalEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.HERRSCHER_SEED_AWAKENED);}
+    public Race getHarvestFestivalEvolution(Player player){return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.HERRSCHER_SEED_AWAKENED);}
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
@@ -87,13 +87,13 @@ public class awakenedapostle extends honkaiapostle {
 
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HERRSCHER_SEED_AWAKENED));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_SEED_AWAKENED));
         return list;
     }
 
     public List<Race> getPreviousEvolutions(Player player) {
         List<Race> list = new ArrayList();
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.HONKAI_APOSTLE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HONKAI_APOSTLE));
         return list;
     }
 

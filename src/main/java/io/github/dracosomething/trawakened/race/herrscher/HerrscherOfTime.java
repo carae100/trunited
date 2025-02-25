@@ -5,8 +5,8 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
-import io.github.dracosomething.trawakened.api.race.HerrscherRace;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.library.race.HerrscherRace;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class HerrscherOfTime extends HerrscherRace {
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-        list.add(skillregistry.HERRSCHEROFTIME.get());
+        list.add(skillRegistry.HERRSCHEROFTIME.get());
         return list;
     }
 

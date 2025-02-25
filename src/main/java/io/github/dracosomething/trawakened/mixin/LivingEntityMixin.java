@@ -5,7 +5,7 @@ import com.github.manasmods.tensura.ability.SkillUtils;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -134,7 +134,7 @@ public abstract class LivingEntityMixin extends Entity {
             cancellable = true
     )
     private void IsNotFriendly(CallbackInfoReturnable<MobType> cir) {
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(((LivingEntity) (Object) this), skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(((LivingEntity) (Object) this), skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));

@@ -1,22 +1,40 @@
-package io.github.dracosomething.trawakened.api.race;
+package io.github.dracosomething.trawakened.library.race;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HerrscherRace extends Race {
     private final Generation gen;
+    private final TensuraSkill intrinsicSkill;
 
-    public HerrscherRace(Generation gen) {
+    @Override
+    public List<TensuraSkill> getIntrinsicSkills(Player player) {
+        List<TensuraSkill> list = new ArrayList();
+        list.add((TensuraSkill) intrinsicSkill);
+        return list;
+    }
+
+    public HerrscherRace(Generation gen, TensuraSkill skill) {
         super(Difficulty.EXTREME);
         this.gen = gen;
+        this.intrinsicSkill = skill;
     }
 
     @Override

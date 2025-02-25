@@ -5,10 +5,10 @@ import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
-import io.github.dracosomething.trawakened.api.race.HerrscherRace;
+import io.github.dracosomething.trawakened.library.race.HerrscherRace;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
@@ -27,7 +27,7 @@ public class HerrscherOfTheWorld extends HerrscherRace {
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
         List<TensuraSkill> list = new ArrayList();
-        list.add(skillregistry.HERRSCHEROFTHEWORLD.get());
+        list.add(skillRegistry.HERRSCHEROFTHEWORLD.get());
         return list;
     }
 
@@ -36,7 +36,7 @@ public class HerrscherOfTheWorld extends HerrscherRace {
         int chance = 0;
         int chance1 = 0;
         int chance2 = 0;
-        if (SkillUtils.isSkillMastered(player, skillregistry.POWEROFHONKAI.get())) {
+        if (SkillUtils.isSkillMastered(player, skillRegistry.POWEROFHONKAI.get())) {
             chance += 25;
         }
         if (player.hasEffect(effectRegistry.SHPPOISON.get()) && TensuraEPCapability.getSpiritualHealth(player) <= trawakenedPlayerCapability.getMaxSpiritualHealth(player)/2) {

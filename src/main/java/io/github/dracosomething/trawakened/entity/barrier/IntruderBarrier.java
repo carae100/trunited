@@ -1,14 +1,9 @@
 package io.github.dracosomething.trawakened.entity.barrier;
 
-import com.github.manasmods.manascore.skill.SkillRegistry;
-import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import com.github.manasmods.tensura.entity.magic.barrier.BarrierEntity;
 import com.github.manasmods.tensura.entity.magic.barrier.HolyFieldEntity;
-import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
-import net.minecraft.world.damagesource.DamageSource;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +33,7 @@ public class IntruderBarrier extends HolyFieldEntity {
         if (entity == owner) {
             return true;
         } else {
-            return !SkillUtils.hasSkill(entity, skillregistry.ALTERNATE.get());
+            return !SkillUtils.hasSkill(entity, skillRegistry.ALTERNATE.get());
         }
     }
 

@@ -11,7 +11,7 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -300,7 +300,7 @@ public class herrscherofplague extends Skill {
             if(!player.isCreative()) {
                 if (!TensuraPlayerCapability.getRace(player)
                         .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-                                .getValue(raceregistry.HERRSCHER_OF_PLAGUE))) {
+                                .getValue(raceRegistry.HERRSCHER_OF_PLAGUE))) {
                     SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
                             .getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);

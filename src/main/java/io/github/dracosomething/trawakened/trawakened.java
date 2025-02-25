@@ -7,7 +7,7 @@ import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
-import io.github.dracosomething.trawakened.registry.trawakenedregistry;
+import io.github.dracosomething.trawakened.registry.trawakenedRegistry;
 import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Items;
@@ -34,7 +34,7 @@ public class trawakened {
         trawakenedGamerules.registryGameRules();
 
         MinecraftForge.EVENT_BUS.register(this);
-        trawakenedregistry.register(modEventBus);
+        trawakenedRegistry.register(modEventBus);
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::onClientSetup);
 

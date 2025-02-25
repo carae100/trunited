@@ -1,10 +1,9 @@
-package io.github.dracosomething.trawakened.api;
+package io.github.dracosomething.trawakened.library;
 
 import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.core.Registry;

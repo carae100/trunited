@@ -3,7 +3,7 @@ package io.github.dracosomething.trawakened.mixin;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -35,7 +35,7 @@ public class NearestAttackableTargetGoalMixin extends TargetGoal {
     )
     private void AlternateTarget(CallbackInfo ci) {
         LivingEntity alternate = ((NearestAttackableTargetGoal<?>)(Object)this).mob.level.getNearestPlayer(this.targetConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));

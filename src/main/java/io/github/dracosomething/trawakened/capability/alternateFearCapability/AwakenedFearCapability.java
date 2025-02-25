@@ -1,7 +1,7 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
 import com.github.manasmods.tensura.handler.CapabilityHandler;
-import io.github.dracosomething.trawakened.api.FearTypes;
+import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
 import io.github.dracosomething.trawakened.trawakened;

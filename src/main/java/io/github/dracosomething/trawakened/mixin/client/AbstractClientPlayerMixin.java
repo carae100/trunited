@@ -3,12 +3,10 @@ package io.github.dracosomething.trawakened.mixin.client;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.*;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +40,7 @@ public class AbstractClientPlayerMixin extends Player {
     @Inject(method = "getModelName", at = @At("HEAD"), cancellable = true)
     private void getNewModelNames(CallbackInfoReturnable<String> cir) {
         AbstractClientPlayer player = (AbstractClientPlayer) (Object) this;
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));

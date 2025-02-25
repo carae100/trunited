@@ -1,6 +1,6 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
-import io.github.dracosomething.trawakened.api.FearTypes;
+import io.github.dracosomething.trawakened.library.FearTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;

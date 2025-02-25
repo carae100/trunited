@@ -14,7 +14,7 @@ import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.world.trawakenedDamage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -69,12 +69,12 @@ public class GluttonyMistProjectileMixin extends PredatorMistProjectile {
             damageSource = trawakenedDamage.assimilation(owner);
         }
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
-            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(entity, skillregistry.STARKILL.get())){
+            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillRegistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(entity, skillRegistry.STARKILL.get())){
                 if(entity.hurt(DamageSourceHelper.addSkillAndCost(damageSource, 20.0,  SkillUtils.getSkillOrNull(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill"))))).bypassArmor().bypassEnchantments().bypassMagic(), 75)){
                     var6 = test_addon$getOwner2((Projectile) (Object) this);
                     if (var6 instanceof LivingEntity) {
                         owner = (LivingEntity)var6;
-                        if(SkillUtils.isSkillMastered(owner, skillregistry.STARKILL.get())) {
+                        if(SkillUtils.isSkillMastered(owner, skillRegistry.STARKILL.get())) {
                             owner.getPersistentData().putInt("assimilation_kills", owner.getPersistentData().getInt("assimilation_kills") + 1);
                         }
                             this.devourAllSkills(entity, owner);
@@ -106,7 +106,7 @@ public class GluttonyMistProjectileMixin extends PredatorMistProjectile {
             cancellable = true)
     public void StopParticles(CallbackInfo ci){
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
-            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get())){
+            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillRegistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(test_addon$getOwner2((Projectile) (Object) this), skillRegistry.STARKILL.get())){
                 BreathEntity entity = (BreathEntity) (Object) this;
                 BreathPart[] var1 = entity.parts;
                 int var2 = var1.length;

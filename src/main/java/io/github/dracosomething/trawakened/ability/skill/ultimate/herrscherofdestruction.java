@@ -18,7 +18,7 @@ import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -441,7 +441,7 @@ public class herrscherofdestruction extends Skill {
             if(!player.isCreative()) {
                 if (!TensuraPlayerCapability.getRace(player)
                         .equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-                                .getValue(raceregistry.HERRSCHER_OF_DESTRUCTION))) {
+                                .getValue(raceRegistry.HERRSCHER_OF_DESTRUCTION))) {
                     SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry()
                             .getValue(new ResourceLocation("trawakened:herrscherofdestructionskill")));
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);

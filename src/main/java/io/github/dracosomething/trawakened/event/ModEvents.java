@@ -19,7 +19,7 @@ import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +28,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -219,7 +218,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void cantBreak(BlockEvent.BreakEvent event) {
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));

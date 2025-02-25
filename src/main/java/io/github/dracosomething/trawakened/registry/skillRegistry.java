@@ -16,7 +16,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class skillregistry {
+public class skillRegistry {
     private static final DeferredRegister<ManasSkill> registry;
 
     public static final RegistryObject<voiceofhonkai> VOICEOFHONKAI;
@@ -33,7 +33,7 @@ public class skillregistry {
     public static final RegistryObject<PrimalArmor> PRIMAL_ARMOR;
     public static final RegistryObject<Alternate> ALTERNATE;
 
-    public skillregistry() {
+    public skillRegistry() {
     }
 
     public static void init(IEventBus modEventBus) {

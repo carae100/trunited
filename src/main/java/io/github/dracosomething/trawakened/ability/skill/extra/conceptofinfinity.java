@@ -12,7 +12,7 @@ import com.github.manasmods.tensura.registry.skill.ExtraSkills;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -50,7 +50,7 @@ public class conceptofinfinity extends Skill {
     }
 
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && !(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillregistry.STARKILL.get()));
+        return SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && !(SkillUtils.hasSkill(entity, skillRegistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillRegistry.STARKILL.get()));
     }
 
     @Override

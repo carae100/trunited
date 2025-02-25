@@ -9,15 +9,13 @@ import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.item.templates.custom.SimpleSpearItem;
-import com.github.manasmods.tensura.item.templates.custom.SmithingSchematicItem;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
-import io.github.dracosomething.trawakened.registry.raceregistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +25,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -322,8 +319,8 @@ public class herrscheroftheworld extends Skill {
                         .equals(
                                 TensuraPlayerCapability.getRace(player),
                                 (Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get())
-                                        .getValue(raceregistry.HERRSCHER_OF_THE_WORLD))) {
-                    SkillAPI.getSkillsFrom(player).forgetSkill(skillregistry.HERRSCHEROFTHEWORLD.get());
+                                        .getValue(raceRegistry.HERRSCHER_OF_THE_WORLD))) {
+                    SkillAPI.getSkillsFrom(player).forgetSkill(skillRegistry.HERRSCHEROFTHEWORLD.get());
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
                 }
             }

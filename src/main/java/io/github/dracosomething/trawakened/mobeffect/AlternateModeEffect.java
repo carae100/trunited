@@ -1,12 +1,11 @@
 package io.github.dracosomething.trawakened.mobeffect;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
-import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
 import com.github.manasmods.tensura.effect.template.Transformation;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +19,7 @@ public class AlternateModeEffect extends TensuraMobEffect implements Transformat
     @Override
     public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int value) {
         super.addAttributeModifiers(entity, attributeMap, value);
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
         System.out.println(instance);
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
@@ -40,7 +39,7 @@ public class AlternateModeEffect extends TensuraMobEffect implements Transformat
     @Override
     public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int value) {
         super.removeAttributeModifiers(entity, attributeMap, value);
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));

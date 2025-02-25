@@ -5,10 +5,10 @@ import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
-import io.github.dracosomething.trawakened.api.FearTypes;
+import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
@@ -28,90 +28,90 @@ import java.util.List;
 
 public class FearHelper extends SightHelper{
     public static void fearPenalty(LivingEntity entity, int scared) {
-        if (scared >= 5) {
+        if (scared >= 5 && scared < 10) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 1);
-        } else if (scared >= 10 ) {
+        } else if (scared >= 10 && scared < 15) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 2);
-        } else if (scared >= 15 ) {
+        } else if (scared >= 15 && scared < 20) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 3);
-        } else if (scared >= 20 ) {
+        } else if (scared >= 20 && scared < 25) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 4);
-        } else if (scared >= 25 ) {
+        } else if (scared >= 25 && scared < 30) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 5);
             addSingularPenaltyEffecy(entity, MobEffects.DIG_SLOWDOWN, 1);
-        } else if (scared >= 30 ) {
+        } else if (scared >= 30 && scared < 35) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 5);
             addSingularPenaltyEffecy(entity, MobEffects.DIG_SLOWDOWN, 3);
-        } else if (scared >= 35 ) {
+        } else if (scared >= 35 && scared < 40) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 5);
-        } else if (scared >= 40 ) {
+        } else if (scared >= 40 && scared < 45) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 7);
             addSingularPenaltyEffecy(entity, MobEffects.DIG_SLOWDOWN, 5);
-        } else if (scared >= 45 ) {
+        } else if (scared >= 45 && scared < 50) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 7);
         } else if (scared == 50) {
             decreaseSHP(entity, 10);
-        } else if (scared >= 50 ) {
+        } else if (scared >= 50 && scared < 55) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 7);
             addSingularPenaltyEffecy(entity, MobEffects.WEAKNESS, 1);
-        } else if (scared >= 55 ) {
+        } else if (scared >= 55 && scared < 60) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 7);
             addSingularPenaltyEffecy(entity, MobEffects.WEAKNESS, 4);
-        } else if (scared >= 60 ) {
+        } else if (scared >= 60 && scared < 65) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS), 7);
-        } else if (scared >= 65 ) {
+        } else if (scared >= 65 && scared < 70) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 10);
             addFearPenaltyEffect(entity, List.of(MobEffects.WEAKNESS, MobEffects.DIG_SLOWDOWN), 7);
-        } else if (scared >= 70 ) {
+        } else if (scared >= 70 && scared < 75) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 10);
             addSingularPenaltyEffecy(entity, MobEffects.WEAKNESS, 7);
-        } else if (scared == 75 ) {
+        } else if (scared == 75) {
             decreaseSHP(entity, 25);
-        } else if (scared >= 75 ) {
+        } else if (scared >= 75 && scared < 80) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS), 10);
             addSingularPenaltyEffecy(entity, TensuraMobEffects.PARALYSIS.get(), 1);
-        } else if (scared >= 80 ) {
+        } else if (scared >= 80 && scared < 85) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS), 10);
             addSingularPenaltyEffecy(entity, TensuraMobEffects.PARALYSIS.get(), 5);
-        } else if (scared >= 85) {
+        } else if (scared >= 85 && scared < 90) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get()), 10);
-        } else if (scared >= 90 ) {
+        } else if (scared >= 90 && scared < 95) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 15);
             addFearPenaltyEffect(entity, List.of(MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get()), 10);
-        } else if (scared >= 95 ) {
+        } else if (scared >= 95 && scared < 100) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.PARALYSIS.get(), MobEffects.DIG_SLOWDOWN), 15);
             addFearPenaltyEffect(entity, List.of(MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get()), 10);
         } else if (scared == 100 ) {
             decreaseSHP(entity, 55);
-        } else if (scared >= 100 ) {
+        } else if (scared >= 100 && scared < 105) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, TensuraMobEffects.PARALYSIS.get(), MobEffects.WEAKNESS), 15);
             addSingularPenaltyEffecy(entity, TensuraMobEffects.CHILL.get(), 1);
-        } else if (scared >= 105 ) {
+        } else if (scared >= 105 && scared < 110) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, TensuraMobEffects.PARALYSIS.get(), MobEffects.WEAKNESS), 15);
             addSingularPenaltyEffecy(entity, TensuraMobEffects.CHILL.get(), 8);
-        }  else if (scared >= 110 ) {
+        }  else if (scared >= 110 && scared < 115) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), TensuraMobEffects.CHILL.get(), MobEffects.DIG_SLOWDOWN, TensuraMobEffects.PARALYSIS.get(), MobEffects.WEAKNESS), 15);
-        } else if (scared >= 115 ) {
+        } else if (scared >= 115 && scared < 120) {
             addSingularPenaltyEffecy(entity, TensuraMobEffects.FEAR.get(), 22);
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.CHILL.get(), MobEffects.DIG_SLOWDOWN, TensuraMobEffects.PARALYSIS.get(), MobEffects.WEAKNESS), 15);
-        } else if (scared >= 120 ) {
+        } else if (scared >= 120 && scared < 125) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN), 22);
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.CHILL.get(), TensuraMobEffects.PARALYSIS.get(), MobEffects.WEAKNESS), 15);
-        } else if (scared >= 125 ) {
+        } else if (scared >= 125 && scared < 130) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS), 22);
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.CHILL.get(), TensuraMobEffects.PARALYSIS.get()), 15);
             addFearPenaltyEffect(entity, List.of(MobEffects.WITHER), 1);
-        } else if (scared >= 130 ) {
+        } else if (scared >= 130 && scared < 135) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get()), 22);
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.CHILL.get()), 15);
             addFearPenaltyEffect(entity, List.of(MobEffects.WITHER), 8);
-        } else if (scared >= 135 ) {
+        } else if (scared >= 135 && scared < 140) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get()), 22);
             addFearPenaltyEffect(entity, List.of(MobEffects.WITHER, TensuraMobEffects.CHILL.get()), 15);
-        } else if (scared >= 140 ) {
+        } else if (scared >= 140 && scared < 145) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get(), TensuraMobEffects.CHILL.get()), 22);
             addSingularPenaltyEffecy(entity, MobEffects.WITHER, 15);
-        } else if (scared >= 145 ) {
+        } else if (scared >= 145 && scared < 150) {
             addFearPenaltyEffect(entity, List.of(TensuraMobEffects.FEAR.get(), MobEffects.DIG_SLOWDOWN, MobEffects.WEAKNESS, TensuraMobEffects.PARALYSIS.get(), TensuraMobEffects.CHILL.get(), MobEffects.WITHER), 22);
         } else if (scared == 150) {
             decreaseSHP(entity, 105);
@@ -142,7 +142,7 @@ public class FearHelper extends SightHelper{
     public static void resetData(LivingEntity entity) {
         if (entity.isDeadOrDying()) {
             if (entity.getPersistentData().hasUUID("alternate_UUID")) {
-                ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity.level.getPlayerByUUID(entity.getPersistentData().getUUID("alternate_UUID")), skillregistry.ALTERNATE.get());
+                ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity.level.getPlayerByUUID(entity.getPersistentData().getUUID("alternate_UUID")), skillRegistry.ALTERNATE.get());
                 if (instance != null) {
                     CompoundTag tag = instance.getOrCreateTag();
                     tag.putInt("original_scared", 0);
@@ -235,38 +235,39 @@ public class FearHelper extends SightHelper{
     }
 
     public static boolean checkAll(FearTypes fear, List<Entity> entities, LivingEntity entity) {
-        if(fear.equals(FearTypes.ALTERNATES)) {
-            for (Entity entity1 : entities) {
-                if (entity1 instanceof LivingEntity living && !AwakenedFearCapability.onCooldown(entity)) {
-                    if (SkillUtils.hasSkill(entity1, skillregistry.ALTERNATE.get())) {
+        switch (fear) {
+            case ALTERNATES:
+                for (Entity entity1 : entities) {
+                    if (entity1 instanceof LivingEntity living && !AwakenedFearCapability.onCooldown(entity)) {
+                        if (SkillUtils.hasSkill(entity1, skillRegistry.ALTERNATE.get())) {
+                            AwakenedFearCapability.increaseScared(entity);
+                            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                        }
+                    }
+                }
+                return false;
+            case OCEAN:
+                Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY() - 10, entity.getZ() - 10);
+                Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 10, entity.getZ() + 10);
+                Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
+                for (BlockPos blockPos : oceanBlocksAround) {
+                    if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
                         AwakenedFearCapability.increaseScared(entity);
                         AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                     }
+                    return false;
                 }
-            }
-            return false;
-        } else if (fear.equals(FearTypes.OCEAN)) {
-            Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY() - 10, entity.getZ() - 10);
-            Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 10, entity.getZ() + 10);
-            Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
-            for (BlockPos blockPos : oceanBlocksAround) {
-                if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
+                return false;
+            case TRUTH:
+                return false;
+            case HEIGHT:
+                if (entity.getY() >= 200) {
                     AwakenedFearCapability.increaseScared(entity);
                     AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
                 }
                 return false;
-            }
-            return false;
-        } else if (fear.equals(FearTypes.TRUTH)) {
-            return false;
-        } else if (fear.equals(FearTypes.HEIGHT)) {
-            if (entity.getY() >= 200) {
-                AwakenedFearCapability.increaseScared(entity);
-                AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
-            }
-            return false;
-        } else {
-            return true;
+            default:
+                return true;
         }
     }
 }

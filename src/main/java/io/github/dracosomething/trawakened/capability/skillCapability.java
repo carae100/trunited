@@ -15,7 +15,7 @@ import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -42,7 +42,7 @@ public class skillCapability {
 
             while(var4.hasNext()) {
                 ManasSkillInstance targetInstance = (ManasSkillInstance)var4.next();
-                if (!targetInstance.isTemporarySkill() && targetInstance.getMastery() >= 0 && SkillUtils.learnSkill(owner, targetInstance.getSkill(), skillregistry.AZAZEL.hashCode())) {
+                if (!targetInstance.isTemporarySkill() && targetInstance.getMastery() >= 0 && SkillUtils.learnSkill(owner, targetInstance.getSkill(), skillRegistry.AZAZEL.hashCode())) {
                     if (owner instanceof Player) {
                         Player player = (Player)owner;
                         player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{targetInstance.getSkill().getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
@@ -57,7 +57,7 @@ public class skillCapability {
 
     protected static boolean canDevour(ManasSkillInstance instance) {
         if (!instance.isTemporarySkill() && instance.getMastery() >= 0) {
-            if (instance.getSkill() == skillregistry.AZAZEL.get()) {
+            if (instance.getSkill() == skillRegistry.AZAZEL.get()) {
                 return false;
             } else if (instance.getSkill() instanceof StarvedSkill) {
                 return true;
@@ -80,7 +80,7 @@ public class skillCapability {
     public static void devourEP(LivingEntity target, LivingEntity owner, float amountToMax) {
         if (!target.getType().is(TensuraTags.EntityTypes.NO_EP_PLUNDER)) {
             SkillStorage storage = SkillAPI.getSkillsFrom(owner);
-            Optional<ManasSkillInstance> predator = storage.getSkill(skillregistry.AZAZEL.get());
+            Optional<ManasSkillInstance> predator = storage.getSkill(skillRegistry.AZAZEL.get());
             if (!predator.isEmpty()) {
                 ManasSkillInstance instance = (ManasSkillInstance)predator.get();
                 CompoundTag tag = instance.getOrCreateTag();
@@ -152,7 +152,7 @@ public class skillCapability {
 
     protected static ManasSkillInstance getSkillInstance(LivingEntity owner) {
         SkillStorage storage = SkillAPI.getSkillsFrom(owner);
-        Optional<ManasSkillInstance> optional = storage.getSkill(skillregistry.AZAZEL.get());
+        Optional<ManasSkillInstance> optional = storage.getSkill(skillRegistry.AZAZEL.get());
         return (ManasSkillInstance)optional.orElse((ManasSkillInstance) null);
     }
 }

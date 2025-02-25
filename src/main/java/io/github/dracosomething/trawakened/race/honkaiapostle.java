@@ -6,7 +6,7 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.util.JumpPowerHelper;
 import com.mojang.datafixers.util.Pair;
-import io.github.dracosomething.trawakened.registry.raceregistry;
+import io.github.dracosomething.trawakened.registry.raceRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -69,15 +69,15 @@ public class honkaiapostle extends Race {
     }
 
     public Race getDefaultEvolution(Player player) {
-        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.AWAKENED_APOSTLE);
     }
 
     public Race getAwakeningEvolution(Player player) {
-        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.AWAKENED_APOSTLE);
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.AWAKENED_APOSTLE);
     }
 
     public Race getHarvestFestivalEvolution(Player player) {
-        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceregistry.ENSLAVED_APOSTLE);
+        return (Race) TensuraRaces.RACE_REGISTRY.get().getValue(raceRegistry.ENSLAVED_APOSTLE);
     }
 
     public List<TensuraSkill> getIntrinsicSkills(Player player) {
@@ -89,8 +89,8 @@ public class honkaiapostle extends Race {
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
 //        list.add((Race) TensuraRaces.HUMAN.get());
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.AWAKENED_APOSTLE));
-        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceregistry.ENSLAVED_APOSTLE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.AWAKENED_APOSTLE));
+        list.add((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.ENSLAVED_APOSTLE));
         return list;
     }
 

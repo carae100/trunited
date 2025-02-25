@@ -14,7 +14,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class raceregistry {
+public class raceRegistry {
     public static final ResourceLocation HONKAI_APOSTLE = new ResourceLocation("trawakened", "honkai_apostle");
     public static final ResourceLocation AWAKENED_APOSTLE = new ResourceLocation("trawakened", "awakened_apostle");
     public static final ResourceLocation ENSLAVED_APOSTLE = new ResourceLocation("trawakened", "enslaved_apostle");
@@ -25,7 +25,7 @@ public class raceregistry {
     public static final ResourceLocation HERRSCHER_OF_TIME = new ResourceLocation("trawakened", "herrscher_of_time");
     public static final ResourceLocation HERRSCHER_OF_THE_WORLD = new ResourceLocation("trawakened", "herrscher_of_the_world");
 
-    public raceregistry(){}
+    public raceRegistry(){}
 
     @SubscribeEvent
     public static void register(RegisterEvent event) {

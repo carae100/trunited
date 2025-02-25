@@ -11,7 +11,7 @@ import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -46,7 +46,7 @@ public class akashic_plane extends Skill {
 
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return !(SkillUtils.hasSkill(entity, skillregistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillregistry.STARKILL.get())) && SkillUtils.isSkillMastered(entity, skillregistry.CONCEPTOFINFINITY.get()) && (TensuraPlayerCapability.isTrueDemonLord(entity) || TensuraPlayerCapability.isTrueHero(entity)) && TensuraPlayerCapability.getCurrentEP(entity) == 1000000;
+        return !(SkillUtils.hasSkill(entity, skillRegistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillRegistry.STARKILL.get())) && SkillUtils.isSkillMastered(entity, skillRegistry.CONCEPTOFINFINITY.get()) && (TensuraPlayerCapability.isTrueDemonLord(entity) || TensuraPlayerCapability.isTrueHero(entity)) && TensuraPlayerCapability.getCurrentEP(entity) == 1000000;
     }
 
     @Override

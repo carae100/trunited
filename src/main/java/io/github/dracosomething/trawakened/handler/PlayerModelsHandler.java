@@ -9,9 +9,8 @@ import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.FlawedRenderer;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.OverdrivenRenderer;
-import io.github.dracosomething.trawakened.registry.skillregistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -30,7 +29,7 @@ public class PlayerModelsHandler {
     public static void modelChangeEvent(final RenderPlayerEvent.Pre event) {
         if (!(event.getEntity() instanceof AbstractClientPlayer)) return;
         final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillregistry.ALTERNATE.get());
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
