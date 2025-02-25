@@ -1,9 +1,13 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
 import io.github.dracosomething.trawakened.library.FearTypes;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.List;
 
 public interface IFearCapability extends INBTSerializable<CompoundTag> {
     /**
@@ -48,7 +52,20 @@ public interface IFearCapability extends INBTSerializable<CompoundTag> {
      */
     void setCooldown(LivingEntity entity, int amount);
 
+    /**
+     * @param entity
+     * @return returns the isAlternate boolean
+     */
     boolean getIsAlternate(LivingEntity entity);
 
+    /**
+     * sets the is alternate boolean
+     * @param entity
+     * @param isAlternate
+     */
     void setIsAlternate(LivingEntity entity, boolean isAlternate);
+
+    boolean getIsSlim(LivingEntity entity);
+
+    void setIsSlim(LivingEntity entity, boolean isSlim);
 }

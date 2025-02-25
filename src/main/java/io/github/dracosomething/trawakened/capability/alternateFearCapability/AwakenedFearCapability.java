@@ -5,6 +5,8 @@ import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
 import io.github.dracosomething.trawakened.trawakened;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +19,10 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(
         modid = trawakened.MODID,
@@ -30,6 +36,8 @@ public class AwakenedFearCapability implements IFearCapability{
     private int scaredAmount = 0;
     private int cooldown = 0;
     private boolean isAlternate = false;
+    private boolean isSlim = true;
+    private List<RenderLayer<?, ?>> layers = new java.util.ArrayList<>(List.of());
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
@@ -59,6 +67,7 @@ public class AwakenedFearCapability implements IFearCapability{
         tag.putInt("scared_amount", this.scaredAmount);
         tag.putInt("cooldown", this.cooldown);
         tag.putBoolean("is_alternate", this.isAlternate);
+        tag.putBoolean("is_slim", this.isSlim);
 
         return tag;
     }
@@ -69,6 +78,7 @@ public class AwakenedFearCapability implements IFearCapability{
         this.scaredAmount = tag.getInt("scared_amount");
         this.cooldown = tag.getInt("cooldown");
         this.isAlternate = tag.getBoolean("is_alternate");
+        this.isSlim = tag.getBoolean("is_slim");
     }
 
     public static CompoundTag toNBT(LivingEntity entity) {
@@ -119,6 +129,17 @@ public class AwakenedFearCapability implements IFearCapability{
         return capability == null ? false : capability.getIsAlternate(entity);
     }
 
+    public static void SetIsSlim (LivingEntity entity, boolean isSlim) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setIsSlim(entity, isSlim);
+    }
+
+    public static boolean GetIsSlim(LivingEntity entity) {
+        IFearCapability capability = (IFearCapability) CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? false : capability.getIsSlim(entity);
+    }
+
     public static void increaseScared(LivingEntity entity) {
         setScared(entity, getScared(entity) + 1);
     }
@@ -161,5 +182,13 @@ public class AwakenedFearCapability implements IFearCapability{
 
     public void setIsAlternate(LivingEntity entity, boolean isAlternate) {
         this.isAlternate = isAlternate;
+    }
+
+    public boolean getIsSlim(LivingEntity entity) {
+        return isSlim;
+    }
+
+    public void setIsSlim(LivingEntity entity, boolean isSlim) {
+        this.isSlim = isSlim;
     }
 }

@@ -17,17 +17,11 @@ import java.util.List;
 
 public class HerrscherOfTheWorld extends HerrscherRace {
     public HerrscherOfTheWorld() {
-        super(Generation.FIRST);
+        super(Generation.FIRST, skillRegistry.HERRSCHEROFTHEWORLD.get());
     }
 
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
-        return list;
-    }
-
-    public List<TensuraSkill> getIntrinsicSkills(Player player) {
-        List<TensuraSkill> list = new ArrayList();
-        list.add(skillRegistry.HERRSCHEROFTHEWORLD.get());
         return list;
     }
 

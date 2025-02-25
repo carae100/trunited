@@ -6,6 +6,7 @@ import com.github.manasmods.tensura.ability.TensuraSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.race.Race;
 import io.github.dracosomething.trawakened.library.race.HerrscherRace;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
@@ -18,17 +19,11 @@ import java.util.Objects;
 public class herrscherofplague extends HerrscherRace {
 
     public herrscherofplague() {
-        super(Generation.FIRST);
+        super(Generation.FIRST, skillRegistry.HERRSCHEROFPLAGUE.get());
     }
 
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
-        return list;
-    }
-
-    public List<TensuraSkill> getIntrinsicSkills(Player player) {
-        List<TensuraSkill> list = new ArrayList();
-        list.add((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill")));
         return list;
     }
 

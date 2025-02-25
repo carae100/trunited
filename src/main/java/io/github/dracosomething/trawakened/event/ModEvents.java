@@ -90,7 +90,7 @@ public class ModEvents {
         }
 
         if (entity instanceof Player player) {
-            List<ItemStack> inventory = List.of();
+            List<ItemStack> inventory = new java.util.ArrayList<>(List.of());
             inventory.addAll(player.getInventory().items);
             inventory.addAll(player.getInventory().armor);
             inventory.addAll(player.getInventory().offhand);

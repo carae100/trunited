@@ -21,17 +21,11 @@ import java.util.Objects;
 
 public class HerrscherOfTime extends HerrscherRace {
     public HerrscherOfTime() {
-        super(Generation.FIRST);
+        super(Generation.FIRST, skillRegistry.HERRSCHEROFTIME.get());
     }
 
     public List<Race> getNextEvolutions(Player player) {
         List<Race> list = new ArrayList();
-        return list;
-    }
-
-    public List<TensuraSkill> getIntrinsicSkills(Player player) {
-        List<TensuraSkill> list = new ArrayList();
-        list.add(skillRegistry.HERRSCHEROFTIME.get());
         return list;
     }
 

@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
+import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.FlawedModel;
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.IntruderModel;
 import io.github.dracosomething.trawakened.entity.client.model.CustomPlayerModel.OverdrivenModel;
@@ -16,8 +17,11 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -32,10 +36,12 @@ public class PlayerModelsHandler {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
+            AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
             if (assimilation == Alternate.Assimilation.COMPLETE) {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, player.getPlayerInfo().getSkinLocation());
+                getModelPlayer(event.getRenderer(), player).ifPresent(model -> event.getRenderer().model = model);
                 return;
             } else {
                 if (assimilation == Alternate.Assimilation.FLAWED) {
@@ -71,6 +77,13 @@ public class PlayerModelsHandler {
 
     public static Optional<PlayerModel<AbstractClientPlayer>> getModelFlawed(final PlayerRenderer renderer) {
         final FlawedModel<AbstractClientPlayer> model = new FlawedModel<>(FlawedModel.createMesh(new CubeDeformation(1, 1, 1)).getRoot().bake(64, 32));
+        renderer.layers.clear();
+
+        return Optional.of(model);
+    }
+
+    public static Optional<PlayerModel<AbstractClientPlayer>> getModelPlayer(final PlayerRenderer renderer, LivingEntity entity) {
+        final PlayerModel<AbstractClientPlayer> model = new PlayerModel<>(PlayerModel.createMesh(new CubeDeformation(1, 1, 1), AwakenedFearCapability.GetIsSlim(entity)).getRoot().bake(64, 64), AwakenedFearCapability.GetIsSlim(entity));
         renderer.layers.clear();
 
         return Optional.of(model);
