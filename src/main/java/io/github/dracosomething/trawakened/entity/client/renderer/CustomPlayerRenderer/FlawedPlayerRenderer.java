@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public abstract class FlawedPlayerRenderer<T extends AbstractClientPlayer, E extends PlayerModel<T>> extends PlayerRenderer {
 
-    public static Optional<String> getIntruderRenderer(AbstractClientPlayer player) {
+    public static Optional<String> getFlawedRenderer(AbstractClientPlayer player) {
         return Optional.of(trawakened.MODID +":flawed");
     }
 

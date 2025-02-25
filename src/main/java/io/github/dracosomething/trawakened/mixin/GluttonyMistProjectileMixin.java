@@ -78,7 +78,7 @@ public class GluttonyMistProjectileMixin extends PredatorMistProjectile {
                             owner.getPersistentData().putInt("assimilation_kills", owner.getPersistentData().getInt("assimilation_kills") + 1);
                         }
                             this.devourAllSkills(entity, owner);
-                            this.devourEP(entity, owner, 0.8F);
+                            this.devourEP(entity, owner, 0.02F);
                             if (owner instanceof Player) {
                                 Player player = (Player)owner;
                                 List<ItemEntity> list = owner.level.getEntitiesOfClass(ItemEntity.class, AABB.ofSize(entity.position(), 2.0, 2.0, 2.0));
@@ -106,7 +106,7 @@ public class GluttonyMistProjectileMixin extends PredatorMistProjectile {
             cancellable = true)
     public void StopParticles(CallbackInfo ci){
         if(test_addon$getOwner2((Projectile) (Object) this) != null){
-            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), Objects.requireNonNull(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill")))) && SkillClientUtils.isSkillHeldClient(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get())){
+            if(SkillUtils.hasSkill(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get()) && SkillClientUtils.isSkillHeldClient(test_addon$getOwner2((Projectile) (Object) this), skillregistry.STARKILL.get())){
                 BreathEntity entity = (BreathEntity) (Object) this;
                 BreathPart[] var1 = entity.parts;
                 int var2 = var1.length;

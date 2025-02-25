@@ -28,6 +28,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
@@ -86,6 +88,24 @@ public class ModEvents {
                     }
                 }
             }
+        }
+
+        if (entity instanceof Player player) {
+            List<ItemStack> inventory = List.of();
+            inventory.addAll(player.getInventory().items);
+            inventory.addAll(player.getInventory().armor);
+            inventory.addAll(player.getInventory().offhand);
+            inventory.forEach((item) -> {
+                if (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) >= 1) {
+                    int level = (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) - 1);
+                    EngravingHelper.RemoveEnchantments(item, enchantRegistry.DECAY.get());
+                    if (level > 0) {
+                        item.enchant(enchantRegistry.DECAY.get(), level);
+                    }
+                } else {
+                    player.getInventory().removeItem(item);
+                }
+            });
         }
     }
 
@@ -148,9 +168,9 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void DoubleSpiritualDamage(SpiritualHurtEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
+        if(event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())){
             event.setAmount(
-                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
             );
         }
         if(event.getEntity().hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
@@ -169,9 +189,9 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void DoubleDamage(LivingDamageEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.CREATIVE_MENU.get())){
+        if(event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())){
             event.setAmount(
-                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.CREATIVE_MENU.get()).getAmplifier()) * 10)
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
             );
         }
     }

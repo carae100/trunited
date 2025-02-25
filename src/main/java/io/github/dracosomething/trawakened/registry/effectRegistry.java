@@ -18,9 +18,8 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> BRAINDAMAGE;
     public static final RegistryObject<MobEffect> TIMESTOP;
     public static final RegistryObject<MobEffect> TIMESTOP_CORE;
-    public static final RegistryObject<MobEffect> CREATIVE_MENU;
+    public static final RegistryObject<MobEffect> WHEAKENING;
     public static final RegistryObject<MobEffect> SPIRITUAL_BLOCK;
-    public static final RegistryObject<MobEffect> WHEAK;
     public static final RegistryObject<MobEffect> ALTERNATE_MODE;
 
     public effectRegistry(){}
@@ -41,9 +40,8 @@ public class effectRegistry {
         BRAINDAMAGE = registry.register("brain_damage", () -> new DestroyedBrainEffect(MobEffectCategory.NEUTRAL, 14163341));
         TIMESTOP = registry.register("time_stop", () -> new emptyEffect(MobEffectCategory.NEUTRAL, 14914605));
         TIMESTOP_CORE = registry.register("time_stop_core", () -> new TimeStopCoreEffect(MobEffectCategory.BENEFICIAL, 14914605));
-        CREATIVE_MENU = registry.register("extreme_weakening", () -> new emptyEffect(MobEffectCategory.NEUTRAL, 258276));
+        WHEAKENING = registry.register("extreme_weakening", () -> new emptyEffect(MobEffectCategory.NEUTRAL, 258276));
         SPIRITUAL_BLOCK = registry.register("spiritual_blocking", () -> new emptyEffect(MobEffectCategory.BENEFICIAL, 13407025));
-        WHEAK = registry.register("creative_menu_effect", () -> new CreativeMenuEffect(MobEffectCategory.NEUTRAL, 14914605));
         ALTERNATE_MODE = registry.register("alternate_mode", () -> new AlternateModeEffect(MobEffectCategory.BENEFICIAL, 0));
     }
 }

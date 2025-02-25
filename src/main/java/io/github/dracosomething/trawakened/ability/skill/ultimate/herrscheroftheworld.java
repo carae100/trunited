@@ -9,13 +9,17 @@ import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
+import com.github.manasmods.tensura.item.templates.custom.SimpleSpearItem;
+import com.github.manasmods.tensura.item.templates.custom.SmithingSchematicItem;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.registry.raceregistry;
 import io.github.dracosomething.trawakened.registry.skillregistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -23,12 +27,14 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -200,13 +206,28 @@ public class herrscheroftheworld extends Skill {
                 break;
             case 3:
                 if(!SkillHelper.outOfMagicule(entity, instance)){
-                    entity.addEffect(new MobEffectInstance(effectRegistry.WHEAK.get(), instance.isMastered(entity)?200:100, 0, false, false, false));
+                    List<Item> itemList = Registry.ITEM.stream().filter((item1) ->
+                            (item1.asItem() instanceof ArmorItem ||
+                            item1.asItem() instanceof ShieldItem ||
+                            item1.asItem() instanceof TridentItem ||
+                            item1.asItem() instanceof ProjectileWeaponItem ||
+                            item1.asItem() instanceof DiggerItem ||
+                            item1.asItem() instanceof ElytraItem ||
+                            item1.asItem() instanceof ShearsItem ||
+                            item1.asItem() instanceof SwordItem)
+                    ).toList();
+                    if (entity instanceof Player player) {
+                        Random random = new Random();
+                        ItemStack stack = itemList.get(random.nextInt(0, itemList.size())).getDefaultInstance();
+                        player.getInventory().add(stack);
+                        stack.enchant(enchantRegistry.DECAY.get(), instance.isMastered(entity)?120:90);
+                    }
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD, SoundSource.PLAYERS, 1.0F, 1.0F);
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_ADDITIONS, SoundSource.PLAYERS, 1.0F, 1.0F);
                     TensuraParticleHelper.addServerParticlesAroundSelf(entity, ParticleTypes.ENCHANT, 1);
                     instance.addMasteryPoint(entity);
-                    instance.setCoolDown(instance.isMastered(entity)?3600:7200);
+                    instance.setCoolDown(120);
                 }
                 break;
         }
