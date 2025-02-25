@@ -250,8 +250,8 @@ public class FearHelper extends SightHelper{
                 }
                 return false;
             case OCEAN:
-                Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY() - 10, entity.getZ() - 10);
-                Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 10, entity.getZ() + 10);
+                Vec3 oceanStart = new Vec3(entity.getX() - 10, entity.getY(), entity.getZ() - 10);
+                Vec3 oceanEnd = new Vec3(entity.getX() + 10, entity.getY() + 20, entity.getZ() + 10);
                 Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
                 for (BlockPos blockPos : oceanBlocksAround) {
                     if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
