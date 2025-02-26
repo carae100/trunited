@@ -7,6 +7,8 @@ import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
@@ -441,6 +443,17 @@ public class Alternate extends Skill {
                     player.getAbilities().invulnerable = true;
                     player.getAbilities().mayBuild = false;
                     player.onUpdateAbilities();
+                }
+            }
+            if (living instanceof Player player) {
+                if (TensuraPlayerCapability.getMagicule(player) <= 1000) {
+                    if (MathHelper.RandomChance(1)) {
+                        TensuraPlayerCapability.getFrom(player).ifPresent((capability) -> {
+                            capability.setBaseMagicule(capability.getBaseMagicule() + 1, player);
+                            capability.setMagicule(capability.getBaseMagicule());
+                        });
+                        TensuraPlayerCapability.sync(player);
+                    }
                 }
             }
         } else {

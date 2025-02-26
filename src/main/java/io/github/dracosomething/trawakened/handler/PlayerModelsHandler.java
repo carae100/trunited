@@ -49,7 +49,6 @@ public class PlayerModelsHandler {
             CompoundTag tag = instance.getOrCreateTag();
             AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
-            System.out.println(assimilation);
             if (assimilation == Alternate.Assimilation.COMPLETE) {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, player.getPlayerInfo().getSkinLocation());
