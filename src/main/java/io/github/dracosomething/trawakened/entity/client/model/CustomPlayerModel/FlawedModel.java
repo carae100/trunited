@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.entity.client.model.CustomPlayerMode
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class FlawedModel<T extends LivingEntity> extends PlayerModel<T> {
     public boolean carrying;
     public boolean creepy;
+    private final ModelPart main;
     private final ModelPart hat;
     private final ModelPart head;
     private final ModelPart body;
@@ -22,6 +24,7 @@ public class FlawedModel<T extends LivingEntity> extends PlayerModel<T> {
 
     public FlawedModel(ModelPart modelPart) {
         super(modelPart, false);
+        this.main = modelPart;
         this.hat = modelPart.getChild("hat");
         this.head = modelPart.getChild("head");
         this.body = modelPart.getChild("body");
@@ -72,6 +75,11 @@ public class FlawedModel<T extends LivingEntity> extends PlayerModel<T> {
         partDefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(56, 0).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 30.0F, 2.0F), PartPose.offset(-2.0F, -5.0F, 0.0F));
         partDefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(56, 0).mirror().addBox(-1.0F, 0.0F, -1.0F, 2.0F, 30.0F, 2.0F), PartPose.offset(2.0F, -5.0F, 0.0F));
         return LayerDefinition.create(definition, 64, 32);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack p_102034_, VertexConsumer p_102035_, int p_102036_, int p_102037_, float p_102038_, float p_102039_, float p_102040_, float p_102041_) {
+        main.render(p_102034_, p_102035_, p_102036_, p_102037_, p_102038_, p_102039_, p_102040_, p_102041_);
     }
 
     public void setupAnim(T p_102588_, float p_102589_, float p_102590_, float p_102591_, float p_102592_, float p_102593_) {

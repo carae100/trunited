@@ -381,9 +381,6 @@ public class Alternate extends Skill {
             case 10:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     SkillHelper.addEffectWithSource(entity, entity, effectRegistry.ALTERNATE_MODE.get(), 1000, 1, true, false, false, false);
-                    if (entity instanceof Player player) {
-                        player.respawn();
-                    }
                 }
                 break;
         }

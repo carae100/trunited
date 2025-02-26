@@ -312,8 +312,8 @@ public enum FearTypes {
 
     public static FearTypes getRandom(){
         Random random = new Random();
-        FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
-//        FearTypes fear = FearTypes.TRUTH;
+//        FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
+        FearTypes fear = FearTypes.TRUTH;
         return fear;
     }
 

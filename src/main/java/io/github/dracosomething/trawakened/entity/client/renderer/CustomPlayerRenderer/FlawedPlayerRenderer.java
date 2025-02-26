@@ -12,9 +12,8 @@ import java.util.Optional;
  * Based on @TeamLapen's Werewolf Rendering codes: <a href="https://github.com/TeamLapen/Werewolves/blob/1.20/src/main/java/de/teamlapen/werewolves/client/render/WerewolfPlayerRenderer.java">...</a>
  */
 public abstract class FlawedPlayerRenderer<T extends AbstractClientPlayer, E extends PlayerModel<T>> extends PlayerRenderer {
-
     public static Optional<String> getFlawedRenderer(AbstractClientPlayer player) {
-        return Optional.of(trawakened.MODID +":flawed");
+        return Optional.of(trawakened.MODID + ":flawed");
     }
 
     public FlawedPlayerRenderer(EntityRendererProvider.Context context, PlayerModel<AbstractClientPlayer> model) {

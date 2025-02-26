@@ -33,10 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -109,10 +106,10 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void GrantUnique(LivingSpawnEvent event){
+    public static void GrantUnique(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntity();
         AwakenedFearCapability.sync(event.getEntity());
-        if(entity instanceof defaultOtherWolder) {
+        if (entity instanceof defaultOtherWolder) {
             List<ManasSkill> list_unique = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
                 boolean var10000;
                 if (manasSkill instanceof Skill skill) {
@@ -138,7 +135,7 @@ public class ModEvents {
                 return var10000;
             }).toList();
             ManasSkill skill;
-            while(!(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size() >= 1)) {
+            while (!(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size() >= 1)) {
                 System.out.println(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size());
                 Random random1 = new Random();
                 if (random1.nextInt(1, 100) >= 90) {
@@ -146,7 +143,7 @@ public class ModEvents {
                 } else {
                     skill = list_ultimate.get(random1.nextInt(1, list_ultimate.size()));
                 }
-                if(!(skill instanceof voiceofhonkai || skill instanceof willofhonkai || skill instanceof powerofhonkai || skill instanceof herrscheroftime || skill instanceof  herrscherofdestruction || skill instanceof herrscherofplague || skill instanceof herrscheroftheworld)) {
+                if (!(skill instanceof voiceofhonkai || skill instanceof willofhonkai || skill instanceof powerofhonkai || skill instanceof herrscheroftime || skill instanceof herrscherofdestruction || skill instanceof herrscherofplague || skill instanceof herrscheroftheworld)) {
                     SkillUtils.learnSkill(entity, skill);
                 }
             }
@@ -159,20 +156,20 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void cancelHealing(LivingHealEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.HEALPOISON.get())){
+    public static void cancelHealing(LivingHealEvent event) {
+        if (event.getEntity().hasEffect(effectRegistry.HEALPOISON.get())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void DoubleSpiritualDamage(SpiritualHurtEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())){
+    public static void DoubleSpiritualDamage(SpiritualHurtEvent event) {
+        if (event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())) {
             event.setAmount(
-                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0 ? 1 : event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
             );
         }
-        if(event.getEntity().hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())){
+        if (event.getEntity().hasEffect(effectRegistry.SPIRITUAL_BLOCK.get())) {
             event.setAmount(
                     (float) Math.floor(event.getAmount() -
                             Math.ceil(
@@ -187,28 +184,44 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void DoubleDamage(LivingDamageEvent event){
-        if(event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())){
+    public static void DoubleDamage(LivingDamageEvent event) {
+        if (event.getEntity().hasEffect(effectRegistry.WHEAKENING.get())) {
             event.setAmount(
-                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0?1:event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
+                    (float) (Math.ceil(event.getAmount()) * (event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier() == 0 ? 1 : event.getEntity().getEffect(effectRegistry.WHEAKENING.get()).getAmplifier()) * 10)
             );
+        }
+    }
+
+    @SubscribeEvent
+    public static void ResetOnDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.hasEffect(effectRegistry.ALTERNATE_MODE.get())) {
+            ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
+            if (instance != null) {
+                CompoundTag tag = instance.getOrCreateTag();
+                Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
+                if (assimilation != null) {
+                    tag.put("assimilation", Alternate.Assimilation.COMPLETE.toNBT());
+                }
+            }
         }
     }
 
     @SubscribeEvent
     public static void notRemoveEffect(MobEffectEvent.Remove event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect()) ||
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.PLAGUEEFFECT.get()).getEffect()) ||
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.BRAINDAMAGE.get()).getEffect()) ||
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP_CORE.get()).getEffect()) ||
-                entity.hasEffect(new MobEffectInstance((MobEffect) effectRegistry.TIMESTOP.get()).getEffect())){
+        if (event.getEffect().equals(effectRegistry.OVERWHELMED.get()) ||
+                event.getEffect().equals(effectRegistry.PLAGUEEFFECT.get()) ||
+                event.getEffect().equals(effectRegistry.BRAINDAMAGE.get()) ||
+                event.getEffect().equals(effectRegistry.TIMESTOP_CORE.get()) ||
+                event.getEffect().equals(effectRegistry.TIMESTOP.get()) ||
+                event.getEffect().equals(effectRegistry.ALTERNATE_MODE.get())) {
             event.setCanceled(true);
         }
-        if(entity.hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())){
+        if (event.getEffect().equals(effectRegistry.MELT.get())) {
             Random rand = new Random();
             int chance = rand.nextInt(101);
-            if(chance < 10){
+            if (chance < 10) {
                 event.setCanceled(true);
             } else {
                 event.setCanceled(false);

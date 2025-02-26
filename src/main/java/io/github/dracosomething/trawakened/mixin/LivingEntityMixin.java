@@ -76,6 +76,9 @@ public abstract class LivingEntityMixin extends Entity {
         if (hasEffect(new MobEffectInstance(effectRegistry.OVERWHELMED.get()).getEffect())) {
             cir.setReturnValue(false);
         }
+        if (hasEffect(new MobEffectInstance(effectRegistry.ALTERNATE_MODE.get()).getEffect())) {
+            cir.setReturnValue(false);
+        }
         if (hasEffect(new MobEffectInstance(effectRegistry.MELT.get()).getEffect())) {
             Random rand = new Random();
             int chance = rand.nextInt(101);
