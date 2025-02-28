@@ -21,6 +21,7 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> WHEAKENING;
     public static final RegistryObject<MobEffect> SPIRITUAL_BLOCK;
     public static final RegistryObject<MobEffect> ALTERNATE_MODE;
+    public static final RegistryObject<MobEffect> INTRUDER_MODE;
 
     public effectRegistry(){}
 
@@ -43,5 +44,6 @@ public class effectRegistry {
         WHEAKENING = registry.register("extreme_weakening", () -> new emptyEffect(MobEffectCategory.NEUTRAL, 258276));
         SPIRITUAL_BLOCK = registry.register("spiritual_blocking", () -> new emptyEffect(MobEffectCategory.BENEFICIAL, 13407025));
         ALTERNATE_MODE = registry.register("alternate_mode", () -> new AlternateModeEffect(MobEffectCategory.BENEFICIAL, 0));
+        INTRUDER_MODE = registry.register("intruder_mode", () -> new IntruderModeEffect(MobEffectCategory.BENEFICIAL, 0));
     }
 }

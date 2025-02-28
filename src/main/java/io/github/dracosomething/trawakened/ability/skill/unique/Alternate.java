@@ -9,6 +9,7 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
+import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
@@ -57,9 +58,7 @@ public class Alternate extends Skill {
         double var10000;
         CompoundTag tag = instance.getOrCreateTag();
         switch (instance.getMode()) {
-            case 1, 5 -> var10000 = 0;
-            case 2, 6 -> var10000 = 0;
-            case 3 -> var10000 = 1000;
+            case 3, 11 -> var10000 = 1000;
             case 7 -> var10000 = 100;
             case 4 -> var10000 = 250;
             case 8 -> var10000 = 105;
@@ -82,6 +81,7 @@ public class Alternate extends Skill {
             case 8 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.scare");
             case 9 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.hideous_laughter");
             case 10 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.alternate_mode");
+            case 11 -> var10000 = Component.translatable("trawakened.skill.mode.alternate.intruder_mode");
             default -> var10000 = Component.empty();
         }
 
@@ -95,7 +95,7 @@ public class Alternate extends Skill {
         if (!AwakenedFearCapability.GetIsAlternate(entity)) {
             if (reverse) {
                 switch (instance.getMode()) {
-                    case 1 -> var10000 = 3;
+                    case 1 -> var10000 = instance.isMastered(entity) ? 11 : 3;
                     case 2 -> var10000 = 1;
                     case 3 -> var10000 = 2;
                     default -> var10000 = 0;
@@ -106,7 +106,7 @@ public class Alternate extends Skill {
                 switch (instance.getMode()) {
                     case 1 -> var10000 = 2;
                     case 2 -> var10000 = 3;
-                    case 3 -> var10000 = 1;
+                    case 3 -> var10000 = instance.isMastered(entity) ? 4 : 1;
                     default -> var10000 = 0;
                 }
 
@@ -115,7 +115,7 @@ public class Alternate extends Skill {
         } else {
             if (reverse) {
                 switch (instance.getMode()) {
-                    case 4 -> var10000 = switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                    case 4 -> var10000 = instance.isMastered(entity) ? entity.hasEffect(effectRegistry.INTRUDER_MODE.get()) ? 3 : 11 : switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
                         case OVERDRIVEN -> 9;
                         case FLAWED -> 8;
                         case COMPLETE -> 10;
@@ -125,6 +125,12 @@ public class Alternate extends Skill {
                     case 6 -> var10000 = 5;
                     case 7 -> var10000 = 6;
                     case 8, 9, 10 -> var10000 = 7;
+                    case 11 -> var10000 = switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                        case OVERDRIVEN -> 9;
+                        case FLAWED -> 8;
+                        case COMPLETE -> 10;
+                        default -> 7;
+                    };
                     default -> var10000 = 0;
                 }
 
@@ -140,7 +146,8 @@ public class Alternate extends Skill {
                         case OVERDRIVEN -> 9;
                         default -> 4;
                     };
-                    case 8, 9, 10 -> var10000 = 4;
+                    case 8, 9, 10 -> var10000 = instance.isMastered(entity) ? 11 : 4;
+                    case 11 -> var10000 = entity.hasEffect(effectRegistry.INTRUDER_MODE.get()) ? 1 : 4;
                     default -> var10000 = 0;
                 }
                 return var10000;
@@ -231,23 +238,27 @@ public class Alternate extends Skill {
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
                     if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                         living.hurt(TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), living.getMaxHealth() * 10);
-                        AwakenedFearCapability.SetIsAlternate(entity, true);
-                        entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
-                        if(entity instanceof Player) {
-                            this.CopySkills(living, (Player) entity);
-                        }
-                        if (entity instanceof Player player) {
-                            if (!player.isCreative()) {
-                                player.getAbilities().mayfly = false;
-                                player.getAbilities().invulnerable = false;
-                                player.getAbilities().mayBuild = true;
-                                player.onUpdateAbilities();
+                        if (!(entity.hasEffect(effectRegistry.INTRUDER_MODE.get()))) {
+                            AwakenedFearCapability.SetIsAlternate(entity, true);
+                            entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                            if (entity instanceof Player) {
+                                this.CopySkills(living, (Player) entity);
                             }
+                            if (entity instanceof Player player) {
+                                if (!player.isCreative()) {
+                                    player.getAbilities().mayfly = false;
+                                    player.getAbilities().invulnerable = false;
+                                    player.getAbilities().mayBuild = true;
+                                    player.onUpdateAbilities();
+                                }
+                            }
+                            Assimilation assimilation = Assimilation.getRandomAssimilation();
+                            tag.put("assimilation", assimilation.toNBT());
+                            tag.put("alternate_type", assimilation.getType().toNBT());
+                            instance.setMode(4);
+                        } else if (living instanceof OtherworlderEntity) {
+                            tag.putBoolean("awakening", true);
                         }
-                        Assimilation assimilation = Assimilation.getRandomAssimilation();
-                        tag.put("assimilation", assimilation.toNBT());
-                        tag.put("alternate_type", assimilation.getType().toNBT());
-                        instance.setMode(4);
                         if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                             Iterator var9 = living.level.players().iterator();
 
@@ -291,7 +302,13 @@ public class Alternate extends Skill {
                 if (living != null) {
                     if (!SkillHelper.outOfMagicule(entity, instance)) {
                         if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
+                            float dmg = living.getHealth() - AwakenedFearCapability.getScared(living) * 5;
                             DamageSourceHelper.directSpiritualHurt(entity, living, TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
+                            if (living instanceof OtherworlderEntity) {
+                                if (dmg <= 0) {
+                                    tag.putBoolean("awakening", true);
+                                }
+                            }
                             if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
                                 Iterator var9 = living.level.players().iterator();
 
@@ -423,6 +440,19 @@ public class Alternate extends Skill {
                     entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
                     instance.setCoolDown(150);
                     instance.addMasteryPoint(entity);
+                }
+                break;
+            case 11:
+                if (!SkillHelper.outOfMagicule(entity, instance)) {
+                    SkillHelper.addEffectWithSource(entity, entity, effectRegistry.INTRUDER_MODE.get(), 1000, 1, true, false, false, false);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PHANTOM_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    if (entity instanceof Player) {
+                        Player player = (Player) entity;
+                        player.displayClientMessage(Component.translatable("trawakened.fear.inspiration").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
+                    }
+                    instance.setCoolDown(150);
                 }
                 break;
         }

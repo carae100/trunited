@@ -123,6 +123,7 @@
   "trawakened.skill.mode.alternate.scare": "Scare",
   "trawakened.skill.mode.alternate.hideous_laughter": "Hideous Laughter",
   "trawakened.skill.mode.alternate.alternate_mode": "Alternate Mode",
+  "trawakened.skill.mode.alternate.intruder_mode": "Metaphysical Plane",
 
   "trawakened.skill.primal_armor": "§3Primal Armor",
   "trawakened.skill.primal_armor.description": "§3Using the powerful new particle, the kojima particle, you are now able to empower your gear and release them in a powerful wave. However there seems to be something even more dangerous possible.",
@@ -267,6 +268,7 @@
   "trawakened.fear.trigger_objects": "Use this %1$s to scare %2$s.",
   "trawakened.fear.brave": "This creature has not been scared enough times.",
   "trawakened.fear.inspire_fear": "You have inspired fear in %d entities.",
+  "trawakened.fear.inspiration": "You realize that your now capable of possessing something more powerful.",
 
   "gamerule.fears": "Fear Penalty",
   "gamerule.fears.description": "Enables the fear penalties, enabling this game rule could lag out your game."

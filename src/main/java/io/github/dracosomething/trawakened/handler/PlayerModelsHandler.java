@@ -43,11 +43,21 @@ public class PlayerModelsHandler {
 
     @SubscribeEvent
     public static void modelChangeEvent(RenderPlayerEvent.Pre event) {
+        // checks if the event target is an abstract client player
         if (!(event.getEntity() instanceof AbstractClientPlayer)) return;
         final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
+        // checks if the player has the skill
         if (instance != null) {
+            // gets the skills tag
             CompoundTag tag = instance.getOrCreateTag();
+            // sets the nbt data isslim to the original is slim
             AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
+            // grabs the players alternate type
+            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == Alternate.AlternateType.INTRUDER) {
+                getModelIntruder(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+            }
+            // grabs the players assimilation
             Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
             if (assimilation == Alternate.Assimilation.COMPLETE) {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
@@ -64,10 +74,6 @@ public class PlayerModelsHandler {
                     player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, OverdrivenRenderer.TEXTURE);
                     getModelOverdriven(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
                 }
-            }
-            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
-            if (alternateType == Alternate.AlternateType.INTRUDER) {
-                getModelIntruder(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
             }
         }
     }
