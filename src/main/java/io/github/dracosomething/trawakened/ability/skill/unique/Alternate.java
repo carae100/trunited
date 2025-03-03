@@ -7,13 +7,13 @@ import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
-import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.helper.MathHelper;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.barrier.IntruderBarrier;
@@ -39,9 +39,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Alternate extends Skill {
     public Alternate() {
@@ -50,7 +48,7 @@ public class Alternate extends Skill {
 
     @Override
     public int modes() {
-        return 9;
+        return 11;
     }
 
     @Override
@@ -115,7 +113,7 @@ public class Alternate extends Skill {
         } else {
             if (reverse) {
                 switch (instance.getMode()) {
-                    case 4 -> var10000 = instance.isMastered(entity) ? entity.hasEffect(effectRegistry.INTRUDER_MODE.get()) ? 3 : 11 : switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                    case 4 -> var10000 = instance.isMastered(entity) ? entity.hasEffect(effectRegistry.INTRUDER_MODE.get()) ? 3 : 11 : switch (AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
                         case OVERDRIVEN -> 9;
                         case FLAWED -> 8;
                         case COMPLETE -> 10;
@@ -125,7 +123,7 @@ public class Alternate extends Skill {
                     case 6 -> var10000 = 5;
                     case 7 -> var10000 = 6;
                     case 8, 9, 10 -> var10000 = 7;
-                    case 11 -> var10000 = switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                    case 11 -> var10000 = switch (AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
                         case OVERDRIVEN -> 9;
                         case FLAWED -> 8;
                         case COMPLETE -> 10;
@@ -140,7 +138,7 @@ public class Alternate extends Skill {
                     case 4 -> var10000 = 5;
                     case 5 -> var10000 = 6;
                     case 6 -> var10000 = 7;
-                    case 7 -> var10000 = switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                    case 7 -> var10000 = switch (AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
                         case FLAWED -> 8;
                         case COMPLETE -> 10;
                         case OVERDRIVEN -> 9;
@@ -252,7 +250,7 @@ public class Alternate extends Skill {
                                     player.onUpdateAbilities();
                                 }
                             }
-                            Assimilation assimilation = Assimilation.getRandomAssimilation();
+                            AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
                             tag.put("assimilation", assimilation.toNBT());
                             tag.put("alternate_type", assimilation.getType().toNBT());
                             instance.setMode(4);
@@ -487,10 +485,10 @@ public class Alternate extends Skill {
                 }
             }
         } else {
-            switch (Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
-                case FLAWED -> Assimilation.flawedBuff(living);
-                case OVERDRIVEN -> Assimilation.overdrivenBuff(living);
-                case COMPLETE -> Assimilation.completeBuff(living);
+            switch (AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"))) {
+                case FLAWED -> AlternateType.Assimilation.flawedBuff(living);
+                case OVERDRIVEN -> AlternateType.Assimilation.overdrivenBuff(living);
+                case COMPLETE -> AlternateType.Assimilation.completeBuff(living);
             }
         }
     }
@@ -502,7 +500,7 @@ public class Alternate extends Skill {
             tag.putInt("original_scared", 0);
             tag.putBoolean("is_locked", false);
             AwakenedFearCapability.SetIsAlternate(event.getEntity(), false);
-            tag.put("alternate_type", AlternateType.INTRUDER.toNBT());
+            tag.put("alternate_type", io.github.dracosomething.trawakened.library.AlternateType.INTRUDER.toNBT());
         }
     }
 
@@ -511,7 +509,7 @@ public class Alternate extends Skill {
         AwakenedFearCapability.SetIsAlternate(living, false);
         instance.getOrCreateTag().putInt("original_scared", 0);
         instance.getOrCreateTag().putBoolean("is_locked", false);
-        instance.getOrCreateTag().put("alternate_type", AlternateType.INTRUDER.toNBT());
+        instance.getOrCreateTag().put("alternate_type", io.github.dracosomething.trawakened.library.AlternateType.INTRUDER.toNBT());
         if (living instanceof Player player) {
             player.displayClientMessage(Component.translatable("trawakened.fear.learn_self", new Object[]{AwakenedFearCapability.getFearType(player).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)), false);
         }
@@ -526,139 +524,6 @@ public class Alternate extends Skill {
                 System.out.println(skill);
                 SkillUtils.learnSkill(player, skill.getSkill());
             }
-        }
-    }
-
-    public enum AlternateType {
-        INTRUDER("intruder"),
-        DOPPELGANGER("doppelgänger"),
-        DETECTABLE("detectable"),
-        REDACTED("redacted");
-        private String name;
-
-        private AlternateType(String name) {
-            this.name = name;
-        }
-
-        private static final Map<String, AlternateType> ALTERNATETYPES_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((type) -> {
-            return cleanName(type.name);
-        }, (type) -> {
-            return type;
-        }));
-
-        private static String cleanName(String p_126663_) {
-            return p_126663_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        public static AlternateType getRandomType() {
-            List<AlternateType> list = List.of(values());
-            Random random = new Random();
-            return list.get(random.nextInt(0, list.size()));
-        }
-
-        public final CompoundTag toNBT() {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("name", name);
-            return tag;
-        }
-
-        @Nullable
-        private static AlternateType getByName(@Nullable String p_126658_) {
-            return p_126658_ == null ? null : (AlternateType) ALTERNATETYPES_BY_NAME.get(cleanName(p_126658_));
-        }
-
-        public static AlternateType fromNBT(CompoundTag tag) {
-            return getByName(tag.getString("name"));
-        }
-    }
-
-    public enum Assimilation {
-        FLAWED("flawed", AlternateType.REDACTED),
-        COMPLETE("complete", AlternateType.DOPPELGANGER),
-        OVERDRIVEN("overdriven", AlternateType.REDACTED);
-        private String name;
-        private AlternateType type;
-
-        private Assimilation(String name, AlternateType type) {
-            this.name = name;
-            this.type = type;
-        }
-
-        private static final Map<String, Assimilation> ASSIMILATION_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((assimilation) -> {
-            return cleanName(assimilation.name);
-        }, (assimilation) -> {
-            return assimilation;
-        }));
-
-        private static String cleanName(String p_126663_) {
-            return p_126663_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public AlternateType getType() {
-            return type;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        public static Assimilation getRandomAssimilation() {
-            Random random = new Random();
-            if (random.nextInt(0, 100) < 75) {
-                return random.nextInt(0, 100) < 75 ? Assimilation.FLAWED : Assimilation.OVERDRIVEN;
-            } else {
-                return Assimilation.COMPLETE;
-            }
-        }
-
-        @Nullable
-        private static Assimilation getByName(@Nullable String p_126658_) {
-            return p_126658_ == null ? null : (Assimilation) ASSIMILATION_BY_NAME.get(cleanName(p_126658_));
-        }
-
-        public final CompoundTag toNBT() {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("name", name);
-            tag.put("type", getType().toNBT());
-            return tag;
-        }
-
-        public static Assimilation fromNBT(CompoundTag tag) {
-            return getByName(tag.getString("name"));
-        }
-
-        public static void overdrivenBuff(LivingEntity entity) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 2, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 3, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 5, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false, false));
-        }
-
-        public static void completeBuff(LivingEntity entity) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 3, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 3, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 3, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false, false));
-        }
-
-        public static void flawedBuff(LivingEntity entity) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 1, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 1, false, false, false));
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 1, false, false, false));
         }
     }
 }

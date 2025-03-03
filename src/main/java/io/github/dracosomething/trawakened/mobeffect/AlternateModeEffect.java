@@ -4,7 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.effect.template.TensuraMobEffect;
 import com.github.manasmods.tensura.effect.template.Transformation;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,7 +18,7 @@ public class AlternateModeEffect extends TensuraMobEffect implements Transformat
         super(pCategory, pColor);
     }
 
-    private Alternate.Assimilation assimilationSave;
+    private AlternateType.Assimilation assimilationSave;
 
     @Override
     public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int value) {
@@ -27,11 +27,11 @@ public class AlternateModeEffect extends TensuraMobEffect implements Transformat
         System.out.println(instance);
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
             System.out.println(assimilation);
             if (assimilation != null) {
                 Random random = new Random();
-                Alternate.Assimilation newAssimailation = random.nextInt(1, 3) == 1? Alternate.Assimilation.FLAWED : Alternate.Assimilation.OVERDRIVEN;
+                AlternateType.Assimilation newAssimailation = random.nextInt(1, 3) == 1? AlternateType.Assimilation.FLAWED : AlternateType.Assimilation.OVERDRIVEN;
                 System.out.println(newAssimailation.getName());
                 tag.put("assimilation", newAssimailation.toNBT());
                 assimilationSave = assimilation;
@@ -45,18 +45,18 @@ public class AlternateModeEffect extends TensuraMobEffect implements Transformat
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
             if (assimilation != null) {
-                tag.put("assimilation", Alternate.Assimilation.COMPLETE.toNBT());
+                tag.put("assimilation", AlternateType.Assimilation.COMPLETE.toNBT());
             }
         }
     }
 
-    public Alternate.Assimilation getAssimilationSave() {
+    public AlternateType.Assimilation getAssimilationSave() {
         return assimilationSave;
     }
 
-    public void setAssimilationSave(Alternate.Assimilation assimilationSave) {
+    public void setAssimilationSave(AlternateType.Assimilation assimilationSave) {
         this.assimilationSave = assimilationSave;
     }
 }

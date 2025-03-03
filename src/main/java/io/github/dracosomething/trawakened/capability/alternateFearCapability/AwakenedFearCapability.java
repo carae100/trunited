@@ -4,11 +4,13 @@ import com.github.manasmods.tensura.handler.CapabilityHandler;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
@@ -141,11 +143,13 @@ public class AwakenedFearCapability implements IFearCapability{
     }
 
     public static void increaseScared(LivingEntity entity) {
-        setScared(entity, getScared(entity) + 1);
+        MobEffectInstance instance = entity.getEffect(effectRegistry.FEAR_AMPLIFICATION.get());
+        setScared(entity, getScared(entity) + (entity.hasEffect(effectRegistry.FEAR_AMPLIFICATION.get()) ? instance.getAmplifier()+1 : 1));
     }
 
     public static void decreaseCooldown(LivingEntity entity) {
-        setScaredCooldown(entity, getScaredCooldown(entity) - 1);
+        MobEffectInstance instance = entity.getEffect(effectRegistry.FEAR_AMPLIFICATION.get());
+        setScaredCooldown(entity, getScaredCooldown(entity) - (entity.hasEffect(effectRegistry.FEAR_AMPLIFICATION.get()) ? instance.getAmplifier()+1 : 1));
     }
 
     public static boolean onCooldown(LivingEntity entity) {

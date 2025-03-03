@@ -2,8 +2,8 @@ package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
@@ -140,8 +140,8 @@ public abstract class LivingEntityMixin extends Entity {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(((LivingEntity) (Object) this), skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.OVERDRIVEN || assimilation == Alternate.Assimilation.FLAWED) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.OVERDRIVEN || assimilation == AlternateType.Assimilation.FLAWED) {
                 cir.setReturnValue(MobType.ILLAGER);
             }
         }

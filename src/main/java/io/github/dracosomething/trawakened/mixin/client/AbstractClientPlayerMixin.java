@@ -3,8 +3,8 @@ package io.github.dracosomething.trawakened.mixin.client;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.mojang.authlib.GameProfile;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.entity.client.renderer.CustomPlayerRenderer.*;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
@@ -43,14 +43,14 @@ public class AbstractClientPlayerMixin extends Player {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.FLAWED) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.FLAWED) {
                 FlawedPlayerRenderer.getFlawedRenderer(((AbstractClientPlayer) (Object) this)).ifPresent(cir::setReturnValue);
             } else {
                 OverdrivenPlayerRenderer.getOverdrivenRenderer(((AbstractClientPlayer) (Object) this)).ifPresent(cir::setReturnValue);
             }
-            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
-            if (alternateType == Alternate.AlternateType.INTRUDER) {
+            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == AlternateType.INTRUDER) {
                 IntruderPlayerRenderer.getIntruderRenderer(((AbstractClientPlayer) (Object) this)).ifPresent(cir::setReturnValue);
             }
         }

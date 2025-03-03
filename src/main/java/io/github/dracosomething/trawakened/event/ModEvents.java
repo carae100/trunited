@@ -12,11 +12,11 @@ import com.github.manasmods.tensura.registry.items.TensuraArmorItems;
 import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.ability.skill.unique.voiceofhonkai;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.entity.otherwolder.*;
 import io.github.dracosomething.trawakened.helper.EngravingHelper;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
@@ -24,10 +24,10 @@ import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -199,9 +199,9 @@ public class ModEvents {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 CompoundTag tag = instance.getOrCreateTag();
-                Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
+                AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
                 if (assimilation != null) {
-                    tag.put("assimilation", Alternate.Assimilation.COMPLETE.toNBT());
+                    tag.put("assimilation", AlternateType.Assimilation.COMPLETE.toNBT());
                 }
             }
         }
@@ -234,9 +234,27 @@ public class ModEvents {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            Alternate.AlternateType alternateType = Alternate.AlternateType.fromNBT(tag.getCompound("alternate_type"));
-            if (alternateType == Alternate.AlternateType.INTRUDER) {
+            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == AlternateType.INTRUDER) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void attackAlternate(LivingChangeTargetEvent event) {
+        LivingEntity alternate = event.getEntity().level.getNearestPlayer(TargetingConditions.forNonCombat(), event.getEntity(), event.getEntity().getX(), event.getEntity().getEyeY(), event.getEntity().getZ());
+        System.out.println(alternate);
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillRegistry.ALTERNATE.get());
+        System.out.println(instance);
+        if (instance != null) {
+            CompoundTag tag = instance.getOrCreateTag();
+            System.out.println(tag);
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
+            System.out.println(assimilation);
+            if (assimilation == AlternateType.Assimilation.OVERDRIVEN || assimilation == AlternateType.Assimilation.FLAWED) {
+                event.setNewTarget(alternate);
+                System.out.println(event.getNewTarget());
             }
         }
     }

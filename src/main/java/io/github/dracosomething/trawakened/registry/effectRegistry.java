@@ -22,6 +22,7 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> SPIRITUAL_BLOCK;
     public static final RegistryObject<MobEffect> ALTERNATE_MODE;
     public static final RegistryObject<MobEffect> INTRUDER_MODE;
+    public static final RegistryObject<MobEffect> FEAR_AMPLIFICATION;
 
     public effectRegistry(){}
 
@@ -45,5 +46,6 @@ public class effectRegistry {
         SPIRITUAL_BLOCK = registry.register("spiritual_blocking", () -> new emptyEffect(MobEffectCategory.BENEFICIAL, 13407025));
         ALTERNATE_MODE = registry.register("alternate_mode", () -> new AlternateModeEffect(MobEffectCategory.BENEFICIAL, 0));
         INTRUDER_MODE = registry.register("intruder_mode", () -> new IntruderModeEffect(MobEffectCategory.BENEFICIAL, 0));
+        FEAR_AMPLIFICATION = registry.register("fear_amplification", () -> new emptyEffect(MobEffectCategory.HARMFUL, 4343629));
     }
 }

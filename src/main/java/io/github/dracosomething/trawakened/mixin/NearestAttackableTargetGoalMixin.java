@@ -2,7 +2,7 @@ package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,15 +34,20 @@ public class NearestAttackableTargetGoalMixin extends TargetGoal {
             at = @At("HEAD")
     )
     private void AlternateTarget(CallbackInfo ci) {
-        LivingEntity alternate = ((NearestAttackableTargetGoal<?>)(Object)this).mob.level.getNearestPlayer(this.targetConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillRegistry.ALTERNATE.get());
-        if (instance != null) {
-            CompoundTag tag = instance.getOrCreateTag();
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(tag.getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.OVERDRIVEN || assimilation == Alternate.Assimilation.FLAWED) {
-                this.target = alternate;
-            }
-        }
+//        LivingEntity alternate = ((NearestAttackableTargetGoal<?>)(Object)this).mob.level.getNearestPlayer(this.targetConditions, this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
+//        System.out.println(alternate);
+//        ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillRegistry.ALTERNATE.get());
+//        System.out.println(instance);
+//        if (instance != null) {
+//            CompoundTag tag = instance.getOrCreateTag();
+//            System.out.println(tag);
+//            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
+//            System.out.println(assimilation);
+//            if (assimilation == AlternateType.Assimilation.OVERDRIVEN || assimilation == AlternateType.Assimilation.FLAWED) {
+//                this.target = alternate;
+//                System.out.println(this.target);
+//            }
+//        }
     }
 
     @Override

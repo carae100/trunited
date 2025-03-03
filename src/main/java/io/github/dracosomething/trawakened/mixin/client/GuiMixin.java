@@ -9,7 +9,7 @@ import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.client.player.LocalPlayer;
@@ -81,8 +81,8 @@ public class GuiMixin {
     private static int HealthNormalIfAlternate(int value) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 return 20;
             }
         }
@@ -100,8 +100,8 @@ public class GuiMixin {
     private static int SpiritualNormalIfAlternate(int value) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 return 60;
             }
         }
@@ -119,8 +119,8 @@ public class GuiMixin {
     private static int ArmorNormalIfAlternate(int value) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 return 0;
             }
         }
@@ -138,8 +138,8 @@ public class GuiMixin {
     private static int MPNormalIfAlternate(int value) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 return 0;
             }
         }
@@ -157,8 +157,8 @@ public class GuiMixin {
     private static Race RaceHumanifAlternate(Race value) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 return TensuraRaces.HUMAN.get();
             }
         }
@@ -177,8 +177,8 @@ public class GuiMixin {
     private static void MPNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 Random random = new Random();
                 mana.set(random.nextInt(50, 70));
             }
@@ -198,8 +198,8 @@ public class GuiMixin {
     private static void APNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 7) LocalIntRef i) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 Random random = new Random();
                 i.set(random.nextInt(760, 1140));
             }
@@ -219,8 +219,8 @@ public class GuiMixin {
     private static void SetNoAlternate(LivingEntity target, int level, CallbackInfo ci, @Local LocalRef<ManasSkill> skill) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 if (skill == skillRegistry.ALTERNATE.get()) {
                     skill.set(null);
                 }
@@ -242,8 +242,8 @@ public class GuiMixin {
     private static void EPNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana, @Local(ordinal = 7) LocalIntRef i, @Local(ordinal = 0) LocalRef<String> var10000, @Local LocalRef<String> text) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 int ep = mana.get()+ i.get();
                 var10000.set(Component.translatable("tensura.attribute.existence_points.shortened_name").getString() + ":" + (ep));
             }
@@ -263,8 +263,8 @@ public class GuiMixin {
     private static void EPNormalIfAlternateMob(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana, @Local(ordinal = 7) LocalIntRef i, @Local(ordinal = -1) LocalRef<String> var10000) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
         if (instance != null) {
-            Alternate.Assimilation assimilation = Alternate.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
-            if (assimilation == Alternate.Assimilation.COMPLETE) {
+            AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
+            if (assimilation == AlternateType.Assimilation.COMPLETE) {
                 int ep = mana.get()+ i.get();
                 var10000.set(Component.translatable("tensura.attribute.existence_points.shortened_name").getString() + ":" + (ep));
             }
