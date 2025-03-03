@@ -32,6 +32,7 @@ public class skillRegistry {
     public static final RegistryObject<akashic_plane> AKASHIC_PLANE;
     public static final RegistryObject<PrimalArmor> PRIMAL_ARMOR;
     public static final RegistryObject<Alternate> ALTERNATE;
+    public static final RegistryObject<falseGabriel> FALSE_GABRIEL;
 
     public skillRegistry() {
     }
@@ -55,5 +56,6 @@ public class skillRegistry {
         AKASHIC_PLANE = registry.register("akashic_plane", akashic_plane::new);
         PRIMAL_ARMOR = registry.register("primal_armor", PrimalArmor::new);
         ALTERNATE = registry.register("alternate", Alternate::new);
+        FALSE_GABRIEL = registry.register("false_gabriel", falseGabriel::new);
     }
 }
