@@ -11,17 +11,14 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.entity.human.CloneEntity;
-import com.github.manasmods.tensura.event.NamingEvent;
 import com.github.manasmods.tensura.network.play2server.RequestNamingGUIPacket;
-import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
-import com.github.manasmods.tensura.util.TensuraAdvancementsHelper;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.skillCapability;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
@@ -39,10 +36,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -51,11 +46,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -186,7 +178,7 @@ public class azazel extends Skill {
                                     if (!SkillHelper.outOfMagicule(entity, EP)) {
                                         if (entity2 instanceof Player player && player != entity) {
                                             BlockHitResult result = SkillHelper.getPlayerPOVHitResult(player.level, player, ClipContext.Fluid.NONE, 0.0);
-                                            CloneEntity clone = this.summonClone(player, entity, level, EP, result.getLocation());
+                                            CloneEntity clone = skillHelper.summonClone(player, entity, level, EP, result.getLocation(), this);
                                             CloneEntity.copyEffects(player, clone);
                                             EquipmentSlot[] var10 = EquipmentSlot.values();
                                             int var11 = var10.length;
@@ -213,7 +205,7 @@ public class azazel extends Skill {
                                                 double ep = TensuraEPCapability.getEP((LivingEntity) entity2);
                                                 TensuraEPCapability.setLivingEP((LivingEntity) entity2, 100);
                                                 assert entity instanceof ServerPlayer;
-                                                name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
+                                                skillHelper.name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
                                                 entity2.setCustomName(Component.empty());
                                                 entity2.setCustomNameVisible(true);
                                                 TensuraEPCapability.setLivingEP((LivingEntity) entity2, ep);
@@ -361,7 +353,7 @@ public class azazel extends Skill {
                         entity1.setPos(lookVec);
                         System.out.println(entity1.getPosition(1.0F));
                         level.addFreshEntity(entity1);
-                        name((LivingEntity) entity1, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
+                        skillHelper.name((LivingEntity) entity1, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
                         entity.getPersistentData().putInt("assimilation_kills", entity.getPersistentData().getInt("assimilation_kills")-1);
                         instance.addMasteryPoint(entity);
                     }
@@ -394,72 +386,6 @@ public class azazel extends Skill {
                 instance.markDirty();
             }
         }
-    }
-
-    public static void name(LivingEntity sub, @Nullable ServerPlayer owner, RequestNamingGUIPacket.NamingType type, String name) {
-        double var20000;
-        if (sub instanceof Player player) {
-            var20000 = TensuraPlayerCapability.getBaseEP(player);
-        } else {
-            var20000 = TensuraEPCapability.getEP(sub);
-        }
-
-        double subEP = var20000;
-        TensuraEPCapability.getFrom(sub).ifPresent((namingCap) -> {
-            double var10000 = 0;
-
-            double originalCost = var10000;
-            NamingEvent event = new NamingEvent(sub, owner, originalCost, type, name);
-            if (!MinecraftForge.EVENT_BUS.post(event)) {
-                originalCost = event.getOriginalCost();
-                double cost = Math.min(event.getCalculatedCost(), (Double) TensuraConfig.INSTANCE.namingConfig.maxCost.get());
-                if (owner != null && TensuraPlayerCapability.getMagicule(owner) < cost) {
-                    owner.displayClientMessage(Component.translatable("tensura.skill.lack_magicule").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                } else {
-                    namingCap.setName(event.getName());
-                    sub.setCustomName(Component.literal(event.getName()));
-                    if (owner != null) {
-                        namingCap.setPermanentOwner(owner.getUUID());
-                        TensuraAdvancementsHelper.grant(owner, TensuraAdvancementsHelper.Advancements.NAME_A_MOB);
-                    }
-                    if (sub instanceof Player) {
-                        Player player = (Player)sub;
-                        player.refreshDisplayName();
-                        if (owner != null) {
-                            player.displayClientMessage(Component.translatable("tensura.naming.name_success", new Object[]{event.getName(), owner.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                        } else {
-                            player.displayClientMessage(Component.translatable("tensura.naming.name_success.no_namer", new Object[]{event.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                        }
-
-                        TensuraPlayerCapability.setTrackedRace(player, (Race)null);
-                        TensuraPlayerCapability.sync(player);
-                        TensuraEPCapability.sync(player);
-                    } else if (owner != null) {
-                        label45: {
-                            if (sub instanceof TamableAnimal) {
-                                TamableAnimal tamable = (TamableAnimal)sub;
-                                if (!ForgeEventFactory.onAnimalTame(tamable, owner)) {
-                                    tamable.tame(owner);
-                                    break label45;
-                                }
-                            }
-
-                            if (sub instanceof AbstractHorse) {
-                                AbstractHorse horse = (AbstractHorse)sub;
-                                if (!ForgeEventFactory.onAnimalTame(horse, owner)) {
-                                    horse.tameWithName(owner);
-                                }
-                            }
-                        }
-                    }
-
-                    sub.heal(sub.getMaxHealth());
-                    SkillHelper.removePredicateEffect(sub, (effect) -> {
-                        return effect.getCategory().equals(MobEffectCategory.HARMFUL);
-                    });
-                }
-            }
-        });
     }
 
     private void createLineParticles(Level pLevel, LivingEntity pLivingEntity,double length) {
@@ -750,27 +676,6 @@ public class azazel extends Skill {
                 });
             }
         }
-    }
-
-    private CloneEntity summonClone(LivingEntity entity, LivingEntity owner, Level level, double EP, Vec3 position) {
-        EntityType<CloneEntity> type = entity.isShiftKeyDown() ? (EntityType) TensuraEntityTypes.CLONE_SLIM.get() : (EntityType)TensuraEntityTypes.CLONE_DEFAULT.get();
-        CloneEntity clone = new CloneEntity(type, level);
-        if (owner instanceof Player player) {
-            clone.tame(player);
-        }
-
-        clone.setSkill(this);
-        clone.copyStatsAndSkills(entity, true);
-        TensuraEPCapability.setLivingEP(clone, EP);
-        clone.setHealth(clone.getMaxHealth());
-        clone.setPos(position);
-        CloneEntity.copyRotation(entity, clone);
-        level.addFreshEntity(clone);
-        TensuraParticleHelper.addServerParticlesAroundSelf(owner, particleRegistry.FLESHPARTICLE.get(), 1.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(owner, particleRegistry.FLESHPARTICLE.get(), 2.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 1.0);
-        TensuraParticleHelper.addServerParticlesAroundSelf(entity, particleRegistry.FLESHPARTICLE.get(), 2.0);
-        return clone;
     }
 
     private List<Entity> DrawCircle(LivingEntity entity, int radius, boolean allie_check){

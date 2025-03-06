@@ -125,6 +125,16 @@
   "trawakened.skill.mode.alternate.alternate_mode": "Alternate Mode",
   "trawakened.skill.mode.alternate.intruder_mode": "Metaphysical Plane",
 
+  "trawakened.skill.false_gabriel": "False Gabriël",
+  "trawakened.skill.false_gabriel.description": "",
+
+  "trawakened.skill.mode.false_gabriel.create_alternates": "Alternate Army",
+  "trawakened.skill.mode.false_gabriel.suicide": "Suicidal Laughter",
+  "trawakened.skill.mode.false_gabriel.metaphysical_plane": "Metaphysical Plane",
+  "trawakened.skill.mode.false_gabriel.scare": "Scare",
+  "trawakened.skill.mode.false_gabriel.new_fear": "New Fear",
+  "trawakened.skill.mode.false_gabriel.convert": "Convert",
+
   "trawakened.skill.primal_armor": "§3Primal Armor",
   "trawakened.skill.primal_armor.description": "§3Using the powerful new particle, the kojima particle, you are now able to empower your gear and release them in a powerful wave. However there seems to be something even more dangerous possible.",
 
