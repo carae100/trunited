@@ -4,6 +4,9 @@ import io.github.dracosomething.trawakened.library.FearTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.Cancelable;
 
+/**
+ * Fires when an entities fear cooldown decreases
+ */
 @Cancelable
 public class FearCooldownEvent extends FearEvent {
     private int cooldown;

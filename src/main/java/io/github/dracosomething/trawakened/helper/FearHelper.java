@@ -199,13 +199,14 @@ public class FearHelper extends SightHelper{
                 blockCheck(blocks, entity, blocksInSight);
                 itemCheck(items, entity, entities);
             }
+            FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
+            MinecraftForge.EVENT_BUS.post(event);
         } else {
             // decreases cooldown every second
             AwakenedFearCapability.decreaseCooldown(entity);
+            FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
+            MinecraftForge.EVENT_BUS.post(event);
         }
-
-        FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
-        MinecraftForge.EVENT_BUS.post(event);
     }
 
     public static void effectCheck(List<MobEffect> mobEffects, LivingEntity entity) {
@@ -298,9 +299,10 @@ public class FearHelper extends SightHelper{
 
     private static void ActivateScared(LivingEntity entity) {
         int oldScared = AwakenedFearCapability.getScared(entity);
-        AwakenedFearCapability.increaseScared(entity);
-        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
         FearActivateEvent event = new FearActivateEvent(AwakenedFearCapability.getFearType(entity), entity, oldScared, AwakenedFearCapability.getScared(entity));
-        MinecraftForge.EVENT_BUS.post(event);
+        if (!MinecraftForge.EVENT_BUS.post(event)) {
+            AwakenedFearCapability.increaseScared(entity);
+            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+        }
     }
 }

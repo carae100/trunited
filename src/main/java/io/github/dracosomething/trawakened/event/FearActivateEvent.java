@@ -4,6 +4,9 @@ import io.github.dracosomething.trawakened.library.FearTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.Cancelable;
 
+/**
+ * Fires when an entity gets scared
+ */
 @Cancelable
 public class FearActivateEvent extends FearEvent {
     private int oldScared;

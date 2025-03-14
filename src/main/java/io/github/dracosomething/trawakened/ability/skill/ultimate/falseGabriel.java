@@ -116,76 +116,20 @@ public class falseGabriel extends Skill {
                         } else {
                             Entity CloneAsEntity = skillHelper.cloneMob(entity, living.getType());
                             if (CloneAsEntity instanceof LivingEntity Clone) {
-                if (SkillHelper.outOfMagicule(entity, instance)) {
-                    for (Entity creature : entityList) {
-                        if (creature instanceof LivingEntity living) {
-                            if (living instanceof Player player) {
-                                LivingEntity Clone = skillHelper.summonClone(player, entity, entity.level, TensuraPlayerCapability.getBaseMagicule(player), new Vec3(player.getX(), player.getY(), player.getZ()), this);
                                 SkillUtils.learnSkill(Clone, skillRegistry.ALTERNATE.get());
                                 ManasSkillInstance alternate = SkillUtils.getSkillOrNull(Clone, skillRegistry.ALTERNATE.get());
-                                CompoundTag tag = alternate.getOrCreateTag();
+                                CompoundTag tagAlternate = alternate.getOrCreateTag();
                                 AwakenedFearCapability.SetIsAlternate(entity, true);
                                 entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
                                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
-                                tag.put("assimilation", assimilation.toNBT());
-                                tag.put("alternate_type", assimilation.getType().toNBT());
-                            } else {
-                                Entity CloneAsEntity = skillHelper.cloneMob(entity, living.getType());
-                                if (CloneAsEntity instanceof LivingEntity Clone) {
-                                    SkillUtils.learnSkill(Clone, skillRegistry.ALTERNATE.get());
-                                    ManasSkillInstance alternate = SkillUtils.getSkillOrNull(Clone, skillRegistry.ALTERNATE.get());
-                                    CompoundTag tag = alternate.getOrCreateTag();
-                                    AwakenedFearCapability.SetIsAlternate(entity, true);
-                                    entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
-                                    AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
-                                    tag.put("assimilation", assimilation.toNBT());
-                                    tag.put("alternate_type", assimilation.getType().toNBT());
-                                }
+                                tagAlternate.put("assimilation", assimilation.toNBT());
+                                tagAlternate.put("alternate_type", assimilation.getType().toNBT());
                             }
                         }
                     }
                 }
                 break;
             case 2:
-                if (!entityList.isEmpty()) {
-                    if (!SkillHelper.outOfMagicule(entity, instance)) {
-                        for (Entity entity1 : entityList) {
-                            if (entity1 instanceof LivingEntity living) {
-                                if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
-                                    float dmg = living.getHealth() - AwakenedFearCapability.getScared(living) * 5;
-                                    DamageSourceHelper.directSpiritualHurt(entity, living, TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
-                                    if (living instanceof OtherworlderEntity) {
-                                        if (dmg <= 0) {
-                                            tag.putBoolean("awakening", true);
-                                        }
-                                    }
-                                    if (living.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
-                                        Iterator var9 = living.level.players().iterator();
-
-                                        while (var9.hasNext()) {
-                                            Player everyone = (Player) var9.next();
-                                            if (everyone != entity) {
-                                                everyone.sendSystemMessage(Component.translatable("trawakened.fake_attack.suicide", new Object[]{living}));
-                                            }
-                                        }
-                                    }
-                                    instance.setCoolDown(250);
-                                    instance.addMasteryPoint(entity);
-                                } else {
-                                    if (entity instanceof Player player) {
-                                        player.displayClientMessage(Component.translatable("trawakened.fear.brave").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (entity instanceof Player) {
-                        Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                    }
-                }
-                break;
                 if (SkillHelper.outOfMagicule(entity, instance)) {
                     if (!entityList.isEmpty()) {
                         if (!SkillHelper.outOfMagicule(entity, instance)) {

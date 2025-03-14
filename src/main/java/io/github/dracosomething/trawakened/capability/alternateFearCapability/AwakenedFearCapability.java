@@ -1,7 +1,6 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
 import com.github.manasmods.tensura.handler.CapabilityHandler;
-import io.github.dracosomething.trawakened.event.AcquireFearEvent;
 import io.github.dracosomething.trawakened.event.FearCooldownEvent;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
@@ -150,10 +149,11 @@ public class AwakenedFearCapability implements IFearCapability{
     }
 
     public static void decreaseCooldown(LivingEntity entity) {
-        MobEffectInstance instance = entity.getEffect(effectRegistry.FEAR_AMPLIFICATION.get());
-        setScaredCooldown(entity, getScaredCooldown(entity) - (entity.hasEffect(effectRegistry.FEAR_AMPLIFICATION.get()) ? instance.getAmplifier()+1 : 1));
         FearCooldownEvent event = new FearCooldownEvent(getFearType(entity), entity, getScaredCooldown(entity));
-        MinecraftForge.EVENT_BUS.post(event);
+        if (!MinecraftForge.EVENT_BUS.post(event)) {
+            MobEffectInstance instance = entity.getEffect(effectRegistry.FEAR_AMPLIFICATION.get());
+            setScaredCooldown(entity, getScaredCooldown(entity) - (entity.hasEffect(effectRegistry.FEAR_AMPLIFICATION.get()) ? instance.getAmplifier() + 1 : 1));
+        }
     }
 
     public static boolean onCooldown(LivingEntity entity) {
