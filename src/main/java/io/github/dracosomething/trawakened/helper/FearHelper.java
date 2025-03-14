@@ -5,6 +5,9 @@ import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import io.github.dracosomething.trawakened.event.FearActivateEvent;
+import io.github.dracosomething.trawakened.event.FearEvent;
+import io.github.dracosomething.trawakened.event.FearPenaltyEvent;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 
@@ -129,17 +133,31 @@ public class FearHelper extends SightHelper{
     }
 
     public static void addFearPenaltyEffect(LivingEntity entity, List<MobEffect> mobEffects, int amplifier) {
-        for (MobEffect mobEffect : mobEffects) {
-            SkillHelper.addEffectWithSource(entity, entity, mobEffect, 5000, amplifier, false, false, false, false);
+        FearPenaltyEvent.FearPenaltyEffectEvent.Pre preEvent = new FearPenaltyEvent.FearPenaltyEffectEvent.Pre(AwakenedFearCapability.getFearType(entity), entity, mobEffects);
+        if (!MinecraftForge.EVENT_BUS.post(preEvent)) {
+            FearPenaltyEvent.FearPenaltyEffectEvent event = new FearPenaltyEvent.FearPenaltyEffectEvent(AwakenedFearCapability.getFearType(entity), entity, mobEffects);
+            MinecraftForge.EVENT_BUS.post(event);
+            for (MobEffect mobEffect : mobEffects) {
+                SkillHelper.addEffectWithSource(entity, entity, mobEffect, 5000, amplifier, false, false, false, false);
+            }
+            FearPenaltyEvent.FearPenaltyEffectEvent.Post postEvent = new FearPenaltyEvent.FearPenaltyEffectEvent.Post(AwakenedFearCapability.getFearType(entity), entity, mobEffects);
+            MinecraftForge.EVENT_BUS.post(postEvent);
         }
     }
 
     public static void decreaseSHP(LivingEntity entity, int amount) {
-        if(entity.getAttributes().getInstance(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()) != null) {
-            entity.getAttributes().getInstance(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()).setBaseValue(entity.getAttributeBaseValue(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()) - amount);
+        FearPenaltyEvent.FearPenaltySHPEvent.Pre preEvent = new FearPenaltyEvent.FearPenaltySHPEvent.Pre(AwakenedFearCapability.getFearType(entity), entity, amount, entity.getAttributeBaseValue(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()));
+        if (!MinecraftForge.EVENT_BUS.post(preEvent)) {
+            FearPenaltyEvent.FearPenaltySHPEvent event = new FearPenaltyEvent.FearPenaltySHPEvent(AwakenedFearCapability.getFearType(entity), entity, amount);
+            MinecraftForge.EVENT_BUS.post(event);
+            if (entity.getAttributes().getInstance(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()) != null) {
+                entity.getAttributes().getInstance(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()).setBaseValue(entity.getAttributeBaseValue(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()) - amount);
+            }
+            FearPenaltyEvent.FearPenaltySHPEvent.Post postEvent = new FearPenaltyEvent.FearPenaltySHPEvent.Post(AwakenedFearCapability.getFearType(entity), entity, amount, entity.getAttributeBaseValue(TensuraAttributeRegistry.MAX_SPIRITUAL_HEALTH.get()));
+            MinecraftForge.EVENT_BUS.post(postEvent);
+            AwakenedFearCapability.increaseScared(entity);
+            AwakenedFearCapability.setScaredCooldown(entity, 9000);
         }
-        AwakenedFearCapability.increaseScared(entity);
-        AwakenedFearCapability.setScaredCooldown(entity, 9000);
     }
 
     public static void resetData(LivingEntity entity) {
@@ -185,14 +203,16 @@ public class FearHelper extends SightHelper{
             // decreases cooldown every second
             AwakenedFearCapability.decreaseCooldown(entity);
         }
+
+        FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
+        MinecraftForge.EVENT_BUS.post(event);
     }
 
     public static void effectCheck(List<MobEffect> mobEffects, LivingEntity entity) {
         if (mobEffects != null) {
             for (MobEffect effect : mobEffects) {
                 if (entity.hasEffect(effect) && !AwakenedFearCapability.onCooldown(entity) && !AwakenedFearCapability.onCooldown(entity)) {
-                    AwakenedFearCapability.increaseScared(entity);
-                    AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                    ActivateScared(entity);
                 }
             }
         }
@@ -203,8 +223,7 @@ public class FearHelper extends SightHelper{
             for (EntityType<?> entityType : entityTypes) {
                 for (Entity entity1 : entities) {
                     if (entity1.getType().equals(entityType) && !AwakenedFearCapability.onCooldown(entity)) {
-                        AwakenedFearCapability.increaseScared(entity);
-                        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                        ActivateScared(entity);
                     }
                 }
             }
@@ -216,8 +235,7 @@ public class FearHelper extends SightHelper{
             for (Block block : blocks) {
                 for (BlockPos blockPos : blocksInSight) {
                     if (entity.level.getBlockState(blockPos).getBlock().equals(block) && !AwakenedFearCapability.onCooldown(entity)) {
-                        AwakenedFearCapability.increaseScared(entity);
-                        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                        ActivateScared(entity);
                         break;
                     }
                 }
@@ -230,15 +248,13 @@ public class FearHelper extends SightHelper{
             for (Item item : items) {
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     if (entity.getItemBySlot(slot).getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
-                        AwakenedFearCapability.increaseScared(entity);
-                        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                        ActivateScared(entity);
                     }
                 }
                 for (Entity entity1 : entities) {
                     if (entity1 instanceof ItemEntity itemEntity) {
                         if (itemEntity.getItem().getItem().equals(item) && !AwakenedFearCapability.onCooldown(entity)) {
-                            AwakenedFearCapability.increaseScared(entity);
-                            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                            ActivateScared(entity);
                         }
                     }
                 }
@@ -252,8 +268,7 @@ public class FearHelper extends SightHelper{
                 for (Entity entity1 : entities) {
                     if (entity1 instanceof LivingEntity living && !AwakenedFearCapability.onCooldown(entity)) {
                         if (SkillUtils.hasSkill(entity1, skillRegistry.ALTERNATE.get())) {
-                            AwakenedFearCapability.increaseScared(entity);
-                            AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                            ActivateScared(entity);
                         }
                     }
                 }
@@ -264,8 +279,7 @@ public class FearHelper extends SightHelper{
                 Iterable<BlockPos> oceanBlocksAround = BlockPos.betweenClosed(new BlockPos(oceanStart), new BlockPos(oceanEnd));
                 for (BlockPos blockPos : oceanBlocksAround) {
                     if (entity.level.getBlockState(blockPos).getBlock().equals(Blocks.WATER)) {
-                        AwakenedFearCapability.increaseScared(entity);
-                        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                        ActivateScared(entity);
                     }
                     return false;
                 }
@@ -274,12 +288,19 @@ public class FearHelper extends SightHelper{
                 return false;
             case HEIGHT:
                 if (entity.getY() >= 200) {
-                    AwakenedFearCapability.increaseScared(entity);
-                    AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+                    ActivateScared(entity);
                 }
                 return false;
             default:
                 return true;
         }
+    }
+
+    private static void ActivateScared(LivingEntity entity) {
+        int oldScared = AwakenedFearCapability.getScared(entity);
+        AwakenedFearCapability.increaseScared(entity);
+        AwakenedFearCapability.setScaredCooldown(entity, AwakenedFearCapability.getScared(entity) <= 3 ? 6000 : 9000);
+        FearActivateEvent event = new FearActivateEvent(AwakenedFearCapability.getFearType(entity), entity, oldScared, AwakenedFearCapability.getScared(entity));
+        MinecraftForge.EVENT_BUS.post(event);
     }
 }

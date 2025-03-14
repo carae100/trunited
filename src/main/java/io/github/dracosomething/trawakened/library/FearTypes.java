@@ -4,6 +4,7 @@ import com.github.manasmods.tensura.registry.blocks.TensuraBlocks;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Lists;
+import io.github.dracosomething.trawakened.event.AcquireFearEvent;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.core.Registry;
@@ -310,10 +311,10 @@ public enum FearTypes {
         return name;
     }
 
-    public static FearTypes getRandom(){
+    public static FearTypes getRandom() {
         Random random = new Random();
-//        FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
-        FearTypes fear = FearTypes.TRUTH;
+        FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
+//        FearTypes fear = FearTypes.TRUTH;
         return fear;
     }
 

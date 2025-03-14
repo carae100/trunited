@@ -1,6 +1,8 @@
 package io.github.dracosomething.trawakened.capability.alternateFearCapability;
 
 import com.github.manasmods.tensura.handler.CapabilityHandler;
+import io.github.dracosomething.trawakened.event.AcquireFearEvent;
+import io.github.dracosomething.trawakened.event.FearCooldownEvent;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -43,7 +46,7 @@ public class AwakenedFearCapability implements IFearCapability{
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
-        if (e.getObject() instanceof LivingEntity) {
+        if (e.getObject() instanceof LivingEntity entity) {
             e.addCapability(ID, new AwakenedFearCapabilityProvider());
         }
     }
@@ -64,7 +67,6 @@ public class AwakenedFearCapability implements IFearCapability{
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-
         tag.putString("fear", this.fear.getName());
         tag.putInt("scared_amount", this.scaredAmount);
         tag.putInt("cooldown", this.cooldown);
@@ -150,6 +152,8 @@ public class AwakenedFearCapability implements IFearCapability{
     public static void decreaseCooldown(LivingEntity entity) {
         MobEffectInstance instance = entity.getEffect(effectRegistry.FEAR_AMPLIFICATION.get());
         setScaredCooldown(entity, getScaredCooldown(entity) - (entity.hasEffect(effectRegistry.FEAR_AMPLIFICATION.get()) ? instance.getAmplifier()+1 : 1));
+        FearCooldownEvent event = new FearCooldownEvent(getFearType(entity), entity, getScaredCooldown(entity));
+        MinecraftForge.EVENT_BUS.post(event);
     }
 
     public static boolean onCooldown(LivingEntity entity) {
