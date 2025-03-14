@@ -2,7 +2,9 @@ package io.github.dracosomething.trawakened.mixin.client;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.handler.client.HUDHandler;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
@@ -79,7 +81,8 @@ public class GuiMixin {
             remap = false
     )
     private static int HealthNormalIfAlternate(int value) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -100,7 +103,8 @@ public class GuiMixin {
             remap = false
     )
     private static int SpiritualNormalIfAlternate(int value) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -121,7 +125,8 @@ public class GuiMixin {
             remap = false
     )
     private static int ArmorNormalIfAlternate(int value) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -142,7 +147,8 @@ public class GuiMixin {
             remap = false
     )
     private static int MPNormalIfAlternate(int value) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -163,7 +169,8 @@ public class GuiMixin {
             remap = false
     )
     private static Race RaceHumanifAlternate(Race value) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -185,7 +192,8 @@ public class GuiMixin {
             remap = false
     )
     private static void MPNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -208,7 +216,8 @@ public class GuiMixin {
             remap = false
     )
     private static void APNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 7) LocalIntRef i) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -231,7 +240,8 @@ public class GuiMixin {
             remap = false
     )
     private static void SetNoAlternate(LivingEntity target, int level, CallbackInfo ci, @Local LocalRef<ManasSkill> skill) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -256,7 +266,8 @@ public class GuiMixin {
             remap = false
     )
     private static void EPNormalIfAlternate(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana, @Local(ordinal = 7) LocalIntRef i, @Local(ordinal = 0) LocalRef<String> var10000, @Local LocalRef<String> text) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));
@@ -279,7 +290,8 @@ public class GuiMixin {
             remap = false
     )
     private static void EPNormalIfAlternateMob(LivingEntity target, int level, CallbackInfo ci, @Local(ordinal = 8) LocalIntRef mana, @Local(ordinal = 7) LocalIntRef i, @Local(ordinal = -1) LocalRef<String> var10000) {
-        if (SkillUtils.getSkillOrNull(player, skillRegistry.FALSE_GABRIEL.get()) == null) {
+        LivingEntity entity = SkillHelper.getTargetingEntity(player, (double)TensuraSkillCapability.getAnalysisDistance(player), false, true);
+        if (SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get()) == null) {
             ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
             if (instance != null) {
                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(instance.getOrCreateTag().getCompound("assimilation"));

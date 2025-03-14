@@ -51,6 +51,7 @@ public class PlayerModelsHandler {
             AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
             if (alternateType == AlternateType.INTRUDER) {
                 getModelIntruder(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+                return;
             }
             // grabs the players assimilation
             AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
@@ -58,10 +59,12 @@ public class PlayerModelsHandler {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, FlawedRenderer.TEXTURE);
                 getModelFlawed(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+                return;
             } else if (assimilation == AlternateType.Assimilation.OVERDRIVEN) {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, OverdrivenRenderer.TEXTURE);
                 getModelOverdriven(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
+                return;
             } else {
                 player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
                 player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, player.getPlayerInfo().getSkinLocation());

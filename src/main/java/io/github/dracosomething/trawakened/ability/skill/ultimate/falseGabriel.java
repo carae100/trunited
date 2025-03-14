@@ -13,16 +13,21 @@ import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
+import io.github.dracosomething.trawakened.helper.FearHelper;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
+import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -111,6 +116,11 @@ public class falseGabriel extends Skill {
                         } else {
                             Entity CloneAsEntity = skillHelper.cloneMob(entity, living.getType());
                             if (CloneAsEntity instanceof LivingEntity Clone) {
+                if (SkillHelper.outOfMagicule(entity, instance)) {
+                    for (Entity creature : entityList) {
+                        if (creature instanceof LivingEntity living) {
+                            if (living instanceof Player player) {
+                                LivingEntity Clone = skillHelper.summonClone(player, entity, entity.level, TensuraPlayerCapability.getBaseMagicule(player), new Vec3(player.getX(), player.getY(), player.getZ()), this);
                                 SkillUtils.learnSkill(Clone, skillRegistry.ALTERNATE.get());
                                 ManasSkillInstance alternate = SkillUtils.getSkillOrNull(Clone, skillRegistry.ALTERNATE.get());
                                 CompoundTag tag = alternate.getOrCreateTag();
@@ -119,6 +129,18 @@ public class falseGabriel extends Skill {
                                 AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
                                 tag.put("assimilation", assimilation.toNBT());
                                 tag.put("alternate_type", assimilation.getType().toNBT());
+                            } else {
+                                Entity CloneAsEntity = skillHelper.cloneMob(entity, living.getType());
+                                if (CloneAsEntity instanceof LivingEntity Clone) {
+                                    SkillUtils.learnSkill(Clone, skillRegistry.ALTERNATE.get());
+                                    ManasSkillInstance alternate = SkillUtils.getSkillOrNull(Clone, skillRegistry.ALTERNATE.get());
+                                    CompoundTag tag = alternate.getOrCreateTag();
+                                    AwakenedFearCapability.SetIsAlternate(entity, true);
+                                    entity.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                    AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
+                                    tag.put("assimilation", assimilation.toNBT());
+                                    tag.put("alternate_type", assimilation.getType().toNBT());
+                                }
                             }
                         }
                     }
@@ -164,7 +186,64 @@ public class falseGabriel extends Skill {
                     }
                 }
                 break;
+                if (SkillHelper.outOfMagicule(entity, instance)) {
+                    if (!entityList.isEmpty()) {
+                        if (!SkillHelper.outOfMagicule(entity, instance)) {
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PHANTOM_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CREEPER_HURT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMBIENT_CAVE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            entityList.forEach((Entity) -> {
+                                if (Entity instanceof LivingEntity livingEntity) {
+                                    if (entity.level.getGameRules().getBoolean(trawakenedGamerules.NORMAL_FEAR)) {
+                                        AwakenedFearCapability.setScared(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 25);
+                                    } else {
+                                        FearHelper.fearPenalty(livingEntity, AwakenedFearCapability.getScared(livingEntity) + 25);
+                                    }
+                                    SkillHelper.addEffectWithSource(livingEntity, livingEntity, MobEffects.POISON, 1000, 10, false, false, false, false);
+                                }
+                            });
+                            if (entity instanceof Player) {
+                                Player player = (Player) entity;
+                                player.displayClientMessage(Component.translatable("trawakened.fear.inspire_fear", new Object[]{entityList.size()}).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                            }
+                            instance.setCoolDown(100);
+                            instance.addMasteryPoint(entity);
+                        }
+                    } else {
+                        if (entity instanceof Player) {
+                            Player player = (Player) entity;
+                            player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                        }
+                    }
+                }
+                break;
+            case 3:
+                if (SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
+            case 4:
+                if (SkillHelper.outOfMagicule(entity, instance)) {
+                    AwakenedFearCapability.setScared(target, AwakenedFearCapability.getScared(target)+35);
+                }
+                break;
+            case 5:
+                if (!entity.isShiftKeyDown()) {
+
+                }
+                break;
+            case 6:
+                if (SkillHelper.outOfMagicule(entity, instance)) {
+
+                }
+                break;
         }
+    }
+
+    @Override
+    public void onScroll(ManasSkillInstance instance, LivingEntity living, double delta) {
+        super.onScroll(instance, living, delta);
     }
 
     @Override
