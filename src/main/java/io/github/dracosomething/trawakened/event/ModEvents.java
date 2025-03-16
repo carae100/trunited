@@ -229,17 +229,17 @@ public class ModEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void cantBreak(BlockEvent.BreakEvent event) {
-        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
-        if (instance != null) {
-            CompoundTag tag = instance.getOrCreateTag();
-            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
-            if (alternateType == AlternateType.INTRUDER) {
-                event.setCanceled(true);
-            }
-        }
-    }
+//    @SubscribeEvent
+//    public static void cantBreak(BlockEvent.BreakEvent event) {
+//        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
+//        if (instance != null) {
+//            CompoundTag tag = instance.getOrCreateTag();
+//            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
+//            if (alternateType == AlternateType.INTRUDER) {
+//                event.setCanceled(true);
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public static void attackAlternate(LivingChangeTargetEvent event) {

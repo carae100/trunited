@@ -354,4 +354,8 @@ public enum FearTypes {
     public static FearTypes fromNBT(CompoundTag tag) {
         return getByName(tag.getString("name"));
     }
+
+    public static FearTypes fromString(String string) {
+        return getByName(string);
+    }
 }

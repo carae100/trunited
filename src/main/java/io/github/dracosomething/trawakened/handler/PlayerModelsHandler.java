@@ -29,11 +29,13 @@ import java.util.Optional;
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class PlayerModelsHandler {
     private static ManasSkillInstance instance;
+    private static ManasSkillInstance false_gabriel;
 
     @SubscribeEvent
     public static void getSkill(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         instance = SkillUtils.getSkillOrNull(entity, skillRegistry.ALTERNATE.get());
+        false_gabriel = SkillUtils.getSkillOrNull(entity, skillRegistry.FALSE_GABRIEL.get());
     }
 
     @SubscribeEvent
@@ -42,14 +44,15 @@ public class PlayerModelsHandler {
         if (!(event.getEntity() instanceof AbstractClientPlayer)) return;
         final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
         // checks if the player has the skill
-        if (instance != null) {
+        if (instance != null && false_gabriel != null) {
             // gets the skills tag
             CompoundTag tag = instance.getOrCreateTag();
+            CompoundTag tag2 = false_gabriel.getOrCreateTag();
             // sets the nbt data isslim to the original is slim
             AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
             // grabs the players alternate type
             AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
-            if (alternateType == AlternateType.INTRUDER) {
+            if (alternateType == AlternateType.INTRUDER || (alternateType == AlternateType.DETECTABLE && tag2.getBoolean("enabled"))) {
                 getModelIntruder(event.getRenderer()).ifPresent(model -> event.getRenderer().model = model);
                 return;
             }

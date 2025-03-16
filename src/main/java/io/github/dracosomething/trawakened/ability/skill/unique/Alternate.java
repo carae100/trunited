@@ -179,7 +179,7 @@ public class Alternate extends Skill {
                     tag.putBoolean("is_locked", true);
                     if (entity instanceof Player player) {
                         player.displayClientMessage(Component.translatable("trawakened.fear.scared", new Object[]{AwakenedFearCapability.getScared(target)}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
-                        if (AwakenedFearCapability.getScared(target) >= 1) {
+                        if (AwakenedFearCapability.getScared(target) >= 1 || AwakenedFearCapability.getFearType(target).equals(FearTypes.TRUTH)) {
                             player.displayClientMessage(Component.translatable("trawakened.fear.learn", new Object[]{AwakenedFearCapability.getFearType(target).toString()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)), false);
                         }
                     }
@@ -299,11 +299,11 @@ public class Alternate extends Skill {
             case 5:
                 if (living != null) {
                     if (!SkillHelper.outOfMagicule(entity, instance)) {
-                        if (AwakenedFearCapability.getScared(living) >= (tag.getInt("original_scared") + 10) || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
+                        if (AwakenedFearCapability.getScared(living) >= 15 || AwakenedFearCapability.getFearType(living).equals(FearTypes.TRUTH)) {
                             float dmg = living.getHealth() - AwakenedFearCapability.getScared(living) * 5;
                             DamageSourceHelper.directSpiritualHurt(entity, living, TensuraDamageSources.insanity(living).bypassArmor().bypassMagic().bypassEnchantments().bypassInvul(), AwakenedFearCapability.getScared(living) * 5);
                             if (living instanceof OtherworlderEntity) {
-                                if (dmg <= 0) {
+                                if (dmg <= 0 && entity.hasEffect(effectRegistry.INTRUDER_MODE.get())) {
                                     tag.putBoolean("awakening", true);
                                 }
                             }
