@@ -10,6 +10,7 @@ import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
+import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.registry.raceRegistry;
@@ -25,6 +26,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.List;
@@ -127,7 +129,8 @@ public class voiceofhonkai extends Skill {
                         List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
                         if (!collection.isEmpty()) {
                             ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                            if (SkillUtils.learnSkill(entity, skill)) {
+                            SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
+                            if (!MinecraftForge.EVENT_BUS.post(event) && SkillUtils.learnSkill(entity, event.getSkill(), instance.getRemoveTime())) {
                                 this.addMasteryPoint(instance, entity);
                                 instance.setCoolDown(15);
                                 failed = false;

@@ -12,6 +12,7 @@ import com.github.manasmods.tensura.ability.skill.extra.HakiSkill;
 import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
+import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.network.TensuraNetwork;
 import com.github.manasmods.tensura.network.play2client.RequestFxSpawningPacket;
 import com.github.manasmods.tensura.race.Race;
@@ -34,6 +35,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -164,8 +166,8 @@ public class powerofhonkai extends Skill {
                                 List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
                                 if (!collection.isEmpty()) {
                                     ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                                    if (SkillUtils.learnSkill(entity, skill)) {
-                                        this.addMasteryPoint(instance, entity);
+                                    SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
+                                    if (!MinecraftForge.EVENT_BUS.post(event) && SkillUtils.learnSkill(entity, event.getSkill(), instance.getRemoveTime())) {                                        this.addMasteryPoint(instance, entity);
                                         instance.setCoolDown(15);
                                         failed = false;
                                         if (entity instanceof Player) {

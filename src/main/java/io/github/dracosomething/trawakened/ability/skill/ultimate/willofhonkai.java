@@ -13,6 +13,7 @@ import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.Transformation;
+import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.particle.TensuraParticles;
@@ -39,6 +40,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -168,8 +170,8 @@ public class willofhonkai extends Skill implements Transformation {
                                 List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
                                 if (!collection.isEmpty()) {
                                     ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                                    if (SkillUtils.learnSkill(entity, skill)) {
-                                        this.addMasteryPoint(instance, entity);
+                                    SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
+                                    if (!MinecraftForge.EVENT_BUS.post(event) && SkillUtils.learnSkill(entity, event.getSkill(), instance.getRemoveTime())) {                                        this.addMasteryPoint(instance, entity);
                                         instance.setCoolDown(10);
                                         failed = false;
                                         if (entity instanceof Player) {

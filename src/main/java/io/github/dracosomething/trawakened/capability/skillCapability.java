@@ -13,6 +13,7 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.data.TensuraTags;
+import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.unique.Alternate;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
@@ -25,6 +26,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +44,8 @@ public class skillCapability {
 
             while(var4.hasNext()) {
                 ManasSkillInstance targetInstance = (ManasSkillInstance)var4.next();
-                if (!targetInstance.isTemporarySkill() && targetInstance.getMastery() >= 0 && SkillUtils.learnSkill(owner, targetInstance.getSkill(), skillRegistry.AZAZEL.hashCode())) {
+                SkillPlunderEvent event = new SkillPlunderEvent(target, owner, false, targetInstance.getSkill());
+                if (!MinecraftForge.EVENT_BUS.post(event) && !targetInstance.isTemporarySkill() && targetInstance.getMastery() >= 0 && SkillUtils.learnSkill(owner, targetInstance.getSkill(), skillRegistry.AZAZEL.hashCode())) {
                     if (owner instanceof Player) {
                         Player player = (Player)owner;
                         player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{targetInstance.getSkill().getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
