@@ -92,13 +92,13 @@ public class ModEvents {
             inventory.addAll(player.getInventory().armor);
             inventory.addAll(player.getInventory().offhand);
             inventory.forEach((item) -> {
-                if (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) >= 1) {
+                if (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) > 1) {
                     int level = (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) - 1);
                     EngravingHelper.RemoveEnchantments(item, enchantRegistry.DECAY.get());
                     if (level > 0) {
                         item.enchant(enchantRegistry.DECAY.get(), level);
                     }
-                } else {
+                } else if (item.getEnchantmentLevel(enchantRegistry.DECAY.get()) == 1) {
                     player.getInventory().removeItem(item);
                 }
             });
@@ -229,32 +229,27 @@ public class ModEvents {
         }
     }
 
-//    @SubscribeEvent
-//    public static void cantBreak(BlockEvent.BreakEvent event) {
-//        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
-//        if (instance != null) {
-//            CompoundTag tag = instance.getOrCreateTag();
-//            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
-//            if (alternateType == AlternateType.INTRUDER) {
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
+    @SubscribeEvent
+    public static void cantBreak(BlockEvent.BreakEvent event) {
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(event.getPlayer(), skillRegistry.ALTERNATE.get());
+        if (instance != null) {
+            CompoundTag tag = instance.getOrCreateTag();
+            AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
+            if (alternateType == AlternateType.INTRUDER) {
+                event.setCanceled(true);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void attackAlternate(LivingChangeTargetEvent event) {
         LivingEntity alternate = event.getEntity().level.getNearestPlayer(TargetingConditions.forNonCombat(), event.getEntity(), event.getEntity().getX(), event.getEntity().getEyeY(), event.getEntity().getZ());
-        System.out.println(alternate);
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(alternate, skillRegistry.ALTERNATE.get());
-        System.out.println(instance);
         if (instance != null) {
             CompoundTag tag = instance.getOrCreateTag();
-            System.out.println(tag);
             AlternateType.Assimilation assimilation = AlternateType.Assimilation.fromNBT(tag.getCompound("assimilation"));
-            System.out.println(assimilation);
             if (assimilation == AlternateType.Assimilation.OVERDRIVEN || assimilation == AlternateType.Assimilation.FLAWED) {
                 event.setNewTarget(alternate);
-                System.out.println(event.getNewTarget());
             }
         }
     }

@@ -16,8 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEventBusEvents {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void registerParticleFactories(final RegisterParticleProvidersEvent event)
-    {
+    public static void registerParticleFactories(final RegisterParticleProvidersEvent event) {
         event.register(particleRegistry.FLESHPARTICLE.get(), FleshParticles.Provider::new);
     }
 }

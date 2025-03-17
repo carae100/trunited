@@ -44,4 +44,9 @@ public class DestroyEnchantment extends Enchantment {
     public boolean canEnchant(ItemStack p_44689_) {
         return true;
     }
+
+    @Override
+    public int getMaxLevel() {
+        return 9999;
+    }
 }

@@ -28,9 +28,10 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 @Mod.EventBusSubscriber(
-        modid = trawakened.MODID,
-        bus = Mod.EventBusSubscriber.Bus.FORGE
-)public class AwakenedEntityHandler {
+        modid = "trawakened",
+        bus = Mod.EventBusSubscriber.Bus.MOD
+)
+public class AwakenedEntityHandler {
     public AwakenedEntityHandler(){}
 
     @SubscribeEvent
@@ -40,18 +41,6 @@ import java.util.List;
 
     @SubscribeEvent
     public static void registerEntityPlacements(SpawnPlacementRegisterEvent event) {
-        event.register((EntityType)entityRegistry.DEFAULT_OTHER_WORLDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TensuraTamableEntity::checkTensuraMobSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-    }
-
-    @SubscribeEvent
-    public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn e) {
-        if (e.getResult() == Event.Result.DEFAULT) {
-            LivingEntity entity = e.getEntity();
-            List<MagicEngineBarrierEntity> list = e.getLevel().getEntitiesOfClass(MagicEngineBarrierEntity.class, (new AABB(((LivingEntity)entity).blockPosition())).inflate(25.0));
-            if (!list.isEmpty()) {
-                e.setResult(Event.Result.DENY);
-            }
-
-        }
+        event.register(entityRegistry.DEFAULT_OTHER_WORLDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TensuraTamableEntity::checkTensuraMobSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
     }
 }
