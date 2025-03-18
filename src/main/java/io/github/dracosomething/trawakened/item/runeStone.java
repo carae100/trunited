@@ -8,6 +8,7 @@ import io.github.dracosomething.trawakened.ability.skill.extra.System.Stealth;
 import io.github.dracosomething.trawakened.ability.skill.extra.System.SystemExtra;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
@@ -39,6 +40,7 @@ public class runeStone extends Item {
             if (levelReq >= tag.getInt("level")) {
                 Skill skill = systemExtra.get();
                 SkillUtils.learnSkill(player, skill);
+                player.sendSystemMessage(Component.translatable("tensura.skill.acquire_learning", skill.getName()));
                 return InteractionResultHolder.consume(itemstack);
             }
         }

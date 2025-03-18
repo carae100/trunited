@@ -3,6 +3,9 @@ package io.github.dracosomething.trawakened.registry;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.extra.PrimalArmor;
+import io.github.dracosomething.trawakened.ability.skill.extra.System.BloodLust;
+import io.github.dracosomething.trawakened.ability.skill.extra.System.Mutilation;
+import io.github.dracosomething.trawakened.ability.skill.extra.System.Quicksilver;
 import io.github.dracosomething.trawakened.ability.skill.extra.System.Stealth;
 import io.github.dracosomething.trawakened.ability.skill.extra.conceptofinfinity;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.*;
@@ -33,6 +36,9 @@ public class skillRegistry {
     public static final RegistryObject<falseGabriel> FALSE_GABRIEL;
     public static final RegistryObject<SystemSkill> SYSTEM;
     public static final RegistryObject<Stealth> STEALTH;
+    public static final RegistryObject<BloodLust> BLOOD_LUST;
+    public static final RegistryObject<Mutilation> MUTILATION;
+    public static final RegistryObject<Quicksilver> QUICKSILVER;
 
     public skillRegistry() {
     }
@@ -59,5 +65,8 @@ public class skillRegistry {
         FALSE_GABRIEL = registry.register("false_gabriel", falseGabriel::new);
         SYSTEM = registry.register("system", SystemSkill::new);
         STEALTH = registry.register("stealth", Stealth::new);
+        BLOOD_LUST = registry.register("blood_lust", BloodLust::new);
+        MUTILATION = registry.register("mutilation", Mutilation::new);
+        QUICKSILVER = registry.register("quicksilver", Quicksilver::new);
     }
 }

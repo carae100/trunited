@@ -6,11 +6,13 @@ import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.ISpatialStorage;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
+import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
 import com.github.manasmods.tensura.menu.SpatialStorageMenu;
 import com.github.manasmods.tensura.menu.container.SpatialStorageContainer;
 import com.github.manasmods.tensura.network.TensuraNetwork;
 import com.github.manasmods.tensura.network.play2client.ClientboundSpatialStorageOpenPacket;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
 import com.google.common.collect.Multimap;
 import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
 import io.github.dracosomething.trawakened.registry.itemRegistry;
@@ -25,6 +27,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -119,10 +122,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         AttributeModifier modifier = new AttributeModifier("f444bd0f-d420-4c07-ba1a-f23118508a6f", 0.5*level, AttributeModifier.Operation.ADDITION);
         entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).addPermanentModifier(modifier);
         if (level%4 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, level / 4));
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, level / 4));
         }
         if (level%30 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, level / 30));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, level / 30));
         }
     }
 
@@ -144,6 +147,23 @@ public class SystemSkill extends Skill implements ISpatialStorage {
             if (event.getEntity().getType().equals(EntityType.CREEPER) || event.getEntity().getType().equals(EntityType.WANDERING_TRADER)) {
                 if (random.nextInt(0, 100) <= (event.getEntity().getType().equals(EntityType.CREEPER) ? 3 : 33)) {
                     newDrop(itemRegistry.STEALTH_STONE.get(), event, entity);
+                }
+            }
+            if (event.getEntity().getType().getCategory().equals(MobCategory.MONSTER)) {
+                if (random.nextDouble(0, 100) <= 0.5) {
+                    newDrop(itemRegistry.BLOODLUST_STONE.get(), event, entity);
+                }
+            }
+            if (event.getEntity().getType().equals(EntityType.SILVERFISH) || event.getEntity().getType().equals(EntityType.CAT)
+            || event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) || event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
+            event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE_BODY.get())) {
+                if (random.nextInt(0, 100) <= 3) {
+                    newDrop(itemRegistry.QUICKSILVER_STONE.get(), event, entity);
+                }
+            }
+            if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.EVOKER) || event.getEntity().getType().equals(EntityType.VINDICATOR)) {
+                if (random.nextInt(0, 100) <= 20) {
+                    newDrop(itemRegistry.MUTILATION_STONE.get(), event, entity);
                 }
             }
         }

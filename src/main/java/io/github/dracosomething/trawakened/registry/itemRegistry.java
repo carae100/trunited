@@ -13,6 +13,9 @@ public class itemRegistry {
     private static final DeferredRegister<Item> registry;
     public static final RegistryObject<Item> DEFAULT_OTHER_WORLDER;
     public static final RegistryObject<Item> STEALTH_STONE;
+    public static final RegistryObject<Item> BLOODLUST_STONE;
+    public static final RegistryObject<Item> MUTILATION_STONE;
+    public static final RegistryObject<Item> QUICKSILVER_STONE;
 
     public itemRegistry(){}
 
@@ -27,6 +30,15 @@ public class itemRegistry {
         });
         STEALTH_STONE = registry.register("stealth_stone", () -> {
            return new runeStone(skillRegistry.STEALTH, 30);
+        });
+        BLOODLUST_STONE = registry.register("bloodlust_stone", () -> {
+            return new runeStone(skillRegistry.BLOOD_LUST, 35);
+        });
+        MUTILATION_STONE = registry.register("mutilation_stone", () -> {
+            return new runeStone(skillRegistry.MUTILATION, 50);
+        });
+        QUICKSILVER_STONE = registry.register("quicksilver_stone", () -> {
+            return new runeStone(skillRegistry.QUICKSILVER, 40);
         });
     }
 }

@@ -14,6 +14,7 @@ public class SystemExtra extends Skill {
 
     public SystemExtra(String name) {
         super(SkillType.EXTRA);
+        this.name = name;
     }
 
     @Override

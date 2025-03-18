@@ -41,7 +41,7 @@ public class SystemHandler {
         if (storage.getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
             ManasSkillInstance skill = storage.getSkill(skillRegistry.SYSTEM.get()).get();
             skill.getOrCreateTag().putInt("seconds", skill.getOrCreateTag().getInt("seconds")+1);
-            if (skill.getOrCreateTag().getInt("seconds") == 3) {
+            if (skill.getOrCreateTag().getInt("seconds") == 60) {
                 event.player.setHealth(event.player.getHealth()+1);
             }
         }
@@ -71,24 +71,21 @@ public class SystemHandler {
         LivingEntity user = event.getEntity();
         if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
             ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get();
-            if (instance.getMastery() > 0.0) {
+            if (instance.getMastery() >= 0.0) {
                 CompoundTag tag = instance.getOrCreateTag();
                 int nextLevel = tag.getInt("nextLevel");
-                if (event.getNewEP() >= nextLevel) {
-                    for (int i = 0; i <= (int) Math.floor(event.getNewEP()/nextLevel); i++) {
-                        System.out.println(i);
-                        int oldLEvel = tag.getInt("level");
-                        tag.putInt("level", tag.getInt("level") + 1);
-                        tag.putInt("nextLevel", tag.getInt("nextLevel") + 1150 + 150);
-                        nextLevel = tag.getInt("nextLevel");
-                        if (instance.getSkill() instanceof SystemSkill skill) {
-                            skill.getTag().putInt("level", tag.getInt("level"));
-                        }
-                        SystemLevelUpEvent systemLevelUpEvent = new SystemLevelUpEvent(instance, user, oldLEvel, tag.getInt("level"));
-                        MinecraftForge.EVENT_BUS.post(systemLevelUpEvent);
-                        if (instance.getSkill() instanceof SystemSkill skill) {
-                            skill.onLevelUp(instance, user, systemLevelUpEvent);
-                        }
+                while (event.getNewEP() >= nextLevel && tag.getInt("level") < tag.getInt("maxLevel")) {
+                    int oldLEvel = tag.getInt("level");
+                    tag.putInt("level", tag.getInt("level") + 1);
+                    tag.putInt("nextLevel", tag.getInt("nextLevel") + 1150 + 150);
+                    nextLevel = tag.getInt("nextLevel");
+                    if (instance.getSkill() instanceof SystemSkill skill) {
+                        skill.getTag().putInt("level", tag.getInt("level"));
+                    }
+                    SystemLevelUpEvent systemLevelUpEvent = new SystemLevelUpEvent(instance, user, oldLEvel, tag.getInt("level"));
+                    MinecraftForge.EVENT_BUS.post(systemLevelUpEvent);
+                    if (instance.getSkill() instanceof SystemSkill skill) {
+                        skill.onLevelUp(instance, user, systemLevelUpEvent);
                     }
                 }
             }
