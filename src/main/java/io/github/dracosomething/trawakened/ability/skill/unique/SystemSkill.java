@@ -28,6 +28,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -107,7 +108,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
     @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         CompoundTag tag = instance.getOrCreateTag();
-        tag.put("owner", living.serializeNBT());
         tag.putInt("level", 0);
         tag.putInt("nextLevel", 1150);
         tag.putInt("maxLevel", 140);
@@ -122,48 +122,67 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         AttributeModifier modifier = new AttributeModifier("f444bd0f-d420-4c07-ba1a-f23118508a6f", 0.5*level, AttributeModifier.Operation.ADDITION);
         entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).addPermanentModifier(modifier);
         if (level%4 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, level / 4));
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, (level / 4)-1));
         }
         if (level%30 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, level / 30));
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, (level / 30)-1));
         }
     }
 
     @Override
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
-        int level = instance.getOrCreateTag().getInt("level");
-        if (level >= 30) {
-            if (event.getEntity().getHealth() < event.getEntity().getMaxHealth()*0.3) {
-                event.setAmount(event.getAmount() / 2);
+        if (isInSlot(event.getEntity())) {
+            int level = instance.getOrCreateTag().getInt("level");
+            if (level >= 30) {
+                if (event.getEntity().getHealth() < event.getEntity().getMaxHealth() * 0.3) {
+                    event.setAmount(event.getAmount() / 2);
+                }
             }
         }
     }
 
     @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
-        Random random = new Random();
-        float dmg = event.getEntity().getHealth() - event.getAmount();
-        if (dmg <= 0.0) {
-            if (event.getEntity().getType().equals(EntityType.CREEPER) || event.getEntity().getType().equals(EntityType.WANDERING_TRADER)) {
-                if (random.nextInt(0, 100) <= (event.getEntity().getType().equals(EntityType.CREEPER) ? 3 : 33)) {
-                    newDrop(itemRegistry.STEALTH_STONE.get(), event, entity);
+        int level = instance.getOrCreateTag().getInt("level");
+        if (level >= 20) {
+            Random random = new Random();
+            float dmg = event.getEntity().getHealth() - event.getAmount();
+            if (dmg <= 0.0) {
+                if (event.getEntity().getType().equals(EntityType.CREEPER) || event.getEntity().getType().equals(EntityType.WANDERING_TRADER)) {
+                    if (random.nextInt(0, 100) <= (event.getEntity().getType().equals(EntityType.CREEPER) ? 3 : 33)) {
+                        newDrop(itemRegistry.STEALTH_STONE.get(), event, entity);
+                    }
                 }
-            }
-            if (event.getEntity().getType().getCategory().equals(MobCategory.MONSTER)) {
-                if (random.nextDouble(0, 100) <= 0.5) {
-                    newDrop(itemRegistry.BLOODLUST_STONE.get(), event, entity);
+                if (event.getEntity().getType().getCategory().equals(MobCategory.MONSTER)) {
+                    if (random.nextDouble(0, 100) <= 0.5) {
+                        newDrop(itemRegistry.BLOODLUST_STONE.get(), event, entity);
+                    }
                 }
-            }
-            if (event.getEntity().getType().equals(EntityType.SILVERFISH) || event.getEntity().getType().equals(EntityType.CAT)
-            || event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) || event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
-            event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE_BODY.get())) {
-                if (random.nextInt(0, 100) <= 3) {
-                    newDrop(itemRegistry.QUICKSILVER_STONE.get(), event, entity);
+                if (event.getEntity().getType().equals(EntityType.SILVERFISH) || event.getEntity().getType().equals(EntityType.CAT)
+                        || event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) || event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
+                        event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE_BODY.get())) {
+                    if (random.nextInt(0, 100) <= 3) {
+                        newDrop(itemRegistry.QUICKSILVER_STONE.get(), event, entity);
+                    }
                 }
-            }
-            if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.EVOKER) || event.getEntity().getType().equals(EntityType.VINDICATOR)) {
-                if (random.nextInt(0, 100) <= 20) {
-                    newDrop(itemRegistry.MUTILATION_STONE.get(), event, entity);
+                if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.EVOKER) || event.getEntity().getType().equals(EntityType.VINDICATOR)) {
+                    if (random.nextInt(0, 100) <= 20) {
+                        newDrop(itemRegistry.MUTILATION_STONE.get(), event, entity);
+                    }
+                }
+                if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.VILLAGER) || event.getEntity().getMobType().equals(MobType.ILLAGER)) {
+                    if (event.getEntity().getType().equals(TensuraEntityTypes.HINATA_SAKAGUCHI.get())) {
+                        newDrop(itemRegistry.RULERS_AUTHORITY_STONE.get(), event, entity);
+                    } else {
+                        if (random.nextInt(0, 100) <= (event.getEntity() instanceof OtherworlderEntity ? 20 : 3)) {
+                            newDrop(itemRegistry.RULERS_AUTHORITY_STONE.get(), event, entity);
+                        }
+                    }
+                }
+                if (event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
+                    if (random.nextInt(0, 100) <= 25) {
+                        newDrop(itemRegistry.DRAGONS_FEAR_STONE.get(), event, entity);
+                    }
                 }
             }
         }

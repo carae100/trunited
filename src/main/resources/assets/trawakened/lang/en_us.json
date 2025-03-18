@@ -154,6 +154,8 @@
   "trawakened.skill.system.extra.mutilation": "Mutilation",
 
   "trawakened.skill.system.extra.rulers_authority": "Ruler's Authority",
+  "trawakened.skill.system.extra.rulers_authority.mode1": "target",
+  "trawakened.skill.system.extra.rulers_authority.mode2": "self",
 
   "trawakened.skill.system.extra.dragons_fear": "Dragon's fear",
 
@@ -309,5 +311,7 @@
   "item.trawakened.stealth_stone": "Stealth Stone",
   "item.trawakened.bloodlust_stone": "Bloodlust Stone",
   "item.trawakened.mutilation_stone": "Mutilation Stone",
-  "item.trawakened.quicksilver_stone": "Quicksilver Stone"
+  "item.trawakened.quicksilver_stone": "Quicksilver Stone",
+  "item.trawakened.rulers_authority_stone": "Rulers Authority Stone",
+  "item.trawakened.dragons_fear_stone": "Dragons Fear Stone"
 }

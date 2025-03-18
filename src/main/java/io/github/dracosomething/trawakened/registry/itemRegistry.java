@@ -16,6 +16,8 @@ public class itemRegistry {
     public static final RegistryObject<Item> BLOODLUST_STONE;
     public static final RegistryObject<Item> MUTILATION_STONE;
     public static final RegistryObject<Item> QUICKSILVER_STONE;
+    public static final RegistryObject<Item> RULERS_AUTHORITY_STONE;
+    public static final RegistryObject<Item> DRAGONS_FEAR_STONE;
 
     public itemRegistry(){}
 
@@ -39,6 +41,12 @@ public class itemRegistry {
         });
         QUICKSILVER_STONE = registry.register("quicksilver_stone", () -> {
             return new runeStone(skillRegistry.QUICKSILVER, 40);
+        });
+        RULERS_AUTHORITY_STONE = registry.register("rulers_authority_stone", () -> {
+            return new runeStone(skillRegistry.RULERS_AUTHORITY, 70);
+        });
+        DRAGONS_FEAR_STONE = registry.register("dragons_fear_stone", () -> {
+            return new runeStone(skillRegistry.DRAGONS_FEAR, 100);
         });
     }
 }

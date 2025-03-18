@@ -131,6 +131,7 @@ public class falseGabriel extends Skill {
                             }
                         }
                     }
+                    instance.setCoolDown(30);
                 }
                 break;
             case 2:
@@ -189,6 +190,7 @@ public class falseGabriel extends Skill {
                             }
                         }
                     }
+                    instance.setCoolDown(50);
                 }
                 break;
             case 5:
@@ -196,6 +198,7 @@ public class falseGabriel extends Skill {
                     if (!SkillHelper.outOfMagicule(entity, instance)) {
                         FearTypes fearTypes = FearTypes.fromString(instance.getOrCreateTag().getString("new_fear"));
                         AwakenedFearCapability.setFearType(target, fearTypes);
+                        instance.setCoolDown(100);
                     }
                 }
                 break;
