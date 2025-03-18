@@ -141,6 +141,22 @@
   "trawakened.skill.mode.primal_armor.assault_armor": "§3Assault Armor",
   "trawakened.skill.mode.primal_armor.coral": "§cCoral",
 
+  "trawakened.skill.system": "System, level: %1$s",
+  "trawakened.skill.system_normal": "System",
+  "trawakened.skill.system.description": "Gotta level up.",
+
+  "trawakened.skill.system.extra.stealth": "Stealth",
+
+  "trawakened.skill.system.extra.bloodlust": "Bloodlust",
+
+  "trawakened.skill.system.extra.quicksilver": "Quicksilver",
+
+  "trawakened.skill.system.extra.mutilation": "Mutilation",
+
+  "trawakened.skill.system.extra.rulers_authority": "Ruler's Authority",
+
+  "trawakened.skill.system.extra.dragons_fear": "Dragon's fear",
+
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",

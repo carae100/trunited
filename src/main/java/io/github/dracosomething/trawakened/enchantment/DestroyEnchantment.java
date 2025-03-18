@@ -47,6 +47,6 @@ public class DestroyEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 9999;
+        return 120;
     }
 }

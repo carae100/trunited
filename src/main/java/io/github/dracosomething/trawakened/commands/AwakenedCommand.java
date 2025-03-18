@@ -94,7 +94,7 @@ public class AwakenedCommand {
                         )
                 )
                 .then(Commands.literal("edit").requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_STAT))
-                        .then(Commands.argument("player", EntityArgument.player()).requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_RACE_OTHERS))
+                        .then(Commands.argument("player", EntityArgument.entity()).requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_RACE_OTHERS))
                                 .then(Commands.literal("fear")
                                         .then(Commands.argument("fear", StringArgumentType.string())
                                         .executes((context) -> {

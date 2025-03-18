@@ -94,7 +94,9 @@ public class falseGabriel extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        List<Entity> entityList = skillHelper.DrawCircle(entity, 80, true);
+        List<Entity> entityList = skillHelper.DrawCircle(entity, 80, true).stream().filter((entity1 -> {
+            return entity1 instanceof LivingEntity && !SkillUtils.hasSkill(entity1, skillRegistry.ALTERNATE.get()) && entity1 != null;
+        })).toList();
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 7, false);
         CompoundTag tag = instance.getOrCreateTag();
         switch (instance.getMode()) {
@@ -171,7 +173,22 @@ public class falseGabriel extends Skill {
                 break;
             case 4:
                 if (!SkillHelper.outOfMagicule(entity, instance)) {
-                    AwakenedFearCapability.setScared(target, AwakenedFearCapability.getScared(target)+35);
+                    if (!entity.isShiftKeyDown()) {
+                        AwakenedFearCapability.setScared(target, AwakenedFearCapability.getScared(target) + 35);
+                    } else {
+                        if (!entityList.isEmpty()) {
+                            for (Entity entity1 : entityList) {
+                                if (entity1 instanceof LivingEntity living) {
+                                    AwakenedFearCapability.setScared(target, AwakenedFearCapability.getScared(target) + 15);
+                                }
+                            }
+                        } else {
+                            if (entity instanceof Player) {
+                                Player player = (Player) entity;
+                                player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                            }
+                        }
+                    }
                 }
                 break;
             case 5:
@@ -236,6 +253,10 @@ public class falseGabriel extends Skill {
         if (tag.getBoolean("enabled")) {
             living.addEffect(new MobEffectInstance(TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 120, 255, false, false, false));
         }
+        living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 4, false, false, false));
+        living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 4, false, false, false));
+        living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 4, false, false, false));
+        living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 2, false, false, false));
     }
 
     @Override

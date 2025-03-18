@@ -4,9 +4,20 @@ import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.capability.SkillStorage;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.event.SkillPlunderEvent;
+import com.github.manasmods.tensura.event.UpdateEPEvent;
+import com.github.manasmods.tensura.menu.SpatialStorageMenu;
+import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
+import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,6 +62,62 @@ public class SystemHandler {
                 event.getEntity().setHealth(p40);
             } else {
                 event.getEntity().setHealth(p35);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void LevelUpMechanic(UpdateEPEvent event) {
+        LivingEntity user = event.getEntity();
+        if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
+            ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get();
+            if (instance.getMastery() > 0.0) {
+                CompoundTag tag = instance.getOrCreateTag();
+                int nextLevel = tag.getInt("nextLevel");
+                if (event.getNewEP() >= nextLevel) {
+                    for (int i = 0; i <= (int) Math.floor(event.getNewEP()/nextLevel); i++) {
+                        System.out.println(i);
+                        int oldLEvel = tag.getInt("level");
+                        tag.putInt("level", tag.getInt("level") + 1);
+                        tag.putInt("nextLevel", tag.getInt("nextLevel") + 1150 + 150);
+                        nextLevel = tag.getInt("nextLevel");
+                        if (instance.getSkill() instanceof SystemSkill skill) {
+                            skill.getTag().putInt("level", tag.getInt("level"));
+                        }
+                        SystemLevelUpEvent systemLevelUpEvent = new SystemLevelUpEvent(instance, user, oldLEvel, tag.getInt("level"));
+                        MinecraftForge.EVENT_BUS.post(systemLevelUpEvent);
+                        if (instance.getSkill() instanceof SystemSkill skill) {
+                            skill.onLevelUp(instance, user, systemLevelUpEvent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
+        Player user = event.getEntity();
+        if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
+            ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get();
+            if (instance.getSkill() instanceof SystemSkill skill && skill != null) {
+                skill.getTag().putInt("level", instance.getOrCreateTag().getInt("level"));
+                skill.getTag().putBoolean("isGui", instance.getOrCreateTag().getBoolean("isGui"));
+                instance.getOrCreateTag().put("data", skill.getTag());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCloseInventory(PlayerContainerEvent.Close event) {
+        if (event.getContainer() instanceof SpatialStorageMenu) {
+            Player user = event.getEntity();
+            if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
+                ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get();
+                if (instance.getSkill() instanceof SystemSkill skill && skill != null) {
+                    instance.getOrCreateTag().putBoolean("isGui", false);
+                    skill.getTag().putBoolean("isGui", instance.getOrCreateTag().getBoolean("isGui"));
+                }
             }
         }
     }

@@ -44,6 +44,7 @@ public class IntruderModeEffect extends TensuraMobEffect implements Transformati
             if (type != null) {
                 tag.put("alternate_type", save.toNBT());
             }
+            instance.setMode(4);
         }
     }
 }
