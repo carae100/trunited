@@ -23,7 +23,7 @@ public class SkillUtilsMixin {
     )
     private static float newMagiculeGain(float value, @Local(ordinal = 0, argsOnly = true) Player player){
         if (hasSkill(player, (ManasSkill) skillRegistry.SYSTEM.get())) {
-            value += 1.25F;
+            value += 0.0125F;
         }
         return value;
     }
@@ -38,7 +38,7 @@ public class SkillUtilsMixin {
     )
     private static float newAuraGain(float value, @Local(ordinal = 0, argsOnly = true) Player player){
         if (hasSkill(player, (ManasSkill) skillRegistry.SYSTEM.get())) {
-            value += 1.25F;
+            value += 0.0125F;
         }
         return value;
     }

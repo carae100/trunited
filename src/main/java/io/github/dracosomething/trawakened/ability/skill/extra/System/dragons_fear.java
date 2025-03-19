@@ -16,7 +16,7 @@ public class dragons_fear extends SystemExtra {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        List<Entity> list = skillHelper.DrawCircle(entity, 150, true);
+        List<Entity> list = skillHelper.DrawCircle(entity, 150, true).stream().filter(living -> !living.equals(entity)).toList();
         for (Entity entity1 : list) {
             if (entity1 instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(TensuraMobEffects.INSANITY.get(), 2000, 10));

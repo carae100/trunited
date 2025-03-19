@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.ability.skill.extra.System;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
@@ -18,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -31,8 +33,11 @@ import java.util.Random;
 import static com.github.manasmods.tensura.ability.skill.unique.ThrowerSkill.getProjectile;
 
 public class rulers_authority extends SystemExtra {
+    private CompoundTag tag;
+
     public rulers_authority() {
         super("rulers_authority");
+        tag = new CompoundTag();
     }
 
     @Override
@@ -41,8 +46,20 @@ public class rulers_authority extends SystemExtra {
     }
 
     @Override
+    public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
+        return instance.getMode() == 1 ? 2 : 1;
+    }
+
+    @Override
     public Component getModeName(int mode) {
         return mode == 1 ? Component.translatable("trawakened.skill.system.extra.rulers_authority.mode1") : Component.translatable("trawakened.skill.system.extra.rulers_authority.mode2");
+    }
+
+    @Override
+    public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        CompoundTag tag = instance.getOrCreateTag();
+        this.tag.putBoolean("awakened", false);
+        tag.put("cap", this.tag);
     }
 
     @Override
@@ -82,75 +99,78 @@ public class rulers_authority extends SystemExtra {
                     }
                 }
             } else {
-                if (entity.isShiftKeyDown()) {
-                    Entity target = SkillHelper.getTargetingEntity(entity, 30.0, 1.0, false, true);
-                    if (target == null) {
-                        return;
+                Entity target = SkillHelper.getTargetingEntity(entity, 30.0, 1.0, false, true);
+                if (target == null) {
+                    return;
+                }
+
+                if (target.getType().is(TensuraTags.EntityTypes.FULL_GRAVITY_CONTROL)) {
+                    return;
+                }
+
+                label60: {
+                    if (entity instanceof Player player) {
+                        if (player.getAbilities().invulnerable) {
+                            break label60;
+                        }
                     }
 
-                    if (target.getType().is(TensuraTags.EntityTypes.FULL_GRAVITY_CONTROL)) {
-                        return;
-                    }
-
-                    label60: {
-                        if (entity instanceof Player player) {
-                            if (player.getAbilities().invulnerable) {
-                                break label60;
-                            }
-                        }
-
-                        if (target instanceof Player player) {
-                            if (player.getAbilities().invulnerable) {
-                                return;
-                            }
-                        }
-
-                        if (SkillUtils.isSkillToggled(target, (ManasSkill) ExtraSkills.GRAVITY_DOMINATION.get()) || SkillUtils.isSkillToggled(target, (ManasSkill)ExtraSkills.GRAVITY_MANIPULATION.get())) {
+                    if (target instanceof Player player) {
+                        if (player.getAbilities().invulnerable) {
                             return;
                         }
                     }
 
-                    double maxSize = instance.isMastered(entity) ? 1.0 : 0.5;
-                    if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_DOMINATION.get())) {
-                        maxSize += 5.0;
-                    } else if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_MANIPULATION.get())) {
-                        maxSize += 3.0;
-                    }
-
-                    if (target.getBoundingBox().getSize() > maxSize) {
+                    if (SkillUtils.isSkillToggled(target, (ManasSkill)ExtraSkills.GRAVITY_DOMINATION.get()) || SkillUtils.isSkillToggled(target, (ManasSkill)ExtraSkills.GRAVITY_MANIPULATION.get())) {
                         return;
                     }
-
-                    CompoundTag tag = instance.getOrCreateTag();
-                    tag.putUUID("target", target.getUUID());
-                    double range = Math.min(30.0, target.position().subtract(entity.getEyePosition()).length());
-                    tag.putDouble("range", (double)((int)range));
                 }
+
+                double maxSize = instance.isMastered(entity) ? 1.0 : 0.5;
+                if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_DOMINATION.get())) {
+                    maxSize += 5.0;
+                } else if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_MANIPULATION.get())) {
+                    maxSize += 3.0;
+                }
+
+                if (target.getBoundingBox().getSize() > maxSize) {
+                    return;
+                }
+
+                CompoundTag tag = instance.getOrCreateTag();
+                tag.putUUID("target", target.getUUID());
+                double range = Math.min(30.0, target.position().subtract(entity.getEyePosition()).length());
+                tag.putDouble("range", (double)((int)range));
             }
         } else {
-            float speed = 1.0F;
-            Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
-            if (entity.isShiftKeyDown()) {
-                vector3f.mul(-1);
-                entity.setDeltaMovement((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z());
-            } else {
-                entity.setDeltaMovement((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z());
-            }
+                System.out.println(entity);
+                float speed = 10.0F;
+                Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
+                if (entity.isShiftKeyDown()) {
+                    vector3f.mul(-1);
+                    entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    entity.resetFallDistance();
+                } else {
+                    entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    entity.resetFallDistance();
+                }
         }
     }
 
     public void onScroll(ManasSkillInstance instance, LivingEntity entity, double delta) {
-        if (instance instanceof TensuraSkillInstance skillInstance) {
-            CompoundTag tag = skillInstance.getOrCreateTag();
-            double newRange = tag.getDouble("range") + delta;
-            if (newRange > 30.0) {
-                newRange = 30.0;
-            } else if (newRange < 0.0) {
-                newRange = 0.0;
-            }
+        if (instance.getMode() == 1) {
+            if (instance instanceof TensuraSkillInstance skillInstance) {
+                CompoundTag tag = skillInstance.getOrCreateTag();
+                double newRange = tag.getDouble("range") + delta;
+                if (newRange > 30.0) {
+                    newRange = 30.0;
+                } else if (newRange < 0.0) {
+                    newRange = 0.0;
+                }
 
-            tag.putDouble("range", newRange);
-            skillInstance.markDirty();
+                tag.putDouble("range", newRange);
+                skillInstance.markDirty();
+            }
         }
     }
 
@@ -202,19 +222,32 @@ public class rulers_authority extends SystemExtra {
 
     @Override
     public void onRelease(ManasSkillInstance instance, LivingEntity entity, int heldTicks) {
-        Level var5 = entity.getLevel();
-        if (var5 instanceof ServerLevel) {
-            ServerLevel level = (ServerLevel) var5;
-            CompoundTag tag = instance.getOrCreateTag();
-            Entity target = level.getEntity(tag.getUUID("target"));
-            float speed = 1.0F;
-            Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
-            if (entity.isShiftKeyDown()) {
-                vector3f.mul(-1);
-                target.setDeltaMovement((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z());
-            } else {
-                target.setDeltaMovement((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z());
+        if (instance.getMode() == 1) {
+            Level var5 = entity.getLevel();
+            if (var5 instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) var5;
+                CompoundTag tag = instance.getOrCreateTag();
+                Entity target = level.getEntity(tag.getUUID("target"));
+                float speed = 1.0F;
+                Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
+                if (entity.isShiftKeyDown()) {
+                    vector3f.mul(-1);
+                    target.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    target.resetFallDistance();
+                } else {
+                    target.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    target.resetFallDistance();
+                }
             }
         }
+    }
+
+    public CompoundTag getTag() {
+        return tag;
+    }
+
+    public void sync(ManasSkillInstance instance){
+        this.tag = instance.getOrCreateTag().getCompound("cap");
+        instance.getOrCreateTag().put("cap", this.tag);
     }
 }

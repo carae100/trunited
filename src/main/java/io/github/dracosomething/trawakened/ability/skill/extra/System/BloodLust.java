@@ -23,8 +23,8 @@ public class BloodLust extends SystemExtra {
         })).toList();
         for (Entity entity1 : list) {
             if (entity1 instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(effectRegistry.BLOODLUST_DEBUFF.get(), 1800*20, 1, false, false, false));
-                living.addEffect(new MobEffectInstance(TensuraMobEffects.BURDEN.get(), 1800*20, 0, false, false, false));
+                living.addEffect(new MobEffectInstance(effectRegistry.BLOODLUST_DEBUFF.get(), 20000*20, 1, false, false, false));
+                living.addEffect(new MobEffectInstance(TensuraMobEffects.BURDEN.get(), 20000*20, 0, false, false, false));
             }
         }
         instance.setCoolDown(60);

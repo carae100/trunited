@@ -41,12 +41,12 @@ public class PlayerModelsHandler {
         // checks if the event target is an abstract client player
         if (!(event.getEntity() instanceof AbstractClientPlayer)) return;
         final AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
+        // sets the nbt data isslim to the original is slim
+        AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
         // checks if the player has the skill
         if (instance != null) {
             // gets the skills tag
             CompoundTag tag = instance.getOrCreateTag();
-            // sets the nbt data isslim to the original is slim
-            AwakenedFearCapability.SetIsSlim(player, event.getRenderer().model.slim);
             // grabs the players alternate type
             AlternateType alternateType = AlternateType.fromNBT(tag.getCompound("alternate_type"));
             if (alternateType == AlternateType.INTRUDER) {

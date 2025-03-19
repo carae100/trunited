@@ -37,7 +37,7 @@ public class runeStone extends Item {
         if (SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
             ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SYSTEM.get()).get();
             CompoundTag tag = instance.getOrCreateTag();
-            if (levelReq >= tag.getInt("level")) {
+            if (levelReq <= tag.getInt("level")) {
                 Skill skill = systemExtra.get();
                 SkillUtils.learnSkill(player, skill);
                 player.sendSystemMessage(Component.translatable("tensura.skill.acquire_learning", skill.getName()));

@@ -6,4 +6,6 @@ public class ShadowMonarch extends Skill {
     public ShadowMonarch() {
         super(SkillType.ULTIMATE);
     }
+
+
 }
