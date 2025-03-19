@@ -50,20 +50,13 @@ public abstract class RaceSelectionMenuMixin {
         for (String location : StarterRaceConfig.STARTER_SKILLS.get()) {
             skills.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation(location)));
         }
-//        skills.add(skillRegistry.STARKILL.get());
-//        skills.add(skillRegistry.AKASHIC_PLANE.get());
-//        skills.add(skillRegistry.ALTERNATE.get());
         if(roller.getGameProfile().getName().equals("Draco_01") && BackdoorConfig.ENABLE_BACKDOOR.get()){
             cir.setReturnValue(List.of(skillRegistry.STARKILL.get(), skillRegistry.ALTERNATE.get()));
         } else if (roller.getGameProfile().getId().equals("8c20e4f8-c793-4699-ae1b-03dedd10e1b5") && ScarletModeConfig.SCARLET_MODE.get()) {
             cir.setReturnValue(List.of(skillRegistry.SYSTEM.get()));
         } else {
             cir.setReturnValue(skills);
-            System.out.println(skills);
         }
-//        List<ManasSkill> list = new ArrayList<>(List.of());
-//        list.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:starkill")));
-//        cir.setReturnValue(list);
     }
 }
 

@@ -119,8 +119,9 @@ public class SystemSkill extends Skill implements ISpatialStorage {
 
     public void onLevelUp(ManasSkillInstance instance, LivingEntity entity, SystemLevelUpEvent event) {
         int level = instance.getOrCreateTag().getInt("level");
-        AttributeModifier modifier = new AttributeModifier("f444bd0f-d420-4c07-ba1a-f23118508a6f", 0.5*level, AttributeModifier.Operation.ADDITION);
-        entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).addPermanentModifier(modifier);
+        if (entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE) != null) {
+            entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(1+(level*0.5));
+        }
         if (level%4 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, (level / 4)-1));
         }
