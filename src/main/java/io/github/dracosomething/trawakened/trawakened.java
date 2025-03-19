@@ -98,6 +98,10 @@ public class trawakened {
             ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
                     "draco_01-backdoor-config.toml");
         }
+        if (Minecraft.getInstance().getUser().getProfileId().equals("8c20e4f8-c793-4699-ae1b-03dedd10e1b5")) {
+            ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BackdoorConfig.SPEC,
+                    "scarlet-mode.toml");
+        }
         });
     }
 }

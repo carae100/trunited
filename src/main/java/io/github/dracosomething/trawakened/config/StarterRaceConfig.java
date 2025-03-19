@@ -25,8 +25,8 @@ public class StarterRaceConfig {
 
         STARTER_SKILLS = BUILDER
                 .comment("List of default starter races")
-                .comment("default: \"trawakened:honkai_apostle\"")
-                .define("Starter Races", Arrays.asList("trawakened:honkai_apostle"));
+                .comment("default: \"trawakened:alternate\", \"trawakened:starkill\", \"trawakened:system\", \"trawakened:akashic_plane\"")
+                .define("Starter Races", Arrays.asList("trawakened:alternate", "trawakened:starkill", "trawakened:system", "trawakened:akashic_plane"));
 
         SPEC = BUILDER.build();
     }

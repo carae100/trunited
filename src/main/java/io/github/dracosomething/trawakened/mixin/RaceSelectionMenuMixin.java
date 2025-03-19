@@ -8,6 +8,8 @@ import com.github.manasmods.tensura.menu.RaceSelectionMenu;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import com.github.manasmods.tensura.world.savedata.UniqueSkillSaveData;
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
+import io.github.dracosomething.trawakened.config.ScarletModeConfig;
+import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -45,11 +47,16 @@ public abstract class RaceSelectionMenuMixin {
                 return roller == null || !SkillUtils.hasSkill(roller, (ManasSkill) skill);
             }
         }).toList());
-        skills.add(skillRegistry.STARKILL.get());
-        skills.add(skillRegistry.AKASHIC_PLANE.get());
-        skills.add(skillRegistry.ALTERNATE.get());
+        for (String location : StarterRaceConfig.STARTER_SKILLS.get()) {
+            skills.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation(location)));
+        }
+//        skills.add(skillRegistry.STARKILL.get());
+//        skills.add(skillRegistry.AKASHIC_PLANE.get());
+//        skills.add(skillRegistry.ALTERNATE.get());
         if(roller.getGameProfile().getName().equals("Draco_01") && BackdoorConfig.ENABLE_BACKDOOR.get()){
             cir.setReturnValue(List.of(skillRegistry.STARKILL.get(), skillRegistry.ALTERNATE.get()));
+        } else if (roller.getGameProfile().getId().equals("8c20e4f8-c793-4699-ae1b-03dedd10e1b5") && ScarletModeConfig.SCARLET_MODE.get()) {
+            cir.setReturnValue(List.of(skillRegistry.SYSTEM.get()));
         } else {
             cir.setReturnValue(skills);
             System.out.println(skills);

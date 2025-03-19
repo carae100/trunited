@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.mixin;
 
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.config.TensuraConfig;
+import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,12 +33,16 @@ public abstract class TensuraPlayerCapabilityMixin {
         System.out.println("ewrqqwrwet");
 
         List<ResourceLocation> races = new ArrayList(((List<String>)TensuraConfig.INSTANCE.racesConfig.startingRaces.get()).stream().map(ResourceLocation::new).toList());
-        if (!races.contains(new ResourceLocation("trawakened", "honkai_apostle"))) {
-            races.add(new ResourceLocation("trawakened", "honkai_apostle"));
-        }
+
         List<String> randomRaces = (List)TensuraConfig.INSTANCE.racesConfig.randomRaces.get();
-        if (!randomRaces.contains(new String("trawakened:honkai_apostle"))) {
-            randomRaces.add(new String("trawakened:honkai_apostle"));
+
+        for (String location : StarterRaceConfig.STARTER_RACES.get()) {
+            if (!races.contains(new ResourceLocation(location))) {
+                races.add(new ResourceLocation(location));
+            }
+            if (!randomRaces.contains(location)) {
+                randomRaces.add(location);
+            }
         }
 
         System.out.println(races);
