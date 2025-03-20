@@ -104,9 +104,9 @@ public class rulers_authority extends SystemExtra {
                     return;
                 }
 
-                if (target.getType().is(TensuraTags.EntityTypes.FULL_GRAVITY_CONTROL)) {
-                    return;
-                }
+//                if (target.getType().is(TensuraTags.EntityTypes.FULL_GRAVITY_CONTROL)) {
+//                    return;
+//                }
 
                 label60: {
                     if (entity instanceof Player player) {
@@ -126,7 +126,7 @@ public class rulers_authority extends SystemExtra {
                     }
                 }
 
-                double maxSize = instance.isMastered(entity) ? 1.0 : 0.5;
+                double maxSize = instance.isMastered(entity) ? 2.0 : 0.5;
                 if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_DOMINATION.get())) {
                     maxSize += 5.0;
                 } else if (SkillUtils.isSkillToggled(entity, (ManasSkill)ExtraSkills.GRAVITY_MANIPULATION.get())) {
@@ -139,6 +139,7 @@ public class rulers_authority extends SystemExtra {
 
                 CompoundTag tag = instance.getOrCreateTag();
                 tag.putUUID("target", target.getUUID());
+                System.out.println(tag.getUUID("target"));
                 double range = Math.min(30.0, target.position().subtract(entity.getEyePosition()).length());
                 tag.putDouble("range", (double)((int)range));
             }
@@ -148,10 +149,10 @@ public class rulers_authority extends SystemExtra {
                 Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
                 if (entity.isShiftKeyDown()) {
                     vector3f.mul(-1);
-                    entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(100, 100, 100));
                     entity.resetFallDistance();
                 } else {
-                    entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(100, 100, 100));
                     entity.resetFallDistance();
                 }
         }

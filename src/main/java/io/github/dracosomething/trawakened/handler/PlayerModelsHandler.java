@@ -102,7 +102,6 @@ public class PlayerModelsHandler {
 
     public static Optional<PlayerModel<AbstractClientPlayer>> getModelPlayer(final PlayerRenderer renderer, LivingEntity entity) {
         final PlayerModel<AbstractClientPlayer> model = new PlayerModel<>(PlayerModel.createMesh(new CubeDeformation(0, 0, 0), AwakenedFearCapability.GetIsSlim(entity)).getRoot().bake(64, 64), AwakenedFearCapability.GetIsSlim(entity));
-        renderer.layers.clear();
 
         return Optional.of(model);
     }
