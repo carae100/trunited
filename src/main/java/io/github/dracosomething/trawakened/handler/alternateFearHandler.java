@@ -22,47 +22,6 @@ public class alternateFearHandler {
     }
 
     @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IFearCapability.class);
-    }
-
-    @SubscribeEvent
-    static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        AwakenedFearCapability.sync(event.getEntity());
-        System.out.println( AwakenedFearCapability.getFearType(event.getEntity()));
-    }
-
-    @SubscribeEvent
-    static void onPlayerTrack(PlayerEvent.StartTracking e) {
-        Entity var2 = e.getTarget();
-        if (var2 instanceof LivingEntity living) {
-            AwakenedFearCapability.sync(living);
-            AwakenedFearCapability.sync(e.getEntity());
-        }
-    }
-
-    @SubscribeEvent
-    static void onPlayerClone(PlayerEvent.Clone e) {
-        e.getOriginal().reviveCaps();
-        AwakenedFearCapability.getFrom(e.getOriginal()).ifPresent((oldData) -> {
-            AwakenedFearCapability.getFrom(e.getEntity()).ifPresent((data) -> {
-                data.deserializeNBT((CompoundTag)oldData.serializeNBT());
-            });
-        });
-        e.getOriginal().invalidateCaps();
-    }
-
-    @SubscribeEvent
-    static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent e) {
-        AwakenedFearCapability.sync(e.getEntity());
-    }
-
-    @SubscribeEvent
-    static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent e) {
-        AwakenedFearCapability.sync(e.getEntity());
-    }
-
-    @SubscribeEvent
     static void onTickLiving(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         FearHelper.fearUpdates(entity);

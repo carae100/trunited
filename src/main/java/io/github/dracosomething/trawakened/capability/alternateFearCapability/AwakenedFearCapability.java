@@ -34,7 +34,6 @@ import java.util.List;
 )
 public class AwakenedFearCapability implements IFearCapability{
     public static final Capability<IFearCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<IFearCapability>() {});
-    private static final ResourceLocation ID = new ResourceLocation("trawakened", "fear");
 
     private FearTypes fear = FearTypes.getRandom();
     private int scaredAmount = 0;
@@ -42,13 +41,6 @@ public class AwakenedFearCapability implements IFearCapability{
     private boolean isAlternate = false;
     private boolean isSlim = true;
     private List<RenderLayer<?, ?>> layers = new java.util.ArrayList<>(List.of());
-
-    @SubscribeEvent
-    public static void attach(AttachCapabilitiesEvent<Entity> e) {
-        if (e.getObject() instanceof LivingEntity entity) {
-            e.addCapability(ID, new AwakenedFearCapabilityProvider());
-        }
-    }
 
     public static LazyOptional<IFearCapability> getFrom(LivingEntity player) {
         return player.getCapability(CAPABILITY);

@@ -1,6 +1,8 @@
 package io.github.dracosomething.trawakened.network;
 
+import io.github.dracosomething.trawakened.network.play2client.ArisePlayerPacket;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
+import io.github.dracosomething.trawakened.network.play2client.SyncShadowCapabiliyPacket;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
@@ -19,6 +21,10 @@ public class TRAwakenedNetwork {
         int i = 0;
         ++i;
         INSTANCE.registerMessage(i, SyncFearCapabilityPacket.class, SyncFearCapabilityPacket::toBytes, SyncFearCapabilityPacket::new, SyncFearCapabilityPacket::handle);
+        ++i;
+        INSTANCE.registerMessage(i, SyncShadowCapabiliyPacket.class, SyncShadowCapabiliyPacket::toBytes, SyncShadowCapabiliyPacket::new, SyncShadowCapabiliyPacket::handle);
+        ++i;
+        INSTANCE.registerMessage(i, ArisePlayerPacket.class, ArisePlayerPacket::toBytes, ArisePlayerPacket::new, ArisePlayerPacket::handle);
     }
 
     static {

@@ -38,6 +38,7 @@ public class skillRegistry {
     public static final RegistryObject<Quicksilver> QUICKSILVER;
     public static final RegistryObject<rulers_authority> RULERS_AUTHORITY;
     public static final RegistryObject<dragons_fear> DRAGONS_FEAR;
+    public static final RegistryObject<ShadowMonarch> SHADOW_MONARCH;
 
     public skillRegistry() {
     }
@@ -69,5 +70,6 @@ public class skillRegistry {
         QUICKSILVER = registry.register("quicksilver", Quicksilver::new);
         RULERS_AUTHORITY = registry.register("rulers_authority", rulers_authority::new);
         DRAGONS_FEAR = registry.register("dragons_fear", dragons_fear::new);
+        SHADOW_MONARCH = registry.register("shadow_monarch", ShadowMonarch::new);
     }
 }
