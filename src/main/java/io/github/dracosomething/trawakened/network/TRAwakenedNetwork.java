@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.network;
 
 import io.github.dracosomething.trawakened.network.play2client.ArisePlayerPacket;
+import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
 import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
 import io.github.dracosomething.trawakened.network.play2client.SyncShadowCapabiliyPacket;
 import io.github.dracosomething.trawakened.trawakened;
@@ -25,6 +26,8 @@ public class TRAwakenedNetwork {
         INSTANCE.registerMessage(i, SyncShadowCapabiliyPacket.class, SyncShadowCapabiliyPacket::toBytes, SyncShadowCapabiliyPacket::new, SyncShadowCapabiliyPacket::handle);
         ++i;
         INSTANCE.registerMessage(i, ArisePlayerPacket.class, ArisePlayerPacket::toBytes, ArisePlayerPacket::new, ArisePlayerPacket::handle);
+        ++i;
+        INSTANCE.registerMessage(i, OpenBecomeShadowscreen.class, OpenBecomeShadowscreen::toBytes, OpenBecomeShadowscreen::new, OpenBecomeShadowscreen::handle);
     }
 
     static {

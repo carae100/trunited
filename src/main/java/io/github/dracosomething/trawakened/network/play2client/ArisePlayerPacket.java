@@ -39,14 +39,14 @@ public class ArisePlayerPacket {
                 Entity entity = serverLevel.getEntity(this.playerId);
 
                 if (entity instanceof LivingEntity living) {
-                    AwakenedShadowCapability.setArisen(living, arise);
+                    AwakenedShadowCapability.setArisen(user, arise);
                     if (arise) {
-                        user.sendSystemMessage(Component.literal("The target refuses to get revived"));
-                        AwakenedShadowCapability.setOwnerUUID(living, user.getUUID());
+                        living.sendSystemMessage(Component.literal("The target refuses to get revived"));
+                        AwakenedShadowCapability.setOwnerUUID(user, living.getUUID());
                     } else {
-                        user.sendSystemMessage(Component.literal("successfully arised the target"));
+                        living.sendSystemMessage(Component.literal("successfully arised the target"));
                     }
-                    AwakenedShadowCapability.setTries(living, AwakenedShadowCapability.getTries(living)-1);
+                    AwakenedShadowCapability.setTries(user, AwakenedShadowCapability.getTries(user)-1);
                 }
             }
         });

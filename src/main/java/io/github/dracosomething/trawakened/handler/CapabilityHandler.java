@@ -22,6 +22,8 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CapabilityHandler {
+    public CapabilityHandler(){}
+
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(IFearCapability.class);
@@ -36,7 +38,7 @@ public class CapabilityHandler {
 
     @SubscribeEvent
     public static void attach(AttachCapabilitiesEvent<Entity> e) {
-        if (e.getObject() instanceof LivingEntity entity) {
+        if (e.getObject() instanceof LivingEntity) {
             e.addCapability(new ResourceLocation("trawakened", "fear"), new AwakenedFearCapabilityProvider());
             e.addCapability(new ResourceLocation("trawakened", "shadow"), new AwakenedShadowCapabilityProvider());
         }

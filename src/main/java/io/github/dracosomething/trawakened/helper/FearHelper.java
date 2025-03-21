@@ -178,29 +178,32 @@ public class FearHelper extends SightHelper{
         if (!AwakenedFearCapability.onCooldown(entity)) {
             // gets all necessary data from the fear
             FearTypes fear = AwakenedFearCapability.getFearType(entity);
-            List<Block> blocks = fear.getBlock();
-            List<Item> items = fear.getItem();
-            List<EntityType<?>> entityTypes = fear.getEntity();
-            List<MobEffect> mobEffects = fear.getEffect();
-            // gets the 2 sight positions
-            Vec3 vec3 = getSightPos1(entity);
-            Vec3 vec31 = getSightPos2(entity);
-            // gets the line of sight
-            AABB sight = getLineOfSight(entity, vec3, vec31);
-            // gets the blocks in sight
-            Iterable<BlockPos> blocksInSight = getBlocksInSight(vec3, vec31);
-            // gets the entities in sight
-            List<Entity> entities = getEntitiesInSight(entity, sight);
-            // checks if the fear is not one of the special fears
-            if (checkAll(fear, entities, entity)) {
-                // does the checks
-                effectCheck(mobEffects, entity);
-                entityCheck(entityTypes, entity, entities);
-                blockCheck(blocks, entity, blocksInSight);
-                itemCheck(items, entity, entities);
+            if (fear == null) System.out.println(entity);
+            if (fear != null) {
+                List<Block> blocks = fear.getBlock();
+                List<Item> items = fear.getItem();
+                List<EntityType<?>> entityTypes = fear.getEntity();
+                List<MobEffect> mobEffects = fear.getEffect();
+                // gets the 2 sight positions
+                Vec3 vec3 = getSightPos1(entity);
+                Vec3 vec31 = getSightPos2(entity);
+                // gets the line of sight
+                AABB sight = getLineOfSight(entity, vec3, vec31);
+                // gets the blocks in sight
+                Iterable<BlockPos> blocksInSight = getBlocksInSight(vec3, vec31);
+                // gets the entities in sight
+                List<Entity> entities = getEntitiesInSight(entity, sight);
+                // checks if the fear is not one of the special fears
+                if (checkAll(fear, entities, entity)) {
+                    // does the checks
+                    effectCheck(mobEffects, entity);
+                    entityCheck(entityTypes, entity, entities);
+                    blockCheck(blocks, entity, blocksInSight);
+                    itemCheck(items, entity, entities);
+                }
+                FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
+                MinecraftForge.EVENT_BUS.post(event);
             }
-            FearEvent event = new FearEvent(AwakenedFearCapability.getFearType(entity), entity);
-            MinecraftForge.EVENT_BUS.post(event);
         } else {
             // decreases cooldown every second
             AwakenedFearCapability.decreaseCooldown(entity);
