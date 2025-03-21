@@ -15,31 +15,26 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class TRAwakenedNetwork {
-    private static final String PROTOCOL_VERSION = ModList.get().getModFileById(trawakened.MODID).versionString().replaceAll("\\.", "");
-    public static final SimpleChannel INSTANCE;
+    private static final String PROTOCOL_VERSION = ModList.get().getModFileById("trawakened").versionString().replaceAll("\\.", "");
+    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+            new ResourceLocation("trawakened", "main"),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals
+    );
+
 
     public static void register() {
         int i = 0;
-        ++i;
-        INSTANCE.registerMessage(i, SyncFearCapabilityPacket.class, SyncFearCapabilityPacket::toBytes, SyncFearCapabilityPacket::new, SyncFearCapabilityPacket::handle);
-        ++i;
-        INSTANCE.registerMessage(i, SyncShadowCapabiliyPacket.class, SyncShadowCapabiliyPacket::toBytes, SyncShadowCapabiliyPacket::new, SyncShadowCapabiliyPacket::handle);
-        ++i;
-        INSTANCE.registerMessage(i, ArisePlayerPacket.class, ArisePlayerPacket::toBytes, ArisePlayerPacket::new, ArisePlayerPacket::handle);
-        ++i;
-        INSTANCE.registerMessage(i, OpenBecomeShadowscreen.class, OpenBecomeShadowscreen::toBytes, OpenBecomeShadowscreen::new, OpenBecomeShadowscreen::handle);
+        INSTANCE.registerMessage(++i, SyncFearCapabilityPacket.class, SyncFearCapabilityPacket::toBytes, SyncFearCapabilityPacket::new, SyncFearCapabilityPacket::handle);
+        INSTANCE.registerMessage(++i, SyncShadowCapabiliyPacket.class, SyncShadowCapabiliyPacket::toBytes, SyncShadowCapabiliyPacket::new, SyncShadowCapabiliyPacket::handle);
+        INSTANCE.registerMessage(++i, ArisePlayerPacket.class, ArisePlayerPacket::toBytes, ArisePlayerPacket::new, ArisePlayerPacket::handle);
+        INSTANCE.registerMessage(++i, OpenBecomeShadowscreen.class, OpenBecomeShadowscreen::toBytes, OpenBecomeShadowscreen::new, OpenBecomeShadowscreen::handle);
+        System.out.println(INSTANCE);
+        System.out.println("efwfwefwfwef");
     }
 
-    static {
-        ResourceLocation var10000 = new ResourceLocation(trawakened.MODID, "main");
-        Supplier var10001 = () -> {
-            return PROTOCOL_VERSION;
-        };
-        String var10002 = PROTOCOL_VERSION;
-        Objects.requireNonNull(var10002);
-        Predicate var0 = var10002::equals;
-        String var10003 = PROTOCOL_VERSION;
-        Objects.requireNonNull(var10003);
-        INSTANCE = NetworkRegistry.newSimpleChannel(var10000, var10001, var0, var10003::equals);
+    public static <T> void toServer(T message) {
+        INSTANCE.sendToServer(message);
     }
 }

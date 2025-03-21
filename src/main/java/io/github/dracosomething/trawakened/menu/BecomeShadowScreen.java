@@ -48,11 +48,11 @@ public class BecomeShadowScreen extends Screen {
     protected void init() {
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
         this.yes = this.addRenderableWidget(new net.minecraft.client.gui.components.Button(this.width / 2 + 50, this.height / 2, 120, 20, Component.literal("yes"), (button) -> {
-            TRAwakenedNetwork.INSTANCE.sendToServer(new ArisePlayerPacket(targetId, true));
+            TRAwakenedNetwork.toServer(new ArisePlayerPacket(targetId, true));
             this.minecraft.player.closeContainer();
         }));
         this.no = this.addRenderableWidget(new net.minecraft.client.gui.components.Button(this.width / 2 - 50, this.height / 2, 120, 20, Component.literal("yes"), (button) -> {
-            TRAwakenedNetwork.INSTANCE.sendToServer(new ArisePlayerPacket(targetId, false));
+            TRAwakenedNetwork.toServer(new ArisePlayerPacket(targetId, false));
             this.minecraft.player.closeContainer();
         }));
     }

@@ -32,9 +32,10 @@ public class SyncShadowCapabiliyPacket {
         (ctx.get()).enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> {
                 return () -> {
-                    ClientAccess.updatePlayerCapability(this.entityId, this.tag);
+                    ClientAccess.updateShadowCapability(this.entityId, this.tag);
                 };
             });
         });
+        ctx.get().setPacketHandled(true);
     }
 }
