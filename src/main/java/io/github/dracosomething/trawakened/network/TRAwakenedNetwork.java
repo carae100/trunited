@@ -1,9 +1,6 @@
 package io.github.dracosomething.trawakened.network;
 
-import io.github.dracosomething.trawakened.network.play2client.ArisePlayerPacket;
-import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
-import io.github.dracosomething.trawakened.network.play2client.SyncFearCapabilityPacket;
-import io.github.dracosomething.trawakened.network.play2client.SyncShadowCapabiliyPacket;
+import io.github.dracosomething.trawakened.network.play2client.*;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
@@ -30,8 +27,8 @@ public class TRAwakenedNetwork {
         INSTANCE.registerMessage(++i, SyncShadowCapabiliyPacket.class, SyncShadowCapabiliyPacket::toBytes, SyncShadowCapabiliyPacket::new, SyncShadowCapabiliyPacket::handle);
         INSTANCE.registerMessage(++i, ArisePlayerPacket.class, ArisePlayerPacket::toBytes, ArisePlayerPacket::new, ArisePlayerPacket::handle);
         INSTANCE.registerMessage(++i, OpenBecomeShadowscreen.class, OpenBecomeShadowscreen::toBytes, OpenBecomeShadowscreen::new, OpenBecomeShadowscreen::handle);
-        System.out.println(INSTANCE);
-        System.out.println("efwfwefwfwef");
+        INSTANCE.registerMessage(++i, OpenNamingscreen.class, OpenNamingscreen::toBytes, OpenNamingscreen::new, OpenNamingscreen::handle);
+        INSTANCE.registerMessage(++i, NamePacket.class, NamePacket::toBytes, NamePacket::new, NamePacket::handle);
     }
 
     public static <T> void toServer(T message) {

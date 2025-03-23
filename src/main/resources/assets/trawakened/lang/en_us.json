@@ -313,5 +313,7 @@
   "item.trawakened.mutilation_stone": "Mutilation Stone",
   "item.trawakened.quicksilver_stone": "Quicksilver Stone",
   "item.trawakened.rulers_authority_stone": "Rulers Authority Stone",
-  "item.trawakened.dragons_fear_stone": "Dragons Fear Stone"
+  "item.trawakened.dragons_fear_stone": "Dragons Fear Stone",
+
+  "message.tries_left": "You have %1$s tries left to arise %2$s."
 }

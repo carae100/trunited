@@ -143,18 +143,17 @@ public class rulers_authority extends SystemExtra {
                 double range = Math.min(30.0, target.position().subtract(entity.getEyePosition()).length());
                 tag.putDouble("range", (double)((int)range));
             }
-        } else {
-                System.out.println(entity);
-                float speed = 10.0F;
-                Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
-                if (entity.isShiftKeyDown()) {
-                    vector3f.mul(-1);
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(100, 100, 100));
-                    entity.resetFallDistance();
-                } else {
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(100, 100, 100));
-                    entity.resetFallDistance();
-                }
+        } else if (instance.getMode() == 2) {
+            float speed = 1.0F;
+            Vector3f vector3f = new Vector3f(entity.getViewVector(speed));
+            if (entity.isShiftKeyDown()) {
+                vector3f.mul(-1);
+                entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                entity.resetFallDistance();
+            } else {
+                entity.setDeltaMovement((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z());
+                entity.resetFallDistance();
+            }
         }
     }
 

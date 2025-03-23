@@ -66,6 +66,12 @@ public class skillHelper {
         return ret;
     }
 
+    public static List<LivingEntity> GetLivingEntities(LivingEntity entity, int radius, boolean areNotAllie) {
+        List<LivingEntity> list = new ArrayList<>();
+        DrawCircle(entity, radius, areNotAllie).stream().filter((entity1 -> entity1 instanceof LivingEntity)).toList().forEach((living) -> list.add((LivingEntity) living));
+        return list;
+    }
+
     public static void ParticleCircle(LivingEntity entity, double radius, ParticleOptions type) {
         for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
             for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius; ++y) {
@@ -95,7 +101,7 @@ public class skillHelper {
             NamingEvent event = new NamingEvent(sub, owner, originalCost, type, name);
             if (!MinecraftForge.EVENT_BUS.post(event)) {
                 originalCost = event.getOriginalCost();
-                double cost = Math.min(event.getCalculatedCost(), (Double) TensuraConfig.INSTANCE.namingConfig.maxCost.get());
+                double cost = 0;
                 if (owner != null && TensuraPlayerCapability.getMagicule(owner) < cost) {
                     owner.displayClientMessage(Component.translatable("tensura.skill.lack_magicule").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
                 } else {
@@ -205,12 +211,10 @@ public class skillHelper {
                     } else {
                         assert entity2 instanceof LivingEntity;
                         double ep = TensuraEPCapability.getEP((LivingEntity) entity2);
-                        TensuraEPCapability.setLivingEP((LivingEntity) entity2, 100);
                         assert entity instanceof ServerPlayer;
-                        skillHelper.name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.HIGH, "");
+                        skillHelper.name((LivingEntity) entity2, (ServerPlayer) entity, RequestNamingGUIPacket.NamingType.LOW, "");
                         entity2.setCustomName(Component.empty());
-                        entity2.setCustomNameVisible(true);
-                        TensuraEPCapability.setLivingEP((LivingEntity) entity2, ep);
+                        entity2.setCustomNameVisible(false);
                     }
                 }
             }

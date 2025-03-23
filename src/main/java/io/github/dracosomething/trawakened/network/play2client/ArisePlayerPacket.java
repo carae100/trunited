@@ -1,6 +1,9 @@
 package io.github.dracosomething.trawakened.network.play2client;
 
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
+import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -8,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
@@ -41,10 +45,18 @@ public class ArisePlayerPacket {
                 if (entity instanceof LivingEntity living) {
                     AwakenedShadowCapability.setArisen(user, arise);
                     if (arise) {
-                        living.sendSystemMessage(Component.literal("The target refuses to get revived"));
+                        living.sendSystemMessage(Component.literal(String.format("You succesfully arised %s", user.getName().getString())));
                         AwakenedShadowCapability.setOwnerUUID(user, living.getUUID());
+                        TensuraEPCapability.setLivingEP(user, TensuraEPCapability.getCurrentEP(user)*2);
+                        TensuraEPCapability.sync(user);
+                        user.setHealth(user.getMaxHealth());
+                        BecomeShadowEvent event = new BecomeShadowEvent(user, living, true);
+                        MinecraftForge.EVENT_BUS.post(event);
                     } else {
-                        living.sendSystemMessage(Component.literal("successfully arised the target"));
+                        living.sendSystemMessage(Component.literal(String.format("%s refuses to get revived", user.getName().getString())));
+                        TensuraEPCapability.setLivingEP(user, TensuraEPCapability.getCurrentEP(user)/2);
+                        TensuraEPCapability.sync(user);
+                        user.kill();
                     }
                     AwakenedShadowCapability.setTries(user, AwakenedShadowCapability.getTries(user)-1);
                 }

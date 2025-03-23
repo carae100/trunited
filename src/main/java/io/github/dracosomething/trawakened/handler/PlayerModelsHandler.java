@@ -72,9 +72,6 @@ public class PlayerModelsHandler {
                 return;
             }
         } else {
-            player.getPlayerInfo().textureLocations.remove(MinecraftProfileTexture.Type.SKIN);
-            player.getPlayerInfo().textureLocations.put(MinecraftProfileTexture.Type.SKIN, player.getPlayerInfo().getSkinLocation());
-            getModelPlayer(event.getRenderer(), player).ifPresent(model -> event.getRenderer().model = model);
             return;
         }
     }

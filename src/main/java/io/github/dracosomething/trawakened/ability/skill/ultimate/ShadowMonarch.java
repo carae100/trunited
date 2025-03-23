@@ -4,15 +4,25 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
+import com.github.manasmods.tensura.data.TensuraTags;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
+import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
+import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
+import io.github.dracosomething.trawakened.network.play2client.ArisePlayerPacket;
 import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
+import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.List;
 import java.util.Random;
 
 public class ShadowMonarch extends Skill {
@@ -29,25 +39,56 @@ public class ShadowMonarch extends Skill {
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         Random random = new Random();
         LivingEntity target = SkillHelper.getTargetingEntity(entity, ForgeMod.REACH_DISTANCE.get().getDefaultValue(), false, true);
+        List<LivingEntity> targetList = skillHelper.GetLivingEntities(entity, 50, false);
         switch (instance.getMode()) {
             case 1:
-                if (AwakenedShadowCapability.isShadow(target)) {
-                    if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
-                        int chance;
-                        if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
-                            chance = 100;
-                        } else {
-                            chance = (TensuraEPCapability.getCurrentEP(target) <= TensuraEPCapability.getCurrentEP(entity) ? 50 : 30);
-                        }
-                        AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
-                        if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
-                            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenBecomeShadowscreen(entity.getUUID()));
-                        } else {
-                            if (random.nextInt(0, 100) <= chance) {
-                                AwakenedShadowCapability.setArisen(target, true);
+                if (!entity.isShiftKeyDown()) {
+                    if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
+                        if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
+                            int chance;
+                            if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
+                                chance = 100;
+                            } else {
+                                chance = (TensuraEPCapability.getCurrentEP(target) <= TensuraEPCapability.getCurrentEP(entity) ? 50 : 30);
+                            }
+                            if (target instanceof Player player && player instanceof ServerPlayer serverPlayer) {
+                                TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenBecomeShadowscreen(entity.getUUID()));
+                            } else {
+                                AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
+                                if (AwakenedShadowCapability.getTries(target) == 0 ) {
+                                    target.discard();
+                                    return;
+                                }
+                                if (entity instanceof Player player) {
+                                    player.sendSystemMessage(Component.translatable("message.tries_left", AwakenedShadowCapability.getTries(target), target.getName()));
+                                }
+                                if (random.nextInt(0, 100) <= chance) {
+                                    target.setHealth(target.getMaxHealth());
+                                    AwakenedShadowCapability.setArisen(target, true);
+                                    target.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                    target.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                                    target.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                                    skillHelper.tameAnything(entity, target, this);
+                                    AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
+                                    BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
+                                    MinecraftForge.EVENT_BUS.post(event);
+                                    if (target.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || target instanceof Player) {
+                                        if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
+                                            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+                } else {
+                    targetList.forEach((living -> {
+                        if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
+                            AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
+                            AwakenedShadowCapability.setArisen(target, true);
+                            AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
+                        }
+                    }));
                 }
                 break;
         }
