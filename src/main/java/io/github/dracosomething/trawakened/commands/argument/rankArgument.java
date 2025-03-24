@@ -47,10 +47,7 @@ public class rankArgument implements ArgumentType<shadowRank> {
 
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         return context.getSource() instanceof SharedSuggestionProvider ? SharedSuggestionProvider.suggestResource(
-                (Arrays.stream(shadowRank.values()).toList().stream().map((rank) -> {
-                    int index = Arrays.stream(shadowRank.values()).toList().indexOf(rank);
-            return Arrays.stream(shadowRank.values()).toList().get(index).toLocation();
-        })), builder) : Suggestions.empty();
+                (Arrays.stream(shadowRank.values()).toList().stream().map(shadowRank::toLocation)), builder) : Suggestions.empty();
     }
 
 

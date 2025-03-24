@@ -27,6 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class ShadowMonarch extends Skill {
@@ -106,6 +107,7 @@ public class ShadowMonarch extends Skill {
                                             TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
                                         }
                                     }
+                                    AwakenedShadowCapability.sync(target);
                                 }
                             }
                         }
@@ -116,17 +118,19 @@ public class ShadowMonarch extends Skill {
                             AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
                             AwakenedShadowCapability.setArisen(target, true);
                             AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
+                            AwakenedShadowCapability.sync(target);
                         }
                     }));
                 }
                 break;
             case 2:
                 if (AwakenedShadowCapability.isArisen(target) &&
-                        AwakenedShadowCapability.getOwnerUUID(target) == entity.getUUID() &&
+                        Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
                         AwakenedShadowCapability.isShadow(target)) {
-                    if (ShadowStorage.getAllKeys().size() <= instance.getOrCreateTag().getInt("maxStorage")) {
+                    if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
                         ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
                         instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
+                        setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
                         target.discard();
                     }
                 }
@@ -139,9 +143,9 @@ public class ShadowMonarch extends Skill {
     }
 
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        int masteryPercentige = (int)((float)(106 * (instance.getMastery() + 100)) / 100.0F);
+        int masteryPercentige = (int)((float)(instance.getMastery() * 100 / instance.getMaxMastery()));
         int maxShadows = (5 * masteryPercentige) + 5;
-        instance.getOrCreateTag().putInt("maxShadows", maxShadows);
+        instance.getOrCreateTag().putInt("maxStorage", maxShadows);
     }
 
     private CompoundTag shadowToNBT (LivingEntity entity) {
@@ -149,6 +153,10 @@ public class ShadowMonarch extends Skill {
         tag.put("EntityData", entity.serializeNBT());
         tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
         tag.put("rank", AwakenedShadowCapability.getRank(entity).toNBT());
+        if (!entity.getDisplayName().toString().isEmpty() || !entity.getDisplayName().toString().equals("")) {
+            tag.putString("name", entity.getDisplayName().toString());
+        }
+        tag.putDouble("EP", TensuraEPCapability.getCurrentEP(entity));
         return tag;
     }
 

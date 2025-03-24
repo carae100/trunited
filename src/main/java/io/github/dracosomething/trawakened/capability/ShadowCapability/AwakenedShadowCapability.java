@@ -41,7 +41,7 @@ public class AwakenedShadowCapability implements IShadowCapability {
         tag.putBoolean("isShadow", isShadow);
         tag.putBoolean("isArisen", isArisen);
         tag.putInt("tries", tries);
-        tag.putUUID("ownerUUID", ownerUUID);
+        tag.putString("ownerUUID", ownerUUID.toString());
         tag.put("rank", rank.toNBT());
         return tag;
     }
@@ -50,7 +50,7 @@ public class AwakenedShadowCapability implements IShadowCapability {
         this.isShadow = compoundTag.getBoolean("isShadow");
         this.isArisen = compoundTag.getBoolean("isArisen");
         this.tries = compoundTag.getInt("tries");
-        this.ownerUUID = compoundTag.getUUID("ownerUUID");
+        this.ownerUUID = UUID.fromString(compoundTag.getString("ownerUUID"));
         this.rank = shadowRank.fromNBT(compoundTag.getCompound("rank"));
     }
 

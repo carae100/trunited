@@ -14,5 +14,6 @@ public class trawakenedRegistry {
         enchantRegistry.init(modEventBus);
         entityRegistry.init(modEventBus);
         itemRegistry.init(modEventBus);
+        argumentRegistry.init(modEventBus);
     }
 }

@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.handler;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
@@ -13,11 +14,14 @@ import com.github.manasmods.tensura.data.pack.GearEPCount;
 import com.github.manasmods.tensura.data.pack.TensuraData;
 import com.github.manasmods.tensura.enchantment.EngravingEnchantment;
 import com.github.manasmods.tensura.entity.template.HumanoidNPCEntity;
+import com.github.manasmods.tensura.event.UpdateEPEvent;
 import com.github.manasmods.tensura.menu.HumanoidNPCMenu;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.world.TensuraGameRules;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
+import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
@@ -39,6 +43,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -225,6 +230,26 @@ public class ShadowHandler {
                 }
                 break;
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
+        Player user = event.getEntity();
+        if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+            ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+            if (instance.getSkill() instanceof ShadowMonarch skill && skill != null) {
+                skill.setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                instance.getOrCreateTag().put("ShadowStorage", skill.getShadowStorage());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void doubleEPGain(UpdateEPEvent event) {
+        if (AwakenedShadowCapability.isShadow(event.getEntity())) {
+            event.setNewEP(event.getNewEP() * 2);
+            event.getEntity().level.ent
         }
     }
 }

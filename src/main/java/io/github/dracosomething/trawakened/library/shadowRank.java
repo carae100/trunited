@@ -89,6 +89,15 @@ public enum shadowRank {
     }
 
     public ResourceLocation toLocation() {
-        return new ResourceLocation("trawakened" , name);
+        return new ResourceLocation("trawakened" , name.toLowerCase().replace(" ", "_"));
+    }
+
+    @Override
+    public String toString() {
+        return "shadowRank{" +
+                "name='" + name + '\'' +
+                ", min=" + min +
+                ", max=" + max +
+                '}';
     }
 }

@@ -10,6 +10,7 @@ import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.commands.argument.rankArgument;
 import io.github.dracosomething.trawakened.library.FearTypes;
+import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.registry.permisionRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
@@ -18,6 +19,8 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -36,7 +39,7 @@ public class ShadowCommand {
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("shadow")
                 .requires((commandSource) ->
-                        PermissionHelper.hasPermissionOrIsConsole(
+                        PermissionHelper.hasPermissonAndIsPlayer(
                                 commandSource,
                                 permisionRegistry.PLAYER_HAS_SHADOWMONARCH
                         )
@@ -48,20 +51,70 @@ public class ShadowCommand {
                                             ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
                                             ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
                                             if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter((shadow) -> {
+                                                    return shadowRank.fromNBT(skill.getShadowStorage().getCompound(shadow).getCompound("rank")) == rankArgument.getRank(context, "rank");
+                                                }).toList();
+                                                if (validTargets.isEmpty()) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
+                                                    return 0;
+                                                }
+                                                validTargets.forEach((shadow) -> {
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
+                                                });
+                                                return 1;
+                                            }
+                                            return 0;
+                                        })
+                                )
+                        )
+                        .then(Commands.literal("top")
+                                .then(Commands.argument("number", IntegerArgumentType.integer())
+                                        .executes(context -> {
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
                                                 List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
-                                                    return skill.getShadowStorage().getCompound(shadow).getCompound("rank") == rankArgument.getRank(context, "rank").toNBT();
+                                                    return skill.getShadowStorage().getAllKeys().stream().toList().indexOf(shadow) < IntegerArgumentType.getInteger(context, "number");
                                                 }).toList();
                                                 validTargets.forEach(shadow -> {
                                                     EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
                                                     LivingEntity entity = (LivingEntity) type.create(player.level);
-                                                    entity.deserializeNBT();
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound("EntityData"));
+                                                    entity.setPos(player.position());
                                                 });
+                                                return 1;
                                             }
+                                            return 0;
                                         })
                                 )
                         )
-                        .then(Commands.literal("top"))
-                        .then(Commands.literal("above"))
+                        .then(Commands.literal("above")
+                                .then(Commands.argument("number", IntegerArgumentType.integer())
+                                        .executes(context -> {
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
+                                                    return skill.getShadowStorage().getAllKeys().stream().toList().indexOf(shadow) < IntegerArgumentType.getInteger(context, "number");
+                                                }).toList();
+                                                validTargets.forEach(shadow -> {
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                });
+                                                return 1;
+                                            }
+                                            return 0;
+                                        })
+                                )
+                        )
                         .then(Commands.literal("name"))
                 )
         );

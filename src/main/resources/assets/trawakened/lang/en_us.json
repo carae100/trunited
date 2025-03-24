@@ -313,6 +313,7 @@
   "trawakened.command.fear.set_fear": "%1$s is now afraid of %2$s.",
   "trawakened.command.fear.set_scared": "%1$s has now been scared %2$s times.",
   "trawakened.command.fear.set_cooldown": "%1$s can be scared again after %2$s ticks.",
+  "trawakened.command.shadow.summon.empty": "You have no shadows stored matching the argument",
 
   "item.trawakened.stealth_stone": "Stealth Stone",
   "item.trawakened.bloodlust_stone": "Bloodlust Stone",

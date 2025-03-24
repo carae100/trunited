@@ -3,11 +3,16 @@ package io.github.dracosomething.trawakened.mixin;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static com.github.manasmods.tensura.ability.SkillUtils.hasSkill;
 
