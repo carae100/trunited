@@ -11,6 +11,7 @@ import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
 import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
@@ -95,6 +96,8 @@ public class ShadowMonarch extends Skill {
                                     target.removeEffect(MobEffects.DAMAGE_RESISTANCE);
                                     target.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
                                     skillHelper.tameAnything(entity, target, this);
+                                    shadowRank rank = shadowRank.calculateRank(target);
+                                    AwakenedShadowCapability.setRank(target, rank);
                                     AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
                                     BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
@@ -145,6 +148,15 @@ public class ShadowMonarch extends Skill {
         CompoundTag tag = new CompoundTag();
         tag.put("EntityData", entity.serializeNBT());
         tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
+        tag.put("rank", AwakenedShadowCapability.getRank(entity).toNBT());
         return tag;
+    }
+
+    public CompoundTag getShadowStorage() {
+        return ShadowStorage;
+    }
+
+    public void setShadowStorage(CompoundTag shadowStorage) {
+        ShadowStorage = shadowStorage;
     }
 }

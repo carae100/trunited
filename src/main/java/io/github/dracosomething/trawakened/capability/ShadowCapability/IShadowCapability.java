@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.capability.ShadowCapability;
 
+import io.github.dracosomething.trawakened.library.shadowRank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -21,4 +22,8 @@ public interface IShadowCapability extends INBTSerializable<CompoundTag> {
     UUID getOwnerUUID();
 
     void setOwnerUUID(UUID uuid);
+
+    shadowRank getRank();
+
+    void setRank(shadowRank rank);
 }

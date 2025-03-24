@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.capability.ShadowCapability;
 
 import io.github.dracosomething.trawakened.handler.CapabilityHandler;
+import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.SyncShadowCapabiliyPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +21,7 @@ public class AwakenedShadowCapability implements IShadowCapability {
     private boolean isArisen = false;
     private int tries = 3;
     private UUID ownerUUID = UUID.randomUUID();
+    private shadowRank rank = shadowRank.BASIC;
 
     public static LazyOptional<IShadowCapability> getFrom(LivingEntity entity) {
         return entity.getCapability(CAPABILITY);
@@ -39,6 +41,8 @@ public class AwakenedShadowCapability implements IShadowCapability {
         tag.putBoolean("isShadow", isShadow);
         tag.putBoolean("isArisen", isArisen);
         tag.putInt("tries", tries);
+        tag.putUUID("ownerUUID", ownerUUID);
+        tag.put("rank", rank.toNBT());
         return tag;
     }
 
@@ -46,6 +50,8 @@ public class AwakenedShadowCapability implements IShadowCapability {
         this.isShadow = compoundTag.getBoolean("isShadow");
         this.isArisen = compoundTag.getBoolean("isArisen");
         this.tries = compoundTag.getInt("tries");
+        this.ownerUUID = compoundTag.getUUID("ownerUUID");
+        this.rank = shadowRank.fromNBT(compoundTag.getCompound("rank"));
     }
 
     public static boolean isShadow(LivingEntity entity) {
@@ -92,6 +98,17 @@ public class AwakenedShadowCapability implements IShadowCapability {
         capability.setOwnerUUID(uuid);
     }
 
+    public static shadowRank getRank(LivingEntity entity) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? shadowRank.BASIC : capability.getRank();
+    }
+
+    public static void setRank(LivingEntity entity, shadowRank rank) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setRank(rank);
+    }
+
     public boolean isShadow() {
         return isShadow;
     }
@@ -122,5 +139,13 @@ public class AwakenedShadowCapability implements IShadowCapability {
 
     public void setOwnerUUID(UUID uuid) {
         ownerUUID = uuid;
+    }
+
+    public shadowRank getRank() {
+        return this.rank;
+    }
+
+    public void setRank(shadowRank rank) {
+        this.rank = rank;
     }
 }

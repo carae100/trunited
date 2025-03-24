@@ -321,5 +321,7 @@
   "item.trawakened.rulers_authority_stone": "Rulers Authority Stone",
   "item.trawakened.dragons_fear_stone": "Dragons Fear Stone",
 
-  "message.tries_left": "You have %1$s tries left to arise %2$s."
+  "message.tries_left": "You have %1$s tries left to arise %2$s.",
+
+  "trawakened.argument.rank.invalid": "Input Rank was invalid."
 }
