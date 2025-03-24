@@ -337,14 +337,14 @@ public enum FearTypes {
         CompoundTag entities = new CompoundTag();
         getEntity().forEach((block) -> {
             if (block != null) {
-                entities.putString(block.toString(), block.toString());
+                entities.putString(block.toString(), EntityType.getKey(block).toString());
             }
         });
         tag.put("entities", entities);
         CompoundTag effects = new CompoundTag();
         getEffect().forEach((block) -> {
             if (block != null) {
-                effects.putString(block.toString(), block.toString());
+                effects.putInt(block.toString(), MobEffect.getId(block));
             }
         });
         tag.put("effects", effects);

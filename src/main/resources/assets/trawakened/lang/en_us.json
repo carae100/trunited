@@ -159,6 +159,12 @@
 
   "trawakened.skill.system.extra.dragons_fear": "Dragon's fear",
 
+  "trawakened.skill.shadow_monarch": "Shadow Monarch",
+  "trawakened.skill.shadow_monarch.description": "",
+
+  "trawakened.skill.shadow_monarch.mode.arise": "ARISE",
+  "trawakened.skill.shadow_monarch.mode.storage": "Shadow Storage",
+
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
   "trawakened.requirement.evolution.herrscher_of_pestilence.skill": "§dMaster Will of the Honkai",
