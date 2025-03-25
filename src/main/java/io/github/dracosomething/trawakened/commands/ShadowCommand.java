@@ -82,11 +82,18 @@ public class ShadowCommand {
                                                 List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
                                                     return skill.getShadowStorage().getAllKeys().stream().toList().indexOf(shadow) < IntegerArgumentType.getInteger(context, "number");
                                                 }).toList();
-                                                validTargets.forEach(shadow -> {
+                                                if (validTargets.isEmpty()) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
+                                                    return 0;
+                                                }
+                                                validTargets.forEach((shadow) -> {
                                                     EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
                                                     LivingEntity entity = (LivingEntity) type.create(player.level);
-                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound("EntityData"));
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
                                                     entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }
@@ -101,13 +108,20 @@ public class ShadowCommand {
                                             ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
                                             if (instance.getSkill() instanceof ShadowMonarch skill) {
                                                 List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
-                                                    return skill.getShadowStorage().getAllKeys().stream().toList().indexOf(shadow) < IntegerArgumentType.getInteger(context, "number");
+                                                    return skill.getShadowStorage().getCompound(shadow).getDouble("EP") >= IntegerArgumentType.getInteger(context, "number");
                                                 }).toList();
-                                                validTargets.forEach(shadow -> {
+                                                if (validTargets.isEmpty()) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
+                                                    return 0;
+                                                }
+                                                validTargets.forEach((shadow) -> {
                                                     EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
                                                     LivingEntity entity = (LivingEntity) type.create(player.level);
-                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound("EntityData"));
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
                                                     entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }
@@ -115,7 +129,38 @@ public class ShadowCommand {
                                         })
                                 )
                         )
-                        .then(Commands.literal("name"))
+                        .then(Commands.literal("name")
+                                .then(Commands.argument("name", StringArgumentType.string())
+                                        .executes(context -> {
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            if (StringArgumentType.getString(context, "name").isEmpty()) {
+                                                player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
+                                                return 0;
+                                            }
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
+                                                    return skill.getShadowStorage().getCompound(shadow).getString("name").equals(StringArgumentType.getString(context, "name"));
+                                                }).toList();
+                                                if (validTargets.isEmpty()) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
+                                                    return 0;
+                                                }
+                                                validTargets.forEach((shadow) -> {
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
+                                                });
+                                                return 1;
+                                            }
+                                            return 0;
+                                        })
+                                )
+                        )
                 )
         );
     }

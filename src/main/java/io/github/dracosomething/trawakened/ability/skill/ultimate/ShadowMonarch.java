@@ -98,6 +98,7 @@ public class ShadowMonarch extends Skill {
                                     target.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
                                     skillHelper.tameAnything(entity, target, this);
                                     shadowRank rank = shadowRank.calculateRank(target);
+                                    SkillHelper.setFollow(target);
                                     AwakenedShadowCapability.setRank(target, rank);
                                     AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
                                     BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
@@ -108,17 +109,32 @@ public class ShadowMonarch extends Skill {
                                         }
                                     }
                                     AwakenedShadowCapability.sync(target);
+                                    instance.addMasteryPoint(entity);
                                 }
                             }
                         }
                     }
                 } else {
                     targetList.forEach((living -> {
-                        if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
-                            AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
-                            AwakenedShadowCapability.setArisen(target, true);
-                            AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
-                            AwakenedShadowCapability.sync(target);
+                        if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
+                            living.setHealth(living.getMaxHealth());
+                            AwakenedShadowCapability.setArisen(living, true);
+                            living.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                            living.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                            living.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                            skillHelper.tameAnything(entity, living, this);
+                            SkillHelper.setFollow(target);
+                            shadowRank rank = shadowRank.calculateRank(living);
+                            AwakenedShadowCapability.setRank(living, rank);
+                            AwakenedShadowCapability.setOwnerUUID(living, entity.getUUID());
+                            BecomeShadowEvent event = new BecomeShadowEvent(living, entity, true);
+                            MinecraftForge.EVENT_BUS.post(event);
+                            if (living.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || living instanceof Player) {
+                                if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
+                                    TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
+                                }
+                            }
+                            AwakenedShadowCapability.sync(living);
                         }
                     }));
                 }
@@ -132,6 +148,8 @@ public class ShadowMonarch extends Skill {
                         instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
                         setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
                         target.discard();
+                    } else if (entity instanceof Player player) {
+                        player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
                     }
                 }
                 break;

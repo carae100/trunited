@@ -50,6 +50,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -249,7 +250,16 @@ public class ShadowHandler {
     public static void doubleEPGain(UpdateEPEvent event) {
         if (AwakenedShadowCapability.isShadow(event.getEntity())) {
             event.setNewEP(event.getNewEP() * 2);
-//            event.getEntity().level.ent
+            Player owner = event.getEntity().level.getPlayerByUUID(AwakenedShadowCapability.getOwnerUUID(event.getEntity()));
+            if (owner != null) {
+                if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+                    double maxMP = (double)owner.getLevel().getGameRules().getInt(TensuraGameRules.MAX_MP_GAIN);
+                    double maxAP = (double)owner.getLevel().getGameRules().getInt(TensuraGameRules.MAX_AP_GAIN);
+                    double ep = event.getNewEP() * 0.33;
+                    TensuraEPCapability.setLivingEP(owner, (double)Math.round(TensuraEPCapability.getEP(owner) + Math.min(ep * (double)TensuraGameRules.getEPGain(owner.level), maxMP + maxAP)));
+                    TensuraEPCapability.updateEP(owner);
+                }
+            }
         }
     }
 }

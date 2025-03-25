@@ -324,5 +324,6 @@
 
   "message.tries_left": "You have %1$s tries left to arise %2$s.",
 
-  "trawakened.argument.rank.invalid": "Input Rank was invalid."
+  "trawakened.argument.rank.invalid": "§cInput Rank was invalid.",
+  "trawakened.monarch_shadow.full_storage": "§cYou have no space left in Shadow Storage."
 }
