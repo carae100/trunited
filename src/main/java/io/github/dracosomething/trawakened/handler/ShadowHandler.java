@@ -249,7 +249,7 @@ public class ShadowHandler {
     public static void doubleEPGain(UpdateEPEvent event) {
         if (AwakenedShadowCapability.isShadow(event.getEntity())) {
             event.setNewEP(event.getNewEP() * 2);
-            event.getEntity().level.ent
+//            event.getEntity().level.ent
         }
     }
 }

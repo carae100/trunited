@@ -14,7 +14,7 @@ import net.minecraftforge.server.permission.nodes.PermissionTypes;
         bus = Mod.EventBusSubscriber.Bus.FORGE
 )
 public class permisionRegistry {
-    public static final PermissionNode<Boolean> PLAYER_HAS_SHADOWMONARCH = createNode("shadow_monarch.use", false, 1);
+    public static final PermissionNode<Boolean> PLAYER_HAS_SHADOWMONARCH = createNode("shadow_monarch.use", false, 0);
 
     public static PermissionNode<Boolean> createNode(String node, boolean allowConsole, int permissionLevel) {
         return new PermissionNode<>("trawakened", node, PermissionTypes.BOOLEAN, (player, playerUUID, context) -> {
