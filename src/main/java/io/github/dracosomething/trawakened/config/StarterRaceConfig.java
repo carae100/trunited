@@ -21,12 +21,12 @@ public class StarterRaceConfig {
 
         BUILDER.pop();
 
-        BUILDER.push("Modded starter uniques");
+        BUILDER.push("Modded starter skills");
 
         STARTER_SKILLS = BUILDER
-                .comment("List of default starter races")
+                .comment("List of default starter skills")
                 .comment("default: \"trawakened:alternate\", \"trawakened:starkill\", \"trawakened:system\", \"trawakened:akashic_plane\"")
-                .define("Starter Races", Arrays.asList("trawakened:alternate", "trawakened:starkill", "trawakened:system", "trawakened:akashic_plane"));
+                .define("Starter Skills", Arrays.asList("trawakened:alternate", "trawakened:starkill", "trawakened:system", "trawakened:akashic_plane"));
 
         SPEC = BUILDER.build();
     }
