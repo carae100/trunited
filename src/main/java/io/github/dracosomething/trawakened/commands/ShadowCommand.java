@@ -190,6 +190,34 @@ public class ShadowCommand {
                                 })
                         )
                 )
+                .then(Commands.literal("craft")
+                        .then(Commands.literal("dagger")
+                                .executes((context) -> {
+                                    return 1;
+                                })
+                        )
+                )
+                .then(Commands.literal("summon")
+                        .then(Commands.literal("kamish")
+                                .executes((context) -> {
+                                    return 1;
+                                })
+                        )
+                )
+                .then(Commands.literal("bind")
+                        .then(Commands.argument("player_name", EntityArgument.player())
+                            .executes((context) -> {
+                                return 1;
+                            })
+                        )
+                )
+                .then(Commands.literal("exchange")
+                        .then(Commands.argument("shadow_name", StringArgumentType.string())
+                                .executes((context) -> {
+                                    return 1;
+                                })
+                        )
+                )
         );
     }
 }
