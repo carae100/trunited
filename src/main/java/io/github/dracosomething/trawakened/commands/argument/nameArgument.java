@@ -55,7 +55,7 @@ public class nameArgument implements ArgumentType<String> {
                 ManasSkillInstance instance = SkillAPI.getSkillsFrom(source).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
                 if (instance.getSkill() instanceof ShadowMonarch shadowMonarch) {
                     return context.getSource() instanceof SharedSuggestionProvider ? SharedSuggestionProvider.suggestResource(
-                            (shadowMonarch.getShadowStorage().getAllKeys().stream().map((shadow) -> ResourceLocation.tryParse(shadowMonarch.getShadowStorage().getCompound(shadow).getString("name")))), builder) : Suggestions.empty();
+                            (shadowMonarch.getShadowStorage().getAllKeys().stream().map((shadow) -> new ResourceLocation("", shadowMonarch.getShadowStorage().getCompound(shadow).getString("name")))), builder) : Suggestions.empty();
                 }
             }
         }

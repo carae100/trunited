@@ -162,6 +162,21 @@ public class ShadowCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("dismiss")
+                        .then(Commands.argument("range", IntegerArgumentType.integer())
+                                .then(Commands.argument("number", IntegerArgumentType.integer())
+                                        .executes((context) -> {
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(Commands.argument("name", StringArgumentType.string())
+                                .executes((context) -> {
+                                    return 1;
+                                })
+                        )
+
+                )
         );
     }
 }

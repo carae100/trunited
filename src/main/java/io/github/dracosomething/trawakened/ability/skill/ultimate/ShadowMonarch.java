@@ -116,25 +116,29 @@ public class ShadowMonarch extends Skill {
                     }
                 } else {
                     targetList.forEach((living -> {
-                        if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
-                            living.setHealth(living.getMaxHealth());
-                            AwakenedShadowCapability.setArisen(living, true);
-                            living.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
-                            living.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-                            living.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-                            skillHelper.tameAnything(entity, living, this);
-                            SkillHelper.setFollow(target);
-                            shadowRank rank = shadowRank.calculateRank(living);
-                            AwakenedShadowCapability.setRank(living, rank);
-                            AwakenedShadowCapability.setOwnerUUID(living, entity.getUUID());
-                            BecomeShadowEvent event = new BecomeShadowEvent(living, entity, true);
-                            MinecraftForge.EVENT_BUS.post(event);
-                            if (living.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || living instanceof Player) {
-                                if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
-                                    TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
+                        if (AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
+                            if (living != null && AwakenedShadowCapability.getTries(living) > 0) {
+                                if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
+                                    living.setHealth(living.getMaxHealth());
+                                    AwakenedShadowCapability.setArisen(living, true);
+                                    living.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                    living.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                                    living.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                                    skillHelper.tameAnything(entity, living, this);
+                                    SkillHelper.setFollow(living);
+                                    shadowRank rank = shadowRank.calculateRank(living);
+                                    AwakenedShadowCapability.setRank(living, rank);
+                                    AwakenedShadowCapability.setOwnerUUID(living, entity.getUUID());
+                                    BecomeShadowEvent event = new BecomeShadowEvent(living, entity, true);
+                                    MinecraftForge.EVENT_BUS.post(event);
+                                    if (living.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || living instanceof Player) {
+                                        if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
+                                            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
+                                        }
+                                    }
+                                    AwakenedShadowCapability.sync(living);
                                 }
                             }
-                            AwakenedShadowCapability.sync(living);
                         }
                     }));
                 }
