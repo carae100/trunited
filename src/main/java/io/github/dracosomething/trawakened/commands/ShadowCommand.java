@@ -163,7 +163,21 @@ public class ShadowCommand {
                         )
                 )
                 .then(Commands.literal("dismiss")
-                        .then(Commands.argument("range", IntegerArgumentType.integer())
+                        .then(Commands.literal("weakest")
+                                .then(Commands.argument("number", IntegerArgumentType.integer())
+                                        .executes((context) -> {
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(Commands.literal("strongest")
+                                .then(Commands.argument("number", IntegerArgumentType.integer())
+                                        .executes((context) -> {
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(Commands.argument("rank", rankArgument.rank())
                                 .then(Commands.argument("number", IntegerArgumentType.integer())
                                         .executes((context) -> {
                                             return 1;
@@ -175,7 +189,6 @@ public class ShadowCommand {
                                     return 1;
                                 })
                         )
-
                 )
         );
     }
