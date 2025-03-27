@@ -27,6 +27,8 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -181,9 +183,7 @@ public class ShadowCommand {
                                                             i <= IntegerArgumentType.getInteger(context, "number");
                                                 }));
                                                 list.forEach(System.out::println);
-                                                list.sort((shadow, living) -> {
-                                                    return (int) TensuraEPCapability.getCurrentEP(((LivingEntity) shadow));
-                                                });
+                                                list.sort(Comparator.comparingDouble(shadow -> TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
                                                 list.forEach(System.out::println);
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
@@ -214,9 +214,7 @@ public class ShadowCommand {
                                                             i.get() <= IntegerArgumentType.getInteger(context, "number");
                                                 }));
                                                 list.forEach(System.out::println);
-                                                list.sort((shadow, living) -> {
-                                                    return (int) TensuraEPCapability.getCurrentEP(((LivingEntity) living));
-                                                });
+                                                list.sort((shadow, living) -> Double.compare(TensuraEPCapability.getCurrentEP((LivingEntity) living), TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
                                                 list.forEach(System.out::println);
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
@@ -307,6 +305,13 @@ public class ShadowCommand {
                 .then(Commands.literal("exchange")
                         .then(Commands.argument("shadow_name", StringArgumentType.string())
                                 .executes((context) -> {
+                                    return 1;
+                                })
+                        )
+                )
+                .then(Commands.literal("tp")
+                        .then(Commands.argument("player_name", EntityArgument.player())
+                                .executes(context -> {
                                     return 1;
                                 })
                         )

@@ -22,6 +22,8 @@ public class AwakenedShadowCapability implements IShadowCapability {
     private int tries = 3;
     private UUID ownerUUID = UUID.randomUUID();
     private shadowRank rank = shadowRank.BASIC;
+    private boolean hasShadow = false;
+    private CompoundTag ShadowStorage = new CompoundTag();
 
     public static LazyOptional<IShadowCapability> getFrom(LivingEntity entity) {
         return entity.getCapability(CAPABILITY);

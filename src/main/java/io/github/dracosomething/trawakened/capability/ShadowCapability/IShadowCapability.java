@@ -26,4 +26,12 @@ public interface IShadowCapability extends INBTSerializable<CompoundTag> {
     shadowRank getRank();
 
     void setRank(shadowRank rank);
+
+    boolean hasShadow();
+
+    void setHasShadow(boolean hasShadow);
+
+    CompoundTag getStorage();
+
+    void setStorage(CompoundTag storage);
 }
