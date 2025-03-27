@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
+import io.github.dracosomething.trawakened.commands.argument.fearArgument;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
@@ -96,10 +97,10 @@ public class AwakenedCommand {
                 .then(Commands.literal("edit").requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_STAT))
                         .then(Commands.argument("player", EntityArgument.entity()).requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_RACE_OTHERS))
                                 .then(Commands.literal("fear")
-                                        .then(Commands.argument("fear", StringArgumentType.string())
+                                        .then(Commands.argument("fear", fearArgument.fear())
                                         .executes((context) -> {
                                             ServerPlayer player = EntityArgument.getPlayer(context, "player");
-                                            FearTypes newFear = FearTypes.getByName(StringArgumentType.getString(context, "fear"));
+                                            FearTypes newFear = fearArgument.getFear(context, "fear");
                                             if (newFear == null) {
                                                 return 0;
                                             }

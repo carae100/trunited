@@ -2,32 +2,33 @@ package io.github.dracosomething.trawakened.commands;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
-import com.github.manasmods.tensura.command.TensuraPermissions;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.util.PermissionHelper;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
-import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
+import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.commands.argument.rankArgument;
-import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.registry.permisionRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Mod.EventBusSubscriber(
         modid = "trawakened",
@@ -165,28 +166,120 @@ public class ShadowCommand {
                 .then(Commands.literal("dismiss")
                         .then(Commands.literal("weakest")
                                 .then(Commands.argument("number", IntegerArgumentType.integer())
-                                        .executes((context) -> {
-                                            return 1;
+                                        .executes(context -> {
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                WorldBorder border = player.level.getWorldBorder();
+                                                AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
+                                                int i = 0;
+                                                List<Entity> list = player.level.getEntities(player, world, (entity -> {
+                                                    return entity instanceof LivingEntity living &&
+                                                            AwakenedShadowCapability.isShadow(living) &&
+                                                            AwakenedShadowCapability.isArisen(living) &&
+                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
+                                                            i <= IntegerArgumentType.getInteger(context, "number");
+                                                }));
+                                                list.forEach(System.out::println);
+                                                list.sort((shadow, living) -> {
+                                                    return (int) TensuraEPCapability.getCurrentEP(((LivingEntity) shadow));
+                                                });
+                                                list.forEach(System.out::println);
+                                                list.forEach((entity -> {
+                                                    if (entity instanceof LivingEntity living) {
+                                                        living.discard();
+                                                    }
+                                                }));
+                                                return 1;
+                                            }
+                                            return 0;
                                         })
                                 )
                         )
                         .then(Commands.literal("strongest")
                                 .then(Commands.argument("number", IntegerArgumentType.integer())
                                         .executes((context) -> {
-                                            return 1;
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                WorldBorder border = player.level.getWorldBorder();
+                                                AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
+                                                AtomicInteger i = new AtomicInteger();
+                                                List<Entity> list = player.level.getEntities(player, world, (entity -> {
+                                                    i.getAndIncrement();
+                                                    return entity instanceof LivingEntity living &&
+                                                            AwakenedShadowCapability.isShadow(living) &&
+                                                            AwakenedShadowCapability.isArisen(living) &&
+                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
+                                                            i.get() <= IntegerArgumentType.getInteger(context, "number");
+                                                }));
+                                                list.forEach(System.out::println);
+                                                list.sort((shadow, living) -> {
+                                                    return (int) TensuraEPCapability.getCurrentEP(((LivingEntity) living));
+                                                });
+                                                list.forEach(System.out::println);
+                                                list.forEach((entity -> {
+                                                    if (entity instanceof LivingEntity living) {
+                                                        living.discard();
+                                                    }
+                                                }));
+                                                return 1;
+                                            }
+                                            return 0;
                                         })
                                 )
                         )
                         .then(Commands.argument("rank", rankArgument.rank())
                                 .then(Commands.argument("number", IntegerArgumentType.integer())
                                         .executes((context) -> {
-                                            return 1;
+                                            ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                            ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                WorldBorder border = player.level.getWorldBorder();
+                                                AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
+                                                AtomicInteger i = new AtomicInteger();
+                                                List<Entity> list = player.level.getEntities(player, world, (entity -> {
+                                                    i.getAndIncrement();
+                                                    return entity instanceof LivingEntity living &&
+                                                            AwakenedShadowCapability.isShadow(living) &&
+                                                            AwakenedShadowCapability.isArisen(living) &&
+                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
+                                                            i.get() <= IntegerArgumentType.getInteger(context, "number") &&
+                                                            AwakenedShadowCapability.getRank(living).equals(rankArgument.getRank(context, "rank"));
+                                                }));
+                                                list.forEach((entity -> {
+                                                    if (entity instanceof LivingEntity living) {
+                                                        living.discard();
+                                                    }
+                                                }));
+                                                return 1;
+                                            }
+                                            return 0;
                                         })
                                 )
                         )
                         .then(Commands.argument("name", StringArgumentType.string())
                                 .executes((context) -> {
-                                    return 1;
+                                    ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                    ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                    if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                        WorldBorder border = player.level.getWorldBorder();
+                                        AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
+                                        List<Entity> list = player.level.getEntities(player, world, (entity -> {
+                                            return entity instanceof LivingEntity living &&
+                                                    AwakenedShadowCapability.isShadow(living) &&
+                                                    AwakenedShadowCapability.isArisen(living) &&
+                                                    AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
+                                                    living.getDisplayName().getString().equals(StringArgumentType.getString(context, "name"));
+                                        }));
+                                        list.forEach((entity -> {
+                                            if (entity instanceof LivingEntity living) {
+                                                living.discard();
+                                            }
+                                        }));
+                                        return 1;
+                                    }
+                                    return 0;
                                 })
                         )
                 )

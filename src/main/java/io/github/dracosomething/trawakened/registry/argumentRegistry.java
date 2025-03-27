@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.registry;
 
 import com.github.manasmods.tensura.command.argument.RaceArgument;
 import com.github.manasmods.tensura.command.argument.SkillArgument;
+import io.github.dracosomething.trawakened.commands.argument.fearArgument;
 import io.github.dracosomething.trawakened.commands.argument.nameArgument;
 import io.github.dracosomething.trawakened.commands.argument.rankArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
@@ -16,6 +17,7 @@ public class argumentRegistry {
     private static final DeferredRegister<ArgumentTypeInfo<?, ?>> registry;
     private static final RegistryObject<SingletonArgumentInfo<rankArgument>> RANK_ARGUMENT;
     private static final RegistryObject<SingletonArgumentInfo<nameArgument>> NAME_ARGUMENT;
+    private static final RegistryObject<SingletonArgumentInfo<fearArgument>> FEAR_ARGUMENT;
 
     public static void init(IEventBus modEventBus) {
         registry.register(modEventBus);
@@ -28,6 +30,9 @@ public class argumentRegistry {
         });
         NAME_ARGUMENT = registry.register("name", () -> {
             return ArgumentTypeInfos.registerByClass(nameArgument.class, SingletonArgumentInfo.contextFree(nameArgument::word));
+        });
+        FEAR_ARGUMENT = registry.register("fear", () -> {
+            return ArgumentTypeInfos.registerByClass(fearArgument.class, SingletonArgumentInfo.contextFree(fearArgument::fear));
         });
     }
 }

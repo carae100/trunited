@@ -9,6 +9,7 @@ import io.github.dracosomething.trawakened.registry.entityRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -357,5 +358,9 @@ public enum FearTypes {
 
     public static FearTypes fromString(String string) {
         return getByName(string);
+    }
+
+    public ResourceLocation toLocation() {
+        return new ResourceLocation("trawakened" , name.toLowerCase().replace(" ", "_"));
     }
 }
