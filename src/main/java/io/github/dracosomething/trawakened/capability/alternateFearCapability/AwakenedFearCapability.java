@@ -28,10 +28,6 @@ import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(
-        modid = trawakened.MODID,
-        bus = Mod.EventBusSubscriber.Bus.FORGE
-)
 public class AwakenedFearCapability implements IFearCapability{
     public static final Capability<IFearCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<IFearCapability>() {});
 

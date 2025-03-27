@@ -27,7 +27,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -174,13 +173,20 @@ public class ShadowCommand {
                                             if (instance.getSkill() instanceof ShadowMonarch skill) {
                                                 WorldBorder border = player.level.getWorldBorder();
                                                 AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
-                                                int i = 0;
+                                                AtomicInteger i = new AtomicInteger();
                                                 List<Entity> list = player.level.getEntities(player, world, (entity -> {
-                                                    return entity instanceof LivingEntity living &&
-                                                            AwakenedShadowCapability.isShadow(living) &&
-                                                            AwakenedShadowCapability.isArisen(living) &&
-                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
-                                                            i <= IntegerArgumentType.getInteger(context, "number");
+                                                    if (entity instanceof LivingEntity living) {
+                                                        if (AwakenedShadowCapability.isShadow(living) &&
+                                                                AwakenedShadowCapability.isArisen(living) &&
+                                                                AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID())) {
+                                                            System.out.println(i.get());
+                                                            System.out.println(IntegerArgumentType.getInteger(context, "number"));
+                                                            System.out.println(i.get() <= IntegerArgumentType.getInteger(context, "number"));
+                                                            i.getAndIncrement();
+                                                            return i.get() <= IntegerArgumentType.getInteger(context, "number");
+                                                        }
+                                                    }
+                                                    return false;
                                                 }));
                                                 list.forEach(System.out::println);
                                                 list.sort(Comparator.comparingDouble(shadow -> TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
@@ -206,15 +212,24 @@ public class ShadowCommand {
                                                 AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
                                                 AtomicInteger i = new AtomicInteger();
                                                 List<Entity> list = player.level.getEntities(player, world, (entity -> {
-                                                    i.getAndIncrement();
-                                                    return entity instanceof LivingEntity living &&
-                                                            AwakenedShadowCapability.isShadow(living) &&
-                                                            AwakenedShadowCapability.isArisen(living) &&
-                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
-                                                            i.get() <= IntegerArgumentType.getInteger(context, "number");
+                                                    if (entity instanceof LivingEntity living) {
+                                                        if (AwakenedShadowCapability.isShadow(living) &&
+                                                                AwakenedShadowCapability.isArisen(living) &&
+                                                                AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID())) {
+                                                            System.out.println(i.get());
+                                                            System.out.println(IntegerArgumentType.getInteger(context, "number"));
+                                                            System.out.println(i.get() <= IntegerArgumentType.getInteger(context, "number"));
+                                                            i.getAndIncrement();
+                                                            return i.get() <= IntegerArgumentType.getInteger(context, "number");
+                                                        }
+                                                    }
+                                                    return false;
                                                 }));
                                                 list.forEach(System.out::println);
-                                                list.sort((shadow, living) -> Double.compare(TensuraEPCapability.getCurrentEP((LivingEntity) living), TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
+                                                list.sort((shadow, living) -> {
+                                                    System.out.println(Double.compare(TensuraEPCapability.getCurrentEP((LivingEntity) living), TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
+                                                    return Double.compare(TensuraEPCapability.getCurrentEP((LivingEntity) living), TensuraEPCapability.getCurrentEP((LivingEntity) shadow));
+                                                });
                                                 list.forEach(System.out::println);
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
@@ -237,13 +252,19 @@ public class ShadowCommand {
                                                 AABB world = new AABB(border.getMaxX(), player.level.getMaxBuildHeight(), border.getMaxZ(), border.getMinX(), player.level.getMinBuildHeight(), border.getMinX());
                                                 AtomicInteger i = new AtomicInteger();
                                                 List<Entity> list = player.level.getEntities(player, world, (entity -> {
-                                                    i.getAndIncrement();
-                                                    return entity instanceof LivingEntity living &&
-                                                            AwakenedShadowCapability.isShadow(living) &&
-                                                            AwakenedShadowCapability.isArisen(living) &&
-                                                            AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
-                                                            i.get() <= IntegerArgumentType.getInteger(context, "number") &&
-                                                            AwakenedShadowCapability.getRank(living).equals(rankArgument.getRank(context, "rank"));
+                                                    if (entity instanceof LivingEntity living) {
+                                                        if (AwakenedShadowCapability.isShadow(living) &&
+                                                                AwakenedShadowCapability.isArisen(living) &&
+                                                                AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID())) {
+                                                            System.out.println(i.get());
+                                                            System.out.println(IntegerArgumentType.getInteger(context, "number"));
+                                                            System.out.println(i.get() <= IntegerArgumentType.getInteger(context, "number"));
+                                                            i.getAndIncrement();
+                                                            return i.get() <= IntegerArgumentType.getInteger(context, "number") &&
+                                                                    AwakenedShadowCapability.getRank(living).equals(rankArgument.getRank(context, "rank"));
+                                                        }
+                                                    }
+                                                    return false;
                                                 }));
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {

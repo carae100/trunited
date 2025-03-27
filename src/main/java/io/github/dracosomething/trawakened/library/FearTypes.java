@@ -237,7 +237,7 @@ public enum FearTypes {
         this.effect = null;
     }
 
-    private static final List<FearTypes> list = FearTypes.getFears().stream().toList();
+    private static final List<FearTypes> list = Arrays.stream(FearTypes.values()).toList();
     private static final Map<String, FearTypes> FEARS_BY_NAME = Arrays.stream(values()).collect(Collectors.toMap((fearType) -> {
         return cleanName(fearType.name);
     }, (fearType) -> {
@@ -246,32 +246,6 @@ public enum FearTypes {
 
     private static String cleanName(String p_126663_) {
         return p_126663_.toLowerCase(Locale.ROOT).replaceAll("[^a-z]", "");
-    }
-
-    public static Collection<String> getNames() {
-        List<String> $$2 = Lists.newArrayList();
-        FearTypes[] var3 = values();
-        int var4 = var3.length;
-
-        for(int var5 = 0; var5 < var4; ++var5) {
-            FearTypes $$3 = var3[var5];
-            $$2.add($$3.getName());
-        }
-
-        return $$2;
-    }
-
-    public static Collection<FearTypes> getFears() {
-        List<FearTypes> fearList = Lists.newArrayList();
-        FearTypes[] fearArray = values();
-        int length = fearArray.length;
-
-        for(int i = 0; i < length; ++i) {
-            FearTypes fearTypes = fearArray[i];
-            fearList.add(fearTypes);
-        }
-
-        return fearList;
     }
 
     @Nullable
@@ -313,9 +287,10 @@ public enum FearTypes {
 
     public static FearTypes getRandom() {
         Random random = new Random();
+        if (list == null) return FearTypes.OTHERWORLDER;
         FearTypes fear = (FearTypes) list.get(random.nextInt(0, list.size()));
 //        FearTypes fear = FearTypes.TRUTH;
-        return fear;
+        return fear == null ? FearTypes.DARKNESS : fear;
     }
 
     public CompoundTag ToNBT() {

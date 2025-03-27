@@ -43,6 +43,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,9 +57,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShadowHandler {
     @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event) {
+    public static void onDeath(LivingHurtEvent event) {
         Entity source = event.getSource().getEntity();
-        if (source instanceof LivingEntity entity) {
+        float dmg = event.getEntity().getHealth()-event.getAmount();
+        if (dmg <= 0.0f && source instanceof LivingEntity entity) {
             LivingEntity target = event.getEntity();
             AtomicReference<LivingEntity> user = new AtomicReference<>();
             skillHelper.GetLivingEntities(target, 50, false).forEach(entity1 -> {

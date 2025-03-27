@@ -45,6 +45,8 @@ public class AwakenedShadowCapability implements IShadowCapability {
         tag.putInt("tries", tries);
         tag.putString("ownerUUID", ownerUUID.toString());
         tag.put("rank", rank.toNBT());
+        tag.put("storage", ShadowStorage);
+        tag.putBoolean("hasShadow", hasShadow);
         return tag;
     }
 
@@ -54,6 +56,8 @@ public class AwakenedShadowCapability implements IShadowCapability {
         this.tries = compoundTag.getInt("tries");
         this.ownerUUID = UUID.fromString(compoundTag.getString("ownerUUID"));
         this.rank = shadowRank.fromNBT(compoundTag.getCompound("rank"));
+        this.hasShadow = compoundTag.getBoolean("hasShadow");
+        this.ShadowStorage = compoundTag.getCompound("storage");
     }
 
     public static boolean isShadow(LivingEntity entity) {
@@ -111,6 +115,28 @@ public class AwakenedShadowCapability implements IShadowCapability {
         capability.setRank(rank);
     }
 
+    public static boolean hasShadow(LivingEntity entity) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? false : capability.hasShadow();
+    }
+
+    public static void setHasShadow(LivingEntity entity, boolean hasShadow) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setHasShadow(hasShadow);
+    }
+
+    public static CompoundTag getStorage(LivingEntity entity) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        return capability == null ? new CompoundTag() : capability.getStorage();
+    }
+
+    public static void setStorage(LivingEntity entity, CompoundTag shadowStorage) {
+        IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
+        if (capability == null) return;
+        capability.setStorage(shadowStorage);
+    }
+
     public boolean isShadow() {
         return isShadow;
     }
@@ -149,5 +175,21 @@ public class AwakenedShadowCapability implements IShadowCapability {
 
     public void setRank(shadowRank rank) {
         this.rank = rank;
+    }
+
+    public boolean hasShadow() {
+        return hasShadow;
+    }
+
+    public void setHasShadow(boolean hasShadow) {
+        this.hasShadow = hasShadow;
+    }
+
+    public CompoundTag getStorage() {
+        return ShadowStorage;
+    }
+
+    public void setStorage(CompoundTag storage) {
+        this.ShadowStorage = storage;
     }
 }

@@ -7,6 +7,7 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.data.TensuraTags;
+import com.github.manasmods.tensura.entity.human.HinataSakaguchiEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
@@ -24,6 +25,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.List;
@@ -103,7 +106,10 @@ public class ShadowMonarch extends Skill {
                                     AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
                                     BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
-                                    if (target.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || target instanceof Player) {
+                                    if (target.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) ||
+                                            target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
+                                            target instanceof Player ||
+                                            target instanceof HinataSakaguchiEntity) {
                                         if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
                                             TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
                                         }
