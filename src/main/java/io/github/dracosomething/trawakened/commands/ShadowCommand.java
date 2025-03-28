@@ -14,6 +14,7 @@ import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.registry.permisionRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.DimensionArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -329,9 +330,11 @@ public class ShadowCommand {
                 )
                 .then(Commands.literal("exchange")
                         .then(Commands.argument("shadow_name", StringArgumentType.string())
-                                .executes((context) -> {
-                                    return 1;
-                                })
+                                .then(Commands.argument("dimension", DimensionArgument.dimension())
+                                    .executes((context) -> {
+                                        return 1;
+                                    })
+                                )
                         )
                 )
                 .then(Commands.literal("tp")

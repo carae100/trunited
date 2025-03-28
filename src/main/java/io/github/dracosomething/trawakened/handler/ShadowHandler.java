@@ -33,10 +33,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +77,7 @@ public class ShadowHandler {
             if (user.get() != null) {
                 if (target.position().distanceTo(user.get().position()) <= 50) {
                     target.setHealth(1);
+                    target.setPose(Pose.STANDING);
                     target.setInvisible(true);
                     target.setInvulnerable(true);
                     target.setSpeed(0);
@@ -113,8 +116,10 @@ public class ShadowHandler {
         if (AwakenedShadowCapability.isShadow(event.getEntity())) {
             TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
             TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
-            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.2);
-            TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.2);
+        }
+        if (AwakenedShadowCapability.isArisen(event.getEntity())) {
+            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.4, 10);
+            TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1));
         }
     }
 

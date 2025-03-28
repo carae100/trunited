@@ -170,12 +170,12 @@ public class ShadowMonarch extends Skill {
                 if (target instanceof Player) {
                     if (!AwakenedShadowCapability.isShadow(target) &&
                             AwakenedShadowCapability.hasShadow(target)) {
-                        AwakenedShadowCapability.setHasShadow(target, true);
                         if (ShadowStorage.getAllKeys().stream().findFirst().isPresent()) {
+                            AwakenedShadowCapability.setHasShadow(target, true);
                             String first = ShadowStorage.getAllKeys().stream().findFirst().get();
-                            ShadowStorage.putString("UUID", first);
+                            ShadowStorage.getCompound(first).putString("UUID", first);
                             AwakenedShadowCapability.setStorage(target, ShadowStorage.getCompound(first));
-                            System.out.println(AwakenedShadowCapability.getStorage(target));
+                            ShadowStorage.getCompound(first).remove("UUID");
                             target.addEffect(new MobEffectInstance(MobEffects.GLOWING));
                             ShadowStorage.remove(first);
                         }
