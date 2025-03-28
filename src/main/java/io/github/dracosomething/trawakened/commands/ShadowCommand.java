@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.commands;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.skill.SkillRegistry;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.util.PermissionHelper;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -14,6 +15,7 @@ import io.github.dracosomething.trawakened.registry.permisionRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,6 +23,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -29,6 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Mod.EventBusSubscriber(
@@ -333,7 +337,33 @@ public class ShadowCommand {
                 .then(Commands.literal("tp")
                         .then(Commands.argument("player_name", EntityArgument.player())
                                 .executes(context -> {
-                                    return 1;
+                                    ServerPlayer player = context.getSource().getPlayer();
+                                    ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                    Player target = EntityArgument.getPlayer(context, "player_name");
+                                    if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                        if (AwakenedShadowCapability.hasShadow(target)) {
+                                            if (UUID.fromString(
+                                                            AwakenedShadowCapability
+                                                                    .getStorage(target)
+                                                                    .getCompound("EntityData")
+                                                                    .getCompound("ForgeCaps")
+                                                                    .getCompound("trawakened:shadow")
+                                                                    .getString("ownerUUID")
+                                                    )
+                                                    .equals(player.getUUID())
+                                            ) {
+                                                player.teleportTo(target.position().x, target.position().y, target.position().z);
+                                                AwakenedShadowCapability.setHasShadow(target, false);
+                                                CompoundTag tag = AwakenedShadowCapability.getStorage(target);
+                                                skill.getShadowStorage().put(tag.getCompound("EnitityData").getUUID("UUID").toString(), tag);
+                                                AwakenedShadowCapability.setStorage(target, new CompoundTag());
+                                            }
+                                        } else {
+                                            target.sendSystemMessage(Component.translatable("trawakened.command.shadow.tp.no_shadow"));
+                                            return 0;
+                                        }
+                                    }
+                                    return 0;
                                 })
                         )
                 )

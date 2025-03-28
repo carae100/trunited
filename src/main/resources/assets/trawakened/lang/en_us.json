@@ -162,8 +162,9 @@
   "trawakened.skill.shadow_monarch": "Shadow Monarch",
   "trawakened.skill.shadow_monarch.description": "",
 
-  "trawakened.skill.shadow_monarch.mode.arise": "ARISE",
+  "trawakened.skill.shadow_monarch.mode.arise": "Shadow Extraction",
   "trawakened.skill.shadow_monarch.mode.storage": "Shadow Storage",
+  "trawakened.skill.shadow_monarch.mode.marking": "Shadow Marking",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
@@ -313,7 +314,8 @@
   "trawakened.command.fear.set_fear": "%1$s is now afraid of %2$s.",
   "trawakened.command.fear.set_scared": "%1$s has now been scared %2$s times.",
   "trawakened.command.fear.set_cooldown": "%1$s can be scared again after %2$s ticks.",
-  "trawakened.command.shadow.summon.empty": "You have no shadows stored matching the argument",
+  "trawakened.command.shadow.summon.empty": "§cYou have no shadows stored matching the argument",
+  "trawakened.command.shadow.tp.no_shadow": "§cTarget is not marked with one of your shadows.",
 
   "item.trawakened.stealth_stone": "Stealth Stone",
   "item.trawakened.bloodlust_stone": "Bloodlust Stone",
@@ -323,6 +325,8 @@
   "item.trawakened.dragons_fear_stone": "Dragons Fear Stone",
 
   "message.tries_left": "You have %1$s tries left to arise %2$s.",
+  "message.arise": "ARISE",
+  "message.low_hp": "§c%1$s is on low hp!",
 
   "trawakened.argument.rank.invalid": "§cInput Rank was invalid.",
   "trawakened.argument.fear.invalid": "§cInput Fear was invalid.",

@@ -72,6 +72,23 @@ public class skillHelper {
         return list;
     }
 
+    public static void sendMessageToNearbyPlayers(int radius, LivingEntity entity, Component message) {
+        DrawCircle(entity, radius, false)
+                .stream()
+                .filter(entity1 -> entity1 instanceof Player)
+                .toList()
+                .forEach((entity1) -> {
+                    if (entity instanceof Player player) {
+                        player.sendSystemMessage(message);
+                    }
+                });
+    }
+
+    public static void sendMessageToNearbyPlayersWithSource(int radius, LivingEntity entity, Component message) {
+        Component newMessage = Component.literal("<" + entity.getDisplayName().getString() + "> " + message.getString());
+        sendMessageToNearbyPlayers(radius, entity, newMessage);
+    }
+
     public static void ParticleCircle(LivingEntity entity, double radius, ParticleOptions type) {
         for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
             for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius; ++y) {

@@ -19,6 +19,7 @@ import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,6 +59,7 @@ public class ShadowMonarch extends Skill {
         return switch (mode) {
             case 1 -> Component.translatable("trawakened.skill.shadow_monarch.mode.arise");
             case 2 -> Component.translatable("trawakened.skill.shadow_monarch.mode.storage");
+            case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
             default -> Component.empty();
         };
     }
@@ -73,6 +75,7 @@ public class ShadowMonarch extends Skill {
         List<LivingEntity> targetList = skillHelper.GetLivingEntities(entity, 50, false);
         switch (instance.getMode()) {
             case 1:
+                skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise"));
                 if (!entity.isShiftKeyDown()) {
                     if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
                         if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
@@ -106,10 +109,8 @@ public class ShadowMonarch extends Skill {
                                     AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
                                     BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
-                                    if (target.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) ||
-                                            target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
-                                            target instanceof Player ||
-                                            target instanceof HinataSakaguchiEntity) {
+                                    if (target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
+                                            target instanceof Player) {
                                         if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
                                             TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
                                         }
@@ -125,24 +126,26 @@ public class ShadowMonarch extends Skill {
                         if (AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
                             if (living != null && AwakenedShadowCapability.getTries(living) > 0) {
                                 if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
-                                    living.setHealth(living.getMaxHealth());
-                                    AwakenedShadowCapability.setArisen(living, true);
-                                    living.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
-                                    living.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-                                    living.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-                                    skillHelper.tameAnything(entity, living, this);
-                                    SkillHelper.setFollow(living);
-                                    shadowRank rank = shadowRank.calculateRank(living);
-                                    AwakenedShadowCapability.setRank(living, rank);
-                                    AwakenedShadowCapability.setOwnerUUID(living, entity.getUUID());
-                                    BecomeShadowEvent event = new BecomeShadowEvent(living, entity, true);
+                                    target.setHealth(target.getMaxHealth());
+                                    AwakenedShadowCapability.setArisen(target, true);
+                                    target.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                    target.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                                    target.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                                    skillHelper.tameAnything(entity, target, this);
+                                    shadowRank rank = shadowRank.calculateRank(target);
+                                    SkillHelper.setFollow(target);
+                                    AwakenedShadowCapability.setRank(target, rank);
+                                    AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
+                                    BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
-                                    if (living.getType().getTags().toList().contains(TensuraTags.EntityTypes.HERO_BOSS) || living instanceof Player) {
+                                    if (target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
+                                            target instanceof Player) {
                                         if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
                                             TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
                                         }
                                     }
-                                    AwakenedShadowCapability.sync(living);
+                                    AwakenedShadowCapability.sync(target);
+                                    instance.addMasteryPoint(entity);
                                 }
                             }
                         }
@@ -160,6 +163,22 @@ public class ShadowMonarch extends Skill {
                         target.discard();
                     } else if (entity instanceof Player player) {
                         player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
+                    }
+                }
+                break;
+            case 3:
+                if (target instanceof Player) {
+                    if (!AwakenedShadowCapability.isShadow(target) &&
+                            AwakenedShadowCapability.hasShadow(target)) {
+                        AwakenedShadowCapability.setHasShadow(target, true);
+                        if (ShadowStorage.getAllKeys().stream().findFirst().isPresent()) {
+                            String first = ShadowStorage.getAllKeys().stream().findFirst().get();
+                            ShadowStorage.putString("UUID", first);
+                            AwakenedShadowCapability.setStorage(target, ShadowStorage.getCompound(first));
+                            System.out.println(AwakenedShadowCapability.getStorage(target));
+                            target.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                            ShadowStorage.remove(first);
+                        }
                     }
                 }
                 break;

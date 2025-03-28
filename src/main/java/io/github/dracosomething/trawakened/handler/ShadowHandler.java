@@ -20,6 +20,7 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.world.TensuraGameRules;
+import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
@@ -27,6 +28,7 @@ import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -39,6 +41,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -57,10 +60,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Mod.EventBusSubscriber(modid = trawakened.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShadowHandler {
     @SubscribeEvent
-    public static void onDeath(LivingHurtEvent event) {
+    public static void onDeath(LivingDeathEvent event) {
         Entity source = event.getSource().getEntity();
-        float dmg = event.getEntity().getHealth()-event.getAmount();
-        if (dmg <= 0.0f && source instanceof LivingEntity entity) {
+        if (source instanceof LivingEntity entity) {
             LivingEntity target = event.getEntity();
             AtomicReference<LivingEntity> user = new AtomicReference<>();
             skillHelper.GetLivingEntities(target, 50, false).forEach(entity1 -> {
@@ -111,6 +113,8 @@ public class ShadowHandler {
         if (AwakenedShadowCapability.isShadow(event.getEntity())) {
             TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
             TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
+            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.2);
+            TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.2);
         }
     }
 
@@ -260,6 +264,42 @@ public class ShadowHandler {
                     double ep = event.getNewEP() * 0.33;
                     TensuraEPCapability.setLivingEP(owner, (double)Math.round(TensuraEPCapability.getEP(owner) + Math.min(ep * (double)TensuraGameRules.getEPGain(owner.level), maxMP + maxAP)));
                     TensuraEPCapability.updateEP(owner);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void alertOwnerWhenHurt(LivingHurtEvent event) {
+        if (AwakenedShadowCapability.hasShadow(event.getEntity())) {
+            float dmg = event.getEntity().getHealth() - event.getAmount();
+            if (dmg <= (event.getEntity().getMaxHealth() * 0.10)) {
+                LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
+                        AwakenedShadowCapability
+                                .getStorage(event.getEntity())
+                                .getCompound("EntityData")
+                                .getCompound("ForgeCaps")
+                                .getCompound("trawakened:shadow")
+                                .getString("ownerUUID")
+                ));
+                owner.sendSystemMessage(Component.translatable("message.low_hp", event.getEntity().getDisplayName().getString()));
+            }
+            if (dmg <= 0.0) {
+                LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
+                        AwakenedShadowCapability
+                                .getStorage(event.getEntity())
+                                .getCompound("EntityData")
+                                .getCompound("ForgeCaps")
+                                .getCompound("trawakened:shadow")
+                                .getString("ownerUUID")
+                ));
+                if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+                    if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).get().getSkill() instanceof ShadowMonarch skill) {
+                        String id = AwakenedShadowCapability.getStorage(event.getEntity()).getString("UUID");
+                        if (id != null) {
+                            skill.getShadowStorage().put(id, AwakenedShadowCapability.getStorage(event.getEntity()));
+                        }
+                    }
                 }
             }
         }
