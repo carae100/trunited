@@ -10,6 +10,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class particleRegistry {
     private static final DeferredRegister<ParticleType<?>> registry;
     public static final RegistryObject<SimpleParticleType> FLESHPARTICLE;
+    public static final RegistryObject<SimpleParticleType> RED_FIRE;
+    public static final RegistryObject<SimpleParticleType> PURPLE_FIRE;
 
 
     private particleRegistry(){}
@@ -21,5 +23,7 @@ public class particleRegistry {
     static {
         registry = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, "trawakened");
         FLESHPARTICLE = registry.register("flesh_particle", () -> new SimpleParticleType(true));
+        RED_FIRE = registry.register("red_fire", () -> new SimpleParticleType(false));
+        PURPLE_FIRE = registry.register("purple_fire", () -> new SimpleParticleType(false));
     }
 }

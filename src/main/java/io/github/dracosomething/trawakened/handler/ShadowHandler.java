@@ -25,6 +25,9 @@ import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
+import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
+import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.ChatFormatting;
@@ -33,12 +36,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +53,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Iterator;
@@ -76,7 +78,10 @@ public class ShadowHandler {
             });
             if (user.get() != null) {
                 if (target.position().distanceTo(user.get().position()) <= 50) {
-                    target.setHealth(1);
+                    if (target instanceof Mob mob) {
+                        mob.setNoAi(true);
+                    }
+                    target.setHealth(100);
                     target.setPose(Pose.STANDING);
                     target.setInvisible(true);
                     target.setInvulnerable(true);
@@ -114,12 +119,14 @@ public class ShadowHandler {
             }
         }
         if (AwakenedShadowCapability.isShadow(event.getEntity())) {
-            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
+            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE, 1, 5);
             TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
         }
         if (AwakenedShadowCapability.isArisen(event.getEntity())) {
-            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1), 0.4, 10);
-            TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6007807)), 1));
+            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SOUL_FIRE_FLAME, 0.2, 1);
+            if (event.getEntity().getType().toString().contains("orc")) {
+                TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), particleRegistry.RED_FIRE.get(), 0.6, 1);
+            }
         }
     }
 
@@ -253,6 +260,31 @@ public class ShadowHandler {
             if (instance.getSkill() instanceof ShadowMonarch skill && skill != null) {
                 skill.setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
                 instance.getOrCreateTag().put("ShadowStorage", skill.getShadowStorage());
+                skill.setCommandWord(instance.getOrCreateTag().getCompound("command"));
+                instance.getOrCreateTag().put("command", skill.getCommandWord());
+                System.out.println(skill.getCommandWord());
+                System.out.println(instance.getOrCreateTag());
+                if (Objects.equals(skill.getCommandWord().getString("commandWord"), "")) {
+                    if (user instanceof ServerPlayer player) {
+                        TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new openWordScreen(player.getUUID(), instance));
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLeaveWorld(PlayerEvent.PlayerLoggedOutEvent event) {
+        Player user = event.getEntity();
+        if (SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+            ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+            if (instance.getSkill() instanceof ShadowMonarch skill && skill != null) {
+                skill.setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                instance.getOrCreateTag().put("ShadowStorage", skill.getShadowStorage());
+                instance.getOrCreateTag().put("command", skill.getCommandWord());
+                skill.setCommandWord(instance.getOrCreateTag().getCompound("command"));
+                System.out.println(skill.getCommandWord());
+                System.out.println(instance.getOrCreateTag());
             }
         }
     }
@@ -263,6 +295,9 @@ public class ShadowHandler {
             event.setNewEP(event.getNewEP() * 2);
             Player owner = event.getEntity().level.getPlayerByUUID(AwakenedShadowCapability.getOwnerUUID(event.getEntity()));
             if (owner != null) {
+                if (event.getNewEP() >= TensuraEPCapability.getEP(owner)) {
+                    event.setNewEP(TensuraEPCapability.getEP(owner));
+                }
                 if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
                     double maxMP = (double)owner.getLevel().getGameRules().getInt(TensuraGameRules.MAX_MP_GAIN);
                     double maxAP = (double)owner.getLevel().getGameRules().getInt(TensuraGameRules.MAX_AP_GAIN);

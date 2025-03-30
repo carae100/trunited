@@ -30,15 +30,12 @@ public class NamingScreen extends Screen {
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         this.renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        drawString(pPoseStack, font, "What should the target be named?\n Name is required", width/2-89, height/2-75, 16777215);
+        drawString(pPoseStack, font, "What should the target be named?", width/2-89, height/2-75, 16777215);
+        drawString(pPoseStack, font, "Name is requiered", width/2-89, height/2-25, 16777215);
     }
 
     @Override
     public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
         return super.keyPressed(key, b, c);
     }
 

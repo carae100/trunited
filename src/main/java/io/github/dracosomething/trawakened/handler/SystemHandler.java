@@ -5,10 +5,13 @@ import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.capability.SkillStorage;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.event.SkillPlunderEvent;
 import com.github.manasmods.tensura.event.UpdateEPEvent;
 import com.github.manasmods.tensura.menu.SpatialStorageMenu;
+import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
+import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
@@ -116,6 +119,12 @@ public class SystemHandler {
                     skill.getTag().putBoolean("isGui", instance.getOrCreateTag().getBoolean("isGui"));
                 }
             }
+        }
+    }
+    @SubscribeEvent
+    public static void doubleEPGain(UpdateEPEvent event) {
+        if (SkillAPI.getSkillsFrom(event.getEntity()).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
+            event.setNewEP(event.getNewEP() * 1.25);
         }
     }
 }

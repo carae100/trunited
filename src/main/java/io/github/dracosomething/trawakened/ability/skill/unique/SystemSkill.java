@@ -65,6 +65,11 @@ public class SystemSkill extends Skill implements ISpatialStorage {
     }
 
     @Override
+    public int getMaxMastery() {
+        return 140;
+    }
+
+    @Override
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
         return List.of(MobEffects.MOVEMENT_SLOWDOWN, MobEffects.WEAKNESS, MobEffects.BLINDNESS, MobEffects.DARKNESS, MobEffects.POISON, MobEffects.WITHER, MobEffects.HUNGER, TensuraMobEffects.PARALYSIS.get(), TensuraMobEffects.INFECTION.get());
     }
@@ -127,6 +132,26 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
         if (level%30 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, (level / 30)-1));
+        }
+        instance.addMasteryPoint(entity);
+    }
+
+    @Override
+    public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
+        return true;
+    }
+
+    @Override
+    public void onTick(ManasSkillInstance instance, LivingEntity living) {
+        int level = instance.getOrCreateTag().getInt("level");
+        if (living.getAttributes().getInstance(Attributes.ATTACK_DAMAGE) != null) {
+            living.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(1+(level*0.5));
+        }
+        if (level%4 == 0) {
+            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, (level / 4)-1));
+        }
+        if (level%30 == 0) {
+            living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, (level / 30)-1));
         }
     }
 

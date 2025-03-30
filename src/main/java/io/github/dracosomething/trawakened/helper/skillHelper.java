@@ -102,6 +102,19 @@ public class skillHelper {
         }
     }
 
+    public static void spawnCircle(LivingEntity entity, double radius, ParticleOptions type) {
+        for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
+            for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius; ++z) {
+                float cmp = (float) ((float)(radius * radius) - (entity.getX() - x) * (entity.getX() - x) - (entity.getZ() - z) * (entity.getZ() - z));
+                if (cmp > 0.0F && entity.level instanceof ServerLevel world) {
+                    for (int i = 0; i < 11; i++) {
+                        world.sendParticles(type, (double) x, (double) entity.getY()-1, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+                    }
+                }
+            }
+        }
+    }
+
     public static void name(LivingEntity sub, @Nullable ServerPlayer owner, RequestNamingGUIPacket.NamingType type, String name) {
         double var20000;
         if (sub instanceof Player player) {

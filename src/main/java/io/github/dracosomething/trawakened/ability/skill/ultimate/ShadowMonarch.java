@@ -9,6 +9,7 @@ import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.data.TensuraTags;
 import com.github.manasmods.tensura.entity.human.HinataSakaguchiEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
 import io.github.dracosomething.trawakened.helper.skillHelper;
@@ -16,6 +17,9 @@ import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
 import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
+import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,23 +27,26 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.sql.Time;
+import java.util.*;
 
 public class ShadowMonarch extends Skill {
     private CompoundTag ShadowStorage;
+    private CompoundTag commandWord;
 
     public ShadowMonarch() {
         super(SkillType.ULTIMATE);
         ShadowStorage = new CompoundTag();
+        commandWord  = new CompoundTag();
     }
 
     public int modes() {
@@ -60,6 +67,7 @@ public class ShadowMonarch extends Skill {
             case 1 -> Component.translatable("trawakened.skill.shadow_monarch.mode.arise");
             case 2 -> Component.translatable("trawakened.skill.shadow_monarch.mode.storage");
             case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
+            case 4 -> Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
             default -> Component.empty();
         };
     }
@@ -67,18 +75,24 @@ public class ShadowMonarch extends Skill {
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         instance.getOrCreateTag().putInt("maxStorage", 5);
         instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
+        instance.getOrCreateTag().put("command", commandWord);
+        if (living instanceof ServerPlayer player) {
+            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new openWordScreen(player.getUUID(), instance));
+        }
+        System.out.println(instance.getOrCreateTag());
     }
 
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         Random random = new Random();
+        System.out.println(instance.getOrCreateTag());
         LivingEntity target = SkillHelper.getTargetingEntity(entity, ForgeMod.REACH_DISTANCE.get().getDefaultValue(), false, true);
         List<LivingEntity> targetList = skillHelper.GetLivingEntities(entity, 50, false);
         switch (instance.getMode()) {
             case 1:
-                skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise"));
                 if (!entity.isShiftKeyDown()) {
                     if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
                         if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
+                            skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord().getString("commandWord")));
                             int chance;
                             if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
                                 chance = 100;
@@ -107,6 +121,9 @@ public class ShadowMonarch extends Skill {
                                     SkillHelper.setFollow(target);
                                     AwakenedShadowCapability.setRank(target, rank);
                                     AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
+                                    if (target instanceof Mob mob && mob.isNoAi()) {
+                                        mob.setNoAi(false);
+                                    }
                                     BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
                                     if (target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
@@ -122,6 +139,7 @@ public class ShadowMonarch extends Skill {
                         }
                     }
                 } else {
+                    skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord().getString("commandWord")));
                     targetList.forEach((living -> {
                         if (AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
                             if (living != null && AwakenedShadowCapability.getTries(living) > 0) {
@@ -182,6 +200,20 @@ public class ShadowMonarch extends Skill {
                     }
                 }
                 break;
+            case 4:
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    int i = 0;
+
+                    @Override
+                    public void run() {
+                        i++;
+                        skillHelper.spawnCircle(entity, i, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
+                        if (i == 10) {
+                            timer.cancel();
+                        }
+                    }
+                }, 0, 75);
         }
     }
 
@@ -213,5 +245,13 @@ public class ShadowMonarch extends Skill {
 
     public void setShadowStorage(CompoundTag shadowStorage) {
         ShadowStorage = shadowStorage;
+    }
+
+    public void setCommandWord(CompoundTag commandWord) {
+        this.commandWord = commandWord;
+    }
+
+    public CompoundTag getCommandWord() {
+        return commandWord;
     }
 }

@@ -29,6 +29,7 @@ public class TRAwakenedNetwork {
         INSTANCE.registerMessage(++i, OpenBecomeShadowscreen.class, OpenBecomeShadowscreen::toBytes, OpenBecomeShadowscreen::new, OpenBecomeShadowscreen::handle);
         INSTANCE.registerMessage(++i, OpenNamingscreen.class, OpenNamingscreen::toBytes, OpenNamingscreen::new, OpenNamingscreen::handle);
         INSTANCE.registerMessage(++i, NamePacket.class, NamePacket::toBytes, NamePacket::new, NamePacket::handle);
+        INSTANCE.registerMessage(++i, openWordScreen.class, openWordScreen::toBytes, openWordScreen::new, openWordScreen::handle);
     }
 
     public static <T> void toServer(T message) {

@@ -10,6 +10,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.commands.argument.rankArgument;
+import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.registry.permisionRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
@@ -196,6 +197,7 @@ public class ShadowCommand {
                                                 list.forEach(System.out::println);
                                                 list.sort(Comparator.comparingDouble(shadow -> TensuraEPCapability.getCurrentEP((LivingEntity) shadow)));
                                                 list.forEach(System.out::println);
+                                                skillHelper.sendMessageToNearbyPlayersWithSource(30, player, Component.translatable("message.dismiss"));
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
                                                         living.discard();
@@ -236,6 +238,7 @@ public class ShadowCommand {
                                                     return Double.compare(TensuraEPCapability.getCurrentEP((LivingEntity) living), TensuraEPCapability.getCurrentEP((LivingEntity) shadow));
                                                 });
                                                 list.forEach(System.out::println);
+                                                skillHelper.sendMessageToNearbyPlayersWithSource(30, player, Component.translatable("message.dismiss"));
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
                                                         living.discard();
@@ -271,6 +274,7 @@ public class ShadowCommand {
                                                     }
                                                     return false;
                                                 }));
+                                                skillHelper.sendMessageToNearbyPlayersWithSource(30, player, Component.translatable("message.dismiss"));
                                                 list.forEach((entity -> {
                                                     if (entity instanceof LivingEntity living) {
                                                         living.discard();
@@ -296,6 +300,7 @@ public class ShadowCommand {
                                                     AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID()) &&
                                                     living.getDisplayName().getString().equals(StringArgumentType.getString(context, "name"));
                                         }));
+                                        skillHelper.sendMessageToNearbyPlayersWithSource(30, player, Component.translatable("message.dismiss"));
                                         list.forEach((entity -> {
                                             if (entity instanceof LivingEntity living) {
                                                 living.discard();

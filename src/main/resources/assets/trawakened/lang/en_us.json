@@ -165,6 +165,7 @@
   "trawakened.skill.shadow_monarch.mode.arise": "Shadow Extraction",
   "trawakened.skill.shadow_monarch.mode.storage": "Shadow Storage",
   "trawakened.skill.shadow_monarch.mode.marking": "Shadow Marking",
+  "trawakened.skill.shadow_monarch.mode.monarchs_domain": "Monarchs Domain",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
@@ -325,7 +326,8 @@
   "item.trawakened.dragons_fear_stone": "Dragons Fear Stone",
 
   "message.tries_left": "You have %1$s tries left to arise %2$s.",
-  "message.arise": "ARISE",
+  "message.arise": "%1$s",
+  "message.dismiss": "Extraction canceled",
   "message.low_hp": "§c%1$s is on low hp!",
 
   "trawakened.argument.rank.invalid": "§cInput Rank was invalid.",

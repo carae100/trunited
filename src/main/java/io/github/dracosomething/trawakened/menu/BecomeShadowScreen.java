@@ -37,10 +37,6 @@ public class BecomeShadowScreen extends Screen {
 
     @Override
     public boolean keyPressed(int key, int b, int c) {
-        if (key == 256) {
-            this.minecraft.player.closeContainer();
-            return true;
-        }
         return super.keyPressed(key, b, c);
     }
 
