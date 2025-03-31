@@ -66,10 +66,8 @@ public class WordScreen extends Screen {
             if (!this.input.getValue().isEmpty()) {
                     if (instance.getSkill() instanceof ShadowMonarch skill) {
                         System.out.println(input.getValue());
-                        CompoundTag tag = new CompoundTag();
-                        tag.putString("commandWord", input.getValue());
-                        instance.getOrCreateTag().put("command", tag);
-                        skill.setCommandWord(tag);
+                        instance.getOrCreateTag().getCompound("data").putString("commandWord", input.getValue());
+                        skill.setCommandWord(input.getValue());
                         System.out.println(skill.getCommandWord());
                         System.out.println(instance.getOrCreateTag());
                     }

@@ -7,6 +7,7 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import com.google.common.util.concurrent.AbstractScheduledService;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
@@ -35,6 +36,8 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ShadowMonarch extends Skill {
     private CompoundTag ShadowStorage;
@@ -63,7 +66,9 @@ public class ShadowMonarch extends Skill {
             case 1 -> Component.translatable("trawakened.skill.shadow_monarch.mode.arise");
             case 2 -> Component.translatable("trawakened.skill.shadow_monarch.mode.storage");
             case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
-            case 4 -> Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
+            case 4 -> data.getBoolean("awakened") ?
+                    Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain") :
+                    Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name"));
             default -> Component.empty();
         };
     }
@@ -87,7 +92,7 @@ public class ShadowMonarch extends Skill {
                 if (!entity.isShiftKeyDown()) {
                     if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
                         if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
-                            skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord().getString("commandWord")));
+                            skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord()));
                             int chance;
                             if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
                                 chance = 100;
@@ -101,9 +106,6 @@ public class ShadowMonarch extends Skill {
                                 if (AwakenedShadowCapability.getTries(target) == 0 ) {
                                     target.discard();
                                     return;
-                                }
-                                if (entity instanceof Player player) {
-                                    player.sendSystemMessage(Component.translatable("message.tries_left", AwakenedShadowCapability.getTries(target), target.getName()));
                                 }
                                 if (random.nextInt(0, 100) <= chance) {
                                     target.setHealth(target.getMaxHealth());
@@ -129,12 +131,14 @@ public class ShadowMonarch extends Skill {
                                     }
                                     AwakenedShadowCapability.sync(target);
                                     instance.addMasteryPoint(entity);
+                                } else if (entity instanceof Player player) {
+                                    player.sendSystemMessage(Component.translatable("message.tries_left", AwakenedShadowCapability.getTries(target), target.getName()));
                                 }
                             }
                         }
                     }
                 } else {
-                    skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord().getString("commandWord")));
+                    skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord()));
                     targetList.forEach((living -> {
                         if (AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
                             if (living != null && AwakenedShadowCapability.getTries(living) > 0) {
@@ -196,42 +200,49 @@ public class ShadowMonarch extends Skill {
                 }
                 break;
             case 4:
-                float mpCost = 0;
-                for (LivingEntity living : targetList) {
-                    if (living != entity &&
-                            AwakenedShadowCapability.isShadow(living) &&
-                            AwakenedShadowCapability.isArisen(living) &&
-                            AwakenedShadowCapability.getOwnerUUID(living).equals(entity.getUUID())) {
-                        mpCost+=1150;
-                    }
-                }
-                if (!SkillHelper.outOfMagicule(entity, mpCost)) {
-                    Timer timer = new Timer();
-                    targetList.forEach((living) -> {
+                if (!data.getBoolean("awakened")) {
+                    float mpCost = 0;
+                    for (LivingEntity living : targetList) {
                         if (living != entity &&
                                 AwakenedShadowCapability.isShadow(living) &&
                                 AwakenedShadowCapability.isArisen(living) &&
                                 AwakenedShadowCapability.getOwnerUUID(living).equals(entity.getUUID())) {
-                            SkillHelper.addEffectWithSource(living, entity, effectRegistry.MONARCHS_DOMAIN.get(), 1000, 1, false, false, false, false);
-
+                            mpCost += 1150;
                         }
-                    });
-                    instance.setCoolDown(150);
-                    timer.schedule(new TimerTask() {
-                        int i = 0;
+                    }
+                    if (!SkillHelper.outOfMagicule(entity, mpCost)) {
+                        Vec3 pos = entity.position();
+                        Timer timer = new Timer();
+                        targetList.forEach((living) -> {
+                            if (living != entity &&
+                                    AwakenedShadowCapability.isShadow(living) &&
+                                    AwakenedShadowCapability.isArisen(living) &&
+                                    AwakenedShadowCapability.getOwnerUUID(living).equals(entity.getUUID())) {
+                                SkillHelper.addEffectWithSource(living, entity, effectRegistry.MONARCHS_DOMAIN.get(), 1000, 1, false, false, false, false);
 
-                        @Override
-                        public void run() {
-                            i++;
-                            if (i <= 10) {
-                                skillHelper.ParticleCircle(entity, i, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
                             }
-                            skillHelper.ParticleRing(entity, i, 2, 5, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
-                            if (i == 15) {
-                                timer.cancel();
+                        });
+                        instance.setCoolDown(150);
+                        timer.schedule(new TimerTask() {
+                            int i = 0;
+
+                            @Override
+                            public void run() {
+                                i++;
+                                if (i <= 10) {
+                                    skillHelper.ParticleCircle(entity, i, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
+                                }
+                                skillHelper.ParticleRing(entity, i, 2, 5, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
+                                if (i == 15) {
+                                    timer.cancel();
+                                }
                             }
-                        }
-                    }, 0, 75);
+                        }, 0, 75);
+                    }
+                } else {
+                    switch (data.getInt("mode_domain")) {
+                        case 1:
+                    }
                 }
                 break;
         }
