@@ -19,7 +19,7 @@ public class TimeStopCoreEffect extends TensuraMobEffect implements DamageAction
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity p_19467_, int p_19468_) {
-        List<Entity> list = skillHelper.DrawCircle(p_19467_, 160, false);
+        List<Entity> list = skillHelper.DrawSphereAndGetEntitiesInIt(p_19467_, 160, false);
         for (Entity entity1 : list){
             if(entity1 instanceof LivingEntity living && living != p_19467_) {
                 living.addEffect(new MobEffectInstance(effectRegistry.TIMESTOP.get(), 1, 1, false, false, false));

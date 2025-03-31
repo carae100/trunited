@@ -90,8 +90,8 @@ public class PrimalArmor extends Skill {
                     instance.markDirty();
                     int time = tag.getInt("Time") / 10;
                     if (tag.getInt("Time") >= 10) {
-                        skillHelper.ParticleCircle(living, time, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1));
-                        List<Entity> list = skillHelper.DrawCircle(living, time, false);
+                        skillHelper.ParticleSphere(living, time, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(6223797)), 1));
+                        List<Entity> list = skillHelper.DrawSphereAndGetEntitiesInIt(living, time, false);
                         for (Entity entity : list) {
                             if(entity != living) {
                                 if (entity instanceof LivingEntity entity1) {
@@ -124,8 +124,8 @@ public class PrimalArmor extends Skill {
                     instance.markDirty();
                     int time = tag.getInt("Time") / 10;
                     if (tag.getInt("Time") >= 10) {
-                        skillHelper.ParticleCircle(living, time, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(14702884)), 1));
-                        List<Entity> list = skillHelper.DrawCircle(living, time, false);
+                        skillHelper.ParticleSphere(living, time, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(14702884)), 1));
+                        List<Entity> list = skillHelper.DrawSphereAndGetEntitiesInIt(living, time, false);
                         for (Entity entity : list) {
                             if(entity != living) {
                                 if (entity instanceof LivingEntity entity1) {

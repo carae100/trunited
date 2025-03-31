@@ -166,6 +166,7 @@
   "trawakened.skill.shadow_monarch.mode.storage": "Shadow Storage",
   "trawakened.skill.shadow_monarch.mode.marking": "Shadow Marking",
   "trawakened.skill.shadow_monarch.mode.monarchs_domain": "Monarchs Domain",
+  "trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain": "Monarchs Domain: %s",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
@@ -315,8 +316,11 @@
   "trawakened.command.fear.set_fear": "%1$s is now afraid of %2$s.",
   "trawakened.command.fear.set_scared": "%1$s has now been scared %2$s times.",
   "trawakened.command.fear.set_cooldown": "%1$s can be scared again after %2$s ticks.",
+
   "trawakened.command.shadow.summon.empty": "§cYou have no shadows stored matching the argument",
   "trawakened.command.shadow.tp.no_shadow": "§cTarget is not marked with one of your shadows.",
+  "trawakened.command.shadow.exchange.dimension": "§cShadow is not in that dimension.",
+  "trawakened.command.shadow.exchange.no_shadow": "§cYou don't have that shadow.",
 
   "item.trawakened.stealth_stone": "Stealth Stone",
   "item.trawakened.bloodlust_stone": "Bloodlust Stone",

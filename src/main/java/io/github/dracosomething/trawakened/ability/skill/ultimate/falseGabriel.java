@@ -3,16 +3,12 @@ package io.github.dracosomething.trawakened.ability.skill.ultimate;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
-import com.github.manasmods.manascore.skill.SkillRegistry;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
-import com.github.manasmods.tensura.entity.human.OtherworlderEntity;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
-import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
-import com.github.manasmods.tensura.util.damage.TensuraDamageSources;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.helper.FearHelper;
 import io.github.dracosomething.trawakened.helper.skillHelper;
@@ -32,10 +28,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class falseGabriel extends Skill {
@@ -94,7 +88,7 @@ public class falseGabriel extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        List<Entity> entityList = skillHelper.DrawCircle(entity, 80, true).stream().filter((entity1 -> {
+        List<Entity> entityList = skillHelper.DrawSphereAndGetEntitiesInIt(entity, 80, true).stream().filter((entity1 -> {
             return entity1 instanceof LivingEntity && !SkillUtils.hasSkill(entity1, skillRegistry.ALTERNATE.get()) && entity1 != null;
         })).toList();
         LivingEntity target = SkillHelper.getTargetingEntity(entity, 7, false);
@@ -246,7 +240,7 @@ public class falseGabriel extends Skill {
 
     @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        List<Entity> entityList = skillHelper.DrawCircle(living, instance.isMastered(living)?20:15, true);
+        List<Entity> entityList = skillHelper.DrawSphereAndGetEntitiesInIt(living, instance.isMastered(living)?20:15, true);
         for (Entity entity : entityList) {
             if (entity instanceof LivingEntity livingEntity) {
                 SkillHelper.checkThenAddEffectSource(livingEntity, living, effectRegistry.FEAR_AMPLIFICATION.get(), 60, 1, false, false, false, false);

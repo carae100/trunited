@@ -371,7 +371,7 @@ public class Alternate extends Skill {
                 }
                 break;
             case 8:
-                List<Entity> entities = skillHelper.DrawCircle(entity, 25, false);
+                List<Entity> entities = skillHelper.DrawSphereAndGetEntitiesInIt(entity, 25, false);
                 if (!entities.isEmpty()) {
                     if (!SkillHelper.outOfMagicule(entity, instance)) {
                         entities.forEach((Entity) -> {
@@ -399,7 +399,7 @@ public class Alternate extends Skill {
                 }
                 break;
             case 9:
-                List<Entity> entities2 = skillHelper.DrawCircle(entity, 30, false);
+                List<Entity> entities2 = skillHelper.DrawSphereAndGetEntitiesInIt(entity, 30, false);
                 if (!entities2.isEmpty()) {
                     if (!SkillHelper.outOfMagicule(entity, instance)) {
                         entity.getLevel().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);

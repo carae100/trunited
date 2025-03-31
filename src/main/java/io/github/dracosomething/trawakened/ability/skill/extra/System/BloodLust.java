@@ -18,7 +18,7 @@ public class BloodLust extends SystemExtra {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        List<Entity> list = skillHelper.DrawCircle(entity, 50, false).stream().filter((entity1 -> {
+        List<Entity> list = skillHelper.DrawSphereAndGetEntitiesInIt(entity, 50, false).stream().filter((entity1 -> {
             return entity1 instanceof LivingEntity living && TensuraEPCapability.getCurrentEP(living) <= TensuraEPCapability.getCurrentEP(entity) * 0.75;
         })).toList();
         for (Entity entity1 : list) {

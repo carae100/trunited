@@ -19,6 +19,7 @@ import net.minecraft.commands.arguments.DimensionArgument;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -334,10 +335,35 @@ public class ShadowCommand {
                         )
                 )
                 .then(Commands.literal("exchange")
-                        .then(Commands.argument("shadow_name", StringArgumentType.string())
+                        .then(Commands.argument("shadow", EntityArgument.entity())
                                 .then(Commands.argument("dimension", DimensionArgument.dimension())
                                     .executes((context) -> {
-                                        return 1;
+                                        ServerPlayer player = context.getSource().getPlayer();
+                                        ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                        Entity target = EntityArgument.getEntity(context ,"shadow");
+                                        if (target instanceof LivingEntity living && instance.onCoolDown()) {
+                                            if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                                if (AwakenedShadowCapability.isShadow(living) &&
+                                                        AwakenedShadowCapability.isArisen(living) &&
+                                                        AwakenedShadowCapability.getOwnerUUID(living).equals(player.getUUID())) {
+                                                    ServerLevel level = DimensionArgument.getDimension(context, "dimension");
+                                                    if (living.getLevel().equals(level)) {
+                                                        player.teleportTo(level,
+                                                                living.position().x,
+                                                                living.position().y,
+                                                                living.position().z,
+                                                                living.getYRot(),
+                                                                living.getXRot());
+                                                        instance.setCoolDown(1200);
+                                                    }
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.exchange.dimension"));
+                                                } else {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.exchange.no_shadow"));
+                                                    return 0;
+                                                }
+                                            }
+                                        }
+                                        return 0;
                                     })
                                 )
                         )

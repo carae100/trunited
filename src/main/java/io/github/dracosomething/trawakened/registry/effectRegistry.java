@@ -24,6 +24,7 @@ public class effectRegistry {
     public static final RegistryObject<MobEffect> INTRUDER_MODE;
     public static final RegistryObject<MobEffect> FEAR_AMPLIFICATION;
     public static final RegistryObject<MobEffect> BLOODLUST_DEBUFF;
+    public static final RegistryObject<MobEffect> MONARCHS_DOMAIN;
 
     public effectRegistry(){}
 
@@ -49,5 +50,6 @@ public class effectRegistry {
         INTRUDER_MODE = registry.register("intruder_mode", () -> new IntruderModeEffect(MobEffectCategory.BENEFICIAL, 0));
         FEAR_AMPLIFICATION = registry.register("fear_amplification", () -> new emptyEffect(MobEffectCategory.HARMFUL, 4343629));
         BLOODLUST_DEBUFF = registry.register("bloodlust_debuff", () -> new BloodlustDebuffEffect(MobEffectCategory.HARMFUL, 0));
+        MONARCHS_DOMAIN = registry.register("monarchs_domain", () -> new MonarchsDomainEffect(MobEffectCategory.BENEFICIAL, 11557101));
     }
 }

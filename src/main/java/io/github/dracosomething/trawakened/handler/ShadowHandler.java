@@ -20,32 +20,27 @@ import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
 import com.github.manasmods.tensura.world.TensuraGameRules;
-import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
-import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.helper.skillHelper;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -69,7 +64,7 @@ public class ShadowHandler {
         if (source instanceof LivingEntity entity) {
             LivingEntity target = event.getEntity();
             AtomicReference<LivingEntity> user = new AtomicReference<>();
-            skillHelper.GetLivingEntities(target, 50, false).forEach(entity1 -> {
+            skillHelper.GetLivingEntitiesInRange(target, 50, false).forEach(entity1 -> {
                 if (!AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
                     if (SkillAPI.getSkillsFrom(entity1).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
                         user.set(entity1);
@@ -123,7 +118,10 @@ public class ShadowHandler {
             TensuraParticleHelper.addParticlesAroundSelf(event.getEntity(), ParticleTypes.SMOKE);
         }
         if (AwakenedShadowCapability.isArisen(event.getEntity())) {
-            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), ParticleTypes.SOUL_FIRE_FLAME, 0.2, 1);
+            TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(),
+                    event.getEntity().hasEffect(effectRegistry.MONARCHS_DOMAIN.get()) ?
+                            particleRegistry.PURPLE_FIRE.get() :
+                            ParticleTypes.SOUL_FIRE_FLAME, 0.2, 1);
             if (event.getEntity().getType().toString().contains("orc")) {
                 TensuraParticleHelper.addServerParticlesAroundSelf(event.getEntity(), particleRegistry.RED_FIRE.get(), 0.6, 1);
             }
@@ -260,11 +258,11 @@ public class ShadowHandler {
             if (instance.getSkill() instanceof ShadowMonarch skill && skill != null) {
                 skill.setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
                 instance.getOrCreateTag().put("ShadowStorage", skill.getShadowStorage());
-                skill.setCommandWord(instance.getOrCreateTag().getCompound("command"));
-                instance.getOrCreateTag().put("command", skill.getCommandWord());
+                skill.setData(instance.getOrCreateTag().getCompound("data"));
+                instance.getOrCreateTag().put("data", skill.getData());
                 System.out.println(skill.getCommandWord());
                 System.out.println(instance.getOrCreateTag());
-                if (Objects.equals(skill.getCommandWord().getString("commandWord"), "")) {
+                if (Objects.equals(skill.getCommandWord(), "")) {
                     if (user instanceof ServerPlayer player) {
                         TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new openWordScreen(player.getUUID(), instance));
                     }
@@ -281,8 +279,8 @@ public class ShadowHandler {
             if (instance.getSkill() instanceof ShadowMonarch skill && skill != null) {
                 skill.setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
                 instance.getOrCreateTag().put("ShadowStorage", skill.getShadowStorage());
-                instance.getOrCreateTag().put("command", skill.getCommandWord());
-                skill.setCommandWord(instance.getOrCreateTag().getCompound("command"));
+                instance.getOrCreateTag().put("data", skill.getData());
+                skill.setData(instance.getOrCreateTag().getCompound("data"));
                 System.out.println(skill.getCommandWord());
                 System.out.println(instance.getOrCreateTag());
             }
@@ -336,7 +334,7 @@ public class ShadowHandler {
                 if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
                     if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).get().getSkill() instanceof ShadowMonarch skill) {
                         String id = AwakenedShadowCapability.getStorage(event.getEntity()).getString("UUID");
-                        if (id != null) {
+                        if (!id.isEmpty()) {
                             skill.getShadowStorage().put(id, AwakenedShadowCapability.getStorage(event.getEntity()));
                         }
                     }

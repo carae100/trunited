@@ -1,12 +1,10 @@
 package io.github.dracosomething.trawakened.helper;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
-import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
-import com.github.manasmods.tensura.config.TensuraConfig;
 import com.github.manasmods.tensura.entity.human.CloneEntity;
 import com.github.manasmods.tensura.event.NamingEvent;
 import com.github.manasmods.tensura.network.play2server.RequestNamingGUIPacket;
@@ -38,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class skillHelper {
-    public static List<Entity> DrawCircle(LivingEntity entity, int radius, boolean areNotAllie){
+    public static List<Entity> DrawSphereAndGetEntitiesInIt(LivingEntity entity, int radius, boolean areNotAllie){
         AABB aabb = new AABB((double) (entity.getX() - radius), (double) (entity.getY() - radius), (double) (entity.getZ() - radius), (double) (entity.getX() + radius), (double) (entity.getY() + radius), (double) (entity.getZ() + radius));
         List<Entity> entities = entity.level.getEntities((Entity) null, aabb, Entity::isAlive);
         List<Entity> ret = new ArrayList();
@@ -66,14 +64,14 @@ public class skillHelper {
         return ret;
     }
 
-    public static List<LivingEntity> GetLivingEntities(LivingEntity entity, int radius, boolean areNotAllie) {
+    public static List<LivingEntity> GetLivingEntitiesInRange(LivingEntity entity, int radius, boolean areNotAllie) {
         List<LivingEntity> list = new ArrayList<>();
-        DrawCircle(entity, radius, areNotAllie).stream().filter((entity1 -> entity1 instanceof LivingEntity)).toList().forEach((living) -> list.add((LivingEntity) living));
+        DrawSphereAndGetEntitiesInIt(entity, radius, areNotAllie).stream().filter((entity1 -> entity1 instanceof LivingEntity)).toList().forEach((living) -> list.add((LivingEntity) living));
         return list;
     }
 
     public static void sendMessageToNearbyPlayers(int radius, LivingEntity entity, Component message) {
-        DrawCircle(entity, radius, false)
+        DrawSphereAndGetEntitiesInIt(entity, radius, false)
                 .stream()
                 .filter(entity1 -> entity1 instanceof Player)
                 .toList()
@@ -89,7 +87,7 @@ public class skillHelper {
         sendMessageToNearbyPlayers(radius, entity, newMessage);
     }
 
-    public static void ParticleCircle(LivingEntity entity, double radius, ParticleOptions type) {
+    public static void ParticleSphere(LivingEntity entity, double radius, ParticleOptions type) {
         for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
             for(float y = (float) (entity.getY() - (float)radius); y < entity.getY() + (float)radius; ++y) {
                 for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius; ++z) {
@@ -102,13 +100,40 @@ public class skillHelper {
         }
     }
 
-    public static void spawnCircle(LivingEntity entity, double radius, ParticleOptions type) {
+    public static void ParticleCircle(LivingEntity entity, double radius, ParticleOptions type) {
+        ParticleCircle(entity, radius, 1, type);
+    }
+
+    public static void ParticleCircle(LivingEntity entity, double radius, int amount, ParticleOptions type) {
         for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
             for(float z = (float) (entity.getZ() - (float)radius); z < entity.getZ() + (float)radius; ++z) {
                 float cmp = (float) ((float)(radius * radius) - (entity.getX() - x) * (entity.getX() - x) - (entity.getZ() - z) * (entity.getZ() - z));
                 if (cmp > 0.0F && entity.level instanceof ServerLevel world) {
-                    for (int i = 0; i < 11; i++) {
-                        world.sendParticles(type, (double) x, (double) entity.getY()-1, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+                    for (int i = 0; i < amount; i++) {
+                        world.sendParticles(type, (double) x, (double) entity.getY()-1.5, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void ParticleRing(LivingEntity entity, double radius, ParticleOptions type) {
+        ParticleRing(entity, radius, 1, 1, type);
+    }
+
+    public static void ParticleRing(LivingEntity entity, double radius, double height, ParticleOptions type) {
+        ParticleRing(entity, radius, height, 1, type);
+    }
+
+    public static void ParticleRing(LivingEntity entity, double radius, double height, int amount, ParticleOptions type) {
+        for(float x = (float) (entity.getX() - (float)radius); x < entity.getX() + (float)radius; ++x) {
+            for (float y = (float) entity.getY(); y < entity.getY() + height; ++y) {
+                for (float z = (float) (entity.getZ() - (float) radius); z < entity.getZ() + (float) radius; ++z) {
+                    float cmp = (float) ((float)(radius * radius) - (entity.getX() - x) * (entity.getX() - x) - (entity.getY() - y) * (entity.getY() - y) - (entity.getZ() - z) * (entity.getZ() - z));
+                    if (cmp > 0.0F && cmp < 6.1F && entity.level instanceof ServerLevel world) {
+                        for (int i = 0; i < amount; ++i) {
+                            world.sendParticles(type, (double) x, (double) entity.getY() - 1.5, (double) z, 5, 1.0, 1.0, 1.0, 1.0);
+                        }
                     }
                 }
             }
