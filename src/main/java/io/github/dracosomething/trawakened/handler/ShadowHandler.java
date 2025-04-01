@@ -23,6 +23,7 @@ import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.library.MonarchsDomain;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -266,6 +268,11 @@ public class ShadowHandler {
                     if (user instanceof ServerPlayer player) {
                         TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new openWordScreen(player.getUUID(), instance));
                     }
+                }
+                if (!skill.getData().getCompound("domain").isEmpty()) {
+                    CompoundTag data = skill.getData().getCompound("domain");
+                    MonarchsDomain domain = MonarchsDomain.fromNBT(data, event.getEntity());
+                    domain.place();
                 }
             }
         }

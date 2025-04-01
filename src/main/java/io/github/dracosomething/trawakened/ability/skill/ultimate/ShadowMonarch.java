@@ -12,6 +12,7 @@ import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.library.MonarchsDomain;
 import io.github.dracosomething.trawakened.library.shadowRank;
 import io.github.dracosomething.trawakened.mobeffect.MonarchsDomainEffect;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
@@ -201,43 +202,15 @@ public class ShadowMonarch extends Skill {
                 break;
             case 4:
                 if (!data.getBoolean("awakened")) {
-                    float mpCost = 0;
-                    for (LivingEntity living : targetList) {
-                        if (living != entity &&
-                                AwakenedShadowCapability.isShadow(living) &&
-                                AwakenedShadowCapability.isArisen(living) &&
-                                AwakenedShadowCapability.getOwnerUUID(living).equals(entity.getUUID())) {
-                            mpCost += 1150;
+                    if (this.data.getCompound("domain").isEmpty()) {
+                        MonarchsDomain domain = new MonarchsDomain(entity, 18000, 50, 50);
+                        domain.setInstance(instance);
+                        this.data.put("domain", domain.toNBT());
+                        instance.getOrCreateTag().put("data", data);
+                        if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                            domain.place();
+                            instance.setCoolDown(150);
                         }
-                    }
-                    if (!SkillHelper.outOfMagicule(entity, mpCost)) {
-                        Vec3 pos = entity.position();
-                        Timer timer = new Timer();
-                        targetList.forEach((living) -> {
-                            if (living != entity &&
-                                    AwakenedShadowCapability.isShadow(living) &&
-                                    AwakenedShadowCapability.isArisen(living) &&
-                                    AwakenedShadowCapability.getOwnerUUID(living).equals(entity.getUUID())) {
-                                SkillHelper.addEffectWithSource(living, entity, effectRegistry.MONARCHS_DOMAIN.get(), 1000, 1, false, false, false, false);
-
-                            }
-                        });
-                        instance.setCoolDown(150);
-                        timer.schedule(new TimerTask() {
-                            int i = 0;
-
-                            @Override
-                            public void run() {
-                                i++;
-                                if (i <= 10) {
-                                    skillHelper.ParticleCircle(entity, i, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
-                                }
-                                skillHelper.ParticleRing(entity, i, 2, 5, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
-                                if (i == 15) {
-                                    timer.cancel();
-                                }
-                            }
-                        }, 0, 75);
                     }
                 } else {
                     switch (data.getInt("mode_domain")) {
