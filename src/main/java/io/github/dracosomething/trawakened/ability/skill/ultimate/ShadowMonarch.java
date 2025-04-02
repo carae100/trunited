@@ -68,8 +68,8 @@ public class ShadowMonarch extends Skill {
             case 2 -> Component.translatable("trawakened.skill.shadow_monarch.mode.storage");
             case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
             case 4 -> data.getBoolean("awakened") ?
-                    Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain") :
-                    Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name"));
+                    Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name")) :
+                    Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
             default -> Component.empty();
         };
     }
@@ -215,6 +215,29 @@ public class ShadowMonarch extends Skill {
                 } else {
                     switch (data.getInt("mode_domain")) {
                         case 1:
+                            if (this.data.getCompound("domain").isEmpty()) {
+                                MonarchsDomain domain = new MonarchsDomain(entity, 18000, 200);
+                                domain.setInstance(instance);
+                                this.data.put("domain", domain.toNBT());
+                                instance.getOrCreateTag().put("data", data);
+                                if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                                    domain.place();
+                                    instance.setCoolDown(150);
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (this.data.getCompound("domain").isEmpty()) {
+                                MonarchsDomain domain = new MonarchsDomain(entity, 600, entity.level.getWorldBorder().getSize());
+                                domain.setInstance(instance);
+                                this.data.put("domain", domain.toNBT());
+                                instance.getOrCreateTag().put("data", data);
+                                if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                                    domain.place();
+                                    instance.setCoolDown(150);
+                                }
+                            }
+                            break;
                     }
                 }
                 break;

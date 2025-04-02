@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.library;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.mojang.math.Vector3f;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
@@ -12,6 +13,7 @@ import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -45,6 +47,17 @@ public class MonarchsDomain {
         this.life = life;
         this.width = width;
         this.length = length;
+        this.uuid = UUID.randomUUID();
+        this.update = new Timer();
+        this.level = owner.level;
+    }
+
+    public MonarchsDomain(LivingEntity owner, int life, double size) {
+        this.position = owner.position();
+        this.owner = owner;
+        this.life = life;
+        this.width = size;
+        this.length = size;
         this.uuid = UUID.randomUUID();
         this.update = new Timer();
         this.level = owner.level;
@@ -88,11 +101,27 @@ public class MonarchsDomain {
         skillHelper.ParticleRing(position, level, (int) calculateRadius(), 2, 5, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
         List<LivingEntity> list = skillHelper.GetLivingEntitiesInRange(this.owner, this.position, (int) this.calculateRadius());
         list.forEach((living) -> {
-            if (living != this.owner &&
-                    AwakenedShadowCapability.isShadow(living) &&
-                    AwakenedShadowCapability.isArisen(living) &&
-                    AwakenedShadowCapability.getOwnerUUID(living).equals(this.owner.getUUID())) {
-                SkillHelper.addEffectWithSource(living, this.owner, effectRegistry.MONARCHS_DOMAIN.get(), 2, 1, false, false, false, false);
+            if (living != this.owner) {
+                if (AwakenedShadowCapability.isShadow(living) &&
+                        AwakenedShadowCapability.isArisen(living) &&
+                        AwakenedShadowCapability.getOwnerUUID(living).equals(this.owner.getUUID())) {
+                    SkillHelper.addEffectWithSource(living, this.owner, effectRegistry.MONARCHS_DOMAIN.get(), 2, 1, false, false, false, false);
+                }
+                if (living instanceof Player player) {
+                    if (this.instance.getSkill() instanceof ShadowMonarch skill) {
+                        AwakenedShadowCapability.setHasShadow(player, true);
+                        CompoundTag storage = skill.getShadowStorage();
+                        if (!storage.isEmpty()) {
+                            storage.getAllKeys().stream().sorted((shadow1, shadow2) -> {
+                                CompoundTag tag1 = storage.getCompound(shadow1).getCompound("EntityData");
+                                CompoundTag tag2 = storage.getCompound(shadow2).getCompound("EntityData");
+                                return Double.compare(tag1.getCompound("ForgeCaps").getCompound("tensura:ep").getDouble("currentEP"), tag2.getCompound("ForgeCaps").getCompound("tensura:ep").getDouble("currentEP"));
+                            });
+                            CompoundTag shadow = storage.getCompound(storage.getAllKeys().stream().findFirst().get());
+                            AwakenedShadowCapability.setStorage(player, shadow);
+                        }
+                    }
+                }
             }
         });
         if (life <= 0) {

@@ -167,6 +167,7 @@
   "trawakened.skill.shadow_monarch.mode.marking": "Shadow Marking",
   "trawakened.skill.shadow_monarch.mode.monarchs_domain": "Monarchs Domain",
   "trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain": "Monarchs Domain: %s",
+  "trawakened.skill.shadow_monarch.mode.monarchs_domain.exists": "§cYou already have a monarchs domain active.",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",
   "trawakened.requirement.evolution.MoreMp": "§6Get more magicules",
