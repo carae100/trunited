@@ -11,6 +11,7 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
+import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.menu.SpatialStorageMenu;
 import com.github.manasmods.tensura.menu.container.SpatialStorageContainer;
 import com.github.manasmods.tensura.network.TensuraNetwork;
@@ -30,7 +31,9 @@ import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadows
 import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -288,6 +291,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         int masteryPercentige = (int)((float)(instance.getMastery() * 100 / instance.getMaxMastery()));
         int maxShadows = (5 * masteryPercentige) + 5;
         instance.getOrCreateTag().putInt("maxStorage", maxShadows);
+        if (isInSlot(living) && data.getBoolean("awakened")) {
+            TensuraParticleHelper.addServerParticlesAroundSelf(living, ParticleTypes.SMOKE, 0.5);
+            TensuraParticleHelper.addServerParticlesAroundSelf(living, particleRegistry.PURPLE_FIRE.get(), 0.2);
+        }
     }
 
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
