@@ -13,9 +13,8 @@ import com.github.manasmods.tensura.network.TensuraNetwork;
 import com.github.manasmods.tensura.network.play2client.ClientboundSpatialStorageOpenPacket;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
-import com.google.common.collect.Multimap;
 import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
-import io.github.dracosomething.trawakened.registry.itemRegistry;
+import io.github.dracosomething.trawakened.registry.items.runeStones;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,8 +28,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -39,10 +36,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import org.stringtemplate.v4.misc.MultiMap;
 
 import java.util.List;
 import java.util.Random;
@@ -165,38 +160,38 @@ public class SystemSkill extends Skill implements ISpatialStorage {
             if (dmg <= 0.0) {
                 if (event.getEntity().getType().equals(EntityType.CREEPER) || event.getEntity().getType().equals(EntityType.WANDERING_TRADER)) {
                     if (random.nextInt(0, 100) <= (event.getEntity().getType().equals(EntityType.CREEPER) ? 3 : 33)) {
-                        newDrop(itemRegistry.STEALTH_STONE.get(), event, entity);
+                        newDrop(runeStones.STEALTH_STONE.get(), event, entity);
                     }
                 }
                 if (event.getEntity().getType().getCategory().equals(MobCategory.MONSTER)) {
                     if (random.nextDouble(0, 100) <= 0.5) {
-                        newDrop(itemRegistry.BLOODLUST_STONE.get(), event, entity);
+                        newDrop(runeStones.BLOODLUST_STONE.get(), event, entity);
                     }
                 }
                 if (event.getEntity().getType().equals(EntityType.SILVERFISH) || event.getEntity().getType().equals(EntityType.CAT)
                         || event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) || event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
                         event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE_BODY.get())) {
                     if (random.nextInt(0, 100) <= 3) {
-                        newDrop(itemRegistry.QUICKSILVER_STONE.get(), event, entity);
+                        newDrop(runeStones.QUICKSILVER_STONE.get(), event, entity);
                     }
                 }
                 if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.EVOKER) || event.getEntity().getType().equals(EntityType.VINDICATOR)) {
                     if (random.nextInt(0, 100) <= 20) {
-                        newDrop(itemRegistry.MUTILATION_STONE.get(), event, entity);
+                        newDrop(runeStones.MUTILATION_STONE.get(), event, entity);
                     }
                 }
                 if (event.getEntity() instanceof OtherworlderEntity || event.getEntity().getType().equals(EntityType.VILLAGER) || event.getEntity().getMobType().equals(MobType.ILLAGER)) {
                     if (event.getEntity().getType().equals(TensuraEntityTypes.HINATA_SAKAGUCHI.get())) {
-                        newDrop(itemRegistry.RULERS_AUTHORITY_STONE.get(), event, entity);
+                        newDrop(runeStones.RULERS_AUTHORITY_STONE.get(), event, entity);
                     } else {
                         if (random.nextInt(0, 100) <= (event.getEntity() instanceof OtherworlderEntity ? 20 : 3)) {
-                            newDrop(itemRegistry.RULERS_AUTHORITY_STONE.get(), event, entity);
+                            newDrop(runeStones.RULERS_AUTHORITY_STONE.get(), event, entity);
                         }
                     }
                 }
                 if (event.getEntity().getType().equals(EntityType.ENDER_DRAGON)) {
                     if (random.nextInt(0, 100) <= 25) {
-                        newDrop(itemRegistry.DRAGONS_FEAR_STONE.get(), event, entity);
+                        newDrop(runeStones.DRAGONS_FEAR_STONE.get(), event, entity);
                     }
                 }
             }

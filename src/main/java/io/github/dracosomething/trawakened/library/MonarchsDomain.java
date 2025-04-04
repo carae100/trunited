@@ -98,7 +98,7 @@ public class MonarchsDomain {
     }
 
     protected void Tick() {
-        skillHelper.ParticleRing(position, level, (int) calculateRadius(), 2, 5, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
+        skillHelper.ParticleRing(position, level, (int) calculateRadius(), 2, 3, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(11557101)), 1));
         List<LivingEntity> list = skillHelper.GetLivingEntitiesInRange(this.owner, this.position, (int) this.calculateRadius());
         list.forEach((living) -> {
             if (living != this.owner) {

@@ -66,6 +66,12 @@ import java.util.concurrent.TimeUnit;
 import static com.github.manasmods.tensura.race.RaceHelper.evolveMobs;
 
 public class ShadowMonarch extends Skill implements ISpatialStorage {
+    /* Todo:
+     * make shadow sword, hammer, katana, Greatsword, war axe, bow, armor, amplifcation orb +200% to magic dmg and a Lighting Blade
+     * All of them will be equal to hihirokane grade. Will also unlock the option to craft a specific weapon by doing
+     * Shadow Craft Dagger
+     * While having 2 nether stars and a dragon egg in the user's inventory.
+     */
     private CompoundTag ShadowStorage;
     private CompoundTag data;
 
