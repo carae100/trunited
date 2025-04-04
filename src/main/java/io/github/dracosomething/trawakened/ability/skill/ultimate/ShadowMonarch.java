@@ -1,11 +1,21 @@
 package io.github.dracosomething.trawakened.ability.skill.ultimate;
 
+import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
+import com.github.manasmods.tensura.Tensura;
+import com.github.manasmods.tensura.ability.ISpatialStorage;
 import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
+import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
+import com.github.manasmods.tensura.menu.SpatialStorageMenu;
+import com.github.manasmods.tensura.menu.container.SpatialStorageContainer;
+import com.github.manasmods.tensura.network.TensuraNetwork;
+import com.github.manasmods.tensura.network.play2client.ClientboundSpatialStorageOpenPacket;
+import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.mojang.math.Vector3f;
@@ -23,24 +33,36 @@ import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.html.HTML;
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ShadowMonarch extends Skill {
+import static com.github.manasmods.tensura.race.RaceHelper.evolveMobs;
+
+public class ShadowMonarch extends Skill implements ISpatialStorage {
     private CompoundTag ShadowStorage;
     private CompoundTag data;
 
@@ -48,6 +70,11 @@ public class ShadowMonarch extends Skill {
         super(SkillType.ULTIMATE);
         ShadowStorage = new CompoundTag();
         data  = new CompoundTag();
+    }
+
+    @Override
+    public @Nullable MutableComponent getName() {
+        return data.getBoolean("awakened") ? Component.translatable("trawakened.skill.shadow_monarch") : Component.translatable("trawakened.skill.shadow_monarch.awakened");
     }
 
     public int modes() {
@@ -70,6 +97,7 @@ public class ShadowMonarch extends Skill {
             case 4 -> data.getBoolean("awakened") ?
                     Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name")) :
                     Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
+            case 5 -> Component.translatable("trawakened.skill.shadow_monarch.mode.shadow_inventory");
             default -> Component.empty();
         };
     }
@@ -213,33 +241,41 @@ public class ShadowMonarch extends Skill {
                         }
                     }
                 } else {
-                    switch (data.getInt("mode_domain")) {
-                        case 1:
-                            if (this.data.getCompound("domain").isEmpty()) {
-                                MonarchsDomain domain = new MonarchsDomain(entity, 18000, 200);
-                                domain.setInstance(instance);
-                                this.data.put("domain", domain.toNBT());
-                                instance.getOrCreateTag().put("data", data);
-                                if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
-                                    domain.place();
-                                    instance.setCoolDown(150);
+                    if (entity.isShiftKeyDown()) {
+                        data.putInt("mode_domain", data.getInt("mode_domain") == 1 ? 2 : 1);
+                        data.putString("mode_name", data.getString("mode_name").equals("world") ? "normal" : "world");
+                    } else {
+                        switch (data.getInt("mode_domain")) {
+                            case 1:
+                                if (this.data.getCompound("domain").isEmpty()) {
+                                    MonarchsDomain domain = new MonarchsDomain(entity, 18000, 200);
+                                    domain.setInstance(instance);
+                                    this.data.put("domain", domain.toNBT());
+                                    instance.getOrCreateTag().put("data", data);
+                                    if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                                        domain.place();
+                                        instance.setCoolDown(150);
+                                    }
                                 }
-                            }
-                            break;
-                        case 2:
-                            if (this.data.getCompound("domain").isEmpty()) {
-                                MonarchsDomain domain = new MonarchsDomain(entity, 600, entity.level.getWorldBorder().getSize());
-                                domain.setInstance(instance);
-                                this.data.put("domain", domain.toNBT());
-                                instance.getOrCreateTag().put("data", data);
-                                if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
-                                    domain.place();
-                                    instance.setCoolDown(150);
+                                break;
+                            case 2:
+                                if (this.data.getCompound("domain").isEmpty()) {
+                                    MonarchsDomain domain = new MonarchsDomain(entity, 600, entity.level.getWorldBorder().getSize());
+                                    domain.setInstance(instance);
+                                    this.data.put("domain", domain.toNBT());
+                                    instance.getOrCreateTag().put("data", data);
+                                    if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                                        domain.place();
+                                        instance.setCoolDown(150);
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
                 }
+                break;
+            case 5:
+                openSpatialStorage(entity, instance);
                 break;
         }
     }
@@ -252,6 +288,44 @@ public class ShadowMonarch extends Skill {
         int masteryPercentige = (int)((float)(instance.getMastery() * 100 / instance.getMaxMastery()));
         int maxShadows = (5 * masteryPercentige) + 5;
         instance.getOrCreateTag().putInt("maxStorage", maxShadows);
+    }
+
+    public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
+        if (instance.isMastered(event.getEntity())) {
+            if (event.getEntity() instanceof Player player) {
+                float dmg = event.getEntity().getHealth() - event.getAmount();
+                if (dmg < (event.getEntity().getMaxHealth() * 0.05) && TensuraPlayerCapability.getMagicule(player) < (player.getAttribute(TensuraAttributeRegistry.MAX_MAGICULE.get()).getValue() * 0.05)) {
+                    Entity source = event.getSource().getEntity();
+                    if (source != null) {
+                        if (source.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
+                                source instanceof Player) {
+                            data.putBoolean("awakened", true);
+                            event.getEntity().setHealth(event.getEntity().getMaxHealth());
+                            TensuraPlayerCapability.getFrom(player).ifPresent((capability) -> {
+                                capability.setBaseMagicule(capability.getBaseMagicule() * 3, player);
+                                capability.setMagicule(capability.getBaseMagicule());
+                            });
+                            TensuraPlayerCapability.sync(player);
+                            player.getLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(30.0), (living) -> {
+                                return !(living instanceof Player) && living.isAlive();
+                            }).forEach((sub) -> {
+                                if (Objects.equals(TensuraEPCapability.getPermanentOwner(sub), player.getUUID())) {
+                                    TensuraEPCapability.getFrom(sub).ifPresent((epCap) -> {
+                                        if (!epCap.isHarvestGift()) {
+                                            epCap.setHarvestGift(true);
+                                            epCap.setEP(sub, epCap.getEP() * 2.0);
+                                            evolveMobs(sub);
+                                            TensuraEPCapability.sync(sub);
+                                        }
+
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private CompoundTag shadowToNBT (LivingEntity entity) {
@@ -288,5 +362,28 @@ public class ShadowMonarch extends Skill {
 
     public void setData(CompoundTag data) {
         this.data = data;
+    }
+
+    public SpatialStorageContainer getSpatialStorage(ManasSkillInstance instance) {
+        SpatialStorageContainer container = new SpatialStorageContainer(90, 999);
+        container.fromTag(instance.getOrCreateTag().getList("SpatialStorage", 10));
+        return container;
+    }
+
+    public void openSpatialStorage(LivingEntity entity, ManasSkillInstance instance) {
+        if (entity instanceof ServerPlayer player) {
+            player.closeContainer();
+            player.nextContainerCounter();
+            player.playNotifySound(SoundEvents.ENDER_CHEST_OPEN, SoundSource.PLAYERS, 1.0F, 1.0F);
+            ManasSkill skill = instance.getSkill();
+            SpatialStorageContainer container = this.getSpatialStorage(instance);
+            System.out.println(instance.getTag());
+            TensuraNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> {
+                return player;
+            }), new ClientboundSpatialStorageOpenPacket(player.getId(), player.containerCounter, container.getContainerSize(), container.getMaxStackSize(), SkillUtils.getSkillId(skill)));
+            player.containerMenu = new SpatialStorageMenu(player.containerCounter, player.getInventory(), player, container, skill);
+            player.initMenu(player.containerMenu);
+            MinecraftForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
+        }
     }
 }

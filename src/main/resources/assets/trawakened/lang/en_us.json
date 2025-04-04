@@ -159,14 +159,17 @@
 
   "trawakened.skill.system.extra.dragons_fear": "Dragon's fear",
 
-  "trawakened.skill.shadow_monarch": "Shadow Monarch",
-  "trawakened.skill.shadow_monarch.description": "",
+  "trawakened.skill.shadow_monarch": "Shadow Monarchs Successor",
+  "trawakened.skill.shadow_monarch.awakened": "Scarlett, the Shadow Monarch",
+  "trawakened.skill.shadow_monarch.description": "Billions of shadows exist in this world. All from differing things, Yet yours stands out among them. Your shadow alone holds hundreds more. Your shadow inspires fear in even the strongest of foes. All hail the shadow monarch.",
 
   "trawakened.skill.shadow_monarch.mode.arise": "Shadow Extraction",
   "trawakened.skill.shadow_monarch.mode.storage": "Shadow Storage",
   "trawakened.skill.shadow_monarch.mode.marking": "Shadow Marking",
   "trawakened.skill.shadow_monarch.mode.monarchs_domain": "Monarchs Domain",
   "trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain": "Monarchs Domain: %s",
+  "trawakened.skill.shadow_monarch.mode.shadow_inventory": "Shadow Inventory",
+
   "trawakened.skill.shadow_monarch.mode.monarchs_domain.exists": "§cYou already have a monarchs domain active.",
 
   "trawakened.requirement.evolution.MoreEp": "§6Get more existance points",

@@ -55,7 +55,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         tag = new CompoundTag();
     }
 
-    @Override
     public @Nullable MutableComponent getName() {
         if (tag.getBoolean("isGui")) {
             return Component.translatable("trawakened.skill.system", new Object[]{tag.getInt("level")});
@@ -64,27 +63,22 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
     }
 
-    @Override
     public int getMaxMastery() {
         return 140;
     }
 
-    @Override
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
         return List.of(MobEffects.MOVEMENT_SLOWDOWN, MobEffects.WEAKNESS, MobEffects.BLINDNESS, MobEffects.DARKNESS, MobEffects.POISON, MobEffects.WITHER, MobEffects.HUNGER, TensuraMobEffects.PARALYSIS.get(), TensuraMobEffects.INFECTION.get());
     }
 
-    @Override
     public int modes() {
         return 1;
     }
 
-    @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
         openSpatialStorage(entity, instance);
     }
 
-    @Override
     public SpatialStorageContainer getSpatialStorage(ManasSkillInstance instance) {
         SpatialStorageContainer container = new SpatialStorageContainer(90, 999);
         container.fromTag(instance.getOrCreateTag().getList("SpatialStorage", 10));
@@ -110,7 +104,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
     }
 
-    @Override
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         CompoundTag tag = instance.getOrCreateTag();
         tag.putInt("level", 0);
@@ -136,12 +129,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         instance.addMasteryPoint(entity);
     }
 
-    @Override
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
         return true;
     }
 
-    @Override
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         int level = instance.getOrCreateTag().getInt("level");
         if (living.getAttributes().getInstance(Attributes.ATTACK_DAMAGE) != null) {
@@ -155,7 +146,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
     }
 
-    @Override
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
         if (isInSlot(event.getEntity())) {
             int level = instance.getOrCreateTag().getInt("level");
@@ -167,7 +157,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
     }
 
-    @Override
     public void onDamageEntity(ManasSkillInstance instance, LivingEntity entity, LivingHurtEvent event) {
         int level = instance.getOrCreateTag().getInt("level");
         if (level >= 20) {
