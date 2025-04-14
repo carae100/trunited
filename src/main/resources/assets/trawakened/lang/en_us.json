@@ -354,6 +354,7 @@
   "item.trawakened.shadow_dagger": "Shadow Dagger",
   "item.trawakened.lightning_sword": "Lightning Sword",
   "item.trawakened.amplification_orb": "Amplification Orb",
+  "item.trawakened.ash": "Ash Block",
 
   "message.tries_left": "You have %1$s tries left to arise %2$s.",
   "message.arise": "%1$s",
