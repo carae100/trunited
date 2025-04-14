@@ -19,10 +19,12 @@ import com.github.manasmods.tensura.menu.HumanoidNPCMenu;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.skill.UniqueSkills;
+import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
 import com.github.manasmods.tensura.world.TensuraGameRules;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.helper.skillHelper;
+import io.github.dracosomething.trawakened.item.amplificationOrb;
 import io.github.dracosomething.trawakened.library.MonarchsDomain;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
@@ -36,6 +38,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -317,34 +320,56 @@ public class ShadowHandler {
     @SubscribeEvent
     public static void alertOwnerWhenHurt(LivingHurtEvent event) {
         if (AwakenedShadowCapability.hasShadow(event.getEntity())) {
-            float dmg = event.getEntity().getHealth() - event.getAmount();
-            if (dmg <= (event.getEntity().getMaxHealth() * 0.10)) {
-                LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
-                        AwakenedShadowCapability
-                                .getStorage(event.getEntity())
-                                .getCompound("EntityData")
-                                .getCompound("ForgeCaps")
-                                .getCompound("trawakened:shadow")
-                                .getString("ownerUUID")
-                ));
-                owner.sendSystemMessage(Component.translatable("message.low_hp", event.getEntity().getDisplayName().getString()));
-            }
-            if (dmg <= 0.0) {
-                LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
-                        AwakenedShadowCapability
-                                .getStorage(event.getEntity())
-                                .getCompound("EntityData")
-                                .getCompound("ForgeCaps")
-                                .getCompound("trawakened:shadow")
-                                .getString("ownerUUID")
-                ));
-                if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
-                    if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).get().getSkill() instanceof ShadowMonarch skill) {
-                        String id = AwakenedShadowCapability.getStorage(event.getEntity()).getString("UUID");
-                        if (!id.isEmpty()) {
-                            skill.getShadowStorage().put(id, AwakenedShadowCapability.getStorage(event.getEntity()));
+            if (AwakenedShadowCapability
+                    .getStorage(event.getEntity())
+                    .getCompound("EntityData")
+                    .getCompound("ForgeCaps")
+                    .getCompound("trawakened:shadow")
+                    .getString("ownerUUID").length() == 36) {
+                float dmg = event.getEntity().getHealth() - event.getAmount();
+                if (dmg <= (event.getEntity().getMaxHealth() * 0.10)) {
+                    LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
+                            AwakenedShadowCapability
+                                    .getStorage(event.getEntity())
+                                    .getCompound("EntityData")
+                                    .getCompound("ForgeCaps")
+                                    .getCompound("trawakened:shadow")
+                                    .getString("ownerUUID")
+                    ));
+                    owner.sendSystemMessage(Component.translatable("message.low_hp", event.getEntity().getDisplayName().getString()));
+                }
+                if (dmg <= 0.0) {
+                    LivingEntity owner = event.getEntity().level.getPlayerByUUID(UUID.fromString(
+                            AwakenedShadowCapability
+                                    .getStorage(event.getEntity())
+                                    .getCompound("EntityData")
+                                    .getCompound("ForgeCaps")
+                                    .getCompound("trawakened:shadow")
+                                    .getString("ownerUUID")
+                    ));
+                    if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+                        if (SkillAPI.getSkillsFrom(owner).getSkill(skillRegistry.SHADOW_MONARCH.get()).get().getSkill() instanceof ShadowMonarch skill) {
+                            String id = AwakenedShadowCapability.getStorage(event.getEntity()).getString("UUID");
+                            if (!id.isEmpty()) {
+                                skill.getShadowStorage().put(id, AwakenedShadowCapability.getStorage(event.getEntity()));
+                            }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void magicDMGIncrease(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            Item mainHandItem = living.getMainHandItem().getItem();
+            Item offHandItem = living.getOffhandItem().getItem();
+            if (mainHandItem instanceof amplificationOrb ||
+            offHandItem instanceof amplificationOrb) {
+                if (DamageSourceHelper.isTensuraMagic(event.getSource()) ||
+                        event.getSource().isMagic()) {
+                    event.setAmount(event.getAmount() * 2);
                 }
             }
         }

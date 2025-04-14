@@ -2,7 +2,10 @@ package io.github.dracosomething.trawakened.commands;
 
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
-import com.github.manasmods.manascore.skill.SkillRegistry;
+import com.github.manasmods.tensura.ability.SkillHelper;
+import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
+import io.github.dracosomething.trawakened.registry.items.*;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.util.PermissionHelper;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -26,9 +29,13 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -315,23 +322,76 @@ public class ShadowCommand {
                 )
                 .then(Commands.literal("craft")
                         .then(Commands.literal("dagger")
+                                .requires((commandSource) ->
+                                        PermissionHelper.hasPermissonAndIsPlayer(
+                                                commandSource,
+                                                permisionRegistry.SHADOWMONARCH_IS_AWAKENED
+                                        )
+                                )
                                 .executes((context) -> {
-                                    return 1;
+                                    ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                    ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                    if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                        if (skill.getData().getBoolean("awakened")) {
+                                            if (player.getInventory().contains(new ItemStack(Items.NETHER_STAR, 2)) &&
+                                            player.getInventory().contains(new ItemStack(Items.DRAGON_EGG))) {
+                                                if (player.getInventory().add(new ItemStack(weapons.SHADOW_DAGGER.get()))) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.craft.success"));
+                                                    return 1;
+                                                } else if (skill.addItemToSpatialStorage(instance, player, new ItemStack(weapons.SHADOW_DAGGER.get()))) {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.craft.success"));
+                                                    return 1;
+                                                } else {
+                                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.craft.success"));
+                                                    Vec3 pos = player.position();
+                                                    ItemStack stack = new ItemStack(weapons.SHADOW_DAGGER.get());
+                                                    ItemEntity itemDrop = new ItemEntity(player.level, pos.x, pos.y, pos.z, stack);
+                                                    player.level.addFreshEntity(itemDrop);
+                                                    return 1;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.craft.fail"));
+                                    return 0;
                                 })
                         )
                 )
                 .then(Commands.literal("summon")
                         .then(Commands.literal("kamish")
                                 .executes((context) -> {
-                                    return 1;
+                                    ServerPlayer player =(ServerPlayer) context.getSource().getEntity();
+                                    player.sendSystemMessage(SkillHelper.comingSoon());
+                                    return 0;
                                 })
                         )
                 )
                 .then(Commands.literal("bind")
+                        .requires((commandSource) ->
+                                PermissionHelper.hasPermissonAndIsPlayer(
+                                        commandSource,
+                                        permisionRegistry.SHADOWMONARCH_IS_AWAKENED
+                                )
+                        )
                         .then(Commands.argument("player_name", EntityArgument.player())
-                            .executes((context) -> {
-                                return 1;
-                            })
+                                .executes((context) -> {
+                                    Player target = EntityArgument.getPlayer(context, "player_name");
+                                    ServerPlayer player = (ServerPlayer) context.getSource().getEntity();
+                                    if (target.getPersistentData().getInt("bind_cooldown") > 0) {
+                                        ManasSkillInstance instance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+                                        if (instance.getSkill() instanceof ShadowMonarch skill) {
+                                            if (skill.getData().getBoolean("awakened")) {
+                                                target.addEffect(new MobEffectInstance(TensuraMobEffects.PARALYSIS.get(), 255, 1200));
+                                                target.addEffect(new MobEffectInstance(TensuraMobEffects.SPATIAL_BLOCKADE.get(), 255, 1200));
+                                                target.getPersistentData().putInt("bind_cooldown", 600);
+                                                player.sendSystemMessage(Component.translatable("trawakened.command.shadow.bind.success", target.getName().getString()));
+                                                return 1;
+                                            }
+                                        }
+                                    }
+                                    player.sendSystemMessage(Component.translatable("trawakened.command.shadow.bind.fail", target.getName().getString()));
+                                    return 0;
+                                })
                         )
                 )
                 .then(Commands.literal("exchange")
@@ -376,21 +436,28 @@ public class ShadowCommand {
                                     Player target = EntityArgument.getPlayer(context, "player_name");
                                     if (instance.getSkill() instanceof ShadowMonarch skill) {
                                         if (AwakenedShadowCapability.hasShadow(target)) {
-                                            if (UUID.fromString(
-                                                            AwakenedShadowCapability
-                                                                    .getStorage(target)
-                                                                    .getCompound("EntityData")
-                                                                    .getCompound("ForgeCaps")
-                                                                    .getCompound("trawakened:shadow")
-                                                                    .getString("ownerUUID")
-                                                    )
-                                                    .equals(player.getUUID())
-                                            ) {
-                                                player.teleportTo(target.position().x, target.position().y, target.position().z);
-                                                AwakenedShadowCapability.setHasShadow(target, false);
-                                                CompoundTag tag = AwakenedShadowCapability.getStorage(target);
-                                                skill.getShadowStorage().put(tag.getCompound("EnitityData").getUUID("UUID").toString(), tag);
-                                                AwakenedShadowCapability.setStorage(target, new CompoundTag());
+                                            if (AwakenedShadowCapability
+                                                    .getStorage(target)
+                                                    .getCompound("EntityData")
+                                                    .getCompound("ForgeCaps")
+                                                    .getCompound("trawakened:shadow")
+                                                    .getString("ownerUUID").length() == 36) {
+                                                if (UUID.fromString(
+                                                                AwakenedShadowCapability
+                                                                        .getStorage(target)
+                                                                        .getCompound("EntityData")
+                                                                        .getCompound("ForgeCaps")
+                                                                        .getCompound("trawakened:shadow")
+                                                                        .getString("ownerUUID")
+                                                        )
+                                                        .equals(player.getUUID())
+                                                ) {
+                                                    player.teleportTo(target.position().x, target.position().y, target.position().z);
+                                                    AwakenedShadowCapability.setHasShadow(target, false);
+                                                    CompoundTag tag = AwakenedShadowCapability.getStorage(target);
+                                                    skill.getShadowStorage().put(tag.getCompound("EnitityData").getUUID("UUID").toString(), tag);
+                                                    AwakenedShadowCapability.setStorage(target, new CompoundTag());
+                                                }
                                             }
                                         } else {
                                             target.sendSystemMessage(Component.translatable("trawakened.command.shadow.tp.no_shadow"));

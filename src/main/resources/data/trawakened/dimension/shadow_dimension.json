@@ -1,0 +1,11 @@
+{
+  "type": "tutorial:example_world",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "trawakened:shadow_dimension",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "trawakened:ash_biome"
+    }
+  }
+}

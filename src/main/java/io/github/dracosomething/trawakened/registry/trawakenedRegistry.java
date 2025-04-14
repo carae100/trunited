@@ -14,6 +14,9 @@ public class trawakenedRegistry {
         enchantRegistry.init(modEventBus);
         entityRegistry.init(modEventBus);
         itemRegistry.init(modEventBus);
+        biomeRegistry.init(modEventBus);
+        blockRegistry.init(modEventBus);
+        dimensionRegistry.init();
         argumentRegistry.init(modEventBus);
     }
 }

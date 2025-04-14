@@ -5,10 +5,12 @@ import com.github.manasmods.tensura.registry.items.TensuraToolItems;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftime;
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
+import io.github.dracosomething.trawakened.handler.SoulBoundItemsHandler;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
 import io.github.dracosomething.trawakened.registry.trawakenedRegistry;
 import io.github.dracosomething.trawakened.world.trawakenedGamerules;
+import io.github.dracosomething.trawakened.world.trawakenedItemProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -37,6 +39,8 @@ public class trawakened {
         trawakenedRegistry.register(modEventBus);
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::onClientSetup);
+        modEventBus.addListener(trawakenedItemProperties::addItemProperties);
+        modEventBus.addListener(SoulBoundItemsHandler::onClientSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC,
                 "trawakened-Starter-Races-config.toml");

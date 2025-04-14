@@ -114,7 +114,7 @@
   "trawakened.skill.mode.akashic.podolsky": "§6Podolsky Neurons",
 
   "trawakened.skill.alternate": "Alternate",
-  "trawakened.skill.alternate.description": "",
+  "trawakened.skill.alternate.description": "Mysterious beings from another spectrum, nothing is known about them.",
 
   "trawakened.skill.mode.alternate.fear": "Get Scared Amount",
   "trawakened.skill.mode.alternate.scary": "Get Fear Object",
@@ -126,7 +126,7 @@
   "trawakened.skill.mode.alternate.intruder_mode": "Metaphysical Plane",
 
   "trawakened.skill.false_gabriel": "False Gabriël",
-  "trawakened.skill.false_gabriel.description": "",
+  "trawakened.skill.false_gabriel.description": "What even is this being.",
 
   "trawakened.skill.mode.false_gabriel.create_alternates": "Alternate Army",
   "trawakened.skill.mode.false_gabriel.suicide": "Suicidal Laughter",
@@ -143,7 +143,7 @@
 
   "trawakened.skill.system": "System, level: %1$s",
   "trawakened.skill.system_normal": "System",
-  "trawakened.skill.system.description": "Gotta level up.",
+  "trawakened.skill.system.description": "Grow stronger unlike any other being can. You are the only one capable of leveling up in this world of static power. You are chosen by the system",
 
   "trawakened.skill.system.extra.stealth": "Stealth",
 
@@ -153,9 +153,11 @@
 
   "trawakened.skill.system.extra.mutilation": "Mutilation",
 
-  "trawakened.skill.system.extra.rulers_authority": "Ruler's Authority",
+  "trawakened.skill.system.extra.rulers_authority.awakened": "Ruler's Authority",
+  "trawakened.skill.system.extra.rulers_authority": "Ruler's Hand",
   "trawakened.skill.system.extra.rulers_authority.mode1": "target",
   "trawakened.skill.system.extra.rulers_authority.mode2": "self",
+  "trawakened.skill.system.extra.rulers_authority.mode3": "Monarch's Grasp",
 
   "trawakened.skill.system.extra.dragons_fear": "Dragon's fear",
 
@@ -169,6 +171,8 @@
   "trawakened.skill.shadow_monarch.mode.monarchs_domain": "Monarchs Domain",
   "trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain": "Monarchs Domain: %s",
   "trawakened.skill.shadow_monarch.mode.shadow_inventory": "Shadow Inventory",
+  "trawakened.skill.shadow_monarch.mode.mass_summoning": "Mass Summoning",
+  "trawakened.skill.shadow_monarch.mode.dagger_summoning": "Dagger Summoning",
 
   "trawakened.skill.shadow_monarch.mode.monarchs_domain.exists": "§cYou already have a monarchs domain active.",
 
@@ -325,6 +329,10 @@
   "trawakened.command.shadow.tp.no_shadow": "§cTarget is not marked with one of your shadows.",
   "trawakened.command.shadow.exchange.dimension": "§cShadow is not in that dimension.",
   "trawakened.command.shadow.exchange.no_shadow": "§cYou don't have that shadow.",
+  "trawakened.command.shadow.craft.success": "§2Successfully crafted shadow dagger.",
+  "trawakened.command.shadow.craft.fail": "§cYou don't have the items to craft the shadow dagger.",
+  "trawakened.command.shadow.bind.success": "§2Successfully bound %s.",
+  "trawakened.command.shadow.bind.fail": "§cAbility Shadow Bind is on cooldown for %s.",
 
   "item.trawakened.stealth_stone": "Stealth Stone",
   "item.trawakened.bloodlust_stone": "Bloodlust Stone",
@@ -333,8 +341,23 @@
   "item.trawakened.rulers_authority_stone": "Rulers Authority Stone",
   "item.trawakened.dragons_fear_stone": "Dragons Fear Stone",
 
+  "item.trawakened.shadow_helmet": "Shadow Helmet",
+  "item.trawakened.shadow_chestplate": "Shadow Chestplate",
+  "item.trawakened.shadow_leggings": "Shadow Leggings",
+  "item.trawakened.shadow_boots": "Shadow Boots",
+  "item.trawakened.shadow_hammer": "Shadow Hammer",
+  "item.trawakened.shadow_sword": "Shadow Sword",
+  "item.trawakened.shadow_katana": "Shadow Katana",
+  "item.trawakened.shadow_great_sword": "Shadow Great Sword",
+  "item.trawakened.shadow_war_axe": "Shadow War Axe",
+  "item.trawakened.shadow_bow": "Shadow Bow",
+  "item.trawakened.shadow_dagger": "Shadow Dagger",
+  "item.trawakened.lightning_sword": "Lightning Sword",
+  "item.trawakened.amplification_orb": "Amplification Orb",
+
   "message.tries_left": "You have %1$s tries left to arise %2$s.",
   "message.arise": "%1$s",
+  "message.arise.kamish": "Succesfully performed ancient summoning.",
   "message.dismiss": "Extraction canceled",
   "message.low_hp": "§c%1$s is on low hp!",
 

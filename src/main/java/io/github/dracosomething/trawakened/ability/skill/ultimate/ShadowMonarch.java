@@ -30,6 +30,7 @@ import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
 import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
+import io.github.dracosomething.trawakened.registry.dimensionRegistry;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -37,6 +38,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -49,6 +51,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
@@ -66,12 +70,6 @@ import java.util.concurrent.TimeUnit;
 import static com.github.manasmods.tensura.race.RaceHelper.evolveMobs;
 
 public class ShadowMonarch extends Skill implements ISpatialStorage {
-    /* Todo:
-     * make shadow sword, hammer, katana, Greatsword, war axe, bow, armor, amplifcation orb +200% to magic dmg and a Lighting Blade
-     * All of them will be equal to hihirokane grade. Will also unlock the option to craft a specific weapon by doing
-     * Shadow Craft Dagger
-     * While having 2 nether stars and a dragon egg in the user's inventory.
-     */
     private CompoundTag ShadowStorage;
     private CompoundTag data;
 
@@ -83,18 +81,36 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
 
     @Override
     public @Nullable MutableComponent getName() {
-        return data.getBoolean("awakened") ? Component.translatable("trawakened.skill.shadow_monarch") : Component.translatable("trawakened.skill.shadow_monarch.awakened");
+        return data.getBoolean("awakened") ?Component.translatable("trawakened.skill.shadow_monarch.awakened") : Component.translatable("trawakened.skill.shadow_monarch");
     }
 
     public int modes() {
-        return 5;
+        return 7;
     }
 
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
         if (reverse) {
-            return instance.getMode() == 1 ? 5 : instance.getMode() - 1;
+            return switch (instance.getMode()) {
+                case 1 -> data.getBoolean("kamish") ? 7 : data.getBoolean("awakened") ? 6 : 5;
+                case 2 -> 1;
+                case 3 -> 2;
+                case 4 -> 3;
+                case 5 -> 4;
+                case 6 -> 5;
+                case 7 -> 6;
+                default -> 0;
+            };
         } else {
-            return instance.getMode() == 5 ? 1 : instance.getMode() + 1;
+            return switch (instance.getMode()) {
+                case 1 -> 2;
+                case 2 -> 3;
+                case 3 -> 4;
+                case 4 -> 5;
+                case 5 -> data.getBoolean("awakened") ? 6 : 1;
+                case 6 -> data.getBoolean("kamish") ? 7 : 1;
+                case 7 -> 1;
+                default -> 0;
+            };
         }
     }
 
@@ -107,6 +123,8 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name")) :
                     Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
             case 5 -> Component.translatable("trawakened.skill.shadow_monarch.mode.shadow_inventory");
+            case 6 -> Component.translatable("trawakened.skill.shadow_monarch.mode.mass_summoning");
+            case 7 -> Component.translatable("trawakened.skill.shadow_monarch.mode.dagger_summoning");
             default -> Component.empty();
         };
     }
@@ -127,6 +145,11 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         List<LivingEntity> targetList = skillHelper.GetLivingEntitiesInRange(entity, 50, false);
         switch (instance.getMode()) {
             case 1:
+                if (entity instanceof Player player && player.getInventory().contains(new ItemStack(Items.DRAGON_HEAD, 9))) {
+                    data.putBoolean("kamish", true);
+                    player.displayClientMessage(Component.translatable("message.arise.kamish"), false);
+                    return;
+                }
                 if (!entity.isShiftKeyDown()) {
                     if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
                         if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
@@ -284,7 +307,13 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 }
                 break;
             case 5:
-                openSpatialStorage(entity, instance);
+                if (entity.isShiftKeyDown()) {
+                    System.out.println(entity.getLevel().getServer().getAllLevels());
+                    ServerLevel fantasyWorld = entity.level.getServer().getLevel(dimensionRegistry.SHADOW);
+                    entity.changeDimension(fantasyWorld);
+                } else {
+                    openSpatialStorage(entity, instance);
+                }
                 break;
         }
     }
@@ -300,6 +329,9 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         if (isInSlot(living) && data.getBoolean("awakened")) {
             TensuraParticleHelper.addServerParticlesAroundSelf(living, ParticleTypes.SMOKE, 0.5);
             TensuraParticleHelper.addServerParticlesAroundSelf(living, particleRegistry.PURPLE_FIRE.get(), 0.2);
+            if (isScarlett(living)) {
+                TensuraParticleHelper.addServerParticlesAroundSelf(living, new DustParticleOptions(new Vector3f(5, 5, 50), 1), 0.2);
+            }
         }
     }
 
@@ -314,11 +346,31 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                                 source instanceof Player) {
                             data.putBoolean("awakened", true);
                             event.getEntity().setHealth(event.getEntity().getMaxHealth());
+
                             TensuraPlayerCapability.getFrom(player).ifPresent((capability) -> {
                                 capability.setBaseMagicule(capability.getBaseMagicule() * 3, player);
                                 capability.setMagicule(capability.getBaseMagicule());
                             });
                             TensuraPlayerCapability.sync(player);
+                            getShadowStorage().getAllKeys().forEach((key) -> {
+                                CompoundTag entity = getShadowStorage().getCompound(key);
+                                double ep = entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .getDouble("currentEP");
+                                entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .putDouble("currentEP", ep * 2.0);
+                                ep = entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .getDouble("currentEP");
+                                entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .putDouble("EP", ep);
+                            });
                             player.getLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(30.0), (living) -> {
                                 return !(living instanceof Player) && living.isAlive();
                             }).forEach((sub) -> {
@@ -330,7 +382,6 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                                             evolveMobs(sub);
                                             TensuraEPCapability.sync(sub);
                                         }
-
                                     });
                                 }
                             });
@@ -398,5 +449,9 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
             player.initMenu(player.containerMenu);
             MinecraftForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
         }
+    }
+
+    private boolean isScarlett (LivingEntity living) {
+        return living.getStringUUID().equals("8c20e4f8-c793-4699-ae1b-03dedd10e1b5");
     }
 }
