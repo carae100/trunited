@@ -31,7 +31,7 @@ public class blockRegistry {
     static {
         registry = DeferredRegister.create(ForgeRegistries.BLOCKS, "trawakened");
         ASH = registry.register("ash", () -> {
-            return new SimpleBlock(Material.SAND, (properties) -> {
+            return new SimpleBlock(Material.GRASS, (properties) -> {
                 return properties.strength(2.0F, 3.0F).sound(SoundType.SAND);
             });
         });
