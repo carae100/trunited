@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.mixin;
 
 import io.github.dracosomething.trawakened.registry.effectRegistry;
+import io.github.dracosomething.trawakened.world.levelStorage.IsTimeStoppedServer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
@@ -22,17 +23,22 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTickChunk(LevelChunk p_8715_, int p_8716_, CallbackInfo ci){
-        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-        }).toList();
-        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
-            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-                time_stops.forEach(effect -> {
-                    if (player.hasEffect(effect)) {
-                        ci.cancel();
-                    }
-                });
-            });
+//        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
+//            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
+//        }).toList();
+//        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+//            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+//                time_stops.forEach(effect -> {
+//                    if (player.hasEffect(effect)) {
+//                        ci.cancel();
+//                    }
+//                });
+//            });
+//        }
+        ServerLevel level = ((ServerLevel) (Object) this);
+        IsTimeStoppedServer data = IsTimeStoppedServer.get(level);
+        if (data.isTimeStopped()) {
+            ci.cancel();
         }
     }
 
@@ -42,17 +48,22 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTick(BooleanSupplier p_129871_, CallbackInfo ci){
-        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-        }).toList();
-        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
-            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-                time_stops.forEach(effect -> {
-                    if (player.hasEffect(effect)) {
-                        ci.cancel();
-                    }
-                });
-            });
+//        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
+//            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
+//        }).toList();
+//        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+//            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+//                time_stops.forEach(effect -> {
+//                    if (player.hasEffect(effect)) {
+//                        ci.cancel();
+//                    }
+//                });
+//            });
+//        }
+        ServerLevel level = ((ServerLevel) (Object) this);
+        IsTimeStoppedServer data = IsTimeStoppedServer.get(level);
+        if (data.isTimeStopped()) {
+            ci.cancel();
         }
     }
 }

@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.mixin.client;
 
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -28,7 +29,7 @@ public abstract class KeyboardMixin {
             KeyMapping.releaseAll();
             ci.cancel();
         }
-        if (trawakenedPlayerCapability.hasTimeStop(Minecraft.getInstance().player)) {
+        if (TimeStopHelper.hasTimeStop(Minecraft.getInstance().player)) {
             KeyMapping.releaseAll();
             ci.cancel();
         }

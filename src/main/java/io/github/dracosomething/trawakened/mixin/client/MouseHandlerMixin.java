@@ -1,6 +1,7 @@
 package io.github.dracosomething.trawakened.mixin.client;
 
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
+import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -19,7 +20,7 @@ public class MouseHandlerMixin {
             cancellable = true
     )
     private void onPressInject(long p_91531_, int p_91532_, int p_91533_, int p_91534_, CallbackInfo ci){
-        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || trawakenedPlayerCapability.hasTimeStop(Minecraft.getInstance().player))){
+        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || TimeStopHelper.hasTimeStop(Minecraft.getInstance().player))){
             KeyMapping.releaseAll();
             ci.cancel();
         }
@@ -31,7 +32,7 @@ public class MouseHandlerMixin {
             cancellable = true
     )
     private void onScrollInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
-        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || trawakenedPlayerCapability.hasTimeStop(Minecraft.getInstance().player))){
+        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || TimeStopHelper.hasTimeStop(Minecraft.getInstance().player))){
             KeyMapping.releaseAll();
             ci.cancel();
         }
@@ -43,7 +44,7 @@ public class MouseHandlerMixin {
             cancellable = true
     )
     private void onMoveInject(long p_91527_, double p_91528_, double p_91529_, CallbackInfo ci){
-        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || trawakenedPlayerCapability.hasTimeStop(Minecraft.getInstance().player))){
+        if(!Minecraft.getInstance().isPaused() && (trawakenedPlayerCapability.hasPlague(Minecraft.getInstance().player) || TimeStopHelper.hasTimeStop(Minecraft.getInstance().player))){
             KeyMapping.releaseAll();
             ci.cancel();
         }

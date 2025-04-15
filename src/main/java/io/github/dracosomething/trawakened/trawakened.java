@@ -6,6 +6,7 @@ import io.github.dracosomething.trawakened.ability.skill.ultimate.herrscheroftim
 import io.github.dracosomething.trawakened.config.BackdoorConfig;
 import io.github.dracosomething.trawakened.config.StarterRaceConfig;
 import io.github.dracosomething.trawakened.handler.SoulBoundItemsHandler;
+import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.registry.potionRegistry;
 import io.github.dracosomething.trawakened.registry.trawakenedRegistry;
@@ -41,6 +42,7 @@ public class trawakened {
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(trawakenedItemProperties::addItemProperties);
         modEventBus.addListener(SoulBoundItemsHandler::onClientSetup);
+        modEventBus.addListener(TimeStopHelper::onServerSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC,
                 "trawakened-Starter-Races-config.toml");

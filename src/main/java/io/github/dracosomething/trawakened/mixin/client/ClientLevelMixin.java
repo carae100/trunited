@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.mixin.client;
 
+import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -34,16 +35,11 @@ public abstract class ClientLevelMixin {
             cancellable = true
     )
     public void stopTime(BooleanSupplier p_104727_, CallbackInfo ci) {
-        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-        }).toList();
-        time_stops.forEach(effect -> {
-            if (Minecraft.getInstance().player != null) {
-                if (Minecraft.getInstance().player.hasEffect(effect)) {
-                    ci.cancel();
-                }
+        if (Minecraft.getInstance().player != null) {
+            if (TimeStopHelper.containsTimeStopCore(Minecraft.getInstance().player.getActiveEffectsMap().keySet())) {
+                ci.cancel();
             }
-        });
+        }
     }
 
     /**
@@ -52,23 +48,17 @@ public abstract class ClientLevelMixin {
      */
     @Overwrite
     public void tickEntities() {
-        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-        }).toList();
         ClientLevel level = ((ClientLevel) (Object) this);
         ProfilerFiller profilerfiller = level.getProfiler();
         profilerfiller.push("entities");
         this.tickingEntities.forEach((entity) -> {
-            time_stops.forEach(effect -> {
-                if (Minecraft.getInstance().player != null) {
-                    if (Minecraft.getInstance().player.hasEffect(effect)) {
-                        if (entity != Minecraft.getInstance().player) {
-//                        ci.cancel();
-                            return;
-                        }
+            if (Minecraft.getInstance().player != null) {
+                if (TimeStopHelper.containsTimeStopCore(Minecraft.getInstance().player.getActiveEffectsMap().keySet())) {
+                    if (entity != Minecraft.getInstance().player) {
+                        return;
                     }
                 }
-            });
+            }
             if (!entity.isRemoved() && !entity.isPassenger()) {
                 level.guardEntityTick(level::tickNonPassenger, entity);
             }
