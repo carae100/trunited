@@ -1,9 +1,13 @@
 package io.github.dracosomething.trawakened.helper;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -15,10 +19,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TimeStopHelper {
-    public static List<MobEffect> timeStops;
-    public static List<MobEffect> timeStopCores;
+    public static List<MobEffect> timeStops = new ArrayList<>();
+    public static List<MobEffect> timeStopCores = new ArrayList<>();
 
-    public static void onServerSetup(FMLDedicatedServerSetupEvent event) {
+    public static void onServerSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ForgeRegistries.MOB_EFFECTS.forEach((effect) -> {
                 if (effect.getDisplayName().getString().contains("time_stop")) {
@@ -37,6 +41,14 @@ public class TimeStopHelper {
 
     public static boolean containsTimeStopCore(Collection<MobEffect> effects) {
         return !Collections.disjoint(effects, timeStopCores);
+    }
+
+    public static boolean containsTimeStop(MobEffect effect) {
+        return timeStops.contains(effect);
+    }
+
+    public static boolean containsTimeStopCore(MobEffect effect) {
+        return timeStopCores.contains(effect);
     }
 
     public static boolean hasTimeStop(@Nullable LivingEntity entity) {

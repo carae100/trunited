@@ -1,13 +1,13 @@
 package io.github.dracosomething.trawakened.mixin;
 
 import io.github.dracosomething.trawakened.registry.effectRegistry;
-import io.github.dracosomething.trawakened.world.levelStorage.IsTimeStoppedServer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,8 +36,7 @@ public class ServerLevelMixin {
 //            });
 //        }
         ServerLevel level = ((ServerLevel) (Object) this);
-        IsTimeStoppedServer data = IsTimeStoppedServer.get(level);
-        if (data.isTimeStopped()) {
+        if (isTimeStopped) {
             ci.cancel();
         }
     }
@@ -61,8 +60,7 @@ public class ServerLevelMixin {
 //            });
 //        }
         ServerLevel level = ((ServerLevel) (Object) this);
-        IsTimeStoppedServer data = IsTimeStoppedServer.get(level);
-        if (data.isTimeStopped()) {
+        if (isTimeStopped) {
             ci.cancel();
         }
     }
