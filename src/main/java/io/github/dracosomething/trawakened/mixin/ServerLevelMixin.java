@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.mixin;
 
+import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -35,8 +36,7 @@ public class ServerLevelMixin {
 //                });
 //            });
 //        }
-        ServerLevel level = ((ServerLevel) (Object) this);
-        if (isTimeStopped) {
+        if (TimeStopHelper.TimeStopped) {
             ci.cancel();
         }
     }
@@ -59,8 +59,7 @@ public class ServerLevelMixin {
 //                });
 //            });
 //        }
-        ServerLevel level = ((ServerLevel) (Object) this);
-        if (isTimeStopped) {
+        if (TimeStopHelper.TimeStopped) {
             ci.cancel();
         }
     }

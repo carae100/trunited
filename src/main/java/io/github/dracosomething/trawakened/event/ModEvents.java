@@ -21,7 +21,6 @@ import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.enchantRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import io.github.dracosomething.trawakened.trawakened;
-import io.github.dracosomething.trawakened.world.levelStorage.IsTimeStoppedServer;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;

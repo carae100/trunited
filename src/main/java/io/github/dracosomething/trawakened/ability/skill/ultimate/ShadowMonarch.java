@@ -38,6 +38,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -235,10 +236,20 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                         Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
                         AwakenedShadowCapability.isShadow(target)) {
                     if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
+                        System.out.println("erwwwwrwer");
                         ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
                         instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
                         setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
-                        target.discard();
+                        MinecraftServer server = target.getServer();
+                        if (server != null) {
+                            System.out.println("dsfdfsderfd");
+                            ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
+                            if (level != null) {
+                                SkillHelper.moveAcrossDimensionTo(target, target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot(), level);
+//                                target.changeDimension(level);
+                                System.out.println(target.level.dimension());
+                            }
+                        }
                     } else if (entity instanceof Player player) {
                         player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
                     }
@@ -256,6 +267,13 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             ShadowStorage.getCompound(first).remove("UUID");
                             target.addEffect(new MobEffectInstance(MobEffects.GLOWING));
                             ShadowStorage.remove(first);
+                            MinecraftServer server = target.getServer();
+                            if (server != null) {
+                                ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
+                                if (level != null) {
+                                    level.getEntity(UUID.fromString(first)).discard();
+                                }
+                            }
                         }
                     }
                 }
@@ -308,9 +326,18 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 break;
             case 5:
                 if (entity.isShiftKeyDown()) {
-                    System.out.println(entity.getLevel().getServer().getAllLevels());
-                    ServerLevel fantasyWorld = entity.level.getServer().getLevel(dimensionRegistry.SHADOW);
-                    entity.changeDimension(fantasyWorld);
+                    if (data.getBoolean("awakened")) {
+                        List<Player> list = skillHelper.getPlayersInRange(entity, entity.position(), 5, Player::isShiftKeyDown);
+                        list.forEach((player) -> {
+                            MinecraftServer server = player.getServer();
+                            if (server != null) {
+                                ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
+                                if (level != null) {
+                                    SkillHelper.moveAcrossDimensionTo(player, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), level);
+                                }
+                            }
+                        });
+                    }
                 } else {
                     openSpatialStorage(entity, instance);
                 }
@@ -353,23 +380,13 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             });
                             TensuraPlayerCapability.sync(player);
                             getShadowStorage().getAllKeys().forEach((key) -> {
-                                CompoundTag entity = getShadowStorage().getCompound(key);
-                                double ep = entity.getCompound("EntityData")
-                                        .getCompound("ForgeCaps")
-                                        .getCompound("tensura:ep")
-                                        .getDouble("currentEP");
-                                entity.getCompound("EntityData")
-                                        .getCompound("ForgeCaps")
-                                        .getCompound("tensura:ep")
-                                        .putDouble("currentEP", ep * 2.0);
-                                ep = entity.getCompound("EntityData")
-                                        .getCompound("ForgeCaps")
-                                        .getCompound("tensura:ep")
-                                        .getDouble("currentEP");
-                                entity.getCompound("EntityData")
-                                        .getCompound("ForgeCaps")
-                                        .getCompound("tensura:ep")
-                                        .putDouble("EP", ep);
+                                MinecraftServer server = player.getServer();
+                                if (server != null) {
+                                    ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
+                                    if (level != null) {
+                                        level.getEntity(UUID.fromString(key)).discard();
+                                    }
+                                }
                             });
                             player.getLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(30.0), (living) -> {
                                 return !(living instanceof Player) && living.isAlive();
@@ -394,8 +411,6 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
 
     private CompoundTag shadowToNBT (LivingEntity entity) {
         CompoundTag tag = new CompoundTag();
-        tag.put("EntityData", entity.serializeNBT());
-        tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
         tag.put("rank", AwakenedShadowCapability.getRank(entity).toNBT());
         if (!entity.getDisplayName().toString().isEmpty() || !entity.getDisplayName().toString().equals("")) {
             tag.putString("name", entity.getDisplayName().toString());

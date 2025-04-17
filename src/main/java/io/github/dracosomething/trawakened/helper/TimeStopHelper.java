@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class TimeStopHelper {
     public static List<MobEffect> timeStops = new ArrayList<>();
     public static List<MobEffect> timeStopCores = new ArrayList<>();
+    public static boolean TimeStopped = false;
 
     public static void onServerSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {

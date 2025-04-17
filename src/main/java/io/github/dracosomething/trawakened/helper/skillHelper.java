@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class skillHelper {
     public static List<Entity> DrawSphereAndGetEntitiesInIt(LivingEntity entity, Level level, Vec3 pos, int radius, boolean areNotAllie){
@@ -100,6 +101,21 @@ public class skillHelper {
     public static List<LivingEntity> GetLivingEntitiesInRange(LivingEntity entity, Vec3 pos, int radius) {
         List<LivingEntity> list = new ArrayList<>();
         DrawSphereAndGetEntitiesInIt(entity, entity.level, pos, radius, false).stream().filter((entity1 -> entity1 instanceof LivingEntity)).toList().forEach((living) -> list.add((LivingEntity) living));
+        return list;
+    }
+
+    public static List<Player> getPlayersInRange(LivingEntity entity, Vec3 pos, int radius, Predicate<? super Player> predicate) {
+        List<Player> list = new ArrayList<>();
+        List<Player> finalList = list;
+        DrawSphereAndGetEntitiesInIt(entity, radius, false)
+                .stream()
+                .filter(entity1 -> entity1 instanceof Player)
+                .toList()
+                .forEach((entity1) -> {
+                    finalList.add((Player) entity1);
+                });
+        if (entity instanceof Player player) finalList.add(player);
+        list = finalList.stream().filter(predicate).toList();
         return list;
     }
 
