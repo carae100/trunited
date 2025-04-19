@@ -151,128 +151,9 @@ Morgan le fay
 Artoria
 Fairy knights
 
-
-[Ruler-Morgan] - requires 6 bells of pilgrimage
-[Weapon - Demonic Spear]
-A demonic spear that amplifies magic attacks. It can be used to strike down with water mirror, this deals 50 magic dmg and 20 piercing dmg.
-
-[Weapon - Rhongomyniad]
-The user mainly uses this as a magic but they can still use them as throwable melee weapons, ones they hit the ground they disapear and return to the users inventory.
-
-[Weapon - shield]
-An unbreakable shield
-
-[Weapon - sword]
-An unbreakable sword on hihi grade
-
-[Weapon- waraxe]
-An unbreakable war axe on hihi grade
-
-[Passive-true] existance tax
-All of the users subordinates are forced to grant the user half their mp and half their souls every mc week.
-This applies to everyone in the fae realm.
-
-[Passive-true] magic resistance
-All magic attacks have a dmg reduction of 80% on the user.
-
-[Passive-true] item construction
-All the users items are unbreakable, effect wears off outside of the users inv.
-
-[Passive-true] Fairy eyes
-This gives the user analysis lvl 7, and gives them pressence sence lvl 7, and makes them imume to alternate lies.
-
-[Passive-true] thirsting charisma
-All Allies in a 15 block radius of the user get buffs but gain amplified fear gain. All enemies in a 15 block radius get debuffed and also get fear amplification.
-
-[Passive-true] blessing of the lake
-Allies in a 5 block radius including the user get buffed. They have increased mastery gain and increased ep gain.
-
-[Passive-true, Active-press] territory creation
-Allows the user to mark theor territory, in their territory the users subs and the user are buffed. These buffs are to mp regen, mp gain, ap gain and ap regen
-
-[Active-press] Garden
-Creates a 50x50 block bounded field around the targetted area
-Has 4 modes:
-Sweet dreems: all creatures in it will fall into a deep sleep
-Dark Abyss: no creature within it can see anything.
-Lost Will: applies a random debuff to all creatures inside it. These debuffs have a min lvl of 20 and a max lvl of 75. If the contained creatures survive for 5 minutes they will be able to leave.
-The innocent: used to trap a single wretched creature. Target needs to be a hostile or neutral mob, or a player that killed +50 mobs.
-Cd: 100
-Cost: 120 mp
-
-[Active-press-toggle] Mad enhancement
-The users basic stats and strength get improved.
-
-[Active-press] Rhongomyniad
-The user fires of their 12 rhongomyniads, 1 at a time, it can target up to 7 different mobs. Each rhongomyniad deals 50 magic dmg and 15 piercing dmg. The user has 12 rhongomyniads and each one needs 1 minute to regenerate
-Cost: 50 mp per rhongomyniad
-Cd: 20
-
-[Active-press] water mirror
-Has 2 modes:
-Mode 1: user can set specific points in the world they can target with water mirror.
-Mode 2: allows the user to teleport anything to one of their sub mirrors, even through time. This can target entire areas of the world, creatures, disasters, beams or players. The user can swap between these modes. The user can also send attacks through this spell.
-Costs 1000 mp to use
-Cd: 10
-
-[Active-press] thoughtform
-Allows the user to create a copy of themself capable of using the same attacks as this mode of the skill.
-Cost: 600 mp
-Cd: 50
-
-[Active-press] Fairy Knight
-Allows the user to bestow creatures with the names of the knights of the round table. This grands the named the powers of set knight at a weaker lvl. If one dies they stop being a knight and loose their powers.
-Cost: 500 mp
-Cd: 75
-
-[Active-press] magicule creation
-The user can create magicules from nothing.
-Cd: 350
-
-[Active-press] Water of Conveyance
-The user creates a potion that when drunk shares the user memories with the drinker(memories: battlewill, schematics, fear effect, insanity effect, temporary commom/extra skills, skill, magic and battlewill mastery, learnable skills)
-Cost: 26 mp, 30 ap
-Cd: 50
-
-[Active-press] from the ends of the world
-The user creates a giant storm of curses. All enemies get a random debuff every minute they are within this storm, the user gets battle continuation for 5 minutes, 10 on mastery.
-Duration: 5, 10 on mastery
-Cost: 100 mp
-Cd: 15 minutes
-
-[Noble phantasm] Olympus armanent
-Shoots down one of morgans rhongomyniads while releasing it's true world ending power. This causes a giant explosion that destroys even bedrock and deals 1500 explosion dmg. The rhongomyniad itself deals 1000 holy dmg and 100 desintigration dmg.
-Cooldown: 2000
-Cost: 9000 mp
-
-[Noble phantasm] Spirit Vein Closing Armament
-This uses all 12 rhongomyniads, all the users mp, if they have bellow 1 milion mp the user compensates it with shp.
-This ability requires masteryof rhongomyniad.
-This releases all 12 rhongomyniads at the same time at one target. This deals 100 aoe explosion dmg, 500 aoe reality shatering dmg, 700 magic dmg, 200 holy dmg and grants the heal poison + shp poison + melting effects to the target for 5 minutes.
-Cd: 5 minutes to regen the rhongomyniads + a 7 minute cd on the skill. 
-
-
 [Ruler-Artoria] - default
 [Weapon - Staff of Selection]
 A magic wand that grants a 20% buff to magic dmg. It grants all the users subs in a 50 block radius the nightless charisma buff. Can be right clicked to infuse staff with magic, this makes the next attack deal +30 magic dmg. Costs 40 mp. Cd: 20 seconds
-
-[Passive-true] magic resistance
-Cancel all spells of medium spirit or below no matter the cost.
-
-[Passive-true] item construction
-All the users items are indestructable.
-
-[Passive-true] fairy eyes
-The user can see through all lies. Grants presence sence 100, analysis lvl 10, can see through alternate lies, can see shadow monarch shadows. Can see the true names of players.
-
-[Passive-true] ones own magic
-This skill cant be copied, the magic u use can not be predicted.
-
-[Passive-true] charisma of hope
-All subordinates of the user in a 50 block radius get a buff to strength, speed and armor. These subordinates won't ever loose hope.
-
-[Passive-true] avalon le fae
-All Allies of the user in a 20 block radius are buffed, they become imume to any sort of corruption and get blessed, this blessing gives them 5 absorbtion hearts and regeneration 7.
 
 [Passive-true] the bells of pilgrimage
 this ability is always active.
@@ -311,6 +192,24 @@ Requirement: 2.25 mil mp.
 Location: main end island. Player gets notification that they have to go to the end.
 Guardian: empowered ender dragon.
 Reward: 100k mp increase, 10% attribute increase, unlock ruler morgan.
+
+[Passive-true] magic resistance
+Cancel all spells of medium spirit or below no matter the cost.
+
+[Passive-true] item construction
+All the users items are indestructable.
+
+[Passive-true] fairy eyes
+The user can see through all lies. Grants presence sence 100, analysis lvl 10, can see through alternate lies, can see shadow monarch shadows. Can see the true names of players.
+
+[Passive-true] ones own magic
+This skill cant be copied, the magic u use can not be predicted.
+
+[Passive-true] charisma of hope
+All subordinates of the user in a 50 block radius get a buff to strength, speed and armor. These subordinates won't ever loose hope.
+
+[Passive-true] avalon le fae
+All Allies of the user in a 20 block radius are buffed, they become imume to any sort of corruption and get blessed, this blessing gives them 5 absorbtion hearts and regeneration 7.
 
 [Active-press] heating
 Creates fire at target position
@@ -639,3 +538,103 @@ User releases a powerfull mana beam. Beam destroys blocks with this formula hard
 Beam deals 1000 magic dmg and 300 heat dmg.
 Cd: 100
 Cost: 100 mp, 200 ap
+---
+
+[Ruler-Morgan] - requires 6 bells of pilgrimage
+[Weapon - Demonic Spear]
+A demonic spear that amplifies magic attacks. It can be used to strike down with water mirror, this deals 50 magic dmg and 20 piercing dmg.
+
+[Weapon - Rhongomyniad]
+The user mainly uses this as a magic but they can still use them as throwable melee weapons, ones they hit the ground they disapear and return to the users inventory.
+
+[Weapon - shield]
+An unbreakable shield
+
+[Weapon - sword]
+An unbreakable sword on hihi grade
+
+[Weapon- waraxe]
+An unbreakable war axe on hihi grade
+
+[Passive-true] existance tax
+All of the users subordinates are forced to grant the user half their mp and half their souls every mc week.
+This applies to everyone in the fae realm.
+
+[Passive-true] magic resistance
+All magic attacks have a dmg reduction of 80% on the user.
+
+[Passive-true] item construction
+All the users items are unbreakable, effect wears off outside of the users inv.
+
+[Passive-true] Fairy eyes
+This gives the user analysis lvl 7, and gives them pressence sence lvl 7, and makes them imume to alternate lies.
+
+[Passive-true] thirsting charisma
+All Allies in a 15 block radius of the user get buffs but gain amplified fear gain. All enemies in a 15 block radius get debuffed and also get fear amplification.
+
+[Passive-true] blessing of the lake
+Allies in a 5 block radius including the user get buffed. They have increased mastery gain and increased ep gain.
+
+[Passive-true, Active-press] territory creation
+Allows the user to mark theor territory, in their territory the users subs and the user are buffed. These buffs are to mp regen, mp gain, ap gain and ap regen
+
+[Active-press] Garden
+Creates a 50x50 block bounded field around the targetted area
+Has 4 modes:
+Sweet dreems: all creatures in it will fall into a deep sleep
+Dark Abyss: no creature within it can see anything.
+Lost Will: applies a random debuff to all creatures inside it. These debuffs have a min lvl of 20 and a max lvl of 75. If the contained creatures survive for 5 minutes they will be able to leave.
+The innocent: used to trap a single wretched creature. Target needs to be a hostile or neutral mob, or a player that killed +50 mobs.
+Cd: 100
+Cost: 120 mp
+
+[Active-press-toggle] Mad enhancement
+The users basic stats and strength get improved.
+
+[Active-press] Rhongomyniad
+The user fires of their 12 rhongomyniads, 1 at a time, it can target up to 7 different mobs. Each rhongomyniad deals 50 magic dmg and 15 piercing dmg. The user has 12 rhongomyniads and each one needs 1 minute to regenerate
+Cost: 50 mp per rhongomyniad
+Cd: 20
+
+[Active-press] water mirror
+Has 2 modes:
+Mode 1: user can set specific points in the world they can target with water mirror.
+Mode 2: allows the user to teleport anything to one of their sub mirrors, even through time. This can target entire areas of the world, creatures, disasters, beams or players. The user can swap between these modes. The user can also send attacks through this spell.
+Costs 1000 mp to use
+Cd: 10
+
+[Active-press] thoughtform
+Allows the user to create a copy of themself capable of using the same attacks as this mode of the skill.
+Cost: 600 mp
+Cd: 50
+
+[Active-press] Fairy Knight
+Allows the user to bestow creatures with the names of the knights of the round table. This grands the named the powers of set knight at a weaker lvl. If one dies they stop being a knight and loose their powers.
+Cost: 500 mp
+Cd: 75
+
+[Active-press] magicule creation
+The user can create magicules from nothing.
+Cd: 350
+
+[Active-press] Water of Conveyance
+The user creates a potion that when drunk shares the user memories with the drinker(memories: battlewill, schematics, fear effect, insanity effect, temporary commom/extra skills, skill, magic and battlewill mastery, learnable skills)
+Cost: 26 mp, 30 ap
+Cd: 50
+
+[Active-press] from the ends of the world
+The user creates a giant storm of curses. All enemies get a random debuff every minute they are within this storm, the user gets battle continuation for 5 minutes, 10 on mastery.
+Duration: 5, 10 on mastery
+Cost: 100 mp
+Cd: 15 minutes
+
+[Noble phantasm] Olympus armanent
+Shoots down one of morgans rhongomyniads while releasing it's true world ending power. This causes a giant explosion that destroys even bedrock and deals 1500 explosion dmg. The rhongomyniad itself deals 1000 holy dmg and 100 desintigration dmg.
+Cooldown: 2000
+Cost: 9000 mp
+
+[Noble phantasm] Spirit Vein Closing Armament
+This uses all 12 rhongomyniads, all the users mp, if they have bellow 1 milion mp the user compensates it with shp.
+This ability requires masteryof rhongomyniad.
+This releases all 12 rhongomyniads at the same time at one target. This deals 100 aoe explosion dmg, 500 aoe reality shatering dmg, 700 magic dmg, 200 holy dmg and grants the heal poison + shp poison + melting effects to the target for 5 minutes.
+Cd: 5 minutes to regen the rhongomyniads + a 7 minute cd on the skill.

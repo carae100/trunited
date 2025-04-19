@@ -24,20 +24,14 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTickChunk(LevelChunk p_8715_, int p_8716_, CallbackInfo ci){
-//        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-//            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-//        }).toList();
-//        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
-//            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-//                time_stops.forEach(effect -> {
-//                    if (player.hasEffect(effect)) {
-//                        ci.cancel();
-//                    }
-//                });
-//            });
-//        }
-        if (TimeStopHelper.TimeStopped) {
-            ci.cancel();
+        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+                TimeStopHelper.timeStops.forEach(effect -> {
+                    if (player.hasEffect(effect)) {
+                        ci.cancel();
+                    }
+                });
+            });
         }
     }
 
@@ -47,20 +41,14 @@ public class ServerLevelMixin {
             cancellable = true
     )
     public void stopTick(BooleanSupplier p_129871_, CallbackInfo ci){
-//        List<MobEffect> time_stops = ForgeRegistries.MOB_EFFECTS.getValues().stream().filter(effect -> {
-//            return effect.getDisplayName().contains(Component.literal("time_stop_core"));
-//        }).toList();
-//        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
-//            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-//                time_stops.forEach(effect -> {
-//                    if (player.hasEffect(effect)) {
-//                        ci.cancel();
-//                    }
-//                });
-//            });
-//        }
-        if (TimeStopHelper.TimeStopped) {
-            ci.cancel();
+        if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
+            ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
+                TimeStopHelper.timeStops.forEach(effect -> {
+                    if (player.hasEffect(effect)) {
+                        ci.cancel();
+                    }
+                });
+            });
         }
     }
 }
