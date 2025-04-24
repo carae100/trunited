@@ -179,6 +179,19 @@ public class skillHelper {
         }
     }
 
+    public static void ParticleCircleVertical(Vec3 pos, Level level, double radius, int amount, ParticleOptions type) {
+        for(float x = (float) (pos.x - (float)radius); x < pos.x + (float)radius; ++x) {
+            for (float y = (float) (pos.y - (float) radius); y < pos.y + (float) radius; ++y) {
+                float cmp = (float) ((float)(radius * radius) - (pos.x - x) * (pos.x - x) - (pos.y - y) * (pos.y - y));
+                if (cmp > 0.0F && cmp < 6.1F && level instanceof ServerLevel world) {
+                    for (int i = 0; i < amount; ++i) {
+                        world.sendParticles(type, (double) x, (double) y, (double) pos.z - 1.5, 5, 1.0, 1.0, 1.0, 1.0);
+                    }
+                }
+            }
+        }
+    }
+
     public static void ParticleRing(LivingEntity entity, double radius, ParticleOptions type) {
         ParticleRing(entity, radius, 1, 1, type);
     }

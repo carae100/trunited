@@ -362,6 +362,11 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         }
     }
 
+    @Override
+    public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
+        return super.onHeld(instance, living, heldTicks);
+    }
+
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
         if (instance.isMastered(event.getEntity())) {
             if (event.getEntity() instanceof Player player) {

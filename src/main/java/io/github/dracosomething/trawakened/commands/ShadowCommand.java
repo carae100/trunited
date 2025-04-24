@@ -105,6 +105,7 @@ public class ShadowCommand {
                                                 List<String> validTargets = skill.getShadowStorage().getAllKeys().stream().filter(shadow -> {
                                                     return skill.getShadowStorage().getAllKeys().stream().toList().indexOf(shadow) < IntegerArgumentType.getInteger(context, "number");
                                                 }).toList();
+                                                System.out.println("erwerewr");
                                                 if (validTargets.isEmpty()) {
                                                     player.sendSystemMessage(Component.translatable("trawakened.command.shadow.summon.empty"));
                                                     return 0;
@@ -112,11 +113,17 @@ public class ShadowCommand {
                                                 validTargets.forEach((shadow) -> {
                                                     MinecraftServer server = player.server;
                                                     if (server != null) {
+                                                        System.out.println("ewre");
                                                         ServerLevel shadowDim = server.getLevel(dimensionRegistry.SHADOW);
                                                         ServerLevel playerDim = server.getLevel(player.level.dimension());
                                                         if (shadowDim != null) {
                                                             if (playerDim != null) {
+                                                                System.out.println(shadowDim.areEntitiesLoaded(100));
+                                                                System.out.println(shadow);
+                                                                System.out.println(UUID.fromString(shadow));
+                                                                shadowDim.getEntities().getAll().forEach(System.out::println);
                                                                 Entity target = shadowDim.getEntity(UUID.fromString(shadow));
+//                                                                System.out.println(target);
                                                                 SkillHelper.moveAcrossDimensionTo(player, target);
                                                             }
                                                         }

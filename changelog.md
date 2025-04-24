@@ -623,7 +623,7 @@ Following parts are after this knight becomes melusine
 When worn user gains +100% fly speed.
 
 [passive-true]
-fairy sword Arondlight gets a different look, they are now always extended and double sided
+fairy sword Arondlight gets a different look, they are now always extended and double sided. The user can now use these as remote control weapons.
 
 [Noble phantasm] Hollow Heart Albion
 On use user becomes their original form. This lasts 5 minutes.
@@ -639,3 +639,6 @@ User releases a powerfull mana beam. Beam destroys blocks with this formula hard
 Beam deals 1000 magic dmg and 300 heat dmg.
 Cd: 100
 Cost: 100 mp, 200 ap
+
+
+[ruler - Artoria Alter] - Unlocks when becoming a shadow, User can become a shadow by killing a tamed dog, while being below 10 hp and being in shadows.
