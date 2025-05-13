@@ -12,6 +12,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.awt.image.RGBImageFilter;
+
 public class dimensionRegistry {
     public static final ResourceKey<Level> SHADOW = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("trawakened", "shadow_dimension"));;
     public static final ResourceKey<DimensionType> SHADOW_TYPE = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, SHADOW.location());

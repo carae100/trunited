@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -33,7 +34,7 @@ public class SoulBoundItemsHandler {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             soulBoundItems = ForgeRegistries.ITEMS.getValues().stream().filter((item) -> {
-                return classHelper.hasInterface(item.getClass(), SoulBoundItem.class);
+                return classHelper.hasInterface(item.getClass(), SoulBoundItem.class) || (item.equals(Items.AIR));
             }).toList();
         });
     }

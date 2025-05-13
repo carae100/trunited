@@ -207,4 +207,8 @@ public class SystemSkill extends Skill implements ISpatialStorage {
     public CompoundTag getTag() {
         return tag;
     }
+
+    public int getLevel() {
+        return this.tag.getInt("level");
+    }
 }
