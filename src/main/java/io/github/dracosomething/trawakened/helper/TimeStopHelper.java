@@ -1,14 +1,11 @@
 package io.github.dracosomething.trawakened.helper;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -16,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TimeStopHelper {
     public static List<MobEffect> timeStops = new ArrayList<>();
@@ -44,11 +40,11 @@ public class TimeStopHelper {
         return !Collections.disjoint(effects, timeStopCores);
     }
 
-    public static boolean containsTimeStop(MobEffect effect) {
+    public static boolean isTimeStop(MobEffect effect) {
         return timeStops.contains(effect);
     }
 
-    public static boolean containsTimeStopCore(MobEffect effect) {
+    public static boolean isTimeStopCore(MobEffect effect) {
         return timeStopCores.contains(effect);
     }
 

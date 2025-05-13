@@ -92,13 +92,15 @@ public class SoulBoundItemsHandler {
                         item.getOrCreateTag().putUUID("owner", event.player.getUUID());
                     }
                     if (event.player.getUUID() != item.getOrCreateTag().getUUID("owner")) {
-                        event.player.getLevel().getServer().getAllLevels().forEach((level) -> {
-                            Entity entity = level.getEntity(item.getOrCreateTag().getUUID("owner"));
-                            if (entity instanceof Player player) {
-                                player.getInventory().add(item);
-                                event.player.getInventory().removeItem(item);
-                            }
-                        });
+                        if (event.player.getLevel().getServer() != null) {
+                            event.player.getLevel().getServer().getAllLevels().forEach((level) -> {
+                                Entity entity = level.getEntity(item.getOrCreateTag().getUUID("owner"));
+                                if (entity instanceof Player player) {
+                                    player.getInventory().add(item);
+                                    event.player.getInventory().removeItem(item);
+                                }
+                            });
+                        }
                     }
                 }
             });
