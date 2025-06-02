@@ -240,16 +240,8 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                         ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
                         instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
                         setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
-                        MinecraftServer server = target.getServer();
-                        if (server != null) {
-                            System.out.println("dsfdfsderfd");
-                            ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
-                            if (level != null) {
-                                SkillHelper.moveAcrossDimensionTo(target, target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot(), level);
-//                                target.changeDimension(level);
-                                System.out.println(target.level.dimension());
-                            }
-                        }
+                        target.discard();
+
                     } else if (entity instanceof Player player) {
                         player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
                     }
@@ -267,13 +259,6 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             ShadowStorage.getCompound(first).remove("UUID");
                             target.addEffect(new MobEffectInstance(MobEffects.GLOWING));
                             ShadowStorage.remove(first);
-                            MinecraftServer server = target.getServer();
-                            if (server != null) {
-                                ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
-                                if (level != null) {
-                                    level.getEntity(UUID.fromString(first)).discard();
-                                }
-                            }
                         }
                     }
                 }
@@ -342,6 +327,9 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     openSpatialStorage(entity, instance);
                 }
                 break;
+            case 6, 7:
+                entity.sendSystemMessage(SkillHelper.comingSoon());
+                break;
         }
     }
 
@@ -364,6 +352,9 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
 
     @Override
     public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
+        if (instance.getMode() == 7) {
+
+        }
         return super.onHeld(instance, living, heldTicks);
     }
 
@@ -371,6 +362,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         if (instance.isMastered(event.getEntity())) {
             if (event.getEntity() instanceof Player player) {
                 float dmg = event.getEntity().getHealth() - event.getAmount();
+                System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                 if (dmg < (event.getEntity().getMaxHealth() * 0.05) && TensuraPlayerCapability.getMagicule(player) < (player.getAttribute(TensuraAttributeRegistry.MAX_MAGICULE.get()).getValue() * 0.05)) {
                     Entity source = event.getSource().getEntity();
                     if (source != null) {
@@ -385,13 +377,23 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             });
                             TensuraPlayerCapability.sync(player);
                             getShadowStorage().getAllKeys().forEach((key) -> {
-                                MinecraftServer server = player.getServer();
-                                if (server != null) {
-                                    ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
-                                    if (level != null) {
-                                        level.getEntity(UUID.fromString(key)).discard();
-                                    }
-                                }
+                                CompoundTag entity = getShadowStorage().getCompound(key);
+                                double ep = entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .getDouble("currentEP");
+                                entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .putDouble("currentEP", ep * 2.0);
+                                ep = entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .getDouble("currentEP");
+                                entity.getCompound("EntityData")
+                                        .getCompound("ForgeCaps")
+                                        .getCompound("tensura:ep")
+                                        .putDouble("EP", ep);
                             });
                             player.getLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(30.0), (living) -> {
                                 return !(living instanceof Player) && living.isAlive();
@@ -416,6 +418,8 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
 
     private CompoundTag shadowToNBT (LivingEntity entity) {
         CompoundTag tag = new CompoundTag();
+        tag.put("EntityData", entity.serializeNBT());
+        tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
         tag.put("rank", AwakenedShadowCapability.getRank(entity).toNBT());
         if (!entity.getDisplayName().toString().isEmpty() || !entity.getDisplayName().toString().equals("")) {
             tag.putString("name", entity.getDisplayName().toString());

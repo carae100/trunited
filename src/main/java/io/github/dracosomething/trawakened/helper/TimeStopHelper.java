@@ -1,5 +1,6 @@
 package io.github.dracosomething.trawakened.helper;
 
+import io.github.dracosomething.trawakened.registry.effectRegistry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -50,8 +51,7 @@ public class TimeStopHelper {
 
     public static boolean hasTimeStop(@Nullable LivingEntity entity) {
         if (entity != null) {
-            Collection<MobEffect> effects = entity.getActiveEffectsMap().keySet().stream().toList();
-            return (containsTimeStop(effects) || containsTimeStopCore(effects)) &&
+            return (entity.hasEffect(effectRegistry.TIMESTOP.get()) || entity.hasEffect(effectRegistry.TIMESTOP_CORE.get())) &&
                     !entity.isSpectator() &&
                     !(entity instanceof Player player && player.isCreative()) &&
                     !entity.isDeadOrDying();

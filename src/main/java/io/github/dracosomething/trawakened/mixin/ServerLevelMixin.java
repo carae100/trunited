@@ -26,11 +26,9 @@ public class ServerLevelMixin {
     public void stopTickChunk(LevelChunk p_8715_, int p_8716_, CallbackInfo ci){
         if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
             ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-                TimeStopHelper.timeStops.forEach(effect -> {
-                    if (player.hasEffect(effect)) {
-                        ci.cancel();
-                    }
-                });
+                if (player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+                    ci.cancel();
+                }
             });
         }
     }
@@ -43,11 +41,9 @@ public class ServerLevelMixin {
     public void stopTick(BooleanSupplier p_129871_, CallbackInfo ci){
         if (((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers() != null) {
             ((ServerLevel) (Object) this).getServer().getPlayerList().getPlayers().forEach((player) -> {
-                TimeStopHelper.timeStops.forEach(effect -> {
-                    if (player.hasEffect(effect)) {
-                        ci.cancel();
-                    }
-                });
+                if (player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+                    ci.cancel();
+                }
             });
         }
     }

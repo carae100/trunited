@@ -33,7 +33,7 @@ public class SoulBoundItemsHandler {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             soulBoundItems = ForgeRegistries.ITEMS.getValues().stream().filter((item) -> {
-                return classHelper.hasInterface(item.getClass(), SoulBoundItem.class);
+                return item != Items.AIR && classHelper.hasInterface(item.getClass(), SoulBoundItem.class);
             }).toList();
         });
     }

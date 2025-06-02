@@ -13,6 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class AwakenedShadowCapability implements IShadowCapability {
@@ -63,6 +64,12 @@ public class AwakenedShadowCapability implements IShadowCapability {
     public static boolean isShadow(LivingEntity entity) {
         IShadowCapability capability = CapabilityHandler.getCapability(entity, CAPABILITY);
         return capability == null ? false : capability.isShadow();
+    }
+
+    public static boolean isOwnerShadow(LivingEntity target, LivingEntity entity) {
+        return AwakenedShadowCapability.isArisen(target) &&
+                Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
+                AwakenedShadowCapability.isShadow(target);
     }
 
     public static void setShadow(LivingEntity entity, boolean isShadow) {

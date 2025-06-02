@@ -3,7 +3,6 @@ package io.github.dracosomething.trawakened.network.play2server;
 import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
-import io.github.dracosomething.trawakened.handler.TimeStopHandler;
 import io.github.dracosomething.trawakened.helper.TimeStopHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

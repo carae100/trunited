@@ -78,17 +78,13 @@ public class ShadowCommand {
                                                     return 0;
                                                 }
                                                 validTargets.forEach((shadow) -> {
-                                                    MinecraftServer server = player.server;
-                                                    if (server != null) {
-                                                        ServerLevel shadowDim = server.getLevel(dimensionRegistry.SHADOW);
-                                                        ServerLevel playerDim = server.getLevel(player.level.dimension());
-                                                        if (shadowDim != null) {
-                                                            if (playerDim != null) {
-                                                                Entity target = shadowDim.getEntity(UUID.fromString(shadow));
-                                                                SkillHelper.moveAcrossDimensionTo(player, target);
-                                                            }
-                                                        }
-                                                    }
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }
@@ -111,23 +107,13 @@ public class ShadowCommand {
                                                     return 0;
                                                 }
                                                 validTargets.forEach((shadow) -> {
-                                                    MinecraftServer server = player.server;
-                                                    if (server != null) {
-                                                        System.out.println("ewre");
-                                                        ServerLevel shadowDim = server.getLevel(dimensionRegistry.SHADOW);
-                                                        ServerLevel playerDim = server.getLevel(player.level.dimension());
-                                                        if (shadowDim != null) {
-                                                            if (playerDim != null) {
-                                                                System.out.println(shadowDim.areEntitiesLoaded(100));
-                                                                System.out.println(shadow);
-                                                                System.out.println(UUID.fromString(shadow));
-                                                                shadowDim.getEntities().getAll().forEach(System.out::println);
-                                                                Entity target = shadowDim.getEntity(UUID.fromString(shadow));
-//                                                                System.out.println(target);
-                                                                SkillHelper.moveAcrossDimensionTo(player, target);
-                                                            }
-                                                        }
-                                                    }
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }
@@ -149,17 +135,13 @@ public class ShadowCommand {
                                                     return 0;
                                                 }
                                                 validTargets.forEach((shadow) -> {
-                                                    MinecraftServer server = player.server;
-                                                    if (server != null) {
-                                                        ServerLevel shadowDim = server.getLevel(dimensionRegistry.SHADOW);
-                                                        ServerLevel playerDim = server.getLevel(player.level.dimension());
-                                                        if (shadowDim != null) {
-                                                            if (playerDim != null) {
-                                                                Entity target = shadowDim.getEntity(UUID.fromString(shadow));
-                                                                SkillHelper.moveAcrossDimensionTo(player, target);
-                                                            }
-                                                        }
-                                                    }
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }
@@ -185,17 +167,13 @@ public class ShadowCommand {
                                                     return 0;
                                                 }
                                                 validTargets.forEach((shadow) -> {
-                                                    MinecraftServer server = player.server;
-                                                    if (server != null) {
-                                                        ServerLevel shadowDim = server.getLevel(dimensionRegistry.SHADOW);
-                                                        ServerLevel playerDim = server.getLevel(player.level.dimension());
-                                                        if (shadowDim != null) {
-                                                            if (playerDim != null) {
-                                                                Entity target = shadowDim.getEntity(UUID.fromString(shadow));
-                                                                SkillHelper.moveAcrossDimensionTo(player, target);
-                                                            }
-                                                        }
-                                                    }
+                                                    EntityType<?> type = EntityType.byString(skill.getShadowStorage().getCompound(shadow).getString("entityType")).get();
+                                                    LivingEntity entity = (LivingEntity) type.create(player.level);
+                                                    entity.deserializeNBT(skill.getShadowStorage().getCompound(shadow).getCompound("EntityData"));
+                                                    entity.setPos(player.position());
+                                                    entity.addEffect(new MobEffectInstance(MobEffects.GLOWING));
+                                                    player.level.addFreshEntity(entity);
+                                                    skill.getShadowStorage().remove(shadow);
                                                 });
                                                 return 1;
                                             }

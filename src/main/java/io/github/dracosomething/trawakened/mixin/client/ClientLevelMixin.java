@@ -36,7 +36,7 @@ public abstract class ClientLevelMixin {
     )
     public void stopTime(BooleanSupplier p_104727_, CallbackInfo ci) {
         if (Minecraft.getInstance().player != null) {
-            if (TimeStopHelper.containsTimeStopCore(Minecraft.getInstance().player.getActiveEffectsMap().keySet())) {
+            if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
                 ci.cancel();
             }
         }
@@ -53,10 +53,8 @@ public abstract class ClientLevelMixin {
         profilerfiller.push("entities");
         this.tickingEntities.forEach((entity) -> {
             if (Minecraft.getInstance().player != null) {
-                if (TimeStopHelper.containsTimeStopCore(Minecraft.getInstance().player.getActiveEffectsMap().keySet())) {
-                    if (entity != Minecraft.getInstance().player) {
-                        return;
-                    }
+                if (Minecraft.getInstance().player.hasEffect(effectRegistry.TIMESTOP_CORE.get())) {
+                    return;
                 }
             }
             if (!entity.isRemoved() && !entity.isPassenger()) {

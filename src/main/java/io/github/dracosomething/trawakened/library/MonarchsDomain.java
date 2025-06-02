@@ -40,7 +40,7 @@ public class MonarchsDomain {
         this.width = width;
         this.length = length;
         this.uuid = UUID.randomUUID();
-        this.update = new Timer();
+        this.update = new Timer(this.uuid.toString());
         this.level = owner.level;
     }
 
@@ -51,7 +51,7 @@ public class MonarchsDomain {
         this.width = width;
         this.length = length;
         this.uuid = UUID.randomUUID();
-        this.update = new Timer();
+        this.update = new Timer(this.uuid.toString());
         this.level = owner.level;
     }
 
@@ -62,7 +62,7 @@ public class MonarchsDomain {
         this.width = size;
         this.length = size;
         this.uuid = UUID.randomUUID();
-        this.update = new Timer();
+        this.update = new Timer(this.uuid.toString());
         this.level = owner.level;
     }
 
@@ -73,13 +73,13 @@ public class MonarchsDomain {
         this.width = width;
         this.length = length;
         this.uuid = uuid;
-        this.update = new Timer();
+        this.update = new Timer(this.uuid.toString());
         this.level = owner.level;
     }
 
     public void place() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Timer timer = new Timer(this.uuid.toString());
+        timer.schedule(new Task() {
             int i = 0;
 
             public void run() {
@@ -92,12 +92,12 @@ public class MonarchsDomain {
                     timer.cancel();
                 }
             }
-        }, 0, 75);
-        update.schedule(new TimerTask() {
+        }, 0, 1);
+        update.schedule(new Task() {
             public void run() {
                 Tick();
             }
-        }, 0, 50);
+        }, 0, 1);
     }
 
     protected void Tick() {
