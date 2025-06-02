@@ -2,7 +2,7 @@ package io.github.dracosomething.trawakened.library;
 
 import java.util.Arrays;
 
-public class Timer {
+public final class Timer {
     private Task[] tasks;
     private String name;
     public boolean canceled;

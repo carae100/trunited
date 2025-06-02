@@ -20,6 +20,7 @@ import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.google.common.util.concurrent.AbstractScheduledService;
 import com.mojang.math.Vector3f;
+import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.ShadowCapability.AwakenedShadowCapability;
 import io.github.dracosomething.trawakened.event.BecomeShadowEvent;
 import io.github.dracosomething.trawakened.helper.skillHelper;
@@ -33,8 +34,10 @@ import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
 import io.github.dracosomething.trawakened.registry.dimensionRegistry;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -77,12 +80,21 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
     public ShadowMonarch() {
         super(SkillType.ULTIMATE);
         ShadowStorage = new CompoundTag();
-        data  = new CompoundTag();
+        data = new CompoundTag();
     }
 
     @Override
     public @Nullable MutableComponent getName() {
-        return data.getBoolean("awakened") ?Component.translatable("trawakened.skill.shadow_monarch.awakened") : Component.translatable("trawakened.skill.shadow_monarch");
+        return data.getBoolean("awakened") ? Component.translatable("trawakened.skill.shadow_monarch.awakened") : Component.translatable("trawakened.skill.shadow_monarch");
+    }
+
+    @Override
+    public boolean meetEPRequirement(Player entity, double newEP) {
+        ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.SYSTEM.get());
+        if (instance.getSkill() instanceof SystemSkill skill) {
+            return hasSystemSkills(entity) && skill.getLevel() >= 110;
+        }
+        return super.meetEPRequirement(entity, newEP);
     }
 
     public int modes() {
@@ -165,7 +177,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                                 TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenBecomeShadowscreen(entity.getUUID()));
                             } else {
                                 AwakenedShadowCapability.setTries(target, AwakenedShadowCapability.getTries(target) - 1);
-                                if (AwakenedShadowCapability.getTries(target) == 0 ) {
+                                if (AwakenedShadowCapability.getTries(target) == 0) {
                                     target.discard();
                                     return;
                                 }
@@ -267,10 +279,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 if (!data.getBoolean("awakened")) {
                     if (this.data.getCompound("domain").isEmpty()) {
                         MonarchsDomain domain = new MonarchsDomain(entity, 18000, 50, 50);
-                        domain.setInstance(instance);
-                        this.data.put("domain", domain.toNBT());
-                        instance.getOrCreateTag().put("data", data);
                         if (!SkillHelper.outOfMagicule(entity, domain.calculateMPCost())) {
+                            domain.setInstance(instance);
+                            this.data.put("domain", domain.toNBT());
+                            instance.getOrCreateTag().put("data", data);
                             domain.place();
                             instance.setCoolDown(150);
                         }
@@ -317,6 +329,9 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             MinecraftServer server = player.getServer();
                             if (server != null) {
                                 ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
+                                if (entity.getLevel().dimension() == level.dimension()) {
+                                    level = server.overworld();
+                                }
                                 if (level != null) {
                                     SkillHelper.moveAcrossDimensionTo(player, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), level);
                                 }
@@ -330,7 +345,14 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
             case 6, 7:
                 entity.sendSystemMessage(SkillHelper.comingSoon());
                 break;
+            default:
+                break;
         }
+    }
+
+    @Override
+    public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
+        return super.onHeld(instance, living, heldTicks);
     }
 
     public boolean canTick(ManasSkillInstance instance, LivingEntity entity) {
@@ -338,7 +360,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
     }
 
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
-        int masteryPercentige = (int)((float)(instance.getMastery() * 100 / instance.getMaxMastery()));
+        int masteryPercentige = (int) ((float) (instance.getMastery() * 100 / instance.getMaxMastery()));
         int maxShadows = (5 * masteryPercentige) + 5;
         instance.getOrCreateTag().putInt("maxStorage", maxShadows);
         if (isInSlot(living) && data.getBoolean("awakened")) {
@@ -350,19 +372,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         }
     }
 
-    @Override
-    public boolean onHeld(ManasSkillInstance instance, LivingEntity living, int heldTicks) {
-        if (instance.getMode() == 7) {
-
-        }
-        return super.onHeld(instance, living, heldTicks);
-    }
-
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
         if (instance.isMastered(event.getEntity())) {
             if (event.getEntity() instanceof Player player) {
                 float dmg = event.getEntity().getHealth() - event.getAmount();
-                System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                 if (dmg < (event.getEntity().getMaxHealth() * 0.05) && TensuraPlayerCapability.getMagicule(player) < (player.getAttribute(TensuraAttributeRegistry.MAX_MAGICULE.get()).getValue() * 0.05)) {
                     Entity source = event.getSource().getEntity();
                     if (source != null) {
@@ -416,7 +429,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         }
     }
 
-    private CompoundTag shadowToNBT (LivingEntity entity) {
+    private CompoundTag shadowToNBT(LivingEntity entity) {
         CompoundTag tag = new CompoundTag();
         tag.put("EntityData", entity.serializeNBT());
         tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
@@ -475,7 +488,16 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         }
     }
 
-    private boolean isScarlett (LivingEntity living) {
+    private boolean isScarlett(LivingEntity living) {
         return living.getStringUUID().equals("8c20e4f8-c793-4699-ae1b-03dedd10e1b5");
+    }
+
+    private boolean hasSystemSkills(LivingEntity living) {
+        return SkillUtils.hasSkill(living, skillRegistry.QUICKSILVER.get()) &&
+                SkillUtils.hasSkill(living, skillRegistry.STEALTH.get()) &&
+                SkillUtils.hasSkill(living, skillRegistry.BLOOD_LUST.get()) &&
+                SkillUtils.hasSkill(living, skillRegistry.MUTILATION.get()) &&
+                SkillUtils.hasSkill(living, skillRegistry.RULERS_AUTHORITY.get()) &&
+                SkillUtils.hasSkill(living, skillRegistry.DRAGONS_FEAR.get());
     }
 }

@@ -1,8 +1,8 @@
 package io.github.dracosomething.trawakened.helper;
 
+import io.github.dracosomething.trawakened.trawakened;
 import io.github.dracosomething.trawakened.library.Task;
 import io.github.dracosomething.trawakened.library.Timer;
-import io.github.dracosomething.trawakened.trawakened;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
