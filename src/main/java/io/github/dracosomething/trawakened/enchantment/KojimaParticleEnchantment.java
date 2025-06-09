@@ -17,11 +17,6 @@ public class KojimaParticleEnchantment extends EngravingEnchantment implements I
     }
 
     @Override
-    public boolean canDuplicate() {
-        return false;
-    }
-
-    @Override
     public boolean isCurse() {
         return true;
     }

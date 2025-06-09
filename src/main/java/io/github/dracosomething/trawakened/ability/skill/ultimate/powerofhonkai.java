@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.ability.skill.ultimate;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
@@ -10,6 +11,7 @@ import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.ability.skill.extra.HakiSkill;
 import com.github.manasmods.tensura.ability.skill.intrinsic.CharmSkill;
+import com.github.manasmods.tensura.capability.ep.TensuraEPCapability;
 import com.github.manasmods.tensura.capability.race.TensuraPlayerCapability;
 import com.github.manasmods.tensura.capability.skill.TensuraSkillCapability;
 import com.github.manasmods.tensura.event.SkillPlunderEvent;
@@ -114,17 +116,27 @@ public class powerofhonkai extends Skill {
     @Override
     public void onToggleOn(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, true);
-        TensuraPlayerCapability.getFrom((Player) entity).ifPresent((data) -> {
-            data.setBlessed(true);
-        });
+        if (entity instanceof Player player) {
+            if (instance.getOrCreateTag().getBoolean("isUserBlessed")) {
+                TensuraPlayerCapability.getFrom(player).ifPresent((data) -> {
+                    data.setBlessed(true);
+                });
+                TensuraPlayerCapability.sync(player);
+            }
+        }
     }
 
     @Override
     public void onToggleOff(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, false);
-        TensuraPlayerCapability.getFrom((Player) entity).ifPresent((data) -> {
-            data.setBlessed(false);
-        });
+        if (entity instanceof Player player) {
+            if (instance.getOrCreateTag().getBoolean("isUserBlessed")) {
+                TensuraPlayerCapability.getFrom(player).ifPresent((data) -> {
+                    data.setBlessed(false);
+                });
+                TensuraPlayerCapability.sync(player);
+            }
+        }
     }
 
     public void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
@@ -313,6 +325,16 @@ public class powerofhonkai extends Skill {
         }
 
         tag.putInt("artivatedTimes", Time + 1);
+    }
+
+    @Override
+    public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        if (living instanceof Player player) {
+            TensuraPlayerCapability.getFrom(player).ifPresent((data) -> {
+                instance.getOrCreateTag().putBoolean("isUserBlessed", data.isBlessed());
+            });
+            TensuraPlayerCapability.sync(player);
+        }
     }
 
     @Override

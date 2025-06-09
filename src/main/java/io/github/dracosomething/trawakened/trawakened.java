@@ -41,7 +41,6 @@ public class trawakened {
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(trawakenedItemProperties::addItemProperties);
-        modEventBus.addListener(SoulBoundItemsHandler::onClientSetup);
         modEventBus.addListener(TimeStopHelper::onServerSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, StarterRaceConfig.SPEC,

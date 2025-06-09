@@ -22,11 +22,6 @@ public class CoralEnchantment extends EngravingEnchantment implements IInherentE
     }
 
     @Override
-    public boolean canDuplicate() {
-        return false;
-    }
-
-    @Override
     public boolean isCurse() {
         return true;
     }

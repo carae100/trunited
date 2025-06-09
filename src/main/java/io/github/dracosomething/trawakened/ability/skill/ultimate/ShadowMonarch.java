@@ -91,8 +91,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
     @Override
     public boolean meetEPRequirement(Player entity, double newEP) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.SYSTEM.get());
-        if (instance.getSkill() instanceof SystemSkill skill) {
-            return hasSystemSkills(entity) && skill.getLevel() >= 110;
+        if (instance != null) {
+            if (instance.getSkill() instanceof SystemSkill skill) {
+                return hasSystemSkills(entity) && skill.getLevel() >= 110;
+            }
         }
         return super.meetEPRequirement(entity, newEP);
     }

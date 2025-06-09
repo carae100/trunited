@@ -12,6 +12,7 @@ import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.effect.template.SkillMobEffect;
 import com.github.manasmods.tensura.race.Race;
 import com.github.manasmods.tensura.registry.attribute.TensuraAttributeRegistry;
+import com.github.manasmods.tensura.registry.dimensions.TensuraDimensions;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import com.github.manasmods.tensura.util.damage.DamageSourceHelper;
@@ -19,6 +20,7 @@ import com.github.manasmods.tensura.util.damage.TensuraDamageSource;
 import io.github.dracosomething.trawakened.capability.trawakenedPlayerCapability;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceRegistry;
+import io.github.dracosomething.trawakened.world.trawakenedGamerules;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -255,7 +257,11 @@ public class herrscherofdestruction extends Skill {
                         for (int x = startpos.getX(); x < endpos.getX(); ++x) {
                             for (int y = startpos.getY(); y < endpos.getY(); ++y) {
                                 for (int z = startpos.getZ(); z < endpos.getZ(); ++z) {
-                                    player.level.removeBlock(new BlockPos(x, y, z), false);
+                                    if (player.level.getGameRules().getBoolean(trawakenedGamerules.DESTRUCTION_GRIEFING)) {
+                                        if (!player.level.dimension().equals(TensuraDimensions.LABYRINTH)) {
+                                            player.level.removeBlock(new BlockPos(x, y, z), false);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -323,7 +329,11 @@ public class herrscherofdestruction extends Skill {
                                             - (pos.getY() - y) * (pos.getY() - y) - (pos.getZ() - z) * (pos.getZ() - z);
                                     if (cmp > 0.0F) {
                                         BlockPos tmp = new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-                                        player.level.removeBlock(tmp, false);
+                                        if (level.getGameRules().getBoolean(trawakenedGamerules.DESTRUCTION_GRIEFING)) {
+                                            if (!level.dimension().equals(TensuraDimensions.LABYRINTH)) {
+                                                level.removeBlock(tmp, false);
+                                            }
+                                        }
                                     }
                                 }
                             }

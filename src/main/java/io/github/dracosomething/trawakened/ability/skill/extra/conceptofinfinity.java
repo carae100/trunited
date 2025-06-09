@@ -50,7 +50,7 @@ public class conceptofinfinity extends Skill {
     }
 
     public boolean meetEPRequirement(Player entity, double newEP) {
-        return SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity) && !(SkillUtils.hasSkill(entity, skillRegistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillRegistry.STARKILL.get()));
+        return SkillUtils.isSkillMastered(entity, ExtraSkills.SAGE.get()) && (trawakenedPlayerCapability.isDemonLordSeed(entity) || trawakenedPlayerCapability.isHeroEgg(entity)) && !(SkillUtils.hasSkill(entity, skillRegistry.AZAZEL.get()) && SkillUtils.hasSkill(entity, skillRegistry.STARKILL.get()));
     }
 
     @Override

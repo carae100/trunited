@@ -318,6 +318,9 @@
   "gamerule.fears": "Fear Penalty",
   "gamerule.fears.description": "Enables the fear penalties, enabling this game rule could lag out your game.",
 
+  "gamerule.destruction_griefing": "HoD(Herrscher of Destruction) Griefing",
+  "gamerule.destruction_griefing.description": "When enabled the Herrscher of Destruction can break blocks.",
+
   "trawakened.command.fear.get_fear": "%1$s is afraid of %2$s.",
   "trawakened.command.fear.get_scared": "%1$s has been scared %2$s times.",
   "trawakened.command.fear.get_cooldown": "%1$s can be scared again after %2$s ticks.",

@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.ability.skill.unique;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
@@ -79,17 +80,29 @@ public class voiceofhonkai extends Skill {
     }
 
     public boolean canBeToggled(ManasSkillInstance instance, LivingEntity entity) {
-        return TensuraEPCapability.isMajin(entity) ? true : TensuraPlayerCapability.isTrueHero(entity);
+        return true;
     }
 
     @Override
     public void onToggleOn(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, true);
+        if (instance.getOrCreateTag().getBoolean("isUserMajin")) {
+            TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
+                cap.setMajin(true);
+            });
+            TensuraEPCapability.sync(entity);
+        }
     }
 
     @Override
     public void onToggleOff(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, false);
+        if (instance.getOrCreateTag().getBoolean("isUserMajin")) {
+            TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
+                cap.setMajin(false);
+            });
+            TensuraEPCapability.sync(entity);
+        }
     }
 
     private void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
@@ -116,43 +129,40 @@ public class voiceofhonkai extends Skill {
 
     @Override
     public void onPressed(ManasSkillInstance instance, LivingEntity entity) {
-        LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
         if(!SkillHelper.outOfMagicule(entity, instance)) {
+            LivingEntity target = SkillHelper.getTargetingEntity(entity, 10.0, false);
             if (target != null) {
-                label68:
-                {
-                    entity.swing(InteractionHand.MAIN_HAND, true);
-                    ServerLevel level = (ServerLevel) entity.getLevel();
-                    int chance = 75;
-                    boolean failed = true;
-                    if (entity.getRandom().nextInt(100) <= chance) {
-                        List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
-                        if (!collection.isEmpty()) {
-                            ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
-                            SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
-                            if (!MinecraftForge.EVENT_BUS.post(event) && SkillUtils.learnSkill(entity, event.getSkill(), instance.getRemoveTime())) {
-                                this.addMasteryPoint(instance, entity);
-                                instance.setCoolDown(15);
-                                failed = false;
-                                if (entity instanceof Player) {
-                                    Player player = (Player) entity;
-                                    player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
-                                }
-
-                                level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                entity.swing(InteractionHand.MAIN_HAND, true);
+                ServerLevel level = (ServerLevel) entity.getLevel();
+                int chance = 75;
+                boolean failed = true;
+                if (entity.getRandom().nextInt(100) <= chance) {
+                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                    if (!collection.isEmpty()) {
+                        ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
+                        SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
+                        if (!MinecraftForge.EVENT_BUS.post(event) && SkillUtils.learnSkill(entity, event.getSkill(), instance.getRemoveTime())) {
+                            this.addMasteryPoint(instance, entity);
+                            instance.setCoolDown(15);
+                            failed = false;
+                            if (entity instanceof Player) {
+                                Player player = (Player) entity;
+                                player.displayClientMessage(Component.translatable("tensura.skill.acquire", new Object[]{skill.getName()}).setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
                             }
+
+                            level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
                         }
                     }
-
-                    if (failed && entity instanceof Player) {
-                        Player player = (Player) entity;
-                        player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
-                        level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                        instance.setCoolDown(5);
-                    }
-
-                    return;
                 }
+
+                if (failed && entity instanceof Player) {
+                    Player player = (Player) entity;
+                    player.displayClientMessage(Component.translatable("tensura.ability.activation_failed").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
+                    level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_WEAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    instance.setCoolDown(5);
+                }
+
+                return;
             } else if (entity instanceof Player) {
                 Player player = (Player) entity;
                 player.displayClientMessage(Component.translatable("tensura.targeting.not_targeted").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)), false);
@@ -186,6 +196,14 @@ public class voiceofhonkai extends Skill {
         }
 
         tag.putInt("artivatedTimes", Time + 1);
+    }
+
+    @Override
+    public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        TensuraEPCapability.getFrom(living).ifPresent((cap) -> {
+            instance.getOrCreateTag().putBoolean("isUserMajin", cap.isMajin());
+        });
+        TensuraEPCapability.sync(living);
     }
 
     @Override

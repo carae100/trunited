@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.ability.skill.ultimate;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.TensuraSkill;
@@ -118,17 +119,37 @@ public class willofhonkai extends Skill implements Transformation {
     }
 
     public boolean canBeToggled(ManasSkillInstance instance, LivingEntity entity) {
-        return TensuraEPCapability.isMajin(entity) ? true : TensuraPlayerCapability.isTrueHero(entity);
+        return true;
+    }
+
+    @Override
+    public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
+        TensuraEPCapability.getFrom(living).ifPresent((cap) -> {
+            instance.getOrCreateTag().putBoolean("isUserMajin", cap.isMajin());
+        });
+        TensuraEPCapability.sync(living);
     }
 
     @Override
     public void onToggleOn(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, true);
+        if (instance.getOrCreateTag().getBoolean("isUserMajin")) {
+            TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
+                cap.setMajin(true);
+            });
+            TensuraEPCapability.sync(entity);
+        }
     }
 
     @Override
     public void onToggleOff(ManasSkillInstance instance, LivingEntity entity) {
         analize(instance, entity, false);
+        if (instance.getOrCreateTag().getBoolean("isUserMajin")) {
+            TensuraEPCapability.getFrom(entity).ifPresent((cap) -> {
+                cap.setMajin(false);
+            });
+            TensuraEPCapability.sync(entity);
+        }
     }
 
     public void analize(ManasSkillInstance instance, LivingEntity entity, boolean on) {
