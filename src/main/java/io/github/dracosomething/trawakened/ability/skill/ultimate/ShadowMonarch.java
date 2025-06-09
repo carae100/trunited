@@ -166,8 +166,8 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     return;
                 }
                 if (!entity.isShiftKeyDown()) {
-                    if (AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
-                        if (target != null && AwakenedShadowCapability.getTries(target) > 0) {
+                    if (target != null && AwakenedShadowCapability.isShadow(target) && !AwakenedShadowCapability.isArisen(target)) {
+                        if (AwakenedShadowCapability.getTries(target) > 0) {
                             skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord()));
                             int chance;
                             if (TensuraEPCapability.getCurrentEP(target) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
@@ -216,8 +216,8 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 } else {
                     skillHelper.sendMessageToNearbyPlayersWithSource(30, entity, Component.translatable("message.arise", getCommandWord()));
                     targetList.forEach((living -> {
-                        if (AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
-                            if (living != null && AwakenedShadowCapability.getTries(living) > 0) {
+                        if (living != null && AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
+                            if (AwakenedShadowCapability.getTries(living) > 0) {
                                 if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
                                     target.setHealth(target.getMaxHealth());
                                     AwakenedShadowCapability.setArisen(target, true);
@@ -246,7 +246,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 }
                 break;
             case 2:
-                if (AwakenedShadowCapability.isArisen(target) &&
+                if (target != null && AwakenedShadowCapability.isArisen(target) &&
                         Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
                         AwakenedShadowCapability.isShadow(target)) {
                     if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
@@ -262,7 +262,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 }
                 break;
             case 3:
-                if (target instanceof Player) {
+                if (target != null && target instanceof Player) {
                     if (!AwakenedShadowCapability.isShadow(target) &&
                             AwakenedShadowCapability.hasShadow(target)) {
                         if (ShadowStorage.getAllKeys().stream().findFirst().isPresent()) {

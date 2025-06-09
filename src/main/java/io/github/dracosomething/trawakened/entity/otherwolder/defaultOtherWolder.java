@@ -4,6 +4,7 @@ import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.TensuraSkill;
+import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.ability.skill.unique.BerserkerSkill;
 import com.github.manasmods.tensura.api.entity.ai.CrossbowAttackGoal;
@@ -55,6 +56,8 @@ import java.util.Optional;
 import java.util.Random;
 
 public class defaultOtherWolder  extends OtherworlderEntity implements IOtherworlder {
+    private TensuraSkillInstance skill;
+
     public defaultOtherWolder(EntityType<? extends OtherworlderEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -86,6 +89,11 @@ public class defaultOtherWolder  extends OtherworlderEntity implements IOtherwor
             return entity1.getType().is(TensuraTags.EntityTypes.OTHERWORLDER_PREY);
         }));
         this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal(this, true));
+        if (this.skill != null) {
+            this.targetSelector.addGoal(4, new changeModeGoal(this.getSkill(), this));
+            this.targetSelector.addGoal(6, new useAbilityGoal(this.getSkill(), this, activationType.HELD));
+            this.targetSelector.addGoal(6, new useAbilityGoal(this.getSkill(), this, activationType.PRESSED));
+        }
     }
 
     private boolean shouldAttackPlayer(Object o) {
@@ -118,5 +126,101 @@ public class defaultOtherWolder  extends OtherworlderEntity implements IOtherwor
 
     public void setTarget(@Nullable LivingEntity pLivingEntity) {
         super.setTarget(pLivingEntity);
+    }
+
+    public TensuraSkillInstance getSkill() {
+        return skill;
+    }
+
+    public void setSkill(TensuraSkillInstance skill) {
+        this.skill = skill;
+        this.targetSelector.addGoal(4, new changeModeGoal(this.getSkill(), this));
+        this.targetSelector.addGoal(6, new useAbilityGoal(this.getSkill(), this, activationType.HELD));
+        this.targetSelector.addGoal(6, new useAbilityGoal(this.getSkill(), this, activationType.PRESSED));
+    }
+
+    public class useAbilityGoal extends Goal {
+        private TensuraSkillInstance skill;
+        private defaultOtherWolder entity;
+        private activationType type;
+        private boolean active = false;
+        private int heldTicks;
+
+        public useAbilityGoal(TensuraSkillInstance skill, defaultOtherWolder entity, activationType type) {
+            this.skill = skill;
+            this.entity = entity;
+            this.type = type;
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            System.out.println("activated");
+            switch (type) {
+                case HELD -> {
+                    this.active = true;
+                    this.heldTicks = 0;
+                }
+                case PRESSED -> this.skill.onPressed(entity);
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (this.active) {
+                this.skill.onHeld(entity, heldTicks);
+                ++heldTicks;
+                if (this.heldTicks >= this.skill.getMaxHeldTime(entity)) {
+                    this.stop();
+                }
+            }
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            if (this.active) {
+                this.active = false;
+                this.skill.onRelease(entity, heldTicks);
+            }
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.entity.isUsingItem();
+        }
+    }
+
+    public class changeModeGoal extends Goal {
+        private TensuraSkillInstance instance;
+        private defaultOtherWolder entity;
+
+        public changeModeGoal(TensuraSkillInstance instance, defaultOtherWolder entity) {
+            this.instance = instance;
+            this.entity = entity;
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            if (this.instance != null) {
+                ManasSkill skill = this.instance.getSkill();
+                if (skill instanceof Skill skill1) {
+                    int nextMode = skill1.nextMode(entity, instance, false);
+                    System.out.println(nextMode);
+                    this.instance.setMode(nextMode);
+                }
+            }
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.entity.isUsingItem();
+        }
+    }
+
+    public enum activationType {
+        HELD,
+        PRESSED
     }
 }

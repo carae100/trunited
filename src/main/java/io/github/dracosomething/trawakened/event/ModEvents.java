@@ -3,7 +3,9 @@ package io.github.dracosomething.trawakened.event;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.capability.skill.EntitySkillCapability;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.TensuraSkillInstance;
 import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.client.particle.TensuraParticleHelper;
 import com.github.manasmods.tensura.event.SpiritualHurtEvent;
@@ -110,7 +112,7 @@ public class ModEvents {
     public static void GrantUnique(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntity();
         AwakenedFearCapability.sync(event.getEntity());
-        if (entity instanceof defaultOtherWolder) {
+        if (entity instanceof defaultOtherWolder otherWolder) {
             List<ManasSkill> list_unique = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
                 boolean var10000;
                 if (manasSkill instanceof Skill skill) {
@@ -146,6 +148,17 @@ public class ModEvents {
                 }
                 if (!(skill instanceof voiceofhonkai || skill instanceof willofhonkai || skill instanceof powerofhonkai || skill instanceof herrscheroftime || skill instanceof herrscherofdestruction || skill instanceof herrscherofplague || skill instanceof herrscheroftheworld)) {
                     SkillUtils.learnSkill(entity, skill);
+                    TensuraSkillInstance instance = (TensuraSkillInstance) SkillUtils.getSkillOrNull(entity, skill);
+                    otherWolder.setSkill(instance);
+                    if (instance != null) {
+                        if (instance.canBeToggled(entity)) {
+                            instance.setToggled(true);
+                        }
+
+                        instance.markDirty();
+                        SkillAPI.getSkillsFrom(entity).syncAll();
+                    }
+                    break;
                 }
             }
             entity.setItemInHand(InteractionHand.MAIN_HAND, TensuraToolItems.ADAMANTITE_SCYTHE.get().getDefaultInstance());
