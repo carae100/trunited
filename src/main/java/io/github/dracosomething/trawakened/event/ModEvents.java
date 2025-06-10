@@ -141,7 +141,7 @@ public class ModEvents {
             while (!(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size() >= 1)) {
                 System.out.println(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size());
                 Random random1 = new Random();
-                if (random1.nextInt(1, 100) >= 90) {
+                if (random1.nextInt(1, 100) <= 90) {
                     skill = list_unique.get(random1.nextInt(1, list_unique.size()));
                 } else {
                     skill = list_ultimate.get(random1.nextInt(1, list_ultimate.size()));

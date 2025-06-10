@@ -189,6 +189,8 @@ public class powerofhonkai extends Skill {
 
                                         level.playSound((Player) null, entity.getX(), entity.getY(), entity.getY(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.0F);
                                     }
+                                } else if (entity instanceof Player player) {
+                                    player.displayClientMessage(Component.translatable("trawakened.messages.copy.no_left").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)), false);
                                 }
                             }
 
