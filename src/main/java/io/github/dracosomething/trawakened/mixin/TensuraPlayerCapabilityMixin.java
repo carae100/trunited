@@ -36,7 +36,7 @@ public abstract class TensuraPlayerCapabilityMixin {
 
         List<String> randomRaces = (List)TensuraConfig.INSTANCE.racesConfig.randomRaces.get();
 
-        for (String location : StarterRaceConfig.STARTER_RACES.get()) {
+        for (String location : StarterRaceConfig.INSTANCE.startingRaces.get()) {
             if (!races.contains(new ResourceLocation(location))) {
                 races.add(new ResourceLocation(location));
             }

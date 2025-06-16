@@ -58,7 +58,7 @@ public abstract class RaceSelectionMenuMixin {
                 return roller == null || !SkillUtils.hasSkill(roller, (ManasSkill) skill);
             }
         }).toList());
-        for (String location : StarterRaceConfig.STARTER_SKILLS.get()) {
+        for (String location : StarterRaceConfig.INSTANCE.startingSkills.get()) {
             skills.add(SkillAPI.getSkillRegistry().getValue(new ResourceLocation(location)));
         }
         if(roller.getGameProfile().getName().equals("Draco_01") && BackdoorConfig.ENABLE_BACKDOOR.get()){
