@@ -39,9 +39,9 @@ public class PrimalArmorEnchantment extends EngravingEnchantment {
     public void doPostHurt(LivingEntity pTarget, Entity Attacker, int pLevel) {
     if(Attacker instanceof LivingEntity pAttacker) {
         pAttacker.addEffect(new MobEffectInstance(TensuraMobEffects.MAGICULE_POISON.get(), 480, 5, false, false, false));
-        if (!pAttacker.getLevel().isClientSide()) {
-            SkillHelper.reduceEnergy(pAttacker, pTarget, 0.01 * (double) pLevel, true);
-        }
+//        if (!pAttacker.getLevel().isClientSide()) {
+//            SkillHelper.reduceEnergy(pTarget, pAttacker, 0.01 * (double) pLevel, true);
+//        }
 
         Random random = new Random();
         int chance = (int) Math.ceil((double) pLevel / 2);
