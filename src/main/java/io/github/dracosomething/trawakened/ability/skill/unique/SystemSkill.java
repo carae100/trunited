@@ -173,8 +173,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
                         newDrop(runeStones.BLOODLUST_STONE.get(), event, entity);
                     }
                 }
-                if (event.getEntity().getType().equals(EntityType.SILVERFISH) || event.getEntity().getType().equals(EntityType.CAT)
-                        || event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) || event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
+                if (event.getEntity().getType().equals(EntityType.SILVERFISH) ||
+                        event.getEntity().getType().equals(EntityType.CAT) ||
+                        event.getEntity().getType().equals(TensuraEntityTypes.WINGED_CAT.get()) ||
+                        event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE.get()) ||
                         event.getEntity().getType().equals(TensuraEntityTypes.EVIL_CENTIPEDE_BODY.get())) {
                     if (random.nextInt(0, 100) <= 3) {
                         newDrop(runeStones.QUICKSILVER_STONE.get(), event, entity);
