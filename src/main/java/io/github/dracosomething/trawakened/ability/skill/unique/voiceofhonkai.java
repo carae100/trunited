@@ -137,7 +137,11 @@ public class voiceofhonkai extends Skill {
                 int chance = 75;
                 boolean failed = true;
                 if (entity.getRandom().nextInt(100) <= chance) {
-                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream().filter(this::canCopy).toList();
+                    List<ManasSkillInstance> collection = SkillAPI.getSkillsFrom(target).getLearnedSkills().stream()
+                            .filter(this::canCopy)
+                            .filter((instance1 -> {
+                                return !SkillUtils.hasSkill(entity, instance1.getSkill());
+                            })).toList();
                     if (!collection.isEmpty()) {
                         ManasSkill skill = ((ManasSkillInstance) collection.get(target.getRandom().nextInt(collection.size()))).getSkill();
                         SkillPlunderEvent event = new SkillPlunderEvent(target, entity, false, skill);
