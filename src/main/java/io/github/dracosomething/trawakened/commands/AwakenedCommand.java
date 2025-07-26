@@ -31,7 +31,7 @@ public class AwakenedCommand {
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("awakened")
                 .then(Commands.literal("get")
-                        .then(Commands.literal("fear").requires((commandSource) -> PermissionHelper.hasPermissionOrIsConsole(commandSource, TensuraPermissions.PLAYER_EDIT_RACE_OTHERS))
+                        .then(Commands.literal("fear")
                                 .executes((context) -> {
                                     ServerPlayer player = (ServerPlayer) context.getSource().getEntity();
                                     if (player != null) {

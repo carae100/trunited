@@ -27,7 +27,7 @@ public class entityRegistry {
             return EntityType.Builder.of(defaultOtherWolder::new, MobCategory.MONSTER).canSpawnFarFromPlayer().updateInterval(2).clientTrackingRange(32).sized(0.6F, 1.8F).build((new ResourceLocation("trawakened", "default_other_worlder")).toString());
         });
         INTRUDER_BARRIER = registry.register("intruder_barrier", () -> {
-            return EntityType.Builder.<IntruderBarrier>of(IntruderBarrier::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(64).updateInterval(Integer.MAX_VALUE).fireImmune().build((new ResourceLocation("tensura", "holy_field")).toString());
+            return EntityType.Builder.<IntruderBarrier>of(IntruderBarrier::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(64).updateInterval(Integer.MAX_VALUE).fireImmune().build((new ResourceLocation("trawakened", "intruder)barrier")).toString());
         });
     }
 }

@@ -18,6 +18,7 @@ import io.github.dracosomething.trawakened.registry.items.runeStones;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,6 +49,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
     public SystemSkill() {
         super(SkillType.UNIQUE);
         tag = new CompoundTag();
+    }
+
+    public ResourceLocation getSkillIcon() {
+        return new ResourceLocation("trawakened", "textures/skill/unique/system.png");
     }
 
     public @Nullable MutableComponent getName() {
