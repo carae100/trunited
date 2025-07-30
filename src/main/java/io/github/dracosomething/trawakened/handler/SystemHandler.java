@@ -125,7 +125,6 @@ public class SystemHandler {
     public static void doubleEPGain(UpdateEPEvent event) {
         if (SkillAPI.getSkillsFrom(event.getEntity()).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
             event.setNewEP(event.getNewEP() * 1.25);
-            TensuraEPCapability.updateEP(event.getEntity());
         }
     }
 }

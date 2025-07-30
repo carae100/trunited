@@ -247,7 +247,8 @@ public class powerofhonkai extends Skill {
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofdestructionskill"))) ||
                         !skill.equals(SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:herrscherofpestilenceskill"))) ||
                         !skill.equals(skillRegistry.HERRSCHEROFTHEWORLD.get()) ||
-                        !skill.equals(skillRegistry.HERRSCHEROFTIME.get());
+                        !skill.equals(skillRegistry.HERRSCHEROFTIME.get()) ||
+                        !skill.equals(skillRegistry.VOICEOFHONKAI.get());
             }
         } else {
             return false;
@@ -366,6 +367,7 @@ public class powerofhonkai extends Skill {
             if(!player.isCreative()) {
                 if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.AWAKENED_APOSTLE)) &&
                         !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_SEED_AWAKENED)) &&
+                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_THE_WORLD)) &&
                         !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_DESTRUCTION))) {
                     SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:powerofhonkai")));
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);

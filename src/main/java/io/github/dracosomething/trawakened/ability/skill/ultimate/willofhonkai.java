@@ -21,6 +21,7 @@ import com.github.manasmods.tensura.registry.particle.TensuraParticles;
 import com.github.manasmods.tensura.registry.race.TensuraRaces;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.raceRegistry;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -290,7 +291,8 @@ public class willofhonkai extends Skill implements Transformation {
                         skill.getType().equals(SkillType.EXTRA) ||
                         skill.getType().equals(SkillType.UNIQUE) ||
                         skill.getType().equals(SkillType.RESISTANCE) ||
-                        skill.getClass().equals(azazel.class);
+                        skill.getClass().equals(azazel.class) ||
+                        !skill.equals(skillRegistry.VOICEOFHONKAI.get());
             }
         } else {
             return false;
@@ -336,7 +338,8 @@ public class willofhonkai extends Skill implements Transformation {
             if(!player.isCreative()) {
                 if (!TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.ENSLAVED_APOSTLE)) &&
                         !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_SEED_ENSLAVED)) &&
-                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_PLAGUE))
+                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_PLAGUE)) &&
+                        !TensuraPlayerCapability.getRace(player).equals((Race) ((IForgeRegistry<?>) TensuraRaces.RACE_REGISTRY.get()).getValue(raceRegistry.HERRSCHER_OF_TIME))
                 ) {
                     SkillAPI.getSkillsFrom(player).forgetSkill((TensuraSkill) SkillAPI.getSkillRegistry().getValue(new ResourceLocation("trawakened:willofhonkai")));
                     player.displayClientMessage(Component.translatable("unworthy").setStyle(Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)), false);
