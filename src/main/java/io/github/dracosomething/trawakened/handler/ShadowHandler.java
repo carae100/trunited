@@ -420,4 +420,18 @@ public class ShadowHandler {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void checkShadowMonarchUnlock(UpdateEPEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (!SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+                ManasSkill shadowMonarchSkill = skillRegistry.SHADOW_MONARCH.get();
+                if (shadowMonarchSkill instanceof ShadowMonarch skill) {
+                    if (skill.meetEPRequirement(player, event.getNewEP())) {
+                        SkillAPI.getSkillsFrom(player).learnSkill(shadowMonarchSkill);
+                    }
+                }
+            }
+        }
+    }
 }
