@@ -96,7 +96,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 return hasSystemSkills(entity) && skill.getLevel() >= 110;
             }
         }
-        return super.meetEPRequirement(entity, newEP);
+        return false;
     }
 
     public int modes() {
