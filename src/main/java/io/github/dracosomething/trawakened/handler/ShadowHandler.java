@@ -3,6 +3,7 @@ package io.github.dracosomething.trawakened.handler;
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
+import com.github.manasmods.manascore.api.skills.capability.SkillStorage;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.ability.skill.Skill;
@@ -424,7 +425,7 @@ public class ShadowHandler {
     @SubscribeEvent
     public static void checkShadowMonarchUnlock(UpdateEPEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (!SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent()) {
+            if (!SkillUtils.hasSkill(player, skillRegistry.SHADOW_MONARCH.get())) {
                 ManasSkill shadowMonarchSkill = skillRegistry.SHADOW_MONARCH.get();
                 if (shadowMonarchSkill instanceof ShadowMonarch skill) {
                     if (skill.meetEPRequirement(player, event.getNewEP())) {

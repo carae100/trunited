@@ -328,6 +328,9 @@
   "trawakened.command.fear.set_scared": "%1$s has now been scared %2$s times.",
   "trawakened.command.fear.set_cooldown": "%1$s can be scared again after %2$s ticks.",
 
+  "trawakened.command.system.level.fail": "%1$s does not have system.",
+  "trawakened.command.system.level.success": "%1$s's system level was set to %2$s.",
+
   "trawakened.command.shadow.summon.empty": "§cYou have no shadows stored matching the argument",
   "trawakened.command.shadow.tp.no_shadow": "§cTarget is not marked with one of your shadows.",
   "trawakened.command.shadow.exchange.dimension": "§cShadow is not in that dimension.",

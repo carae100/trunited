@@ -1,13 +1,18 @@
 package io.github.dracosomething.trawakened.commands;
 
+import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.command.TensuraPermissions;
 import com.github.manasmods.tensura.util.PermissionHelper;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
 import io.github.dracosomething.trawakened.commands.argument.fearArgument;
+import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
 import io.github.dracosomething.trawakened.library.FearTypes;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -129,6 +134,32 @@ public class AwakenedCommand {
                                                     context.getSource().sendSuccess(Component.translatable("trawakened.command.fear.set_cooldown", player.getName(), cooldown).setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN)), false);
                                                     return 1;
                                                 })
+                                        )
+                                )
+                                .then(Commands.literal("system")
+                                        .then(Commands.literal("level")
+                                                .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                                        .executes((context) -> {
+                                                            ServerPlayer player = EntityArgument.getPlayer(context, "player");
+                                                            if (SkillUtils.hasSkill(player, skillRegistry.SYSTEM.get())) {
+                                                                ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.SYSTEM.get());
+                                                                if (instance == null) {
+                                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.system.level.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                                    return 0;
+                                                                }
+                                                                if (instance.getSkill() instanceof SystemSkill skill) {
+                                                                    int old = skill.getLevel();
+                                                                    int new_ = IntegerArgumentType.getInteger(context, "amount");
+                                                                    instance.getOrCreateTag().putInt("level", old);
+                                                                    skill.onLevelUp(instance, player, new SystemLevelUpEvent(instance, player, old, new_));
+                                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.system.level.success", player.getName(), new_).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                                    return 1;
+                                                                }
+                                                            }
+                                                            context.getSource().sendFailure(Component.translatable("trawakened.command.system.level.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                            return 0;
+                                                        })
+                                                )
                                         )
                                 )
                         )
