@@ -3,7 +3,7 @@ package io.github.dracosomething.trawakened.network.play2client;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
-import io.github.dracosomething.trawakened.client.screen.ShadowSummonScreen;
+import io.github.dracosomething.trawakened.menu.ShadowSummonScreen;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
