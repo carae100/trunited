@@ -173,6 +173,12 @@
   "trawakened.skill.shadow_monarch.mode.shadow_inventory": "Shadow Inventory",
   "trawakened.skill.shadow_monarch.mode.mass_summoning": "Mass Summoning",
   "trawakened.skill.shadow_monarch.mode.dagger_summoning": "Dagger Summoning",
+  "trawakened.skill.shadow_monarch.mode.dagger_summoning.todo": "§cDagger Summoning functionality not yet implemented",
+  "trawakened.skill.shadow_monarch.mode.shadow_summon": "Shadow Summon",
+
+  "trawakened.screen.shadow_summon.title": "Shadow Summon",
+  "trawakened.screen.shadow_summon.summon": "Summon",
+  "trawakened.screen.shadow_summon.selected": "Selected: %d shadows",
 
   "trawakened.skill.shadow_monarch.mode.monarchs_domain.exists": "§cYou already have a monarchs domain active.",
 
@@ -328,9 +334,6 @@
   "trawakened.command.fear.set_scared": "%1$s has now been scared %2$s times.",
   "trawakened.command.fear.set_cooldown": "%1$s can be scared again after %2$s ticks.",
 
-  "trawakened.command.system.level.fail": "%1$s does not have system.",
-  "trawakened.command.system.level.success": "%1$s's system level was set to %2$s.",
-
   "trawakened.command.shadow.summon.empty": "§cYou have no shadows stored matching the argument",
   "trawakened.command.shadow.tp.no_shadow": "§cTarget is not marked with one of your shadows.",
   "trawakened.command.shadow.exchange.dimension": "§cShadow is not in that dimension.",
@@ -372,6 +375,11 @@
   "trawakened.argument.rank.invalid": "§cInput Rank was invalid.",
   "trawakened.argument.fear.invalid": "§cInput Fear was invalid.",
   "trawakened.monarch_shadow.full_storage": "§cYou have no space left in Shadow Storage.",
+  "trawakened.monarch_shadow.storage_area_full": "§6Storage area completed but storage is full! Storage: §e%s§6/§e%s",
+  "trawakened.monarch_shadow.mass_summon": "§6Mass Summoned §e%s§6 shadows (max: §e%s§6).",
+
+  "trawakened.command.system.level.fail": "%1$s does not have system.",
+  "trawakened.command.system.level.success": "%1$s's system level was set to %2$s.",
 
   "trawakened.messages.copy.no_left": "target has no skills left to copy."
 }
