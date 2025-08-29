@@ -148,11 +148,13 @@ public class AwakenedCommand {
                                                                     return 0;
                                                                 }
                                                                 if (instance.getSkill() instanceof SystemSkill skill) {
-                                                                    int old = skill.getLevel();
-                                                                    int new_ = IntegerArgumentType.getInteger(context, "amount");
-                                                                    instance.getOrCreateTag().putInt("level", old);
-                                                                    skill.onLevelUp(instance, player, new SystemLevelUpEvent(instance, player, old, new_));
-                                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.system.level.success", player.getName(), new_).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                                    int oldLevel = instance.getOrCreateTag().getInt("level");
+                                                                    int newLevel = IntegerArgumentType.getInteger(context, "amount");
+                                                                    instance.getOrCreateTag().putInt("level", newLevel);
+                                                                    skill.getTag().putInt("level", newLevel);
+                                                                    SystemLevelUpEvent levelUpEvent = new SystemLevelUpEvent(instance, player, oldLevel, newLevel);
+                                                                    skill.onLevelUp(instance, player, levelUpEvent);
+                                                                    context.getSource().sendSuccess(Component.translatable("trawakened.command.system.level.success", player.getName(), newLevel).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), false);
                                                                     return 1;
                                                                 }
                                                             }
