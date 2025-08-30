@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -37,7 +38,16 @@ public enum FearTypes {
                 return block1.getName().toString().contains("black") || block1.getName().toString().contains("Black");
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
-                return item1.getName(item1.getDefaultInstance()).toString().contains("black") || item1.getName(item1.getDefaultInstance()).toString().contains("Black");
+                try {
+                    ItemStack defaultInstance = item1.getDefaultInstance();
+                    if (defaultInstance == null || defaultInstance.isEmpty()) {
+                        return false;
+                    }
+                    String itemName = item1.getName(defaultInstance).toString();
+                    return itemName.contains("black") || itemName.contains("Black");
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             List.of(
                     TensuraEntityTypes.DARK_CUBE.get(),
