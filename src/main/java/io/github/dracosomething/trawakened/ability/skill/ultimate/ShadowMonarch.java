@@ -30,6 +30,7 @@ import io.github.dracosomething.trawakened.mobeffect.MonarchsDomainEffect;
 import io.github.dracosomething.trawakened.network.TRAwakenedNetwork;
 import io.github.dracosomething.trawakened.network.play2client.OpenBecomeShadowscreen;
 import io.github.dracosomething.trawakened.network.play2client.OpenNamingscreen;
+import io.github.dracosomething.trawakened.network.play2client.OpenShadowSummonScreen;
 import io.github.dracosomething.trawakened.network.play2client.openWordScreen;
 import io.github.dracosomething.trawakened.registry.dimensionRegistry;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
@@ -92,7 +93,6 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
     public boolean meetEPRequirement(Player entity, double newEP) {
         ManasSkillInstance instance = SkillUtils.getSkillOrNull(entity, skillRegistry.SYSTEM.get());
         if (instance != null) {
-
             if (instance.getSkill() instanceof SystemSkill skill) {
                 return hasSystemSkills(entity) && skill.getLevel() >= 110;
             }
@@ -101,19 +101,20 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
     }
 
     public int modes() {
-        return 7;
+        return 8;
     }
 
     public int nextMode(LivingEntity entity, TensuraSkillInstance instance, boolean reverse) {
         if (reverse) {
             return switch (instance.getMode()) {
-                case 1 -> data.getBoolean("kamish") ? 7 : data.getBoolean("awakened") ? 6 : 5;
+                case 1 -> data.getBoolean("kamish") ? 8 : data.getBoolean("awakened") ? 7 : 6;
                 case 2 -> 1;
                 case 3 -> 2;
                 case 4 -> 3;
                 case 5 -> 4;
                 case 6 -> 5;
                 case 7 -> 6;
+                case 8 -> 7;
                 default -> 0;
             };
         } else {
@@ -122,9 +123,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 case 2 -> 3;
                 case 3 -> 4;
                 case 4 -> 5;
-                case 5 -> data.getBoolean("awakened") ? 6 : 1;
-                case 6 -> data.getBoolean("kamish") ? 7 : 1;
-                case 7 -> 1;
+                case 5 -> 6;
+                case 6 -> data.getBoolean("awakened") ? 7 : 1;
+                case 7 -> data.getBoolean("kamish") ? 8 : 1;
+                case 8 -> 1;
                 default -> 0;
             };
         }
@@ -134,13 +136,14 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         return switch (mode) {
             case 1 -> Component.translatable("trawakened.skill.shadow_monarch.mode.arise");
             case 2 -> Component.translatable("trawakened.skill.shadow_monarch.mode.storage");
-            case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
-            case 4 -> data.getBoolean("awakened") ?
+            case 3 -> Component.translatable("trawakened.skill.shadow_monarch.mode.shadow_summon");
+            case 4 -> Component.translatable("trawakened.skill.shadow_monarch.mode.mass_summoning");
+            case 5 -> Component.translatable("trawakened.skill.shadow_monarch.mode.marking");
+            case 6 -> data.getBoolean("awakened") ?
                     Component.translatable("trawakened.skill.shadow_monarch.awakened.mode.monarchs_domain", data.getString("mode_name")) :
                     Component.translatable("trawakened.skill.shadow_monarch.mode.monarchs_domain");
-            case 5 -> Component.translatable("trawakened.skill.shadow_monarch.mode.shadow_inventory");
-            case 6 -> Component.translatable("trawakened.skill.shadow_monarch.mode.mass_summoning");
-            case 7 -> Component.translatable("trawakened.skill.shadow_monarch.mode.dagger_summoning");
+            case 7 -> Component.translatable("trawakened.skill.shadow_monarch.mode.shadow_inventory");
+            case 8 -> Component.translatable("trawakened.skill.shadow_monarch.mode.dagger_summoning");
             default -> Component.empty();
         };
     }
@@ -220,25 +223,28 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                         if (living != null && AwakenedShadowCapability.isShadow(living) && !AwakenedShadowCapability.isArisen(living)) {
                             if (AwakenedShadowCapability.getTries(living) > 0) {
                                 if (TensuraEPCapability.getCurrentEP(living) * 0.75 <= TensuraEPCapability.getCurrentEP(entity)) {
-                                    target.setHealth(target.getMaxHealth());
-                                    AwakenedShadowCapability.setArisen(target, true);
-                                    target.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
-                                    target.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-                                    target.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-                                    skillHelper.tameAnything(entity, target, this);
-                                    shadowRank rank = shadowRank.calculateRank(target);
-                                    SkillHelper.setFollow(target);
-                                    AwakenedShadowCapability.setRank(target, rank);
-                                    AwakenedShadowCapability.setOwnerUUID(target, entity.getUUID());
-                                    BecomeShadowEvent event = new BecomeShadowEvent(target, entity, true);
+                                    living.setHealth(living.getMaxHealth());
+                                    AwakenedShadowCapability.setArisen(living, true);
+                                    living.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                    living.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+                                    living.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+                                    skillHelper.tameAnything(entity, living, this);
+                                    shadowRank rank = shadowRank.calculateRank(living);
+                                    SkillHelper.setFollow(living);
+                                    AwakenedShadowCapability.setRank(living, rank);
+                                    AwakenedShadowCapability.setOwnerUUID(living, entity.getUUID());
+                                    if (living instanceof Mob mob && mob.isNoAi()) {
+                                        mob.setNoAi(false);
+                                    }
+                                    BecomeShadowEvent event = new BecomeShadowEvent(living, entity, true);
                                     MinecraftForge.EVENT_BUS.post(event);
-                                    if (target.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
-                                            target instanceof Player) {
+                                    if (living.getType().getTags().toList().contains(Tags.EntityTypes.BOSSES) ||
+                                            living instanceof Player) {
                                         if (entity instanceof Player player && player instanceof ServerPlayer serverPlayer) {
-                                            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(target.getUUID()));
+                                            TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new OpenNamingscreen(living.getUUID()));
                                         }
                                     }
-                                    AwakenedShadowCapability.sync(target);
+                                    AwakenedShadowCapability.sync(living);
                                     instance.addMasteryPoint(entity);
                                 }
                             }
@@ -247,22 +253,99 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 }
                 break;
             case 2:
-                if (target != null && AwakenedShadowCapability.isArisen(target) &&
-                        Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
-                        AwakenedShadowCapability.isShadow(target)) {
-                    if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
-                        System.out.println("erwwwwrwer");
-                        ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
-                        instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
-                        setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
-                        target.discard();
+                if (!entity.isShiftKeyDown()) {
+                    if (target != null && AwakenedShadowCapability.isArisen(target) &&
+                            Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
+                            AwakenedShadowCapability.isShadow(target)) {
+                        if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
+                            System.out.println("erwwwwrwer");
+                            ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
+                            instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
+                            setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                            target.discard();
 
-                    } else if (entity instanceof Player player) {
-                        player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
+                        } else if (entity instanceof Player player) {
+                            player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.full_storage"));
+                        }
+                    }
+                } else {
+                    int maxStorage = instance.getOrCreateTag().getInt("maxStorage");
+                    
+                    targetList.forEach((living) -> {
+                        if (living != null && AwakenedShadowCapability.isArisen(living) &&
+                                Objects.equals(AwakenedShadowCapability.getOwnerUUID(living).toString(), entity.getUUID().toString()) &&
+                                AwakenedShadowCapability.isShadow(living)) {
+                            if (ShadowStorage.getAllKeys().size() < maxStorage) {
+                                ShadowStorage.put(living.getUUID().toString(), shadowToNBT(living));
+                                living.discard();
+                            }
+                        }
+                    });
+                    
+                    instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
+                    setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                    
+                    if (entity instanceof Player player && ShadowStorage.getAllKeys().size() >= maxStorage) {
+                        player.sendSystemMessage(Component.translatable("trawakened.monarch_shadow.storage_area_full", ShadowStorage.getAllKeys().size(), maxStorage));
                     }
                 }
                 break;
             case 3:
+                if (entity instanceof ServerPlayer player) {
+                    TRAwakenedNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new OpenShadowSummonScreen(player.getUUID()));
+                }
+                break;
+            case 4:
+                int maxSummon = 50;
+                if (instance.isMastered(entity)) {
+                    maxSummon = 100;
+                }
+                if (data.getBoolean("awakened")) {
+                    maxSummon = 255;
+                }
+                
+                List<String> shadowKeys = new ArrayList<>(ShadowStorage.getAllKeys());
+                shadowKeys.sort((key1, key2) -> {
+                    double ep1 = ShadowStorage.getCompound(key1).getDouble("EP");
+                    double ep2 = ShadowStorage.getCompound(key2).getDouble("EP");
+                    return Double.compare(ep1, ep2);
+                });
+                
+                int summoned = 0;
+                for (String key : shadowKeys) {
+                    if (summoned >= maxSummon) break;
+                    
+                    CompoundTag shadowData = ShadowStorage.getCompound(key);
+                    if (shadowData != null && !shadowData.isEmpty()) {
+                        String entityTypeStr = shadowData.getString("entityType");
+                        Optional<EntityType<?>> entityTypeOpt = EntityType.byString(entityTypeStr);
+                        
+                        if (entityTypeOpt.isPresent()) {
+                            Entity shadowEntity = entityTypeOpt.get().create(entity.getLevel());
+                            if (shadowEntity instanceof LivingEntity shadowLiving) {
+                                shadowLiving.deserializeNBT(shadowData.getCompound("EntityData"));
+                                
+                                Vec3 playerPos = entity.position();
+                                double angle = 2 * Math.PI * summoned / Math.min(maxSummon, shadowKeys.size());
+                                double radius = 3 + (summoned / 10.0);
+                                double x = playerPos.x + radius * Math.cos(angle);
+                                double z = playerPos.z + radius * Math.sin(angle);
+                                
+                                shadowLiving.setPos(x, playerPos.y, z);
+                                entity.getLevel().addFreshEntity(shadowLiving);
+                                
+                                summoned++;
+                            }
+                        }
+                        
+                        ShadowStorage.remove(key);
+                    }
+                }
+                
+                instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
+                setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                break;
+            case 5:
                 if (target != null && target instanceof Player) {
                     if (!AwakenedShadowCapability.isShadow(target) &&
                             AwakenedShadowCapability.hasShadow(target)) {
@@ -278,7 +361,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     }
                 }
                 break;
-            case 4:
+            case 6:
                 if (!data.getBoolean("awakened")) {
                     if (this.data.getCompound("domain").isEmpty()) {
                         MonarchsDomain domain = new MonarchsDomain(entity, 18000, 50, 50);
@@ -324,7 +407,7 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     }
                 }
                 break;
-            case 5:
+            case 7:
                 if (entity.isShiftKeyDown()) {
                     if (data.getBoolean("awakened")) {
                         List<Player> list = skillHelper.getPlayersInRange(entity, entity.position(), 5, Player::isShiftKeyDown);
@@ -345,8 +428,10 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                     openSpatialStorage(entity, instance);
                 }
                 break;
-            case 6, 7:
-                entity.sendSystemMessage(SkillHelper.comingSoon());
+            case 8:
+                if (entity instanceof Player player) {
+                    player.displayClientMessage(Component.translatable("trawakened.skill.shadow_monarch.mode.dagger_summoning.todo"), false);
+                }
                 break;
             default:
                 break;
@@ -437,9 +522,14 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
         tag.put("EntityData", entity.serializeNBT());
         tag.putString("entityType", EntityType.getKey(entity.getType()).toString());
         tag.put("rank", AwakenedShadowCapability.getRank(entity).toNBT());
-        if (!entity.getDisplayName().toString().isEmpty() || !entity.getDisplayName().toString().equals("")) {
-            tag.putString("name", entity.getDisplayName().toString());
+        
+        String displayName = entity.getDisplayName().getString();
+        if (!displayName.isEmpty() && !displayName.equals(entity.getType().getDescription().getString())) {
+            tag.putString("name", displayName);
+        } else {
+            tag.putString("name", entity.getType().getDescription().getString());
         }
+        
         tag.putDouble("EP", TensuraEPCapability.getCurrentEP(entity));
         return tag;
     }

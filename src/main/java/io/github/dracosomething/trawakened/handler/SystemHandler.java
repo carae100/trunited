@@ -76,17 +76,40 @@ public class SystemHandler {
             ManasSkillInstance instance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get();
             if (instance.getMastery() >= 0.0) {
                 CompoundTag tag = instance.getOrCreateTag();
+                
+                if (!tag.contains("accumulatedEP")) {
+                    tag.putInt("accumulatedEP", 0);
+                }
+                if (!tag.contains("nextLevel")) {
+                    tag.putInt("nextLevel", 1150);
+                }
+                if (!tag.contains("level")) {
+                    tag.putInt("level", 1);
+                }
+                if (!tag.contains("maxLevel")) {
+                    tag.putInt("maxLevel", 140);
+                }
+                
+                int epGained = (int) (event.getNewEP() - event.getOldEP());
+                int accumulatedEP = tag.getInt("accumulatedEP") + epGained;
+                tag.putInt("accumulatedEP", accumulatedEP);
+                
                 int nextLevel = tag.getInt("nextLevel");
-                while (event.getNewEP() >= nextLevel && tag.getInt("level") < tag.getInt("maxLevel")) {
-                    int oldLEvel = tag.getInt("level");
+                
+                while (accumulatedEP >= nextLevel && tag.getInt("level") < tag.getInt("maxLevel")) {
+                    int oldLevel = tag.getInt("level");
                     tag.putInt("level", tag.getInt("level") + 1);
-                    tag.putInt("nextLevel", tag.getInt("nextLevel") + 1150 + 150);
+                    int epForNext = 1000 + 150 * (tag.getInt("level"));
+                    tag.putInt("nextLevel", tag.getInt("nextLevel") + epForNext);
                     nextLevel = tag.getInt("nextLevel");
+                    
                     if (instance.getSkill() instanceof SystemSkill skill) {
                         skill.getTag().putInt("level", tag.getInt("level"));
                     }
-                    SystemLevelUpEvent systemLevelUpEvent = new SystemLevelUpEvent(instance, user, oldLEvel, tag.getInt("level"));
+                    
+                    SystemLevelUpEvent systemLevelUpEvent = new SystemLevelUpEvent(instance, user, oldLevel, tag.getInt("level"));
                     MinecraftForge.EVENT_BUS.post(systemLevelUpEvent);
+                    
                     if (instance.getSkill() instanceof SystemSkill skill) {
                         skill.onLevelUp(instance, user, systemLevelUpEvent);
                     }
@@ -119,12 +142,6 @@ public class SystemHandler {
                     skill.getTag().putBoolean("isGui", instance.getOrCreateTag().getBoolean("isGui"));
                 }
             }
-        }
-    }
-    @SubscribeEvent
-    public static void doubleEPGain(UpdateEPEvent event) {
-        if (SkillAPI.getSkillsFrom(event.getEntity()).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
-            event.setNewEP(event.getNewEP() * 1.25);
         }
     }
 }

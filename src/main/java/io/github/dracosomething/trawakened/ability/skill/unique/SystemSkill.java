@@ -106,9 +106,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
 
     public void onLearnSkill(ManasSkillInstance instance, LivingEntity living, UnlockSkillEvent event) {
         CompoundTag tag = instance.getOrCreateTag();
-        tag.putInt("level", 0);
+        tag.putInt("level", 1);
         tag.putInt("nextLevel", 1150);
         tag.putInt("maxLevel", 140);
+        tag.putInt("accumulatedEP", 0);
         tag.putBoolean("isGui", false);
         this.tag.putBoolean("isGui", tag.getBoolean("isGui"));
         this.tag.putInt("level", tag.getInt("level"));

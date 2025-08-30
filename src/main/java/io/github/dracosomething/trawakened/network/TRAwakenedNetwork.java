@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.network;
 
 import io.github.dracosomething.trawakened.network.play2client.*;
 import io.github.dracosomething.trawakened.network.play2server.ServerStopTime;
+import io.github.dracosomething.trawakened.network.play2server.SummonShadowPacket;
 import io.github.dracosomething.trawakened.trawakened;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
@@ -32,6 +33,8 @@ public class TRAwakenedNetwork {
         INSTANCE.registerMessage(++i, NamePacket.class, NamePacket::toBytes, NamePacket::new, NamePacket::handle);
         INSTANCE.registerMessage(++i, openWordScreen.class, openWordScreen::toBytes, openWordScreen::new, openWordScreen::handle);
         INSTANCE.registerMessage(++i, ServerStopTime.class, ServerStopTime::toBytes, ServerStopTime::new, ServerStopTime::handle);
+        INSTANCE.registerMessage(++i, OpenShadowSummonScreen.class, OpenShadowSummonScreen::toBytes, OpenShadowSummonScreen::new, OpenShadowSummonScreen::handle);
+        INSTANCE.registerMessage(++i, SummonShadowPacket.class, SummonShadowPacket::toBytes, SummonShadowPacket::new, SummonShadowPacket::handle);
     }
 
     public static <T> void toServer(T message) {
