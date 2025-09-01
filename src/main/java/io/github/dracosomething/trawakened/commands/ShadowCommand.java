@@ -1,9 +1,11 @@
 package io.github.dracosomething.trawakened.commands;
 
+import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.tensura.ability.SkillHelper;
 import com.github.manasmods.tensura.ability.SkillUtils;
+import com.github.manasmods.tensura.ability.skill.Skill;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import io.github.dracosomething.trawakened.registry.dimensionRegistry;
 import io.github.dracosomething.trawakened.registry.items.*;
@@ -62,6 +64,25 @@ public class ShadowCommand {
                                 commandSource,
                                 permisionRegistry.PLAYER_HAS_SHADOWMONARCH
                         )
+                )
+                .then(Commands.literal("awaken")
+                        .requires((commandsource) -> {
+                            return commandsource.hasPermission(2);
+                        })
+                        .executes((context) -> {
+                            ServerPlayer player = context.getSource().getPlayer();
+                            if (player == null) return 0;
+                            if (SkillUtils.learnSkill(player, skillRegistry.SHADOW_MONARCH.get())) return 0;
+                            ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.SHADOW_MONARCH.get());
+                            if (instance == null) return 0;
+                            ManasSkill skill = instance.getSkill();
+                            if (skill instanceof ShadowMonarch monarch) {
+                                CompoundTag data = monarch.getData();
+                                data.putBoolean("awakened", true);
+                                monarch.setData(data);
+                            }
+                            return 1;
+                        })
                 )
                 .then(Commands.literal("summon")
                         .then(Commands.literal("rank")

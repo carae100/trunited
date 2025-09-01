@@ -116,7 +116,7 @@
   "trawakened.skill.alternate": "Alternate",
   "trawakened.skill.alternate.description": "Mysterious beings from another spectrum, nothing is known about them. §c Warning: this skill requires a lot of patience and will be really annoying in the beginning, it gets better later on, but the ultimate is what your ultimately after.",
 
-  "trawakened.skill.mode.alternate.fear": "Get Scared Amount",
+  "trawakened.skill.mode.alternate.fear": "Scare",
   "trawakened.skill.mode.alternate.scary": "Get Fear Object",
   "trawakened.skill.mode.alternate.kill": "Undesired Knowledge",
   "trawakened.skill.mode.alternate.new_fear": "Set Fear/Increase Scared",
@@ -152,6 +152,8 @@
   "trawakened.skill.system.extra.quicksilver": "Quicksilver",
 
   "trawakened.skill.system.extra.mutilation": "Mutilation",
+
+  "trawakened.skill.system.extra.description": "",
 
   "trawakened.skill.system.extra.rulers_authority.awakened": "Ruler's Authority",
   "trawakened.skill.system.extra.rulers_authority": "Ruler's Hand",

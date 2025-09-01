@@ -12,6 +12,11 @@ public class SystemExtra extends Skill {
         return Component.translatable("trawakened.skill.system.extra." + name);
     }
 
+    @Override
+    public Component getSkillDescription() {
+        return Component.translatable("trawakened.skill.system.extra.description");
+    }
+
     public SystemExtra(String name) {
         super(SkillType.EXTRA);
         this.name = name;

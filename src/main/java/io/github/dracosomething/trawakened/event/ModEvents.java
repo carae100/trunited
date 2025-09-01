@@ -108,35 +108,15 @@ public class ModEvents {
         }
     }
 
+    public static List<ManasSkill> list_unique;
+
+    public static List<ManasSkill> list_ultimate;
+
     @SubscribeEvent
     public static void GrantUnique(LivingSpawnEvent event) {
         LivingEntity entity = event.getEntity();
         AwakenedFearCapability.sync(event.getEntity());
         if (entity instanceof defaultOtherWolder otherWolder) {
-            List<ManasSkill> list_unique = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
-                boolean var10000;
-                if (manasSkill instanceof Skill skill) {
-                    if (skill.getType().equals(Skill.SkillType.UNIQUE)) {
-                        var10000 = true;
-                        return var10000;
-                    }
-                }
-
-                var10000 = false;
-                return var10000;
-            }).toList();
-            List<ManasSkill> list_ultimate = SkillAPI.getSkillRegistry().getValues().stream().filter((manasSkill) -> {
-                boolean var10000;
-                if (manasSkill instanceof Skill skill) {
-                    if (skill.getType().equals(Skill.SkillType.ULTIMATE)) {
-                        var10000 = true;
-                        return var10000;
-                    }
-                }
-
-                var10000 = false;
-                return var10000;
-            }).toList();
             ManasSkill skill;
             while (!(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size() >= 1)) {
                 System.out.println(SkillAPI.getSkillsFrom(entity).getLearnedSkills().size());

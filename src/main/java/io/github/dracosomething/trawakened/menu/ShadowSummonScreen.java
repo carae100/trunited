@@ -48,6 +48,7 @@ public class ShadowSummonScreen extends Screen {
         CompoundTag storage = skill.getShadowStorage();
         
         for (String key : storage.getAllKeys()) {
+            System.out.println(key);
             CompoundTag shadowData = storage.getCompound(key);
             String entityType = shadowData.getString("entityType");
             String name = shadowData.getString("name");

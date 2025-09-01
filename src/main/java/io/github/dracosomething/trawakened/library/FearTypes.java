@@ -35,7 +35,15 @@ public enum FearTypes {
     ALTERNATES("alternate", null, null, null),
     DARKNESS("dark",
             Registry.BLOCK.stream().filter((block1) -> {
-                return block1.getName().toString().contains("black") || block1.getName().toString().contains("Black");
+                try {
+                    if (block1 == null) {
+                        return false;
+                    }
+                    String itemName = block1.getName().toString();
+                    return itemName.contains("black") || itemName.contains("Black");
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
                 try {
@@ -111,10 +119,28 @@ public enum FearTypes {
             null),
     SPIDER("spider",
             Registry.BLOCK.stream().filter((block1) -> {
-                return block1.getName().toString().contains("spider") || block1.getName().toString().contains("Spider");
+                try {
+                    if (block1 == null) {
+                        return false;
+                    }
+                    String itemName = block1.getName().toString();
+                    return (itemName.contains("spider") || itemName.contains("Spider"));
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
-                return (item1.getName(item1.getDefaultInstance()).toString().contains("spider") || item1.getName(item1.getDefaultInstance()).toString().contains("Spider")) && (!item1.getName(item1.getDefaultInstance()).toString().contains("schematic") || !item1.getName(item1.getDefaultInstance()).toString().contains("Schematic"));
+                try {
+                    ItemStack defaultInstance = item1.getDefaultInstance();
+                    if (defaultInstance == null || defaultInstance.isEmpty()) {
+                        return false;
+                    }
+                    String itemName = item1.getName(defaultInstance).toString();
+                    return (itemName.contains("spider") || itemName.contains("Spider")) &&
+                            (!itemName.contains("schematic") || !itemName.contains("Schematic"));
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             List.of(
                     TensuraEntityTypes.BLACK_SPIDER.get(),
@@ -196,16 +222,32 @@ public enum FearTypes {
             )),
     INSECT("insect",
             Registry.BLOCK.stream().filter((block1) -> {
-                return block1.getName().contains(Component.literal("spider")) ||
-                        block1.getName().contains(Component.literal("Spider")) ||
-                        block1.getName().contains(Component.literal("ant")) ||
-                        block1.getName().contains(Component.literal("Ant"));
+                try {
+                    if (block1 == null) {
+                        return false;
+                    }
+                    Component itemName = block1.getName();
+                    return itemName.contains(Component.literal("spider")) ||
+                            itemName.contains(Component.literal("Spider")) ||
+                            itemName.contains(Component.literal("ant")) ||
+                            itemName.contains(Component.literal("Ant"));
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             Registry.ITEM.stream().filter((item1) -> {
-                return item1.getName(item1.getDefaultInstance()).contains(Component.literal("spider")) ||
-                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("Spider")) ||
-                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("ant")) ||
-                        item1.getName(item1.getDefaultInstance()).contains(Component.literal("Ant"));
+                try {
+                    ItemStack defaultInstance = item1.getDefaultInstance();
+                    if (defaultInstance == null || defaultInstance.isEmpty()) {
+                        return false;
+                    }
+                    String itemName = item1.getName(defaultInstance).toString();
+                    return (itemName.contains("spider") || itemName.contains("Spider")) &&
+                            (itemName.contains("ant") || itemName.contains("Ant")) &&
+                            (!itemName.contains("schematic") || !itemName.contains("Schematic"));
+                } catch (Exception e) {
+                    return false;
+                }
             }).toList(),
             List.of(
                     TensuraEntityTypes.BLACK_SPIDER.get(),
