@@ -73,7 +73,7 @@ public class ShadowSummonScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        
+
         int centerX = this.width / 2;
         int startY = 60;
         int buttonWidth = 180;

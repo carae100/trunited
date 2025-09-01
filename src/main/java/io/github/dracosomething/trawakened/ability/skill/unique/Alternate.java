@@ -219,7 +219,7 @@ public class Alternate extends Skill {
                 if (AwakenedFearCapability.getScared(living) >= 3) {
                     AwakenedFearCapability.increaseScared(living);
                     FearHelper.fearPenalty(living, AwakenedFearCapability.getScared(living));
-                    instance.setCoolDown(150);
+                    instance.setCoolDown(12000);
                     if (MathHelper.RandomChance(25)) {
                         instance.addMasteryPoint(entity);
                     }
