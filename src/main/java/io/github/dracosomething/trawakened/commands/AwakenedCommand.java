@@ -3,22 +3,27 @@ package io.github.dracosomething.trawakened.commands;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
 import com.github.manasmods.tensura.ability.SkillUtils;
 import com.github.manasmods.tensura.command.TensuraPermissions;
+import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.util.PermissionHelper;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.dracosomething.trawakened.ability.skill.unique.SystemSkill;
 import io.github.dracosomething.trawakened.capability.alternateFearCapability.AwakenedFearCapability;
+import io.github.dracosomething.trawakened.commands.argument.AlternateArgument;
 import io.github.dracosomething.trawakened.commands.argument.fearArgument;
 import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
+import io.github.dracosomething.trawakened.library.AlternateType;
 import io.github.dracosomething.trawakened.library.FearTypes;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -159,6 +164,68 @@ public class AwakenedCommand {
                                                                 }
                                                             }
                                                             context.getSource().sendFailure(Component.translatable("trawakened.command.system.level.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                            return 0;
+                                                        })
+                                                )
+                                        )
+                                )
+                                .then(Commands.literal("alternate")
+                                        .then(Commands.literal("awaken")
+                                                .executes((context) -> {
+                                                    ServerPlayer player = EntityArgument.getPlayer(context, "player");
+                                                    if (SkillUtils.hasSkill(player, skillRegistry.ALTERNATE.get())) {
+                                                        ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
+                                                        if (instance == null) {
+                                                            context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                            return 0;
+                                                        }
+                                                        if (AwakenedFearCapability.GetIsAlternate(player)) {
+                                                            context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.awaken.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                            return 0;
+                                                        }
+                                                        CompoundTag tag = instance.getOrCreateTag();
+                                                        AwakenedFearCapability.SetIsAlternate(player, true);
+                                                        player.removeEffect(TensuraMobEffects.PRESENCE_CONCEALMENT.get());
+                                                        if (!player.isCreative()) {
+                                                            player.getAbilities().mayfly = false;
+                                                            player.getAbilities().invulnerable = false;
+                                                            player.getAbilities().mayBuild = true;
+                                                            player.onUpdateAbilities();
+                                                        }
+                                                        AlternateType.Assimilation assimilation = AlternateType.Assimilation.getRandomAssimilation();
+                                                        tag.put("assimilation", assimilation.toNBT());
+                                                        tag.put("alternate_type", assimilation.getType().toNBT());
+                                                        instance.setMode(4);
+                                                        context.getSource().sendSuccess(Component.translatable("trawakened.command.alternate.awaken.success", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), false);
+                                                        return 1;
+                                                    }
+                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                    return 0;
+                                                })
+                                        )
+                                        .then(Commands.literal("set")
+                                                .then(Commands.argument("type", AlternateArgument.alternate())
+                                                        .executes((context) -> {
+                                                            ServerPlayer player = EntityArgument.getPlayer(context, "player");
+                                                            AlternateType.Assimilation type = AlternateArgument.getAlternateType(context, "type");
+                                                            if (SkillUtils.hasSkill(player, skillRegistry.ALTERNATE.get())) {
+                                                                ManasSkillInstance instance = SkillUtils.getSkillOrNull(player, skillRegistry.ALTERNATE.get());
+                                                                if (instance == null) {
+                                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                                    return 0;
+                                                                }
+                                                                if (!AwakenedFearCapability.GetIsAlternate(player)) {
+                                                                    context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.set.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+                                                                    return 0;
+                                                                }
+                                                                CompoundTag tag = instance.getOrCreateTag();
+                                                                tag.put("assimilation", type.toNBT());
+                                                                tag.put("alternate_type", type.getType().toNBT());
+                                                                instance.setMode(4);
+                                                                context.getSource().sendSuccess(Component.translatable("trawakened.command.alternate.set.success", player.getName(), type.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), false);
+                                                                return 1;
+                                                            }
+                                                            context.getSource().sendFailure(Component.translatable("trawakened.command.alternate.fail", player.getName()).setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
                                                             return 0;
                                                         })
                                                 )

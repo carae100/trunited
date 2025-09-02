@@ -376,12 +376,19 @@
 
   "trawakened.argument.rank.invalid": "§cInput Rank was invalid.",
   "trawakened.argument.fear.invalid": "§cInput Fear was invalid.",
+  "trawakened.argument.alternate.invalid": "§cInput Alternate was invalid.",
   "trawakened.monarch_shadow.full_storage": "§cYou have no space left in Shadow Storage.",
   "trawakened.monarch_shadow.storage_area_full": "§6Storage area completed but storage is full! Storage: §e%s§6/§e%s",
   "trawakened.monarch_shadow.mass_summon": "§6Mass Summoned §e%s§6 shadows (max: §e%s§6).",
 
   "trawakened.command.system.level.fail": "%1$s does not have system.",
   "trawakened.command.system.level.success": "%1$s's system level was set to %2$s.",
+
+  "trawakened.command.alternate.fail": "%1$s does not have alternate.",
+  "trawakened.command.alternate.awaken.fail": "%1$s has already awakened.",
+  "trawakened.command.alternate.set.fail": "%1$s has not yet awakened.",
+  "trawakened.command.alternate.set.success": "%1$s's alternate type was set to %2$s.",
+  "trawakened.command.alternate.awaken.success": "%1$s awakened alternate.",
 
   "trawakened.messages.copy.no_left": "target has no skills left to copy."
 }
