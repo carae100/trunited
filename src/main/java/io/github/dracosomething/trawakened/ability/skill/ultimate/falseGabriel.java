@@ -264,4 +264,16 @@ public class falseGabriel extends Skill {
         CompoundTag tag = instance.getOrCreateTag();
         tag.put("alternate_type", AlternateType.DETECTABLE.toNBT());
     }
+
+    @Override
+    public double magiculeCost(LivingEntity entity, ManasSkillInstance instance) {
+        return switch (instance.getMode()) {
+            case 1 -> 1000;
+            case 2 -> 500;
+            case 3 -> 0;
+            case 4 -> entity.isShiftKeyDown() ? 250 : 100;
+            case 5 -> 45;
+            default -> 0;
+        };
+    }
 }
