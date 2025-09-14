@@ -65,7 +65,6 @@ public class SystemHandler {
         }
     }
 
-    // Métodos auxiliares para System skill
     private static int getMaxLevel(LivingEntity user) {
         boolean hasSystemMastery = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).isPresent() &&
                 SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SYSTEM.get()).get().getMastery() >= 1.0;
@@ -82,7 +81,6 @@ public class SystemHandler {
             }
         }
 
-        // Determinar max level baseado nas condições
         if (isShadowMonarchAwakened) {
             return 500;
         } else if (hasShadowMonarchMastery) {
@@ -112,11 +110,9 @@ public class SystemHandler {
                     tag.putInt("level", 1);
                 }
                 
-                // Atualizar maxLevel dinamicamente baseado nas skills
                 int maxLevel = getMaxLevel(user);
                 tag.putInt("maxLevel", maxLevel);
                 
-                // EP ganhado sem multiplicador adicional (já aplicado via SkillUtilsMixin)
                 int epGained = (int) (event.getNewEP() - event.getOldEP());
                 int accumulatedEP = tag.getInt("accumulatedEP") + epGained;
                 tag.putInt("accumulatedEP", accumulatedEP);
