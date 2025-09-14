@@ -2,6 +2,7 @@ package io.github.dracosomething.trawakened.ability.skill.unique;
 
 import com.github.manasmods.manascore.api.skills.ManasSkill;
 import com.github.manasmods.manascore.api.skills.ManasSkillInstance;
+import com.github.manasmods.manascore.api.skills.SkillAPI;
 import com.github.manasmods.manascore.api.skills.event.UnlockSkillEvent;
 import com.github.manasmods.tensura.ability.ISpatialStorage;
 import com.github.manasmods.tensura.ability.SkillUtils;
@@ -13,8 +14,10 @@ import com.github.manasmods.tensura.network.TensuraNetwork;
 import com.github.manasmods.tensura.network.play2client.ClientboundSpatialStorageOpenPacket;
 import com.github.manasmods.tensura.registry.effects.TensuraMobEffects;
 import com.github.manasmods.tensura.registry.entity.TensuraEntityTypes;
+import io.github.dracosomething.trawakened.ability.skill.ultimate.ShadowMonarch;
 import io.github.dracosomething.trawakened.event.SystemLevelUpEvent;
 import io.github.dracosomething.trawakened.registry.items.runeStones;
+import io.github.dracosomething.trawakened.registry.skillRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,6 +32,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -42,8 +47,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class SystemSkill extends Skill implements ISpatialStorage {
+    private static final UUID SYSTEM_SPEED_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+    private static final UUID SYSTEM_DAMAGE_UUID = UUID.fromString("b2c3d4e5-f617-8901-bcde-f23456789012");
+    private static final UUID SYSTEM_ARMOR_UUID = UUID.fromString("c3d4e5f6-a718-9012-cdef-345678901234");
+    
     private CompoundTag tag;
 
     public SystemSkill() {
@@ -65,6 +75,109 @@ public class SystemSkill extends Skill implements ISpatialStorage {
 
     public int getMaxMastery() {
         return 140;
+    }
+
+    // Método para determinar multiplicador de bônus baseado no Shadow Monarch
+    private double getBonusMultiplier(LivingEntity user, boolean mastered) {
+        if (!mastered) return 1.0; // Sem maestria = sem bônus
+        
+        boolean hasShadowMonarch = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent();
+        
+        if (!hasShadowMonarch) {
+            return 1.2; // System com maestria apenas: +20%
+        }
+        
+        ManasSkillInstance shadowInstance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
+        boolean hasShadowMonarchMastery = shadowInstance.getMastery() >= 1.0;
+        
+        boolean isShadowMonarchAwakened = false;
+        if (shadowInstance.getSkill() instanceof ShadowMonarch skill) {
+            isShadowMonarchAwakened = skill.getData().getBoolean("awakened");
+        }
+        
+        if (isShadowMonarchAwakened) {
+            return 3.0; // Shadow Monarch awakened: +200%
+        } else if (hasShadowMonarchMastery) {
+            return 2.0; // Shadow Monarch com maestria: +100%
+        } else {
+            return 1.5; // Shadow Monarch básico: +50%
+        }
+    }
+
+    private double getSystemSpeedBonus(int level, boolean mastered, LivingEntity user) {
+        // Fórmula para atingir +0.15 no level 140 (progressão linear)
+        double baseBonus = level * 0.00107143; // 140 * 0.00107143 ≈ 0.15
+        double multiplier = getBonusMultiplier(user, mastered);
+        double finalBonus = baseBonus * multiplier;
+        // Cap de velocidade de +0.15
+        return Math.min(finalBonus, 0.15);
+    }
+
+    private double getSystemAttackBonus(int level, boolean mastered, LivingEntity user) {
+        // Fórmula para atingir +70.0 no level 140
+        double baseBonus = level * 0.5; // 140 * 0.5 = 70.0
+        double multiplier = getBonusMultiplier(user, mastered);
+        return baseBonus * multiplier;
+    }
+
+    private double getSystemArmorBonus(int level, boolean mastered, LivingEntity user) {
+        // Fórmula para atingir ~58.3 no level 140 (baseado em levels 30+)
+        if (level < 30) return 0.0;
+        double baseBonus = ((level - 30) / 30.0 + 1) * 12.5; // A cada 30 levels: +12.5 armor
+        double multiplier = getBonusMultiplier(user, mastered);
+        return baseBonus * multiplier;
+    }
+
+    private void applySystemModifiers(LivingEntity entity, int level, boolean mastered) {
+        // Remove modificadores anteriores
+        AttributeInstance speedAttr = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        AttributeInstance damageAttr = entity.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance armorAttr = entity.getAttribute(Attributes.ARMOR);
+        
+        // Aplica modificador de velocidade
+        if (speedAttr != null) {
+            speedAttr.removeModifier(SYSTEM_SPEED_UUID);
+            double speedBonus = getSystemSpeedBonus(level, mastered, entity);
+            if (speedBonus > 0) {
+                AttributeModifier speedModifier = new AttributeModifier(
+                    SYSTEM_SPEED_UUID, 
+                    "System Movement Speed", 
+                    speedBonus, 
+                    AttributeModifier.Operation.ADDITION
+                );
+                speedAttr.addPermanentModifier(speedModifier);
+            }
+        }
+        
+        // Aplica modificador de dano
+        if (damageAttr != null) {
+            damageAttr.removeModifier(SYSTEM_DAMAGE_UUID);
+            double damageBonus = getSystemAttackBonus(level, mastered, entity);
+            if (damageBonus > 0) {
+                AttributeModifier damageModifier = new AttributeModifier(
+                    SYSTEM_DAMAGE_UUID, 
+                    "System Attack Damage", 
+                    damageBonus, 
+                    AttributeModifier.Operation.ADDITION
+                );
+                damageAttr.addPermanentModifier(damageModifier);
+            }
+        }
+        
+        // Aplica modificador de armadura (seguindo padrão Tensura)
+        if (armorAttr != null) {
+            armorAttr.removeModifier(SYSTEM_ARMOR_UUID);
+            double armorBonus = getSystemArmorBonus(level, mastered, entity);
+            if (armorBonus > 0) {
+                AttributeModifier armorModifier = new AttributeModifier(
+                    SYSTEM_ARMOR_UUID,
+                    "System Armor",
+                    armorBonus,
+                    AttributeModifier.Operation.ADDITION
+                );
+                armorAttr.addPermanentModifier(armorModifier);
+            }
+        }
     }
 
     public List<MobEffect> getImmuneEffects(ManasSkillInstance instance, LivingEntity entity) {
@@ -118,15 +231,11 @@ public class SystemSkill extends Skill implements ISpatialStorage {
 
     public void onLevelUp(ManasSkillInstance instance, LivingEntity entity, SystemLevelUpEvent event) {
         int level = instance.getOrCreateTag().getInt("level");
-        if (entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE) != null) {
-            entity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(1+(level*0.5));
-        }
-        if (level%4 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, (level / 4)-1));
-        }
-        if (level%30 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, (level / 30)-1));
-        }
+        boolean mastered = instance.isMastered(entity);
+        
+        // Aplica modificadores de velocidade, dano e armadura usando AttributeModifiers
+        applySystemModifiers(entity, level, mastered);
+        
         instance.addMasteryPoint(entity);
     }
 
@@ -136,15 +245,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
 
     public void onTick(ManasSkillInstance instance, LivingEntity living) {
         int level = instance.getOrCreateTag().getInt("level");
-        if (living.getAttributes().getInstance(Attributes.ATTACK_DAMAGE) != null) {
-            living.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(1+(level*0.5));
-        }
-        if (level%4 == 0) {
-            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800*20, (level / 4)-1));
-        }
-        if (level%30 == 0) {
-            living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800*20, (level / 30)-1));
-        }
+        boolean mastered = instance.isMastered(living);
+        
+        // Aplica modificadores de velocidade, dano e armadura usando AttributeModifiers
+        applySystemModifiers(living, level, mastered);
     }
 
     public void onTakenDamage(ManasSkillInstance instance, LivingDamageEvent event) {
