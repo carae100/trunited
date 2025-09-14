@@ -16,23 +16,19 @@ import net.minecraft.world.entity.player.Player;
 @Mixin(value = SkillUtils.class, remap = false)
 public class SkillUtilsMixin {
     
-    // Método auxiliar para calcular multiplicador dinâmico
     private static float getSystemMultiplier(Player player) {
         if (!SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SYSTEM.get()).isPresent()) {
-            return 1.0f; // Sem System = sem multiplicador
+            return 1.0f;
         }
         
-        // Verificar se tem Shadow Monarch
         boolean hasShadowMonarch = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent();
         
         if (!hasShadowMonarch) {
-            // Sem Shadow Monarch: verificar maestria do System
             ManasSkillInstance systemInstance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SYSTEM.get()).get();
             boolean hasSystemMastery = systemInstance.getMastery() >= 1.0;
             return hasSystemMastery ? 3.5f : 2.5f;
         }
         
-        // Com Shadow Monarch: verificar maestria e awakened
         ManasSkillInstance shadowInstance = SkillAPI.getSkillsFrom(player).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
         boolean hasShadowMonarchMastery = shadowInstance.getMastery() >= 1.0;
         
@@ -41,13 +37,12 @@ public class SkillUtilsMixin {
             isShadowMonarchAwakened = skill.getData().getBoolean("awakened");
         }
 
-        // Determinar multiplicador baseado no Shadow Monarch
         if (isShadowMonarchAwakened) {
-            return 7.0f; // Shadow Monarch awakened
+            return 7.0f;
         } else if (hasShadowMonarchMastery) {
-            return 5.5f; // Shadow Monarch com maestria
+            return 5.5f;
         } else {
-            return 4.5f; // Shadow Monarch básico
+            return 4.5f;
         }
     }
     
@@ -63,7 +58,6 @@ public class SkillUtilsMixin {
             float currentValue = cir.getReturnValue();
             float newValue = currentValue * multiplier;
             
-            // Debug log para verificar se está funcionando
             System.out.println("[System Skill] Magicule Multiplier aplicado: " + currentValue + " -> " + newValue + " (x" + multiplier + ")");
             
             cir.setReturnValue(newValue);
@@ -82,7 +76,6 @@ public class SkillUtilsMixin {
             float currentValue = cir.getReturnValue();
             float newValue = currentValue * multiplier;
             
-            // Debug log para verificar se está funcionando
             System.out.println("[System Skill] Aura Multiplier aplicado: " + currentValue + " -> " + newValue + " (x" + multiplier + ")");
             
             cir.setReturnValue(newValue);
