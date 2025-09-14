@@ -77,14 +77,13 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         return 140;
     }
 
-    // Método para determinar multiplicador de bônus baseado no Shadow Monarch
     private double getBonusMultiplier(LivingEntity user, boolean mastered) {
-        if (!mastered) return 1.0; // Sem maestria = sem bônus
+        if (!mastered) return 1.0;
         
         boolean hasShadowMonarch = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).isPresent();
         
         if (!hasShadowMonarch) {
-            return 1.2; // System com maestria apenas: +20%
+            return 1.2;
         }
         
         ManasSkillInstance shadowInstance = SkillAPI.getSkillsFrom(user).getSkill(skillRegistry.SHADOW_MONARCH.get()).get();
@@ -96,45 +95,39 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         }
         
         if (isShadowMonarchAwakened) {
-            return 3.0; // Shadow Monarch awakened: +200%
+            return 3.0;
         } else if (hasShadowMonarchMastery) {
-            return 2.0; // Shadow Monarch com maestria: +100%
+            return 2.0;
         } else {
-            return 1.5; // Shadow Monarch básico: +50%
+            return 1.5;
         }
     }
 
     private double getSystemSpeedBonus(int level, boolean mastered, LivingEntity user) {
-        // Fórmula para atingir +0.15 no level 140 (progressão linear)
-        double baseBonus = level * 0.00107143; // 140 * 0.00107143 ≈ 0.15
+        double baseBonus = level * 0.00107143;
         double multiplier = getBonusMultiplier(user, mastered);
         double finalBonus = baseBonus * multiplier;
-        // Cap de velocidade de +0.15
         return Math.min(finalBonus, 0.15);
     }
 
     private double getSystemAttackBonus(int level, boolean mastered, LivingEntity user) {
-        // Fórmula para atingir +70.0 no level 140
-        double baseBonus = level * 0.5; // 140 * 0.5 = 70.0
+        double baseBonus = level * 0.5;
         double multiplier = getBonusMultiplier(user, mastered);
         return baseBonus * multiplier;
     }
 
     private double getSystemArmorBonus(int level, boolean mastered, LivingEntity user) {
-        // Fórmula para atingir ~58.3 no level 140 (baseado em levels 30+)
         if (level < 30) return 0.0;
-        double baseBonus = ((level - 30) / 30.0 + 1) * 12.5; // A cada 30 levels: +12.5 armor
+        double baseBonus = ((level - 30) / 30.0 + 1) * 12.5;
         double multiplier = getBonusMultiplier(user, mastered);
         return baseBonus * multiplier;
     }
 
     private void applySystemModifiers(LivingEntity entity, int level, boolean mastered) {
-        // Remove modificadores anteriores
         AttributeInstance speedAttr = entity.getAttribute(Attributes.MOVEMENT_SPEED);
         AttributeInstance damageAttr = entity.getAttribute(Attributes.ATTACK_DAMAGE);
         AttributeInstance armorAttr = entity.getAttribute(Attributes.ARMOR);
         
-        // Aplica modificador de velocidade
         if (speedAttr != null) {
             speedAttr.removeModifier(SYSTEM_SPEED_UUID);
             double speedBonus = getSystemSpeedBonus(level, mastered, entity);
@@ -149,7 +142,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
             }
         }
         
-        // Aplica modificador de dano
         if (damageAttr != null) {
             damageAttr.removeModifier(SYSTEM_DAMAGE_UUID);
             double damageBonus = getSystemAttackBonus(level, mastered, entity);
