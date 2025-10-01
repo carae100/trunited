@@ -104,10 +104,10 @@ public class SystemSkill extends Skill implements ISpatialStorage {
     }
 
     private double getSystemSpeedBonus(int level, boolean mastered, LivingEntity user) {
-        double baseBonus = level * 0.00107143;
+        double baseBonus = level * 0.000285714; // Reduced multiplier for 0.04 cap
         double multiplier = getBonusMultiplier(user, mastered);
         double finalBonus = baseBonus * multiplier;
-        return Math.min(finalBonus, 0.15);
+        return Math.min(finalBonus, 0.04); // Reduced speed cap
     }
 
     private double getSystemAttackBonus(int level, boolean mastered, LivingEntity user) {
@@ -156,7 +156,7 @@ public class SystemSkill extends Skill implements ISpatialStorage {
             }
         }
         
-        // Aplica modificador de armadura (seguindo padrão Tensura)
+        // Apply armor modifier (following Tensura pattern)
         if (armorAttr != null) {
             armorAttr.removeModifier(SYSTEM_ARMOR_UUID);
             double armorBonus = getSystemArmorBonus(level, mastered, entity);
@@ -199,7 +199,6 @@ public class SystemSkill extends Skill implements ISpatialStorage {
             SpatialStorageContainer container = this.getSpatialStorage(instance);
             tag.putBoolean("isGui", true);
             instance.getOrCreateTag().put("data", this.tag);
-            System.out.println(instance.getTag());
             TensuraNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> {
                 return player;
             }), new ClientboundSpatialStorageOpenPacket(player.getId(), player.containerCounter, container.getContainerSize(), container.getMaxStackSize(), SkillUtils.getSkillId(skill)));
@@ -225,7 +224,7 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         int level = instance.getOrCreateTag().getInt("level");
         boolean mastered = instance.isMastered(entity);
         
-        // Aplica modificadores de velocidade, dano e armadura usando AttributeModifiers
+        // Apply speed, damage and armor modifiers using AttributeModifiers
         applySystemModifiers(entity, level, mastered);
         
         instance.addMasteryPoint(entity);
@@ -239,7 +238,7 @@ public class SystemSkill extends Skill implements ISpatialStorage {
         int level = instance.getOrCreateTag().getInt("level");
         boolean mastered = instance.isMastered(living);
         
-        // Aplica modificadores de velocidade, dano e armadura usando AttributeModifiers
+        // Apply speed, damage and armor modifiers using AttributeModifiers
         applySystemModifiers(living, level, mastered);
     }
 

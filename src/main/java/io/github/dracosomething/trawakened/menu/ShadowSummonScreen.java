@@ -46,7 +46,7 @@ public class ShadowSummonScreen extends Screen {
         CompoundTag storage = skill.getShadowStorage();
         
         for (String key : storage.getAllKeys()) {
-            System.out.println(key);
+            // Debug log removed for production
             CompoundTag shadowData = storage.getCompound(key);
             String entityType = shadowData.getString("entityType");
             String name = shadowData.getString("name");
@@ -73,7 +73,7 @@ public class ShadowSummonScreen extends Screen {
         super.init();
         
         this.columns = Math.max(1, Math.min(4, this.width / 220));
-        this.maxVisiblePerColumn = Math.max(5, Math.min(12, (this.height - 220) / 22)); // Reduzida a quantidade máxima e aumentado o espaço reservado
+        this.maxVisiblePerColumn = Math.max(5, Math.min(12, (this.height - 220) / 22)); // Reduced maximum quantity and increased reserved space
         this.maxVisibleTotal = maxVisiblePerColumn * columns;
 
         int centerX = this.width / 2;
@@ -156,17 +156,17 @@ public class ShadowSummonScreen extends Screen {
             index++;
         }
         
-        // Definir variáveis para botões principais primeiro
+        // Define main button variables first
         int mainButtonWidth = Math.max(80, buttonWidth / 2);
         int mainButtonHeight = Math.max(18, buttonHeight + 2);
-        int bottomMargin = Math.max(35, this.height / 15); // Aumentada ainda mais a margem inferior
+        int bottomMargin = Math.max(35, this.height / 15); // Further increased bottom margin
         int buttonSpacing = Math.max(5, mainButtonHeight / 3);
         int mainButtonY = this.height - bottomMargin - (mainButtonHeight * 2) - buttonSpacing;
         
         int navButtonWidth = Math.max(40, buttonWidth / 4);
         int navButtonHeight = Math.max(16, buttonHeight);
         
-        int navSpacing = Math.max(20, this.height / 25); // Aumentado ainda mais o espaçamento
+        int navSpacing = Math.max(20, this.height / 25); // Further increased spacing
         int navY = mainButtonY - navButtonHeight - navSpacing;
         
         if (scrollOffset > 0) {
@@ -202,7 +202,7 @@ public class ShadowSummonScreen extends Screen {
         
         this.addRenderableWidget(new Button(
             centerX - (mainButtonWidth * 2/3) / 2, mainButtonY + mainButtonHeight + buttonSpacing, 
-            mainButtonWidth * 2/3, mainButtonHeight, // Usar a mesma altura do botão principal
+            mainButtonWidth * 2/3, mainButtonHeight, // Use the same height as main button
             Component.translatable("gui.cancel"),
             button -> this.onClose()
         ));

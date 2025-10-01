@@ -58,7 +58,7 @@ public class SkillUtilsMixin {
             float currentValue = cir.getReturnValue();
             float newValue = currentValue * multiplier;
             
-            System.out.println("[System Skill] Magicule Multiplier aplicado: " + currentValue + " -> " + newValue + " (x" + multiplier + ")");
+
             
             cir.setReturnValue(newValue);
         }
@@ -76,7 +76,7 @@ public class SkillUtilsMixin {
             float currentValue = cir.getReturnValue();
             float newValue = currentValue * multiplier;
             
-            System.out.println("[System Skill] Aura Multiplier aplicado: " + currentValue + " -> " + newValue + " (x" + multiplier + ")");
+
             
             cir.setReturnValue(newValue);
         }
