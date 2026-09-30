@@ -36,10 +36,14 @@ import io.github.dracosomething.trawakened.registry.dimensionRegistry;
 import io.github.dracosomething.trawakened.registry.effectRegistry;
 import io.github.dracosomething.trawakened.registry.particleRegistry;
 import io.github.dracosomething.trawakened.registry.skillRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.worldgen.DimensionTypes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -58,6 +62,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
@@ -258,10 +263,12 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                             Objects.equals(AwakenedShadowCapability.getOwnerUUID(target).toString(), entity.getUUID().toString()) &&
                             AwakenedShadowCapability.isShadow(target)) {
                         if (ShadowStorage.getAllKeys().size() < instance.getOrCreateTag().getInt("maxStorage")) {
-                            System.out.println("erwwwwrwer");
-                            ShadowStorage.put(target.getUUID().toString(), shadowToNBT(target));
+                            // Update shadow NBT with current EP before storing
+                            CompoundTag shadowNBT = shadowToNBT(target);
+                            ShadowStorage.put(target.getUUID().toString(), shadowNBT);
                             instance.getOrCreateTag().put("ShadowStorage", ShadowStorage);
                             setShadowStorage(instance.getOrCreateTag().getCompound("ShadowStorage"));
+                            System.out.println("[Shadow Monarch] Storing shadow with EP: " + shadowNBT.getDouble("EP"));
                             target.discard();
 
                         } else if (entity instanceof Player player) {
@@ -409,20 +416,45 @@ public class ShadowMonarch extends Skill implements ISpatialStorage {
                 break;
             case 7:
                 if (entity.isShiftKeyDown()) {
-                    if (data.getBoolean("awakened")) {
-                        List<Player> list = skillHelper.getPlayersInRange(entity, entity.position(), 5, Player::isShiftKeyDown);
-                        list.forEach((player) -> {
-                            MinecraftServer server = player.getServer();
-                            if (server != null) {
-                                ServerLevel level = server.getLevel(dimensionRegistry.SHADOW);
-                                if (entity.getLevel().dimension() == level.dimension()) {
-                                    level = server.overworld();
-                                }
-                                if (level != null) {
-                                    SkillHelper.moveAcrossDimensionTo(player, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), level);
-                                }
+                    if (data.getBoolean("awakened") && entity instanceof ServerPlayer caster) {
+                        MinecraftServer server = caster.getServer();
+                        if (server != null) {
+                            // Determine target dimension
+                            boolean inShadowDimension = caster.level.dimension().equals(dimensionRegistry.SHADOW);
+                            ServerLevel targetLevel;
+                            if (inShadowDimension) {
+                                targetLevel = server.overworld();
+                            } else {
+                                targetLevel = server.getLevel(dimensionRegistry.SHADOW);
                             }
-                        });
+
+                            if (targetLevel != null) {
+                                // Teleport the caster
+                                double targetY = targetLevel.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                                        (int) caster.getX(), (int) caster.getZ());
+                                if (targetY < targetLevel.getMinBuildHeight()) {
+                                    targetY = targetLevel.getSeaLevel() + 1;
+                                }
+                                SkillHelper.moveAcrossDimensionTo(caster, caster.getX(), targetY, caster.getZ(),
+                                        caster.getYRot(), caster.getXRot(), targetLevel);
+
+                                // Also teleport nearby crouching players
+                                List<Player> nearbyPlayers = skillHelper.getPlayersInRange(entity, entity.position(), 5, Player::isShiftKeyDown);
+                                for (Player nearby : nearbyPlayers) {
+                                    if (nearby instanceof ServerPlayer sp && !sp.equals(caster)) {
+                                        double ny = targetLevel.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                                                (int) sp.getX(), (int) sp.getZ());
+                                        if (ny < targetLevel.getMinBuildHeight()) {
+                                            ny = targetLevel.getSeaLevel() + 1;
+                                        }
+                                        SkillHelper.moveAcrossDimensionTo(sp, sp.getX(), ny, sp.getZ(),
+                                                sp.getYRot(), sp.getXRot(), targetLevel);
+                                    }
+                                }
+                            } else if (!inShadowDimension) {
+                                caster.displayClientMessage(Component.literal("Shadow Dimension not loaded!").withStyle(ChatFormatting.RED), false);
+                            }
+                        }
                     }
                 } else {
                     openSpatialStorage(entity, instance);

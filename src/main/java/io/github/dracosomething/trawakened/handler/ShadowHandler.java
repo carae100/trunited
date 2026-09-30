@@ -99,11 +99,28 @@ public class ShadowHandler {
                     target.setSpeed(0);
                     SkillHelper.addEffectWithSource(target, target, TensuraMobEffects.PRESENCE_CONCEALMENT.get(), 6000, 255, false, false, false, false);
                     AwakenedShadowCapability.setShadow(target, true);
-                    if (entity == user.get()) {
+                    
+                    // Check if killer is player or shadow soldier
+                    boolean isPlayerKill = entity == user.get();
+                    boolean isShadowSoldierKill = AwakenedShadowCapability.isArisen(entity) && 
+                                                   AwakenedShadowCapability.isOwnerShadow(entity, user.get());
+                    
+                    if (isPlayerKill || isShadowSoldierKill) {
                         double EP = SkillUtils.getEPGain(target, user.get(), false);
                         if (!(EP <= 0.0)) {
                             if (!TensuraEPCapability.isSkippingEPDrop(target)) {
-                                entityGetEP(user.get(), target, SkillUtils.getEPGain(target, user.get(), true));
+                                // If shadow soldier killed, give EP to both soldier and owner
+                                if (isShadowSoldierKill) {
+                                    // Shadow soldier gains 3x EP
+                                    entityGetEP(entity, target, SkillUtils.getEPGain(target, entity, true) * 3.0);
+                                    // Owner also gains EP (shared experience)
+                                    entityGetEP(user.get(), target, SkillUtils.getEPGain(target, user.get(), true) * 0.5);
+                                } else {
+                                    // Player killed directly
+                                    entityGetEP(user.get(), target, SkillUtils.getEPGain(target, user.get(), true));
+                                }
+                                
+                                // Gear EP gain for owner
                                 EquipmentSlot[] var6 = EquipmentSlot.values();
                                 int var7 = var6.length;
 
